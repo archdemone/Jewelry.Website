@@ -139,13 +139,13 @@ Use this document as the single source of truth for planning and tracking. Mark 
 - [ ] Customer management
 
 ### Phase 11: Additional Features
-- [ ] Contact page with form and map
-- [ ] About Us page with brand story
-- [ ] FAQ page
-- [ ] Terms of Service & Privacy Policy
-- [ ] 404 error page
-- [ ] Loading skeletons for better UX
-- [ ] Toast notifications for actions
+- [x] Contact page with form and map
+- [x] About Us page with brand story
+- [x] FAQ page
+- [x] Terms of Service & Privacy Policy
+- [x] 404 error page
+- [x] Loading skeletons for better UX
+- [x] Toast notifications for actions
 
 ### Phase 12: Performance & SEO
 - [ ] Meta tags for all pages
