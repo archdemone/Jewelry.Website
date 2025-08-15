@@ -131,7 +131,7 @@ Use this document as the single source of truth for planning and tracking. Mark 
 - [ ] Order confirmation page
 - [ ] Email confirmation setup
 
-### Phase 10: Admin Dashboard
+### Phase 10: Admin Dashboard — Scaffolded core layout, dashboard, and base pages/components (ongoing)
 - [ ] Protected admin routes with role checking
 - [ ] Dashboard: sales overview, recent orders, low stock alerts
 - [ ] Product management: add/edit/delete, image upload DnD, inventory tracking
