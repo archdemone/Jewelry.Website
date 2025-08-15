@@ -30,6 +30,12 @@ export default function SmartImage({ srcs, alt, className, width, height, priori
 
 	const currentSrc = validImages[currentSrcIndex]
 
+	// Add a small cache-busting param for local images so updated assets show
+	const assetVersion = process.env.NEXT_PUBLIC_ASSET_VERSION || '1'
+	const versionedSrc = currentSrc
+		? (currentSrc.includes('?') ? currentSrc : `${currentSrc}?v=${assetVersion}`)
+		: undefined
+
 	// If we're using fallback or no valid images, show CSS gradient
 	if (useFallback || validImages.length === 0) {
 		return (
@@ -71,7 +77,7 @@ export default function SmartImage({ srcs, alt, className, width, height, priori
 	// Try to load local image
 	return (
 		<Image
-			src={currentSrc}
+			src={versionedSrc as string}
 			alt={displayText}
 			className={`object-cover ${className}`}
 			width={width || 800}

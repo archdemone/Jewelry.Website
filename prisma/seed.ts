@@ -134,7 +134,7 @@ async function main() {
 				barcode: '123456789014',
 				quantity: 3,
 				weight: 12.8,
-				material: '14k White Gold',
+				material: '14k Yellow Gold',
 				gemstones: 'Diamond',
 				size: '7"',
 				images: ['/images/products/tennis-bracelet-1.jpg', '/images/products/tennis-bracelet-2.jpg'],
@@ -182,6 +182,48 @@ async function main() {
 				images: ['/images/products/luxury-automatic-watch-1.jpg', '/images/products/luxury-automatic-watch-2.jpg'],
 				featured: true,
 				categoryId: categories[4].id, // watches
+			},
+		}),
+		// Pendants
+		prisma.product.upsert({
+			where: { sku: 'PEND-001' },
+			update: {},
+			create: {
+				name: 'Gold Heart Pendant',
+				slug: 'gold-heart-pendant',
+				description: 'A romantic 18k gold heart pendant with a polished finish.',
+				price: 499.99,
+				comparePrice: 599.99,
+				cost: 220.00,
+				sku: 'PEND-001',
+				barcode: '123456789017',
+				quantity: 10,
+				weight: 5.0,
+				material: '18k Yellow Gold',
+				images: ['/images/products/gold-heart-pendant-1.jpg', '/images/products/gold-heart-pendant-2.jpg'],
+				featured: true,
+				categoryId: categories[5].id, // pendants
+			},
+		}),
+		prisma.product.upsert({
+			where: { sku: 'PEND-002' },
+			update: {},
+			create: {
+				name: 'Diamond Cross Pendant',
+				slug: 'diamond-cross-pendant',
+				description: 'Elegant diamond cross pendant set in 14k white gold.',
+				price: 799.99,
+				comparePrice: 999.99,
+				cost: 380.00,
+				sku: 'PEND-002',
+				barcode: '123456789018',
+				quantity: 7,
+				weight: 3.5,
+				material: '14k White Gold',
+				gemstones: 'Diamond',
+				images: ['/images/products/diamond-cross-pendant-1.jpg', '/images/products/diamond-cross-pendant-2.jpg'],
+				featured: false,
+				categoryId: categories[5].id, // pendants
 			},
 		}),
 	])
