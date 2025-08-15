@@ -24,6 +24,8 @@ export default function CartItem({ id, name, price, quantity, image }: CartItemP
 				'/images/products/placeholder.svg',
 			]
 
+	const safePrice = typeof price === 'number' && !Number.isNaN(price) ? price : 0
+
 	const handleQuantityChange = async (newQuantity: number) => {
 		if (newQuantity < 1) return
 		setIsUpdating(true)
@@ -56,7 +58,7 @@ export default function CartItem({ id, name, price, quantity, image }: CartItemP
 			<div className="flex flex-1 flex-col justify-between">
 				<div>
 					<h3 className="font-medium text-gray-900">{name}</h3>
-					<p className="text-sm text-gray-500">${price.toFixed(2)}</p>
+					<p className="text-sm text-gray-500">${safePrice.toFixed(2)}</p>
 				</div>
 
 				{/* Quantity Controls */}
@@ -97,7 +99,7 @@ export default function CartItem({ id, name, price, quantity, image }: CartItemP
 			{/* Total Price */}
 			<div className="text-right">
 				<p className="font-semibold text-gray-900">
-					${(price * quantity).toFixed(2)}
+					${(safePrice * quantity).toFixed(2)}
 				</p>
 			</div>
 		</div>

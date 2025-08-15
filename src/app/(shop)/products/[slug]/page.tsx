@@ -18,11 +18,16 @@ export const revalidate = 3600
 export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
 	const product = await getProductBySlug(params.slug)
 	if (!product) return null
-	const productImages = getProductImageFallback({ 
-		productSlug: product.slug, 
-		categorySlug: product.category?.slug, 
-		name: product.name 
-	})
+
+	// Prefer DB images; fall back to curated mapping
+	const dbImages = Array.isArray((product as any).images) ? ((product as any).images as string[]) : []
+	const productImages = dbImages.length > 0
+		? dbImages
+		: getProductImageFallback({
+			productSlug: product.slug,
+			categorySlug: product.category?.slug,
+			name: product.name,
+		})
 	const mainImage = productImages[0]
 	const related = await getRelatedProducts(product.id, product.categoryId)
 
@@ -54,7 +59,7 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
 					</div>
 				</div>
 			</div>
-			<RelatedProducts products={related.map(p => ({ id: p.id, name: p.name, slug: p.slug, price: p.price, images: null, category: null }))} />
+			<RelatedProducts products={related} />
 		</div>
 	)
 }
