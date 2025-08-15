@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Trash2, Minus, Plus } from 'lucide-react'
 import SmartImage from '@/components/common/SmartImage'
 import { useCartStore } from '@/store/cart'
+import toast from 'react-hot-toast'
 
 type CartItemProps = {
 	id: string
@@ -27,12 +28,14 @@ export default function CartItem({ id, name, price, quantity, image }: CartItemP
 		if (newQuantity < 1) return
 		setIsUpdating(true)
 		setQuantity(id, newQuantity)
+		toast.success('Quantity updated')
 		setIsUpdating(false)
 	}
 
 	const handleRemove = async () => {
 		setIsUpdating(true)
 		removeItem(id)
+		toast('Removed from cart', { icon: '🗑️' })
 		setIsUpdating(false)
 	}
 
