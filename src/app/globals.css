@@ -4,7 +4,7 @@
 
 :root {
 	--background: 255 255 255;
-	--foreground: 17 24 39;
+	--foreground: 26 26 26; /* match secondary/text */
 }
 
 html, body {
@@ -14,6 +14,12 @@ html, body {
 body {
 	background-color: rgb(var(--background));
 	color: rgb(var(--foreground));
+	font-family: var(--font-sans);
 }
+
+/* Typography utilities for legal pages */
+.prose h1 { @apply font-[var(--font-serif)] text-3xl text-secondary; }
+.prose h2 { @apply mt-6 text-xl font-semibold text-secondary; }
+.prose p { @apply mt-2 text-sm text-gray-700; }
 
 

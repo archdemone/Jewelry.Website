@@ -1,0 +1,220 @@
+Phase 6 - Product Detail Page Development Prompt
+
+Let's proceed with Phase 6: Product Detail Page. This phase will create comprehensive individual product pages with all the features needed for customers to make purchasing decisions.
+
+## Phase 6 Tasks:
+
+### 1. Create Product Detail Structure
+Create the following structure:
+/app/
+  /product/
+    /[slug]/
+      - page.tsx (product detail page)
+      - loading.tsx
+      - not-found.tsx
+
+/components/
+  /product-detail/
+    - ProductImageGallery.tsx
+    - ProductInfo.tsx
+    - ProductTabs.tsx
+    - SizeGuide.tsx
+    - AddToCartSection.tsx
+    - RelatedProducts.tsx
+    - RecentlyViewed.tsx
+    - ProductReviews.tsx
+    - ShareButtons.tsx
+    - ZoomModal.tsx
+
+### 2. Install Additional Dependencies
+npx shadcn-ui@latest add tabs
+npx shadcn-ui@latest add radio-group
+npx shadcn-ui@latest add toggle
+npx shadcn-ui@latest add separator
+npx shadcn-ui@latest add avatar
+npm install react-zoom-pan-pinch
+npm install react-share
+
+### 3. Create Main Product Detail Page
+Create /app/product/[slug]/page.tsx
+
+Features:
+- Fetch product by slug from database
+- Include all relations (category, reviews, etc.)
+- Generate metadata for SEO
+- Structured data for rich snippets
+- Track recently viewed products
+
+Layout Structure:
+<div className="container">
+  <Breadcrumbs />
+  <div className="grid md:grid-cols-2 gap-8">
+    <ProductImageGallery />
+    <ProductInfo />
+  </div>
+  <ProductTabs />
+  <RelatedProducts />
+  <RecentlyViewed />
+</div>
+
+### 4. Create Product Image Gallery
+Create /components/product-detail/ProductImageGallery.tsx
+
+Features:
+- Main large image display
+- Thumbnail strip (bottom or side)
+- Click thumbnail to change main image
+- Zoom on hover (magnifying glass effect)
+- Click to open fullscreen lightbox
+- Image indicators (dots) for mobile
+- Swipe gestures on mobile
+- Handle multiple images from database
+
+Image Features:
+- Show "Sale" or "New" badges
+- Loading skeleton while images load
+- Fallback for missing images
+- Smooth transitions between images
+
+### 5. Create Product Information Section
+Create /components/product-detail/ProductInfo.tsx
+
+Display Elements:
+- Product name (H1)
+- SKU and availability status
+- Price display (regular/sale/you save)
+- Star rating with review count
+- Short description
+- Key features/highlights
+
+Interactive Elements:
+- Size selector (if applicable)
+- Color/variant selector (if applicable)
+- Quantity selector (- 1 +)
+- Add to Cart (prominent)
+- Add to Wishlist
+- Estimated delivery date
+
+Trust Builders:
+- Stock status / low stock
+- Free shipping threshold
+- Return policy link
+- Secure checkout badges
+
+### 6. Create Add to Cart Section
+Create /components/product-detail/AddToCartSection.tsx
+
+Features:
+- Qty selector with validation
+- Size/variant selection (required)
+- Add to cart + Buy now
+- Sticky add to cart on mobile
+- Success toast, open cart drawer
+- Out of stock handling
+
+### 7. Create Product Tabs Section
+Create /components/product-detail/ProductTabs.tsx
+
+Tab Options:
+- Description (full details)
+- Specifications (materials, dimensions, weight, stones, purity, chain length)
+- Care Instructions (cleaning, storage, warranty)
+- Shipping & Returns
+- Reviews (link to section)
+
+### 8. Create Size Guide Modal
+Create /components/product-detail/SizeGuide.tsx
+
+For Rings:
+- Size charts, how to measure, printable sizer, conversion tool
+
+For Necklaces/Bracelets:
+- Length guide, visuals, measurement instructions
+
+### 9. Create Product Reviews Section
+Create /components/product-detail/ProductReviews.tsx
+
+Review Display:
+- Overall rating summary & breakdown
+- Individual reviews (name, date, stars, verified, text, helpful, admin response)
+
+Review Actions:
+- Sort (newest/highest/lowest/helpful)
+- Filter by rating
+- Write review (if purchased)
+- Pagination or load more
+
+### 10. Create Related Products Section
+Create /components/product-detail/RelatedProducts.tsx
+
+Features:
+- "You May Also Like" (4–6 items)
+- Based on same category / price / together
+
+Query Example:
+const related = await prisma.product.findMany({
+  where: { categoryId: product.categoryId, id: { not: product.id }, active: true },
+  take: 6,
+})
+
+### 11. Create Recently Viewed Section
+Create /components/product-detail/RecentlyViewed.tsx
+
+Features:
+- Track last 5 viewed (localStorage)
+- Carousel display; clear option; hide current item
+
+### 12. Create Share Buttons
+Create /components/product-detail/ShareButtons.tsx
+
+Options: Facebook, X(Twitter), Pinterest, WhatsApp, Email, Copy link (use react-share)
+
+### 13. Create Zoom Modal
+Create /components/product-detail/ZoomModal.tsx
+
+Features:
+- Fullscreen view with pan/zoom; navigate images; ESC/overlay close; pinch on mobile
+
+### 14. Implement Product Variants
+Variant Types:
+- Size, metal, gemstone, engraving
+
+Features:
+- Update price/images by variant
+- Per-variant stock & SKU
+
+### 15. Add Product Schema Markup
+Include JSON-LD Product with offers and aggregateRating
+
+### 16. Loading and Error States
+/app/product/[slug]/loading.tsx (skeleton)
+/app/product/[slug]/not-found.tsx (404 + suggestions + search)
+
+### 17. Mobile Optimizations
+- Sticky price/add bar, collapsible sections, swipe gallery, bottom sheet size guide, simplified tabs
+
+## Testing Checklist:
+- [ ] Product page loads with data
+- [ ] Gallery (thumbs, zoom, lightbox, swipe) works
+- [ ] Variants/size/qty selection works; price updates if needed
+- [ ] Add to cart & Buy now work; correct variant in cart
+- [ ] Tabs content accurate
+- [ ] Reviews load and sort/filter
+- [ ] Related and Recently Viewed show items
+- [ ] Share buttons work
+- [ ] Mobile sticky footer appears
+- [ ] Breadcrumbs correct
+- [ ] SEO metadata present
+- [ ] Loading states appear
+
+## Design Specs:
+- Container max-w: 1280px; 2-column on desktop
+- Name: text-3xl font-bold; Price: text-2xl font-semibold
+- Section spacing: py-12; element spacing: space-y-4
+
+## After Completion:
+1. Full user journey: catalog → product → select options → add to cart → verify cart
+2. Interactive elements: modals, tabs, reviews
+3. Performance: load < 2s; optimized images; no layout shift
+4. Screenshots: desktop product page, mobile sticky footer, zoom, reviews
+5. Update DEVELOPMENT_CHECKLIST.md to mark Phase 6 complete

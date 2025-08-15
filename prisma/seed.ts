@@ -1,106 +1,208 @@
-import { PrismaClient, Role, AddressType, OrderStatus, PaymentStatus } from '@prisma/client'
-import bcrypt from 'bcryptjs'
+import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
 async function main() {
-	const passwordHash = await bcrypt.hash('admin123', 10)
+	// Create categories
+	const categories = await Promise.all([
+		prisma.category.upsert({
+			where: { slug: 'rings' },
+			update: {},
+			create: {
+				name: 'Rings',
+				slug: 'rings',
+				description: 'Beautiful rings for every occasion',
+				image: 'Diamond Ring',
+				order: 1,
+			},
+		}),
+		prisma.category.upsert({
+			where: { slug: 'necklaces' },
+			update: {},
+			create: {
+				name: 'Necklaces',
+				slug: 'necklaces',
+				description: 'Elegant necklaces to complement your style',
+				image: 'Gold Necklace',
+				order: 2,
+			},
+		}),
+		prisma.category.upsert({
+			where: { slug: 'bracelets' },
+			update: {},
+			create: {
+				name: 'Bracelets',
+				slug: 'bracelets',
+				description: 'Stylish bracelets for your wrist',
+				image: 'Gold Bracelet',
+				order: 3,
+			},
+		}),
+		prisma.category.upsert({
+			where: { slug: 'earrings' },
+			update: {},
+			create: {
+				name: 'Earrings',
+				slug: 'earrings',
+				description: 'Dazzling earrings to frame your face',
+				image: 'Diamond Earrings',
+				order: 4,
+			},
+		}),
+		prisma.category.upsert({
+			where: { slug: 'watches' },
+			update: {},
+			create: {
+				name: 'Watches',
+				slug: 'watches',
+				description: 'Luxury timepieces for the discerning collector',
+				image: 'Luxury Watch',
+				order: 5,
+			},
+		}),
+		prisma.category.upsert({
+			where: { slug: 'pendants' },
+			update: {},
+			create: {
+				name: 'Pendants',
+				slug: 'pendants',
+				description: 'Stunning pendants to adorn your neck',
+				image: 'Gold Pendant',
+				order: 6,
+			},
+		}),
+	])
 
-	// Categories
-	const categoryData = [
-		{ name: 'Rings', slug: 'rings' },
-		{ name: 'Necklaces', slug: 'necklaces' },
-		{ name: 'Bracelets', slug: 'bracelets' },
-		{ name: 'Earrings', slug: 'earrings' },
-		{ name: 'Watches', slug: 'watches' },
-		{ name: 'Pendants', slug: 'pendants' },
-	]
+	console.log('Categories created:', categories.length)
 
-	const categories = await Promise.all(
-		categoryData.map((c, i) =>
-			prisma.category.upsert({
-				where: { slug: c.slug },
-				update: {},
-				create: { ...c, order: i },
-			})
-		)
-	)
+	// Create products
+	const products = await Promise.all([
+		prisma.product.upsert({
+			where: { sku: 'RING-001' },
+			update: {},
+			create: {
+				name: 'Diamond Solitaire Ring',
+				slug: 'diamond-solitaire-ring',
+				description: 'A stunning 1-carat diamond solitaire ring set in 18k white gold.',
+				price: 2999.99,
+				comparePrice: 3499.99,
+				cost: 1800.00,
+				sku: 'RING-001',
+				barcode: '123456789012',
+				quantity: 5,
+				weight: 3.2,
+				material: '18k White Gold',
+				gemstones: 'Diamond',
+				size: '6.5',
+				images: ['Diamond Ring', 'Premium Jewelry', 'Luxury Jewelry'],
+				featured: true,
+				categoryId: categories[0].id, // rings
+			},
+		}),
+		prisma.product.upsert({
+			where: { sku: 'NECK-001' },
+			update: {},
+			create: {
+				name: 'Gold Chain Necklace',
+				slug: 'gold-chain-necklace',
+				description: 'A classic 18k gold chain necklace, perfect for everyday wear.',
+				price: 899.99,
+				comparePrice: 1099.99,
+				cost: 540.00,
+				sku: 'NECK-001',
+				barcode: '123456789013',
+				quantity: 8,
+				weight: 8.5,
+				material: '18k Yellow Gold',
+				size: '18"',
+				images: ['Gold Necklace', 'Premium Jewelry', 'Luxury Jewelry'],
+				featured: true,
+				categoryId: categories[1].id, // necklaces
+			},
+		}),
+		prisma.product.upsert({
+			where: { sku: 'BRAC-001' },
+			update: {},
+			create: {
+				name: 'Tennis Bracelet',
+				slug: 'tennis-bracelet',
+				description: 'A dazzling tennis bracelet featuring round-cut diamonds.',
+				price: 2499.99,
+				comparePrice: 2999.99,
+				cost: 1500.00,
+				sku: 'BRAC-001',
+				barcode: '123456789014',
+				quantity: 3,
+				weight: 12.8,
+				material: '14k White Gold',
+				gemstones: 'Diamond',
+				size: '7"',
+				images: ['Diamond Bracelet', 'Premium Jewelry', 'Luxury Jewelry'],
+				featured: true,
+				categoryId: categories[2].id, // bracelets
+			},
+		}),
+		prisma.product.upsert({
+			where: { sku: 'EARR-001' },
+			update: {},
+			create: {
+				name: 'Pearl Drop Earrings',
+				slug: 'pearl-drop-earrings',
+				description: 'Elegant freshwater pearl drop earrings with sterling silver.',
+				price: 299.99,
+				comparePrice: 399.99,
+				cost: 120.00,
+				sku: 'EARR-001',
+				barcode: '123456789015',
+				quantity: 12,
+				weight: 4.2,
+				material: 'Sterling Silver',
+				gemstones: 'Freshwater Pearl',
+				images: ['Pearl Earrings', 'Premium Jewelry', 'Luxury Jewelry'],
+				featured: false,
+				categoryId: categories[3].id, // earrings
+			},
+		}),
+		prisma.product.upsert({
+			where: { sku: 'WATCH-001' },
+			update: {},
+			create: {
+				name: 'Luxury Automatic Watch',
+				slug: 'luxury-automatic-watch',
+				description: 'A sophisticated automatic watch with premium craftsmanship.',
+				price: 4999.99,
+				comparePrice: 5999.99,
+				cost: 2500.00,
+				sku: 'WATCH-001',
+				barcode: '123456789016',
+				quantity: 2,
+				weight: 85.0,
+				material: 'Stainless Steel',
+				size: '42mm',
+				images: ['Luxury Watch', 'Premium Jewelry', 'Luxury Jewelry'],
+				featured: true,
+				categoryId: categories[4].id, // watches
+			},
+		}),
+	])
 
-	// Admin user
-	const admin = await prisma.user.upsert({
-		where: { email: 'admin@jewelry.com' },
+	console.log('Products created:', products.length)
+
+	// Create a sample user
+	const user = await prisma.user.upsert({
+		where: { email: 'demo@example.com' },
 		update: {},
 		create: {
-			email: 'admin@jewelry.com',
-			name: 'Admin',
-			password: passwordHash,
-			role: Role.ADMIN,
-			addresses: {
-				create: [
-					{
-						type: AddressType.SHIPPING,
-						isDefault: true,
-						firstName: 'Admin',
-						lastName: 'User',
-						address1: '123 Market St',
-						city: 'San Francisco',
-						state: 'CA',
-						postalCode: '94103',
-						country: 'US',
-					},
-				],
-			},
+			email: 'demo@example.com',
+			name: 'Demo User',
+			password: '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj4tbQJhqKre', // password: demo123
+			role: 'CUSTOMER',
 		},
 	})
 
-	// Products
-	const sampleProducts = Array.from({ length: 12 }).map((_, i) => {
-		const cat = categories[i % categories.length]
-		return {
-			name: `Sample Jewelry ${i + 1}`,
-			slug: `sample-jewelry-${i + 1}`,
-			description: 'Elegant handcrafted piece with meticulous detail.',
-			price: 199 + i * 10,
-			comparePrice: i % 3 === 0 ? 249 + i * 10 : null,
-			cost: 90 + i * 5,
-			sku: `SKU-${1000 + i}`,
-			trackQuantity: true,
-			quantity: 10 + i,
-			material: ['Gold 14k', 'Sterling Silver', 'Platinum', 'Rose Gold'][i % 4],
-			gemstones: ['Diamond', 'Ruby', 'Sapphire', 'Emerald'][i % 4],
-			size: i % 2 === 0 ? '7' : null,
-			images: [
-				`https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=800&q=60`,
-			],
-			featured: i < 4,
-			active: true,
-			categoryId: cat.id,
-			metadata: { warranty: '1 year', origin: 'Italy' },
-		}
-	})
+	console.log('Demo user created:', user.email)
 
-	await prisma.product.createMany({ data: sampleProducts })
-
-	// Sample review
-	const anyProduct = await prisma.product.findFirst()
-	if (anyProduct) {
-		await prisma.review.upsert({
-			where: { productId_userId: { productId: anyProduct.id, userId: admin.id } },
-			update: {},
-			create: {
-				productId: anyProduct.id,
-				userId: admin.id,
-				rating: 5,
-				comment: 'Absolutely stunning craftsmanship!',
-				verified: true,
-			},
-		})
-	}
-
-	console.log('Seed complete:', {
-		categories: categories.length,
-		admin: admin.email,
-	})
+	console.log('Database seeded successfully!')
 }
 
 main()

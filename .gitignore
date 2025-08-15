@@ -24,4 +24,7 @@ pnpm-debug.log*
 coverage
 dist
 
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=dev-secret-change-me
+
 

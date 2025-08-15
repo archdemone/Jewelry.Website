@@ -2,13 +2,23 @@
 const nextConfig = {
 	reactStrictMode: true,
 	images: {
-		domains: [
-			'localhost',
-			'images.unsplash.com',
-			'res.cloudinary.com',
-			'cdn.shopify.com'
+		remotePatterns: [
+			{
+				protocol: 'https',
+				hostname: 'images.unsplash.com',
+				port: '',
+				pathname: '/**',
+			},
 		],
 	},
+	transpilePackages: [
+		'@radix-ui/react-icons',
+		'@radix-ui/react-dialog',
+		'@radix-ui/react-dropdown-menu',
+		'@radix-ui/react-navigation-menu',
+		'@radix-ui/react-separator',
+		'@radix-ui/react-sheet',
+	],
 };
 
 module.exports = nextConfig;
