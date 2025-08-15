@@ -1,4 +1,15 @@
 /** @type {import('next').NextConfig} */
+const withBundleAnalyzer = require('@next/bundle-analyzer')({ enabled: process.env.ANALYZE === 'true' });
+
+const securityHeaders = [
+	{ key: 'X-DNS-Prefetch-Control', value: 'on' },
+	{ key: 'X-XSS-Protection', value: '1; mode=block' },
+	{ key: 'X-Frame-Options', value: 'SAMEORIGIN' },
+	{ key: 'X-Content-Type-Options', value: 'nosniff' },
+	{ key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+	{ key: 'Content-Security-Policy', value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline';" },
+];
+
 const nextConfig = {
 	reactStrictMode: true,
 	transpilePackages: [
@@ -9,8 +20,32 @@ const nextConfig = {
 		'@radix-ui/react-separator',
 		'@radix-ui/react-sheet',
 	],
+	images: {
+		formats: ['image/avif', 'image/webp'],
+		deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+		imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+		minimumCacheTTL: 60 * 60 * 24 * 365,
+	},
+	experimental: {
+		webVitalsAttribution: ['CLS', 'LCP'],
+	},
+	async headers() {
+		return [
+			{
+				source: '/:path*',
+				headers: securityHeaders,
+			},
+		];
+	},
+	webpack: (config) => {
+		config.performance = {
+			hints: 'warning',
+			maxEntrypointSize: 512000,
+			maxAssetSize: 512000,
+		};
+		return config;
+	},
 };
 
-module.exports = nextConfig;
-
+module.exports = withBundleAnalyzer(nextConfig);
 
