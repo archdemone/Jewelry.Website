@@ -1,7 +1,7 @@
 "use client"
 
 import { useCartStore } from '@/store/cart'
-import { CartItem } from '@/components/cart/CartItem'
+import CartItem from '@/components/cart/CartItem'
 import { CartSummary } from '@/components/cart/CartSummary'
 import { EmptyCart } from '@/components/cart/EmptyCart'
 import { Header } from '@/components/layout/Header'
@@ -22,7 +22,7 @@ export default function CartPage() {
 							<EmptyCart />
 						) : (
 							items.map((i) => (
-								<CartItem key={i.productId} productId={i.productId} name={i.name} price={i.price} image={i.image} quantity={i.quantity} />
+								<CartItem key={i.productId} id={i.productId} name={i.name} price={i.price} image={i.image} quantity={i.quantity} />
 							))
 						)}
 					</div>
