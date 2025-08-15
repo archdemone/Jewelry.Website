@@ -2,6 +2,7 @@
 
 import { useCartStore } from '@/store/cart'
 import { Button } from '@/components/ui/button'
+import Link from 'next/link'
 
 export function CartSummary() {
 	const items = useCartStore((s) => s.items)
@@ -9,6 +10,7 @@ export function CartSummary() {
 	const shipping = subtotal > 500 ? 0 : 15
 	const tax = subtotal * 0.07
 	const total = subtotal + shipping + tax
+	const isEmpty = items.length === 0
 
 	return (
 		<div className="sticky top-24 rounded-lg border p-4">
@@ -19,7 +21,13 @@ export function CartSummary() {
 				<div className="flex justify-between"><span>Tax</span><span>${tax.toFixed(2)}</span></div>
 				<div className="mt-2 flex justify-between text-secondary"><span className="font-medium">Total</span><span className="font-semibold">${total.toFixed(2)}</span></div>
 			</div>
-			<Button className="mt-4 w-full">Proceed to Checkout</Button>
+			{isEmpty ? (
+				<Button className="mt-4 w-full" disabled>Proceed to Checkout</Button>
+			) : (
+				<Button className="mt-4 w-full" asChild>
+					<Link href="/checkout">Proceed to Checkout</Link>
+				</Button>
+			)}
 		</div>
 	)
 }
