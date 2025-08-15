@@ -63,7 +63,7 @@ export function SalesChart() {
 						<input type="checkbox" checked={compare} onChange={(e) => setCompare(e.target.checked)} />
 						<span>Compare previous period</span>
 					</label>
-					<Button variant="secondary" onClick={() => exportChart(primary)}>
+					<Button variant="outline" onClick={() => exportChart(primary)}>
 						Export
 					</Button>
 				</div>
