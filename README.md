@@ -23,4 +23,11 @@ GOOGLE_CLIENT_SECRET=your-google-client-secret
 
 Tech stack: Next.js (App Router) + TypeScript + Tailwind CSS + ESLint + Prettier.
 
+## Production Docs
+- See `docs/DEPLOYMENT.md` for deployment steps
+- See `docs/MAINTENANCE.md` for maintenance procedures
+- See `docs/TROUBLESHOOTING.md` for common issues
+- See `docs/LAUNCH_CHECKLIST.md` before going live
+- See `docs/SECURITY_CHECKLIST.md` and `docs/SCALING.md`
+
 

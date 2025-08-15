@@ -2,24 +2,20 @@ import { MetadataRoute } from 'next'
 import { db } from '@/lib/db'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-	// Fetch all products
-	const products = await db.product.findMany({
-		where: { active: true },
-		select: { slug: true, updatedAt: true },
-	})
+	const baseUrl = 'https://yourjewelrystore.com'
+	let products: { slug: string; updatedAt: Date }[] = []
+	let categories: { slug: string; updatedAt: Date }[] = []
+	try {
+		products = await db.product.findMany({ where: { active: true }, select: { slug: true, updatedAt: true } })
+		categories = await db.category.findMany({ select: { slug: true, updatedAt: true } })
+	} catch {
+		// DB unavailable during static export; fall back to minimal sitemap
+	}
 
-	// Fetch all categories
-	const categories = await db.category.findMany({
-		select: { slug: true, updatedAt: true },
-	})
-
-	// Blog posts are static in this demo; include known slugs with a recent date
 	const posts: { slug: string; updatedAt: Date }[] = [
 		{ slug: 'care-tips', updatedAt: new Date() },
 		{ slug: 'ring-sizing', updatedAt: new Date() },
 	]
-
-	const baseUrl = 'https://yourjewelrystore.com'
 
 	const productUrls: MetadataRoute.Sitemap = products.map((product) => ({
 		url: `${baseUrl}/products/${product.slug}`,
@@ -43,24 +39,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 	}))
 
 	return [
-		{
-			url: baseUrl,
-			lastModified: new Date(),
-			changeFrequency: 'daily',
-			priority: 1,
-		},
-		{
-			url: `${baseUrl}/products`,
-			lastModified: new Date(),
-			changeFrequency: 'daily',
-			priority: 0.9,
-		},
-		{
-			url: `${baseUrl}/about`,
-			lastModified: new Date(),
-			changeFrequency: 'monthly',
-			priority: 0.5,
-		},
+		{ url: baseUrl, lastModified: new Date(), changeFrequency: 'daily', priority: 1 },
+		{ url: `${baseUrl}/products`, lastModified: new Date(), changeFrequency: 'daily', priority: 0.9 },
+		{ url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: 'monthly', priority: 0.5 },
 		...productUrls,
 		...categoryUrls,
 		...blogUrls,

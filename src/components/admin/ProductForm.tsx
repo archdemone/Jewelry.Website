@@ -217,8 +217,8 @@ export default function ProductForm({ mode, initialData }: { mode: "create" | "e
 
 				<div className="flex gap-2">
 					<Button onClick={handleSave}>{mode === "create" ? "Create Product" : "Save Changes"}</Button>
-					<Button variant="secondary">Save & continue</Button>
-					<Button variant="secondary">Save & add another</Button>
+					<Button variant="outline">Save & continue</Button>
+					<Button variant="outline">Save & add another</Button>
 					<Button variant="ghost">Preview</Button>
 				</div>
 			</div>

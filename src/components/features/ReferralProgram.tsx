@@ -51,7 +51,7 @@ export default function ReferralProgram() {
 			<div className="flex items-center gap-2">
 				<div className="rounded-md border px-3 py-2 font-mono text-sm">{code}</div>
 				<Button onClick={copyLink}>Copy link</Button>
-				<Button variant="secondary" onClick={share}>Share</Button>
+				<Button variant="outline" onClick={share}>Share</Button>
 			</div>
 			<div className="grid grid-cols-2 gap-4 text-sm">
 				<div className="rounded-md border p-3">
