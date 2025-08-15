@@ -1,0 +1,231 @@
+generator client {
+	provider = "prisma-client-js"
+}
+
+datasource db {
+	provider = "sqlite"
+	url      = "file:./dev.db"
+}
+
+model User {
+	id            String      @id @default(cuid())
+	email         String      @unique
+	name          String?
+	password      String?
+	role          Role        @default(CUSTOMER)
+	image         String?
+	emailVerified DateTime?
+	addresses     Address[]
+	orders        Order[]
+	reviews       Review[]
+	cart          CartItem[]
+	wishlist      Wishlist[]
+	createdAt     DateTime    @default(now())
+	updatedAt     DateTime    @updatedAt
+}
+
+model Product {
+	id            String       @id @default(cuid())
+	name          String
+	slug          String       @unique
+	description   String
+	price         Float
+	comparePrice  Float?
+	cost          Float?
+	sku           String       @unique
+	barcode       String?
+	trackQuantity Boolean      @default(true)
+	quantity      Int          @default(0)
+	weight        Float?
+	material      String?
+	gemstones     String?
+	size          String?
+	images        Json
+	featured      Boolean      @default(false)
+	active        Boolean      @default(true)
+	category      Category     @relation(fields: [categoryId], references: [id])
+	categoryId    String
+	collections   Collection[]
+	orderItems    OrderItem[]
+	cartItems     CartItem[]
+	reviews       Review[]
+	wishlist      Wishlist[]
+	tags          String?
+	metadata      Json?
+	createdAt     DateTime     @default(now())
+	updatedAt     DateTime     @updatedAt
+
+	@@index([slug])
+	@@index([categoryId])
+	@@index([featured])
+}
+
+model Category {
+	id          String      @id @default(cuid())
+	name        String
+	slug        String      @unique
+	description String?
+	image       String?
+	parentId    String?
+	parent      Category?   @relation("CategoryHierarchy", fields: [parentId], references: [id])
+	children    Category[]  @relation("CategoryHierarchy")
+	products    Product[]
+	active      Boolean     @default(true)
+	order       Int         @default(0)
+	createdAt   DateTime    @default(now())
+	updatedAt   DateTime    @updatedAt
+
+	@@index([slug])
+}
+
+model Collection {
+	id          String     @id @default(cuid())
+	name        String
+	slug        String     @unique
+	description String?
+	image       String?
+	products    Product[]
+	active      Boolean    @default(true)
+	createdAt   DateTime   @default(now())
+	updatedAt   DateTime   @updatedAt
+}
+
+model Order {
+	id              String        @id @default(cuid())
+	orderNumber     String        @unique
+	user            User?         @relation(fields: [userId], references: [id])
+	userId          String?
+	email           String
+	phone           String?
+	status          OrderStatus   @default(PENDING)
+	paymentStatus   PaymentStatus @default(UNPAID)
+	paymentMethod   String?
+	paymentIntentId String?
+	subtotal        Float
+	tax             Float
+	shipping        Float
+	total           Float
+	currency        String        @default("USD")
+	items           OrderItem[]
+	shippingAddress Json
+	billingAddress  Json
+	notes           String?
+	metadata        Json?
+	createdAt       DateTime      @default(now())
+	updatedAt       DateTime      @updatedAt
+
+	@@index([orderNumber])
+	@@index([userId])
+	@@index([status])
+}
+
+model OrderItem {
+	id        String   @id @default(cuid())
+	order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+	orderId   String
+	product   Product  @relation(fields: [productId], references: [id])
+	productId String
+	name      String
+	price     Float
+	quantity  Int
+	total     Float
+	metadata  Json?
+	createdAt DateTime @default(now())
+}
+
+model CartItem {
+	id        String   @id @default(cuid())
+	user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+	userId    String?
+	sessionId String?
+	product   Product  @relation(fields: [productId], references: [id])
+	productId String
+	quantity  Int
+	metadata  Json?
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+
+	@@unique([userId, productId])
+	@@unique([sessionId, productId])
+	@@index([sessionId])
+}
+
+model Address {
+	id         String      @id @default(cuid())
+	user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+	userId     String
+	type       AddressType @default(SHIPPING)
+	isDefault  Boolean    @default(false)
+	firstName  String
+	lastName   String
+	company    String?
+	address1   String
+	address2   String?
+	city       String
+	state      String
+	postalCode String
+	country    String
+	phone      String?
+	createdAt  DateTime   @default(now())
+	updatedAt  DateTime   @updatedAt
+}
+
+model Review {
+	id        String   @id @default(cuid())
+	product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+	productId String
+	user      User     @relation(fields: [userId], references: [id])
+	userId    String
+	rating    Int
+	title     String?
+	comment   String
+	verified  Boolean  @default(false)
+	helpful   Int      @default(0)
+	images    Json?
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+
+	@@unique([productId, userId])
+	@@index([productId])
+}
+
+model Wishlist {
+	id        String   @id @default(cuid())
+	user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+	userId    String
+	product   Product  @relation(fields: [productId], references: [id])
+	productId String
+	createdAt DateTime @default(now())
+
+	@@unique([userId, productId])
+}
+
+enum Role {
+	CUSTOMER
+	ADMIN
+	STAFF
+}
+
+enum OrderStatus {
+	PENDING
+	PROCESSING
+	SHIPPED
+	DELIVERED
+	CANCELLED
+	REFUNDED
+}
+
+enum PaymentStatus {
+	UNPAID
+	PAID
+	PARTIALLY_PAID
+	REFUNDED
+	PARTIALLY_REFUNDED
+}
+
+enum AddressType {
+	SHIPPING
+	BILLING
+}
+
+
