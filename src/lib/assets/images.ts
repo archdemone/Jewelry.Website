@@ -1,105 +1,105 @@
 // Product image management system
-// Using high-quality jewelry images from Unsplash
+// Using local images stored in /public/images/products/
 
 export const PRODUCT_IMAGES: Record<string, string[]> = {
   // Rings
   'diamond-solitaire-ring': [
-    'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&h=800&fit=crop&crop=center',
-    'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&h=800&fit=crop&crop=center&q=80',
-    'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&h=800&fit=crop&crop=center&q=60',
+    '/images/products/diamond-solitaire-ring-1.jpg',
+    '/images/products/diamond-solitaire-ring-2.jpg',
+    '/images/products/diamond-solitaire-ring-3.jpg',
   ],
   'gold-wedding-band': [
-    'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&h=800&fit=crop&crop=center',
-    'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&h=800&fit=crop&crop=center&q=80',
+    '/images/products/gold-wedding-band-1.jpg',
+    '/images/products/gold-wedding-band-2.jpg',
   ],
   'emerald-ring': [
-    'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&h=800&fit=crop&crop=center',
-    'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&h=800&fit=crop&crop=center&q=80',
+    '/images/products/emerald-ring-1.jpg',
+    '/images/products/emerald-ring-2.jpg',
   ],
 
   // Necklaces
   'diamond-pendant-necklace': [
-    'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800&h=800&fit=crop&crop=center',
-    'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800&h=800&fit=crop&crop=center&q=80',
+    '/images/products/diamond-pendant-necklace-1.jpg',
+    '/images/products/diamond-pendant-necklace-2.jpg',
   ],
   'gold-chain-necklace': [
-    'https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=800&h=800&fit=crop&crop=center',
-    'https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=800&h=800&fit=crop&crop=center&q=80',
+    '/images/products/gold-chain-necklace-1.jpg',
+    '/images/products/gold-chain-necklace-2.jpg',
   ],
   'pearl-necklace': [
-    'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&h=800&fit=crop&crop=center',
-    'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&h=800&fit=crop&crop=center&q=80',
+    '/images/products/pearl-necklace-1.jpg',
+    '/images/products/pearl-necklace-2.jpg',
   ],
 
   // Bracelets
-  'diamond-tennis-bracelet': [
-    'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800&h=800&fit=crop&crop=center',
-    'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800&h=800&fit=crop&crop=center&q=80',
+  'tennis-bracelet': [
+    '/images/products/tennis-bracelet-1.jpg',
+    '/images/products/tennis-bracelet-2.jpg',
   ],
   'gold-bangle-bracelet': [
-    'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&h=800&fit=crop&crop=center',
-    'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&h=800&fit=crop&crop=center&q=80',
+    '/images/products/gold-bangle-bracelet-1.jpg',
+    '/images/products/gold-bangle-bracelet-2.jpg',
   ],
   'charm-bracelet': [
-    'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&h=800&fit=crop&crop=center',
-    'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&h=800&fit=crop&crop=center&q=80',
+    '/images/products/charm-bracelet-1.jpg',
+    '/images/products/charm-bracelet-2.jpg',
   ],
 
   // Earrings
+  'pearl-drop-earrings': [
+    '/images/products/pearl-drop-earrings-1.jpg',
+    '/images/products/pearl-drop-earrings-2.jpg',
+  ],
   'diamond-stud-earrings': [
-    'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&h=800&fit=crop&crop=center',
-    'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&h=800&fit=crop&crop=center&q=80',
+    '/images/products/diamond-stud-earrings-1.jpg',
+    '/images/products/diamond-stud-earrings-2.jpg',
   ],
   'gold-hoop-earrings': [
-    'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&h=800&fit=crop&crop=center',
-    'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&h=800&fit=crop&crop=center&q=80',
-  ],
-  'pearl-drop-earrings': [
-    'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&h=800&fit=crop&crop=center',
-    'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&h=800&fit=crop&crop=center&q=80',
+    '/images/products/gold-hoop-earrings-1.jpg',
+    '/images/products/gold-hoop-earrings-2.jpg',
   ],
 
   // Watches
-  'luxury-diamond-watch': [
-    'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=800&fit=crop&crop=center',
-    'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=800&fit=crop&crop=center&q=80',
+  'luxury-automatic-watch': [
+    '/images/products/luxury-automatic-watch-1.jpg',
+    '/images/products/luxury-automatic-watch-2.jpg',
   ],
   'gold-dress-watch': [
-    'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=800&fit=crop&crop=center',
-    'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=800&fit=crop&crop=center&q=80',
+    '/images/products/gold-dress-watch-1.jpg',
+    '/images/products/gold-dress-watch-2.jpg',
   ],
   'sport-luxury-watch': [
-    'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=800&fit=crop&crop=center',
-    'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=800&fit=crop&crop=center&q=80',
+    '/images/products/sport-luxury-watch-1.jpg',
+    '/images/products/sport-luxury-watch-2.jpg',
   ],
 
   // Pendants
   'diamond-cross-pendant': [
-    'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&h=800&fit=crop&crop=center',
-    'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&h=800&fit=crop&crop=center&q=80',
+    '/images/products/diamond-cross-pendant-1.jpg',
+    '/images/products/diamond-cross-pendant-2.jpg',
   ],
   'gold-heart-pendant': [
-    'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&h=800&fit=crop&crop=center',
-    'https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&h=800&fit=crop&crop=center&q=80',
+    '/images/products/gold-heart-pendant-1.jpg',
+    '/images/products/gold-heart-pendant-2.jpg',
   ],
   'emerald-pendant': [
-    'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&h=800&fit=crop&crop=center',
-    'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&h=800&fit=crop&crop=center&q=80',
+    '/images/products/emerald-pendant-1.jpg',
+    '/images/products/emerald-pendant-2.jpg',
   ],
 };
 
 // Category-specific jewelry images - each category has its own unique, relevant image
 export const CATEGORY_PLACEHOLDERS = {
-  rings: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&h=800&fit=crop&crop=center',
-  necklaces: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800&h=800&fit=crop&crop=center',
-  bracelets: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=800&h=800&fit=crop&crop=center&q=80',
-  earrings: 'https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=800&h=800&fit=crop&crop=center&q=80',
-  watches: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=800&fit=crop&crop=center',
-  pendants: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800&h=800&fit=crop&crop=center&q=80',
+  rings: '/images/products/category-rings.jpg',
+  necklaces: '/images/products/category-necklaces.jpg',
+  bracelets: '/images/products/category-bracelets.jpg',
+  earrings: '/images/products/category-earrings.jpg',
+  watches: '/images/products/category-watches.jpg',
+  pendants: '/images/products/category-pendants.jpg',
 } as const;
 
 // Default placeholder for any missing images
-export const DEFAULT_PLACEHOLDER = '/images/products/placeholder.svg';
+export const DEFAULT_PLACEHOLDER = '/images/products/placeholder.jpg';
 
 // Get product images by slug
 export function getProductImages(productSlug: string): string[] {

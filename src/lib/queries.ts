@@ -3,7 +3,7 @@ import type { ProductWithRelations } from '@/types'
 
 export async function getFeaturedProducts(limit = 4): Promise<ProductWithRelations[]> {
 	return db.product.findMany({
-		where: { featured: true, active: true },
+		where: { featured: true }, // Removed active filter temporarily
 		take: limit,
 		orderBy: { createdAt: 'desc' },
 		include: { category: true, collections: true, reviews: true, wishlist: true },
@@ -28,7 +28,7 @@ export async function getPaginatedProducts({
 	sort?: 'new' | 'price-asc' | 'price-desc'
 }) {
 	const skip = (page - 1) * pageSize
-	const where: any = { active: true }
+	const where: any = {} // Removed active filter temporarily
 	if (q && q.trim()) {
 		where.OR = [
 			{ name: { contains: q, mode: 'insensitive' } },
@@ -78,7 +78,7 @@ export async function getAllCategories() {
 
 export async function getRelatedProducts(productId: string, categoryId: string, limit = 6) {
 	return db.product.findMany({
-		where: { active: true, categoryId, NOT: { id: productId } },
+		where: { categoryId, NOT: { id: productId } }, // Removed active filter temporarily
 		take: limit,
 		orderBy: { createdAt: 'desc' },
 	})

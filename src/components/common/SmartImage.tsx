@@ -16,8 +16,8 @@ export default function SmartImage({ srcs, alt, className, width, height, priori
 	const [currentSrcIndex, setCurrentSrcIndex] = React.useState(0)
 	const [useFallback, setUseFallback] = React.useState(false)
 
-	// Filter valid images (URLs or local paths)
-	const validImages = srcs.filter(src => src.startsWith('/') || src.startsWith('http'))
+	// Filter valid images (local paths starting with /)
+	const validImages = srcs.filter(src => src.startsWith('/'))
 	const displayText = alt || 'Jewelry Item'
 
 	const handleError = () => {
@@ -33,11 +33,11 @@ export default function SmartImage({ srcs, alt, className, width, height, priori
 	// If we're using fallback or no valid images, show CSS gradient
 	if (useFallback || validImages.length === 0) {
 		return (
-			<div 
+			<div
 				className={`relative flex items-center justify-center bg-gradient-to-br from-[#D4AF37] via-[#B8941F] to-[#8B6914] ${className}`}
-				style={{ 
-					width: width ? `${width}px` : '100%', 
-					height: height ? `${height}px` : '100%' 
+				style={{
+					width: width ? `${width}px` : '100%',
+					height: height ? `${height}px` : '100%'
 				}}
 			>
 				{/* Decorative pattern overlay */}
@@ -49,7 +49,7 @@ export default function SmartImage({ srcs, alt, className, width, height, priori
 						`
 					}} />
 				</div>
-				
+
 				{/* Main text */}
 				<div className="relative z-10 text-center text-white">
 					<h3 className="text-lg font-semibold sm:text-xl md:text-2xl">
@@ -59,7 +59,7 @@ export default function SmartImage({ srcs, alt, className, width, height, priori
 						Premium Jewelry
 					</p>
 				</div>
-				
+
 				{/* Shimmer effect */}
 				<div className="absolute inset-0 opacity-20">
 					<div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse" />

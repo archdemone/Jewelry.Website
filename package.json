@@ -10,7 +10,9 @@
     "seed": "ts-node --project tsconfig.seed.json prisma/seed.ts",
     "validate-images": "node scripts/validate-images.js validate",
     "generate-placeholders": "node scripts/validate-images.js generate-placeholders",
-    "check-images": "node scripts/validate-images.js full-check"
+    "check-images": "node scripts/validate-images.js full-check",
+    "download-images": "node scripts/download-images.js",
+    "qa-images": "node scripts/validate-image-system.js"
   },
   "dependencies": {
     "bcryptjs": "^3.0.2",
