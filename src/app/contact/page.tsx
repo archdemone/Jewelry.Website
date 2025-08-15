@@ -3,6 +3,7 @@ import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import ContactForm from '@/components/features/ContactForm'
 import StoreMap from '@/components/features/StoreMap'
+import { LocalBusinessJsonLd } from '@/components/seo/JsonLd'
 
 export const metadata: Metadata = {
 	title: 'Contact Us — Aurora Jewelry',
@@ -14,6 +15,7 @@ export default function ContactPage() {
 		<>
 			<Header />
 			<main className="container py-10">
+				<LocalBusinessJsonLd />
 				<h1 className="font-[var(--font-serif)] text-3xl font-semibold text-secondary">Contact Us</h1>
 				<div className="mt-6 grid gap-8 md:grid-cols-3">
 					<section className="md:col-span-2">

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import FAQAccordion, { FAQItem } from '@/components/features/FAQAccordion'
+import { FAQPageJsonLd } from '@/components/seo/JsonLd'
 
 const FAQs: FAQItem[] = [
 	{ id: '1', category: 'Ordering & Payment', question: 'What payment methods do you accept?', answer: 'We accept major credit cards and Stripe for secure checkout.', popularity: 10 },
@@ -24,6 +25,7 @@ export default function FAQPage() {
 		<>
 			<Header />
 			<main className="container py-10">
+				<FAQPageJsonLd faqs={FAQs.map(f => ({ question: f.question, answer: f.answer }))} />
 				<section className="mx-auto max-w-3xl">
 					<h1 className="font-[var(--font-serif)] text-3xl font-semibold text-secondary">Frequently Asked Questions</h1>
 					<p className="mt-2 text-sm text-gray-600">Find answers to common questions. Can’t find what you’re looking for? <a href="/contact" className="underline">Contact us</a>.</p>
