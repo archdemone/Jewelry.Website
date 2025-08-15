@@ -1,0 +1,66 @@
+"use client";
+
+import { useState } from "react";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import OrderStatusBadge from "@/components/admin/OrderStatusBadge";
+
+export default function AdminOrdersPage() {
+	const [query, setQuery] = useState("");
+	const [status, setStatus] = useState("all");
+	const rows = [
+		{ id: "1001", date: "2024-05-01", customer: "Alice Johnson", total: "$250.00", payment: "Paid", fulfillment: "Unfulfilled" },
+		{ id: "1002", date: "2024-05-02", customer: "Bob Smith", total: "$120.00", payment: "Pending", fulfillment: "Pending" },
+	];
+	return (
+		<div className="space-y-4">
+			<div className="text-2xl font-bold">Orders</div>
+			<Card className="p-4">
+				<div className="flex flex-wrap items-center gap-2 mb-3">
+					<Input placeholder="Search order # or customer..." value={query} onChange={(e) => setQuery(e.target.value)} className="w-64" />
+					<select className="border rounded px-2 py-1 text-sm" value={status} onChange={(e) => setStatus(e.target.value)}>
+						<option value="all">All</option>
+						<option value="unfulfilled">Unfulfilled</option>
+						<option value="unpaid">Unpaid</option>
+						<option value="pending">Pending</option>
+						<option value="completed">Completed</option>
+					</select>
+					<input type="date" className="border rounded px-2 py-1 text-sm" />
+					<input type="date" className="border rounded px-2 py-1 text-sm" />
+					<Button variant="secondary">Export</Button>
+				</div>
+				<div className="overflow-x-auto">
+					<table className="w-full text-sm">
+						<thead className="text-xs uppercase text-gray-500">
+							<tr>
+								<th className="text-left py-2">Order</th>
+								<th className="text-left py-2">Date</th>
+								<th className="text-left py-2">Customer</th>
+								<th className="text-left py-2">Total</th>
+								<th className="text-left py-2">Payment</th>
+								<th className="text-left py-2">Fulfillment</th>
+								<th className="text-left py-2">Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							{rows.map((r) => (
+								<tr key={r.id} className="border-t">
+									<td className="py-2">#{r.id}</td>
+									<td className="py-2">{r.date}</td>
+									<td className="py-2">{r.customer}</td>
+									<td className="py-2">{r.total}</td>
+									<td className="py-2"><OrderStatusBadge status={r.payment} /></td>
+									<td className="py-2">{r.fulfillment}</td>
+									<td className="py-2">
+										<a href={`/admin/orders/${r.id}`} className="text-amber-700">View</a>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
+				</div>
+			</Card>
+		</div>
+	);
+}
