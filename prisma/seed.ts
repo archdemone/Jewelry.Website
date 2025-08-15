@@ -187,7 +187,9 @@ async function main() {
 		// Pendants
 		prisma.product.upsert({
 			where: { sku: 'PEND-001' },
-			update: {},
+			update: {
+				images: ['/images/products/gold-heart-pendant-1.jpg', '/images/products/gold-heart-pendant-2.jpg'],
+			},
 			create: {
 				name: 'Gold Heart Pendant',
 				slug: 'gold-heart-pendant',
@@ -207,7 +209,9 @@ async function main() {
 		}),
 		prisma.product.upsert({
 			where: { sku: 'PEND-002' },
-			update: {},
+			update: {
+				images: ['/images/products/diamond-cross-pendant-1.jpg', '/images/products/diamond-cross-pendant-2.jpg'],
+			},
 			create: {
 				name: 'Diamond Cross Pendant',
 				slug: 'diamond-cross-pendant',
