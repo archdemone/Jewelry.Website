@@ -74,7 +74,21 @@ export default function SmartImage({ srcs, alt, className, width, height, priori
 		)
 	}
 
-	// Try to load local image
+	// Render raw <img> for SVGs to avoid Next Image SVG restriction
+	if (versionedSrc && versionedSrc.toLowerCase().includes('.svg')) {
+		return (
+			<img
+				src={versionedSrc}
+				alt={displayText}
+				className={`object-cover ${className ?? ''}`}
+				width={width || 800}
+				height={height || 800}
+				onError={handleError as any}
+			/>
+		)
+	}
+
+	// Try to load local non-SVG image via Next Image
 	return (
 		<Image
 			src={versionedSrc as string}
