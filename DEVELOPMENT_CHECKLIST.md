@@ -158,14 +158,14 @@ Use this document as the single source of truth for planning and tracking. Mark 
 - [ ] Core Web Vitals compliance
 
 ### Phase 13: Testing & Quality Assurance
-- [ ] Test all forms and validation
-- [ ] Test cart persistence across sessions
-- [ ] Test checkout flow end‑to‑end
-- [ ] Responsive design on 320 / 768 / 1024 / 1440
-- [ ] Cross‑browser compatibility
-- [ ] Accessibility audit (WCAG)
-- [ ] Security headers configuration
-- [ ] Error boundary implementation
+- [x] Test all forms and validation
+- [x] Test cart persistence across sessions
+- [x] Test checkout flow end‑to‑end
+- [x] Responsive design on 320 / 768 / 1024 / 1440
+- [x] Cross‑browser compatibility
+- [x] Accessibility audit (WCAG)
+- [x] Security headers configuration
+- [x] Error boundary implementation
 
 ### Phase 14: Production Preparation
 - [ ] Environment variables for production
