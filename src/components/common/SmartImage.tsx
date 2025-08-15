@@ -30,6 +30,12 @@ export default function SmartImage({ srcs, alt, className, width, height, priori
 
 	const currentSrc = validImages[currentSrcIndex]
 
+	// Add a small cache-busting param for local images so updated assets show
+	const assetVersion = process.env.NEXT_PUBLIC_ASSET_VERSION || '1'
+	const versionedSrc = currentSrc
+		? (currentSrc.includes('?') ? currentSrc : `${currentSrc}?v=${assetVersion}`)
+		: undefined
+
 	// If we're using fallback or no valid images, show CSS gradient
 	if (useFallback || validImages.length === 0) {
 		return (
@@ -68,10 +74,24 @@ export default function SmartImage({ srcs, alt, className, width, height, priori
 		)
 	}
 
-	// Try to load local image
+	// Render raw <img> for SVGs to avoid Next Image SVG restriction
+	if (versionedSrc && versionedSrc.toLowerCase().includes('.svg')) {
+		return (
+			<img
+				src={versionedSrc}
+				alt={displayText}
+				className={`object-cover ${className ?? ''}`}
+				width={width || 800}
+				height={height || 800}
+				onError={handleError as any}
+			/>
+		)
+	}
+
+	// Try to load local non-SVG image via Next Image
 	return (
 		<Image
-			src={currentSrc}
+			src={versionedSrc as string}
 			alt={displayText}
 			className={`object-cover ${className}`}
 			width={width || 800}
