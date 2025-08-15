@@ -57,12 +57,12 @@ export default async function ProductsPage({ searchParams }: { searchParams: { p
 					</div>
 				</form>
 				<div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-										{items.map((p) => {
-						const productImages = getProductImageFallback({ 
-							productSlug: p.slug, 
-							categorySlug: p.category?.slug, 
-							name: p.name 
-						})
+									{items.map((p) => {
+						// Prefer product's own images from DB; fall back to curated mapping
+						const dbImages = Array.isArray((p as any).images) ? ((p as any).images as string[]) : []
+						const productImages = dbImages.length > 0
+							? dbImages
+							: getProductImageFallback({ productSlug: p.slug, categorySlug: p.category?.slug, name: p.name })
 
 						return (
 							<Link key={p.id} href={`/products/${p.slug}`} className="rounded-lg border p-4 transition-shadow hover:shadow-sm">

@@ -90,12 +90,12 @@ export const PRODUCT_IMAGES: Record<string, string[]> = {
 
 // Category-specific jewelry images - each category has its own unique, relevant image
 export const CATEGORY_PLACEHOLDERS = {
-  rings: '/images/products/category-rings.jpg',
-  necklaces: '/images/products/category-necklaces.jpg',
-  bracelets: '/images/products/category-bracelets.jpg',
-  earrings: '/images/products/category-earrings.jpg',
-  watches: '/images/products/category-watches.jpg',
-  pendants: '/images/products/category-pendants.jpg',
+  rings: '/images/products/diamond-solitaire-ring-1.jpg',
+  necklaces: '/images/products/gold-chain-necklace-1.jpg',
+  bracelets: '/images/products/tennis-bracelet-1.jpg',
+  earrings: '/images/products/pearl-drop-earrings-1.jpg',
+  watches: '/images/products/luxury-automatic-watch-1.jpg',
+  pendants: '/images/products/gold-heart-pendant-1.jpg',
 } as const;
 
 // Default placeholder for any missing images
