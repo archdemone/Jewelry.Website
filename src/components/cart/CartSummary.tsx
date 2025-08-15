@@ -19,7 +19,7 @@ export function CartSummary() {
 				<div className="flex justify-between"><span>Tax</span><span>${tax.toFixed(2)}</span></div>
 				<div className="mt-2 flex justify-between text-secondary"><span className="font-medium">Total</span><span className="font-semibold">${total.toFixed(2)}</span></div>
 			</div>
-			<Button className="mt-4 w-full">Proceed to Checkout</Button>
+			<Button className="mt-4 w-full" data-testid="checkout-button">Proceed to Checkout</Button>
 		</div>
 	)
 }
