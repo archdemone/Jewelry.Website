@@ -36,8 +36,8 @@ export function Header() {
 					Aurora Jewelry
 				</Link>
 				<nav className="hidden items-center gap-6 md:flex">
-					<Link href="/" className="text-sm text-text hover:text-secondary">Home</Link>
-					<Link href="/products" className="text-sm text-text hover:text-secondary">Collections</Link>
+					<Link href="/" className="text-sm text-text hover:text-secondary" data-testid="nav-home">Home</Link>
+					<Link href="/products" className="text-sm text-text hover:text-secondary" data-testid="nav-products">Collections</Link>
 					<Link href="/about" className="text-sm text-text hover:text-secondary">About</Link>
 					<Link href="/contact" className="text-sm text-text hover:text-secondary">Contact</Link>
 				</nav>
@@ -69,10 +69,10 @@ export function Header() {
 							<User className="h-5 w-5" />
 						</button>
 					)}
-					<Link href="/cart" aria-label="Cart" className="relative p-2 text-secondary hover:opacity-80">
+					<Link href="/cart" aria-label="Cart" className="relative p-2 text-secondary hover:opacity-80" data-testid="cart-icon">
 						<ShoppingBag className="h-5 w-5" />
 						{mounted && count > 0 && (
-							<span className="absolute -right-1 -top-1 inline-flex min-w-[1rem] items-center justify-center rounded-full bg-primary px-1.5 text-[10px] font-medium text-white">{count}</span>
+							<span className="absolute -right-1 -top-1 inline-flex min-w-[1rem] items-center justify-center rounded-full bg-primary px-1.5 text-[10px] font-medium text-white" data-testid="cart-count">{count}</span>
 						)}
 					</Link>
 				</div>
