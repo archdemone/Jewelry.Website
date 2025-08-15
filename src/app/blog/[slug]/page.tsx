@@ -1,6 +1,7 @@
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
 import { notFound } from 'next/navigation'
+import { ArticleJsonLd, BreadcrumbsJsonLd } from '@/components/seo/JsonLd'
 
 const posts = {
 	'care-tips': {
@@ -28,6 +29,12 @@ export default function BlogPostPage({ params }: Params) {
 		<>
 			<Header />
 			<main className="container py-10">
+				<ArticleJsonLd article={{ title: post.title, slug: params.slug, date: post.date, image: post.image, author: post.author }} />
+				<BreadcrumbsJsonLd items={[
+					{ name: 'Home', item: 'https://yourjewelrystore.com' },
+					{ name: 'Blog', item: 'https://yourjewelrystore.com/blog' },
+					{ name: post.title, item: `https://yourjewelrystore.com/blog/${params.slug}` },
+				]} />
 				<article className="mx-auto max-w-3xl">
 					{post.image && <img src={post.image} alt={post.title} className="h-64 w-full rounded-md object-cover" />}
 					<h1 className="mt-4 font-[var(--font-serif)] text-3xl font-semibold text-secondary">{post.title}</h1>
