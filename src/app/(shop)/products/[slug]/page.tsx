@@ -30,11 +30,11 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
 					<p className="mt-2 text-gray-600">{product.description}</p>
 					<div className="mt-4 text-xl font-semibold">${product.price.toFixed(2)}</div>
 					<div className="mt-6">
-						<AddToCartButton product={{ id: product.id, name: product.name, price: product.price, image: mainImage }} />
+						<AddToCartButton productId={product.id} name={product.name} price={product.price} image={mainImage} />
 					</div>
 				</div>
 			</div>
-			<RelatedProducts products={related} />
+							<RelatedProducts products={related.map(p => ({ id: p.id, name: p.name, slug: p.slug, price: p.price, images: null, category: null }))} />
 		</div>
 	)
 }
