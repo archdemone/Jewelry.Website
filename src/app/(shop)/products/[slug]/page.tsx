@@ -9,20 +9,49 @@ import { ProductTabs } from '@/components/product-detail/ProductTabs'
 import RelatedProducts from '@/components/product-detail/RelatedProducts'
 import { AddToCartButton } from '@/components/products/AddToCartButton'
 import { getProductImageFallback } from '@/lib/assets/images'
+import { db } from '@/lib/db'
+import { ProductJsonLd, BreadcrumbsJsonLd } from '@/components/seo/JsonLd'
+
+export const revalidate = 3600
+
+export async function generateStaticParams() {
+	const products = await db.product.findMany({ select: { slug: true } })
+	return products.map((p) => ({ slug: p.slug }))
+}
 
 export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
 	const product = await getProductBySlug(params.slug)
 	if (!product) return null
-	const productImages = getProductImageFallback({ 
-		productSlug: product.slug, 
-		categorySlug: product.category?.slug, 
-		name: product.name 
-	})
+
+	// Prefer DB images; fall back to curated mapping
+	const dbImages = Array.isArray((product as any).images) ? ((product as any).images as string[]) : []
+	const productImages = dbImages.length > 0
+		? dbImages
+		: getProductImageFallback({
+			productSlug: product.slug,
+			categorySlug: product.category?.slug,
+			name: product.name,
+		})
 	const mainImage = productImages[0]
 	const related = await getRelatedProducts(product.id, product.categoryId)
 
 	return (
 		<div className="container py-10">
+			<ProductJsonLd product={{
+				name: product.name,
+				description: product.description,
+				sku: product.sku,
+				price: product.price,
+				quantity: product.quantity,
+				slug: product.slug,
+				images: productImages,
+				reviews: product.reviews,
+			}} />
+			<BreadcrumbsJsonLd items={[
+				{ name: 'Home', item: 'https://yourjewelrystore.com' },
+				{ name: 'Products', item: 'https://yourjewelrystore.com/products' },
+				{ name: product.name, item: `https://yourjewelrystore.com/products/${product.slug}` },
+			]} />
 			<div className="grid gap-8 md:grid-cols-2">
 				<ProductImageGallery images={productImages} productName={product.name} />
 				<div>
@@ -34,7 +63,11 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
 					</div>
 				</div>
 			</div>
-							<RelatedProducts products={related.map(p => ({ id: p.id, name: p.name, slug: p.slug, price: p.price, images: null, category: null }))} />
+<<<<<<< HEAD
+			<RelatedProducts products={related} />
+=======
+			<RelatedProducts products={related.map(p => ({ id: p.id, name: p.name, slug: p.slug, price: p.price, images: null, category: null }))} />
+>>>>>>> 1f6614227d09fbae5c668d4bd2d9ce0a5d45c538
 		</div>
 	)
 }
