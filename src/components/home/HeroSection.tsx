@@ -20,7 +20,7 @@ const HeroSection = () => {
 	}, [images.length])
 
 	return (
-		<section className="relative w-full overflow-hidden aspect-[16/9] md:aspect-[21/9] lg:aspect-[24/9] min-h-[400px] max-h-[600px] md:max-h-[700px]">
+		<section className="relative w-full overflow-hidden aspect-[16/9] md:aspect-[21/9] lg:aspect-[24/9] min-h-[320px] max-h-[520px] md:max-h-[600px] lg:max-h-[640px]">
 			{/* Background Image */}
 			<div className="absolute inset-0 bg-black">
 				<AnimatePresence>

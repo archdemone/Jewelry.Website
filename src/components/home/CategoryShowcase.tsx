@@ -84,13 +84,15 @@ const CategoryShowcase = () => {
 										<motion.div
 											whileHover={{ scale: 1.1 }}
 											transition={{ duration: 0.6 }}
+											className="relative h-full w-full"
 										>
 											<SmartImage 
 												srcs={[category.image]} 
 												alt={category.name} 
 												className="h-full w-full" 
-												width={400}
-												height={256}
+												fill
+												sizes="(min-width:1024px) 33vw, (min-width:768px) 50vw, 100vw"
+												quality={90}
 											/>
 										</motion.div>
 										
