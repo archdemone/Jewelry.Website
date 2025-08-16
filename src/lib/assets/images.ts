@@ -69,12 +69,12 @@ export const RING_IMAGES: Record<string, string[]> = {
 
 // Ring category placeholder images
 export const RING_CATEGORY_PLACEHOLDERS = {
-  'engagement-rings': '/images/products/category-engagement-rings.jpg',
-  'wedding-bands': '/images/products/category-wedding-bands.jpg',
-  'eternity-rings': '/images/products/category-eternity-rings.jpg',
-  'signet-rings': '/images/products/category-signet-rings.jpg',
-  'statement-rings': '/images/products/category-statement-rings.jpg',
-  'stackable-rings': '/images/products/category-stackable-rings.jpg',
+  'engagement-rings': '/images/products/category-engagement-rings.jpg?v=3',
+  'wedding-bands': '/images/products/category-wedding-bands.jpg?v=3',
+  'eternity-rings': '/images/products/category-eternity-rings.jpg?v=3',
+  'signet-rings': '/images/products/category-signet-rings.jpg?v=3',
+  'statement-rings': '/images/products/category-statement-rings.jpg?v=3',
+  'stackable-rings': '/images/products/category-stackable-rings.jpg?v=3',
 } as const;
 
 // Default placeholder for any missing images

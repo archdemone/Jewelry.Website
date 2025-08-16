@@ -4,48 +4,53 @@ import { motion } from 'framer-motion'
 import Link from 'next/link'
 import { useState } from 'react'
 import { Heart, ShoppingBag } from 'lucide-react'
-import PlaceholderImage from '@/components/ui/PlaceholderImage'
+import SmartImage from '@/components/common/SmartImage'
+import { getRingImages } from '@/lib/assets/images'
 
 const FeaturedProducts = () => {
 	const [hoveredProduct, setHoveredProduct] = useState<string | null>(null)
 
-	// Sample ring products for demonstration
+	// Featured rings mapped to real product slugs
 	const featuredRings = [
 		{
 			id: '1',
+			slug: 'classic-solitaire-engagement-ring',
 			name: 'Classic Solitaire Engagement Ring',
 			price: 3500,
 			material: '18k Yellow Gold',
 			gemstone: '1ct Diamond',
 			craftTime: '3-4 weeks',
-			image: null // Will use placeholder
+			image: null
 		},
 		{
 			id: '2',
+			slug: 'hammered-wedding-band',
 			name: 'Hammered Wedding Band',
 			price: 850,
 			material: '14k White Gold',
 			gemstone: 'None',
 			craftTime: '2 weeks',
-			image: null // Will use placeholder
+			image: null
 		},
 		{
 			id: '3',
+			slug: 'sapphire-eternity-ring',
 			name: 'Sapphire Eternity Ring',
 			price: 2200,
 			material: '18k Rose Gold',
 			gemstone: 'Sapphires',
 			craftTime: '4 weeks',
-			image: null // Will use placeholder
+			image: null
 		},
 		{
 			id: '4',
+			slug: 'classic-signet-ring',
 			name: 'Vintage Signet Ring',
 			price: 650,
 			material: 'Sterling Silver',
 			gemstone: 'None',
 			craftTime: '1 week',
-			image: null // Will use placeholder
+			image: null
 		}
 	]
 
@@ -85,7 +90,13 @@ const FeaturedProducts = () => {
 										animate={{ scale: hoveredProduct === ring.id ? 1.1 : 1 }}
 										transition={{ duration: 0.6 }}
 									>
-										<PlaceholderImage text={ring.name} className="h-full w-full" />
+										<SmartImage
+											srcs={getRingImages(ring.slug)}
+											alt={ring.name}
+											className="h-full w-full"
+											width={400}
+											height={320}
+										/>
 									</motion.div>
 
 									{/* Quick Actions */}
@@ -100,7 +111,7 @@ const FeaturedProducts = () => {
 											whileTap={{ scale: 0.9 }}
 											className="flex-1 bg-white/90 backdrop-blur py-2 rounded-full font-medium"
 										>
-											<Link href={`/products/${ring.id}`}>Quick View</Link>
+											<Link href={`/products/${ring.slug}`}>Quick View</Link>
 										</motion.button>
 										<motion.button
 											whileHover={{ scale: 1.1 }}

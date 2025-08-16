@@ -17,7 +17,7 @@ export const revalidate = 3600
 
 export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
 	const product = await getProductBySlug(params.slug)
-	if (!product) return null
+	if (!product) return notFound()
 
 	// Prefer DB images; fall back to curated mapping
 	const dbImages = Array.isArray((product as any).images) ? ((product as any).images as string[]) : []
