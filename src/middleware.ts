@@ -17,7 +17,10 @@ export function middleware(request: NextRequest) {
 		if (proto !== 'https') {
 			const url = request.nextUrl.clone()
 			url.protocol = 'https'
-			return NextResponse.redirect(url, 301)
+			if (request.method === 'GET' || request.method === 'HEAD') {
+				return NextResponse.redirect(url, 308)
+			}
+			// For non-GET/HEAD, do not redirect to avoid breaking requests
 		}
 	}
 
@@ -31,14 +34,13 @@ export function middleware(request: NextRequest) {
 	res.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
 	res.headers.set('X-Content-Type-Options', 'nosniff')
 	res.headers.set('X-Frame-Options', 'SAMEORIGIN')
-	res.headers.set('X-XSS-Protection', '1; mode=block')
 
 	// HSTS only in production
 	if (process.env.NODE_ENV === 'production') {
 		res.headers.set('Strict-Transport-Security', 'max-age=15552000; includeSubDomains; preload')
 	}
 
-	// Request ID passthrough or generation
+	// Request ID passthrough
 	const existingReqId = request.headers.get('x-request-id')
 	if (existingReqId) res.headers.set('x-request-id', existingReqId)
 
@@ -52,5 +54,7 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-	matcher: '/:path*',
+	matcher: [
+		'/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml).*)',
+	],
 }
