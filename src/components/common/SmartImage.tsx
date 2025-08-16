@@ -125,7 +125,7 @@ export default function SmartImage({ srcs, alt, className, width, height, priori
 					sizes={sizes || '100vw'}
 					quality={quality || 90}
 					className="object-cover"
-					unoptimized={unoptimized}
+					unoptimized={process.env.NODE_ENV !== 'production'}
 					onError={handleError}
 					priority={priority}
 				/>
@@ -142,7 +142,7 @@ export default function SmartImage({ srcs, alt, className, width, height, priori
 			height={height || 800}
 			sizes={sizes || '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'}
 			quality={quality || 90}
-			unoptimized={unoptimized}
+			unoptimized={process.env.NODE_ENV !== 'production'}
 			onError={handleError}
 			priority={priority}
 		/>
