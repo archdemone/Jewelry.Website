@@ -14,7 +14,8 @@
     "check-images": "node scripts/validate-images.js full-check",
     "download-images": "node scripts/download-images.js",
     "qa-images": "node scripts/validate-image-system.js",
-    "analyze": "ANALYZE=true next build"
+    "analyze": "ANALYZE=true next build",
+    "test:ci": "cypress run"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.10.0",
