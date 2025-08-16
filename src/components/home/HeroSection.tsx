@@ -3,10 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import SmartImage from '@/components/common/SmartImage'
-<<<<<<< HEAD
 import React from 'react'
-=======
->>>>>>> 89157ae2e7e741bb4ef533c424b09ac4fc0abaa2
 
 const HeroSection = () => {
 	const images = React.useMemo(() => [
@@ -25,7 +22,6 @@ const HeroSection = () => {
 	return (
 		<section className="relative w-full overflow-hidden aspect-[16/9] md:aspect-[21/9] lg:aspect-[24/9] min-h-[320px] max-h-[520px] md:max-h-[600px] lg:max-h-[640px]">
 			{/* Background Image */}
-<<<<<<< HEAD
 			<div className="absolute inset-0 bg-black">
 				<AnimatePresence>
 					<motion.div
@@ -47,27 +43,6 @@ const HeroSection = () => {
 						/>
 					</motion.div>
 				</AnimatePresence>
-=======
-			<div className="absolute inset-0">
-				<motion.div
-					initial={{ scale: 1.1 }}
-					animate={{ scale: 1 }}
-					transition={{ duration: 10, repeat: Infinity, repeatType: 'reverse' }}
-				>
-					<div className="absolute inset-0">
-													<SmartImage
-								srcs={["/images/artisan/bedroom-workshop-hero.jpg"]}
-								alt="Hero Ring Showcase"
-								className="object-cover"
-								fill
-								sizes="(min-width:1280px) 800px, 100vw"
-								priority
-								quality={90}
-							/>
-					</div>
-				</motion.div>
-				
->>>>>>> 89157ae2e7e741bb4ef533c424b09ac4fc0abaa2
 				{/* Gradient Overlay */}
 				<div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
 			</div>

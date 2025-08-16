@@ -14,7 +14,7 @@
     "check-images": "node scripts/validate-images.js full-check",
     "download-images": "node scripts/download-images.js",
     "qa-images": "node scripts/validate-image-system.js",
-    "audit:images": "node scripts/audit-images.js",
+    "audit:images": "cross-env AUDIT_BASE_URL=http://localhost:3000 node tools/audit-images.mjs",
     "analyze": "ANALYZE=true next build",
     "test": "jest",
     "test:coverage": "jest --coverage",
@@ -24,12 +24,7 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "test:ci": "npm run test:unit && npm run test:e2e",
-    "setup:prod": "node scripts/setup-production-env.js",
-<<<<<<< HEAD
-    "audit:images": "cross-env AUDIT_BASE_URL=http://localhost:3000 node tools/audit-images.mjs"
-=======
-    "generate-process-images": "node scripts/generate-process-images.js"
->>>>>>> 89157ae2e7e741bb4ef533c424b09ac4fc0abaa2
+    "setup:prod": "node scripts/setup-production-env.js"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.10.0",

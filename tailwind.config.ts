@@ -13,6 +13,10 @@ const config: Config = {
 		'bg-purple-100', 'border-purple-400', 'text-purple-600',
 		'bg-indigo-100', 'border-indigo-400', 'text-indigo-600',
 		'bg-emerald-100', 'border-emerald-400', 'text-emerald-600',
+		'bg-yellow-500', 'bg-yellow-600', 'text-yellow-500', 'text-yellow-600',
+		'bg-amber-600', 'bg-amber-700', 'bg-amber-800', 'text-amber-800', 'border-amber-200', 'border-amber-300', 'border-amber-400',
+		'bg-emerald-600', 'bg-emerald-700', 'border-emerald-400',
+		'bg-primary', 'text-primary', 'border-primary',
 	],
 	theme: {
 		container: {
