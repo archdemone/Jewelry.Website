@@ -48,6 +48,7 @@ export function Header() {
 				</Link>
 				<nav className="hidden items-center gap-6 md:flex">
 					<Link href="/" className="text-sm text-text hover:text-secondary" data-testid="nav-home">Home</Link>
+					<Link href="/products" className="text-sm text-text hover:text-secondary" data-testid="nav-products">Products</Link>
 					
 					{/* Ring Collections Dropdown */}
 					<div 
@@ -55,7 +56,7 @@ export function Header() {
 						onMouseEnter={() => setShowRingCollections(true)}
 						onMouseLeave={() => setShowRingCollections(false)}
 					>
-						<button className="flex items-center gap-1 text-sm text-text hover:text-secondary">
+						<button className="flex items-center gap-1 text-sm text-text hover:text-secondary" data-testid="nav-ring-collections">
 							Ring Collections
 							<ChevronDown className="h-4 w-4" />
 						</button>
