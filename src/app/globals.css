@@ -19,7 +19,8 @@ body {
 
 /* Typography utilities for legal pages */
 .prose h1 { @apply font-[var(--font-serif)] text-3xl text-secondary; }
-.prose h2 { @apply mt-6 text-xl font-semibold text-secondary; }
-.prose p { @apply mt-2 text-sm text-gray-700; }
+.prose h2 { @apply text-3xl font-serif text-gray-900 mb-6 mt-12; }
+.prose p { @apply text-gray-700 leading-relaxed mb-6; }
+.prose strong { @apply font-semibold text-gray-900; }
 
 
