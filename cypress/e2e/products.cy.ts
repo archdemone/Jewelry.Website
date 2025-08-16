@@ -3,6 +3,6 @@ describe('Products', () => {
 		cy.visit('/')
 		cy.get('[data-testid="nav-products"]').click()
 		cy.url().should('include', '/products')
-		cy.get('a[href^="/products/"]').should('exist')
+		cy.get('[data-testid="product-card"]').should('exist')
 	})
 })

@@ -6,7 +6,7 @@ import { Footer } from '@/components/layout/Footer'
 import { getAllCategories, getPaginatedProducts } from '@/lib/queries'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { ProductCard } from '@/components/products/ProductCard'
+import { getProductImageFallback } from '@/lib/assets/images'
 
 export default async function ProductsPage({ searchParams }: { searchParams: { page?: string; q?: string; category?: string; min?: string; max?: string; sort?: string } }) {
 	const page = Number(searchParams?.page ?? '1') || 1
@@ -62,9 +62,19 @@ export default async function ProductsPage({ searchParams }: { searchParams: { p
 						{ id: 'seed-1', slug: 'diamond-solitaire-ring', name: 'Diamond Solitaire Ring', price: 2999.99, images: [], category: { slug: 'rings' } },
 						{ id: 'seed-2', slug: 'gold-chain-necklace', name: 'Gold Chain Necklace', price: 899.99, images: [], category: { slug: 'necklaces' } },
 						{ id: 'seed-3', slug: 'tennis-bracelet', name: 'Tennis Bracelet', price: 2499.99, images: [], category: { slug: 'bracelets' } },
-					]).map((p: any) => (
-						<ProductCard key={p.id} id={p.id} slug={p.slug} name={p.name} price={p.price} images={p.images as any} categorySlug={p.category?.slug} />
-					))}
+					]).map((p: any) => {
+						const dbImages = Array.isArray(p.images) ? p.images : []
+						const productImages = dbImages.length > 0 ? dbImages : getProductImageFallback({ productSlug: p.slug, categorySlug: p.category?.slug, name: p.name })
+						return (
+							<Link key={p.id} href={`/products/${p.slug}`} className="rounded-lg border p-4 transition-shadow hover:shadow-sm" data-testid="product-card">
+								<div className="relative aspect-square w-full overflow-hidden rounded-md bg-accent">
+									<img src={productImages[0] || '/images/products/placeholder.jpg'} alt={p.name} className="h-full w-full object-cover" width={300} height={300} />
+								</div>
+								<div className="mt-3 text-sm font-medium">{p.name}</div>
+								<div className="text-sm text-gray-600">${p.price.toFixed(2)}</div>
+							</Link>
+						)
+					})}
 				</div>
 				{totalPages > 1 && (
 					<nav className="mt-8 flex justify-center gap-2">
