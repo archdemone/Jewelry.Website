@@ -67,16 +67,6 @@ export const RING_IMAGES: Record<string, string[]> = {
   ],
 };
 
-<<<<<<< HEAD
-// Ring category placeholder images
-export const RING_CATEGORY_PLACEHOLDERS = {
-  'engagement-rings': '/images/products/category-engagement-rings.jpg?v=3',
-  'wedding-bands': '/images/products/category-wedding-bands.jpg?v=3',
-  'eternity-rings': '/images/products/category-eternity-rings.jpg?v=3',
-  'signet-rings': '/images/products/category-signet-rings.jpg?v=3',
-  'statement-rings': '/images/products/category-statement-rings.jpg?v=3',
-  'stackable-rings': '/images/products/category-stackable-rings.jpg?v=3',
-=======
 // Category-specific jewelry images - each category has its own unique, relevant image
 export const CATEGORY_PLACEHOLDERS = {
   rings: '/images/products/placeholder-ring.svg',
@@ -85,7 +75,6 @@ export const CATEGORY_PLACEHOLDERS = {
   earrings: '/images/products/placeholder-earrings.svg',
   watches: '/images/products/placeholder-watch.svg',
   pendants: '/images/products/placeholder-pendant.svg',
->>>>>>> main
 } as const;
 
 // Default placeholder for any missing images
@@ -102,10 +91,10 @@ export function getRingImages(ringSlug: string): string[] {
   return [DEFAULT_PLACEHOLDER];
 }
 
-// Get ring category placeholder
-export function getRingCategoryPlaceholder(categorySlug?: string): string {
+// Get category placeholder
+export function getCategoryPlaceholder(categorySlug?: string): string {
   if (!categorySlug) return DEFAULT_PLACEHOLDER;
-  return RING_CATEGORY_PLACEHOLDERS[categorySlug as keyof typeof RING_CATEGORY_PLACEHOLDERS] || DEFAULT_PLACEHOLDER;
+  return CATEGORY_PLACEHOLDERS[categorySlug as keyof typeof CATEGORY_PLACEHOLDERS] || DEFAULT_PLACEHOLDER;
 }
 
 // Get product image fallback with category context (updated for rings)
@@ -122,25 +111,19 @@ export function getProductImageFallback(opts: {
     }
   }
   
-  // Fallback to ring category placeholder
-  const categoryPlaceholder = getRingCategoryPlaceholder(opts.categorySlug);
+  // Fallback to category placeholder
+  const categoryPlaceholder = getCategoryPlaceholder(opts.categorySlug);
   return [categoryPlaceholder];
 }
 
-// Legacy function for backward compatibility (updated for rings)
-export function getCategoryImage(slug?: string): string[] {
-  const placeholder = getRingCategoryPlaceholder(slug);
-  return [placeholder];
-}
-
-// Get product images by slug (legacy compatibility)
+// Legacy helpers for backward compatibility
 export function getProductImages(productSlug: string): string[] {
   return getRingImages(productSlug);
 }
 
-// Get category placeholder (legacy compatibility)
-export function getCategoryPlaceholder(categorySlug?: string): string {
-  return getRingCategoryPlaceholder(categorySlug);
+export function getCategoryImage(slug?: string): string[] {
+  const placeholder = getCategoryPlaceholder(slug);
+  return [placeholder];
 }
 
 

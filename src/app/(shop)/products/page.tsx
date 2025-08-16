@@ -26,7 +26,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: { p
 					<h1 className="font-[var(--font-serif)] text-4xl font-semibold text-secondary mb-4">Handcrafted Rings</h1>
 					<p className="text-lg text-gray-600 max-w-2xl mx-auto">
 						Each ring is personally crafted from start to finish using locally-sourced materials. 
-						No mass production, no teams – just one artisan's dedication to your perfect ring.
+						No mass production, no teams – just one artisan&apos;s dedication to your perfect ring.
 					</p>
 				</div>
 				<form className="mt-6 grid grid-cols-1 items-end gap-3 rounded-lg border p-4 md:grid-cols-5">
@@ -64,39 +64,22 @@ export default async function ProductsPage({ searchParams }: { searchParams: { p
 					</div>
 				</form>
 				<div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-<<<<<<< HEAD
-					{items && items.length > 0 ? items.map((p: any) => {
-						const dbImages = Array.isArray(p.images) ? p.images : []
-						const productImages = dbImages.length > 0 ? dbImages : getProductImageFallback({ productSlug: p.slug, categorySlug: p.category?.slug, name: p.name })
-=======
-									{items.map((p) => {
-						// Prefer product's own images from DB; always append curated fallback
-						const dbImages = Array.isArray((p as any).images) ? ((p as any).images as string[]) : []
+					{items.map((p: any) => {
+						const dbImages = Array.isArray(p.images) ? (p.images as string[]) : []
 						const fallback = getProductImageFallback({ productSlug: p.slug, categorySlug: p.category?.slug, name: p.name })
 						const productImages = [...dbImages, ...fallback]
 
->>>>>>> main
 						return (
 							<Link key={p.id} href={`/products/${p.slug}`} className="rounded-lg border p-4 transition-shadow hover:shadow-sm" data-testid="product-card">
 								<div className="relative aspect-square w-full overflow-hidden rounded-md bg-accent">
-									<img src={productImages[0] || '/images/products/placeholder.jpg'} alt={p.name} className="h-full w-full object-cover" width={300} height={300} />
+									<img src={productImages[0]} alt={p.name} className="h-full w-full object-cover" width={300} height={300} />
 								</div>
 								<div className="mt-3 text-sm font-medium">{p.name}</div>
 								<div className="text-sm text-gray-600">{p.material} • {p.gemstones || 'No stones'}</div>
 								<div className="text-sm text-gray-600">${p.price.toFixed(2)}</div>
 							</Link>
 						)
-					}) : (
-						<div className="col-span-full text-center py-12">
-							<div className="text-gray-500 mb-4">
-								<svg className="mx-auto h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-									<path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.47-.881-6.08-2.33" />
-								</svg>
-							</div>
-							<h3 className="text-lg font-medium text-gray-900 mb-2">No rings found</h3>
-							<p className="text-gray-500">Try adjusting your search criteria or browse all our handcrafted rings.</p>
-						</div>
-					)}
+					})}
 				</div>
 				{totalPages > 1 && (
 					<nav className="mt-8 flex justify-center gap-2">
