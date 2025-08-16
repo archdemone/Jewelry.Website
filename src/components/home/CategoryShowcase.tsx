@@ -87,12 +87,13 @@ const CategoryShowcase = () => {
 											className="relative h-full w-full"
 										>
 											<SmartImage 
-												srcs={[`/images/products/category-${category.id}.jpg`, category.image]} 
+												srcs={[category.image, `/images/categories/${category.id}.jpg`]} 
 												alt={category.name} 
 												className="h-full w-full" 
 												fill
 												sizes="(min-width:1024px) 33vw, (min-width:768px) 50vw, 100vw"
 												quality={90}
+												priority={index === 0}
 											/>
 										</motion.div>
 										
