@@ -13,7 +13,7 @@ const securityHeaders = [
 const nextConfig = {
 	reactStrictMode: true,
 	env: {
-		NEXT_PUBLIC_ASSET_VERSION: '2',
+		NEXT_PUBLIC_ASSET_VERSION: `${Date.now()}`,
 	},
 	transpilePackages: [
 		'@radix-ui/react-icons',

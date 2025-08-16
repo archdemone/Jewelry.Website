@@ -10,8 +10,6 @@ const HeroSection = () => {
 		'/images/header/hero-1.jpg',
 		'/images/header/hero-2.jpg',
 		'/images/header/hero-3.jpg',
-		'/images/products/classic-solitaire-engagement-ring-1.jpg',
-		'/images/products/emerald-statement-ring-1.jpg',
 	], [])
 	const [index, setIndex] = React.useState(0)
 	React.useEffect(() => {
