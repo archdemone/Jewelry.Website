@@ -2,7 +2,7 @@
 
 /* eslint-disable react/no-unescaped-entities */
 import { motion } from 'framer-motion'
-import Image from 'next/image'
+import SmartImage from '@/components/common/SmartImage'
 import Link from 'next/link'
 import { Heart, Home, Users, Award } from 'lucide-react'
 import { Header } from '@/components/layout/Header'
@@ -16,12 +16,14 @@ export default function ArtisanPage() {
 				{/* Hero Section - Personal Introduction */}
 				<section className="relative h-[55vh] min-h-[480px] bg-gradient-to-br from-stone-100 to-stone-200 overflow-hidden">
 					<div className="absolute inset-0">
-						<Image
-							src="/images/artisan/bedroom-workshop-hero.jpg"
+						<SmartImage
+							srcs={['/images/artisan/bedroom-workshop-hero.jpg']}
 							alt="Home workshop where each ring is crafted"
 							fill
 							className="object-cover opacity-70"
 							priority
+							sizes="100vw"
+							quality={90}
 						/>
 						<div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
 					</div>
