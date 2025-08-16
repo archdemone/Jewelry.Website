@@ -24,7 +24,7 @@ export default function manifest(): MetadataRoute.Manifest {
 				src: '/images/products/category-engagement-rings.jpg',
 				type: 'image/jpeg',
 				sizes: '800x600',
-				purpose: 'any maskable',
+				purpose: 'maskable',
 			},
 			{
 				src: '/images/products/placeholder.jpg',
@@ -38,9 +38,7 @@ export default function manifest(): MetadataRoute.Manifest {
 				src: '/images/products/category-engagement-rings.jpg',
 				sizes: '800x600',
 				type: 'image/jpeg',
-				form_factor: 'wide',
-				label: 'Artisan Rings Homepage',
-			},
+				},
 		],
 		shortcuts: [
 			{
