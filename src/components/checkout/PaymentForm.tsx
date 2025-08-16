@@ -39,21 +39,36 @@ function InnerPaymentForm({ clientSecret }: { clientSecret: string }) {
 export default function PaymentForm() {
 	const { subtotal } = useCartStore()
 	const [clientSecret, setClientSecret] = useState<string | null>(null)
+    const [disabled, setDisabled] = useState<boolean>(false)
+
+    // If there's no public key at build-time, disable payments entirely
+    const stripeEnabled = Boolean(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
 
 	useEffect(() => {
+		if (!stripeEnabled) {
+			setDisabled(true)
+			return
+		}
 		async function createIntent() {
-			const res = await fetch('/api/checkout/payment-intent', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ amount: subtotal, currency: 'usd', metadata: {} }),
-			})
-			const data = await res.json()
-			setClientSecret(data.clientSecret)
+			try {
+				const res = await fetch('/api/checkout/payment-intent', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ amount: subtotal, currency: 'usd', metadata: {} }),
+				})
+				if (!res.ok) throw new Error('Payment intent failed')
+				const data = await res.json()
+				setClientSecret(data.clientSecret)
+			} catch {
+				// Disable payment UI if Stripe is not configured
+				setDisabled(true)
+			}
 		}
 		createIntent()
-	}, [subtotal])
+	}, [subtotal, stripeEnabled])
 
 	const options = useMemo(() => ({ clientSecret: clientSecret ?? '' }), [clientSecret])
+	if (disabled) return <p className="text-sm text-muted-foreground">Payments are disabled in this environment.</p>
 	if (!clientSecret) return <p className="text-sm text-muted-foreground">Loading payment form…</p>
 	return (
 		<Elements stripe={stripePromise} options={options as any}>

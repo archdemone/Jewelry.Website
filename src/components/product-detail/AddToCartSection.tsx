@@ -14,7 +14,7 @@ export function AddToCartSection({ productId, name, price, image }: { productId:
 				<input aria-label="Quantity" className="w-12 border-x px-2 py-2 text-center" value={qty} onChange={(e) => setQty(Math.max(1, parseInt(e.target.value || '1', 10)))} />
 				<button type="button" className="px-3 py-2" onClick={() => setQty((q) => q + 1)}>+</button>
 			</div>
-			<Button size="lg" onClick={() => addItem({ productId, name, price, image }, qty)}>Add to cart</Button>
+			<Button size="lg" data-testid="add-to-cart" onClick={() => addItem({ productId, name, price, image }, qty)}>Add to cart</Button>
 		</div>
 	)
 }

@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [ '**' ]
+  pull_request:
+    branches: [ '**' ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Set up env
+        run: |
+          echo "NEXTAUTH_SECRET=dev-secret" >> $GITHUB_ENV
+          echo "NEXTAUTH_URL=http://localhost:3010" >> $GITHUB_ENV
+          echo "DATABASE_URL=file:./dev.db" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_STRIPE_PUBLIC_KEY=" >> $GITHUB_ENV
+          echo "STRIPE_SECRET_KEY=" >> $GITHUB_ENV
+
+      - name: Run tests (unit + e2e)
+        run: npm run test:ci
+
+
