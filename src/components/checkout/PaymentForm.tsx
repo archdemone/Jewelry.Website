@@ -1,5 +1,6 @@
 "use client"
 
+import React from 'react'
 import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js'
 import { useEffect, useMemo, useState } from 'react'
 import { stripePromise } from '@/lib/stripe/stripe-client'

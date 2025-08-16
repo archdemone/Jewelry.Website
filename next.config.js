@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const withBundleAnalyzer = require('@next/bundle-analyzer')({ enabled: process.env.ANALYZE === 'true' });
+const webpack = require('webpack');
 
 const securityHeaders = [
 	{ key: 'X-DNS-Prefetch-Control', value: 'on' },
@@ -75,52 +76,52 @@ async headers() {
 				net: false,
 				tls: false,
 			};
+			// Provide global fallbacks for server-side rendering
+			config.plugins.push(
+				new webpack.DefinePlugin({
+					'self': 'globalThis',
+				})
+			);
 		}
 		
-		// Disable problematic optimizations for server build
-		if (isServer) {
-			config.optimization = {
-				...config.optimization,
-				splitChunks: false,
+		// Optimize bundle splitting for client builds only
+		if (!isServer) {
+			config.optimization.splitChunks = {
+				chunks: 'all',
+				cacheGroups: {
+					default: false,
+					vendors: false,
+					vendor: { 
+						name: 'vendor', 
+						chunks: 'all', 
+						test: /node_modules/, 
+						priority: 20,
+						enforce: true
+					},
+					common: { 
+						name: 'common', 
+						minChunks: 2, 
+						chunks: 'all', 
+						priority: 10, 
+						reuseExistingChunk: true, 
+						enforce: true 
+					},
+					// Separate large libraries
+					framer: {
+						name: 'framer',
+						test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
+						chunks: 'all',
+						priority: 30,
+					},
+					radix: {
+						name: 'radix',
+						test: /[\\/]node_modules[\\/]@radix-ui[\\/]/,
+						chunks: 'all',
+						priority: 25,
+					},
+				},
 			};
 		}
-		
-		// Optimize bundle splitting for both dev and prod
-		config.optimization.splitChunks = {
-			chunks: 'all',
-			cacheGroups: {
-				default: false,
-				vendors: false,
-				vendor: { 
-					name: 'vendor', 
-					chunks: 'all', 
-					test: /node_modules/, 
-					priority: 20,
-					enforce: true
-				},
-				common: { 
-					name: 'common', 
-					minChunks: 2, 
-					chunks: 'all', 
-					priority: 10, 
-					reuseExistingChunk: true, 
-					enforce: true 
-				},
-				// Separate large libraries
-				framer: {
-					name: 'framer',
-					test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
-					chunks: 'all',
-					priority: 30,
-				},
-				radix: {
-					name: 'radix',
-					test: /[\\/]node_modules[\\/]@radix-ui[\\/]/,
-					chunks: 'all',
-					priority: 25,
-				},
-			},
-		};
 		
 		return config;
 	},
