@@ -32,35 +32,39 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
 	const related = await getRelatedProducts(product.id, product.categoryId)
 
 	return (
-		<div className="container py-10">
-			<ProductJsonLd product={{
-				name: product.name,
-				description: product.description,
-				sku: product.sku,
-				price: product.price,
-				quantity: product.quantity,
-				slug: product.slug,
-				images: productImages,
-				reviews: product.reviews,
-			}} />
-			<BreadcrumbsJsonLd items={[
-				{ name: 'Home', item: 'https://yourjewelrystore.com' },
-				{ name: 'Products', item: 'https://yourjewelrystore.com/products' },
-				{ name: product.name, item: `https://yourjewelrystore.com/products/${product.slug}` },
-			]} />
-			<div className="grid gap-8 md:grid-cols-2">
-				<ProductImageGallery images={productImages} productName={product.name} />
-				<div>
-					<h1 className="text-2xl font-semibold">{product.name}</h1>
-					<p className="mt-2 text-gray-600">{product.description}</p>
-					<div className="mt-4 text-xl font-semibold">${product.price.toFixed(2)}</div>
-					<div className="mt-6">
-						<AddToCartButton productId={product.id} name={product.name} price={product.price} image={mainImage} />
+		<>
+			<Header />
+			<main className="container py-10">
+				<ProductJsonLd product={{
+					name: product.name,
+					description: product.description,
+					sku: product.sku,
+					price: product.price,
+					quantity: product.quantity,
+					slug: product.slug,
+					images: productImages,
+					reviews: product.reviews,
+				}} />
+				<BreadcrumbsJsonLd items={[
+					{ name: 'Home', item: 'https://yourjewelrystore.com' },
+					{ name: 'Products', item: 'https://yourjewelrystore.com/products' },
+					{ name: product.name, item: `https://yourjewelrystore.com/products/${product.slug}` },
+				]} />
+				<div className="grid gap-8 md:grid-cols-2">
+					<ProductImageGallery images={productImages} productName={product.name} />
+					<div>
+						<h1 className="text-2xl font-semibold">{product.name}</h1>
+						<p className="mt-2 text-gray-600">{product.description}</p>
+						<div className="mt-4 text-xl font-semibold">${product.price.toFixed(2)}</div>
+						<div className="mt-6">
+							<AddToCartButton productId={product.id} name={product.name} price={product.price} image={mainImage} />
+						</div>
 					</div>
 				</div>
-			</div>
-			<RelatedProducts products={related} />
-		</div>
+				<RelatedProducts products={related} />
+			</main>
+			<Footer />
+		</>
 	)
 }
 

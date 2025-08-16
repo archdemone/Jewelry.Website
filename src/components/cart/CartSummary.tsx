@@ -22,10 +22,10 @@ export function CartSummary() {
 				<div className="mt-2 flex justify-between text-secondary"><span className="font-medium">Total</span><span className="font-semibold">${total.toFixed(2)}</span></div>
 			</div>
 			{isEmpty ? (
-				<Button className="mt-4 w-full" disabled>Proceed to Checkout</Button>
+				<Button className="mt-4 w-full" disabled data-testid="checkout-button">Proceed to Checkout</Button>
 			) : (
 				<Button className="mt-4 w-full" asChild>
-					<Link href="/checkout">Proceed to Checkout</Link>
+					<Link href="/checkout" data-testid="checkout-button">Proceed to Checkout</Link>
 				</Button>
 			)}
 		</div>
