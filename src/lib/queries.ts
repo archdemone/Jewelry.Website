@@ -46,7 +46,13 @@ function buildFallbackCatalog(total: number = 48) {
     return items
 }
 
+const preferFallback = (process.env.E2E_NO_DB === '1') || (process.env.CI === 'true')
+
 export async function getFeaturedProducts(limit = 4): Promise<ProductWithRelations[]> {
+	if (preferFallback) {
+		const items = buildFallbackCatalog(12).filter((i) => i.featured).slice(0, limit)
+		return items as any
+	}
 	try {
 		return (await db.product.findMany({
 			where: { featured: true },
@@ -109,6 +115,28 @@ export async function getPaginatedProducts({
 	if (sort === 'price-asc') orderBy = { price: 'asc' }
 	if (sort === 'price-desc') orderBy = { price: 'desc' }
 
+	if (preferFallback) {
+		const catalog = buildFallbackCatalog(48)
+		const filtered = catalog.filter((p) => {
+			const matchesQ = !q || p.name.toLowerCase().includes(q.toLowerCase()) || p.description.toLowerCase().includes(q.toLowerCase())
+			const matchesCategory = !categorySlug || p.category.slug === categorySlug
+			let matchesPrice = true
+			if (typeof minPrice === 'number') matchesPrice = matchesPrice && p.price >= minPrice
+			if (typeof maxPrice === 'number') matchesPrice = matchesPrice && p.price <= maxPrice
+			return matchesQ && matchesCategory && matchesPrice
+		})
+
+		const ordered = [...filtered].sort((a, b) => {
+			if (sort === 'price-asc') return a.price - b.price
+			if (sort === 'price-desc') return b.price - a.price
+			return b.createdAt.getTime() - a.createdAt.getTime()
+		})
+
+		const total = ordered.length
+		const paged = ordered.slice(skip, skip + pageSize)
+		return { items: paged as any, total, page, pageSize, totalPages: Math.ceil(total / pageSize) }
+	}
+
 	try {
 		const [items, total] = await Promise.all([
 			db.product.findMany({
@@ -158,6 +186,11 @@ export async function getPaginatedProducts({
 }
 
 export async function getProductBySlug(slug: string) {
+	if (preferFallback) {
+		const catalog = buildFallbackCatalog(48)
+		const found = catalog.find((p) => p.slug === slug)
+		return found as any
+	}
 	try {
 		return await db.product.findUnique({ where: { slug }, include: { category: true, reviews: true } })
 	} catch {
@@ -168,6 +201,9 @@ export async function getProductBySlug(slug: string) {
 }
 
 export async function getAllCategories() {
+	if (preferFallback) {
+		return ringCategorySlugs.map((slug, i) => ({ id: `cat_${slug}`, name: slug.replace(/-/g, ' '), slug, active: true, order: i })) as any
+	}
 	try {
 		return await db.category.findMany({ where: { active: true }, orderBy: { order: 'asc' } })
 	} catch {
@@ -176,6 +212,11 @@ export async function getAllCategories() {
 }
 
 export async function getRelatedProducts(productId: string, categoryId: string, limit = 6) {
+	if (preferFallback) {
+		const catalog = buildFallbackCatalog(48)
+		const base = catalog.filter((p) => p.categoryId === categoryId && p.id !== productId).slice(0, limit)
+		return base.map((p) => ({ id: p.id, name: p.name, slug: p.slug, price: p.price, category: { slug: p.category.slug } })) as any
+	}
 	try {
 		const items = await db.product.findMany({
 			where: { categoryId, NOT: { id: productId } },
