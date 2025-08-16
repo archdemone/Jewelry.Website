@@ -3,50 +3,50 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import SmartImage from '@/components/common/SmartImage'
-import { getCategoryPlaceholder } from '@/lib/assets/images'
 
 const CategoryShowcase = () => {
+	// Use representative product images for each category to avoid yellow placeholders
 	const ringCategories = [
 		{
 			id: 'engagement-rings',
 			name: 'Engagement Rings',
 			description: 'Handcrafted engagement rings with ethically sourced diamonds',
-			image: getCategoryPlaceholder('rings'),
+			image: '/images/products/classic-solitaire-engagement-ring-1.jpg',
 			count: '12 designs'
 		},
 		{
 			id: 'wedding-bands',
 			name: 'Wedding Bands',
 			description: 'Matching wedding bands for your special day',
-			image: getCategoryPlaceholder('rings'),
+			image: '/images/products/hammered-wedding-band-1.jpg',
 			count: '8 designs'
 		},
 		{
 			id: 'eternity-rings',
 			name: 'Eternity Rings',
 			description: 'Celebrate eternal love with continuous stones',
-			image: getCategoryPlaceholder('rings'),
+			image: '/images/products/sapphire-eternity-ring-1.jpg',
 			count: '6 designs'
 		},
 		{
 			id: 'signet-rings',
 			name: 'Signet Rings',
 			description: 'Classic signet rings with custom engraving options',
-			image: getCategoryPlaceholder('rings'),
+			image: '/images/products/classic-signet-ring-1.jpg',
 			count: '4 designs'
 		},
 		{
 			id: 'statement-rings',
 			name: 'Statement Rings',
 			description: 'Bold designs that express your personality',
-			image: getCategoryPlaceholder('rings'),
+			image: '/images/products/emerald-statement-ring-1.jpg',
 			count: '10 designs'
 		},
 		{
 			id: 'stackable-rings',
 			name: 'Stackable Rings',
 			description: 'Delicate rings designed to be worn together',
-			image: getCategoryPlaceholder('rings'),
+			image: '/images/products/minimalist-gold-band-1.jpg',
 			count: '15 designs'
 		}
 	]
