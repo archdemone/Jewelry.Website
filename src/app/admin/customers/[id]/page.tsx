@@ -7,8 +7,8 @@ export default function CustomerDetailsPage({ params }: { params: { id: string }
 			<div className="flex items-center justify-between">
 				<div className="text-2xl font-bold">Customer #{params.id}</div>
 				<div className="flex gap-2">
-					<Button variant="secondary">Send Email</Button>
-					<Button variant="secondary">Add Note</Button>
+					<Button variant="outline">Send Email</Button>
+					<Button variant="outline">Add Note</Button>
 					<Button variant="ghost">Disable Account</Button>
 				</div>
 			</div>

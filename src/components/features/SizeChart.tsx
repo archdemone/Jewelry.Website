@@ -34,7 +34,7 @@ export default function SizeChart() {
 			</section>
 			<section>
 				<h3 className="text-xl font-semibold">Necklace Length Guide</h3>
-				<p className="mt-2 text-sm text-gray-600">Common lengths: 14" (Choker), 16" (Short), 18" (Standard), 20" (Matinee), 24" (Opera).</p>
+				<p className="mt-2 text-sm text-gray-600">Common lengths: 14&quot; (Choker), 16&quot; (Short), 18&quot; (Standard), 20&quot; (Matinee), 24&quot; (Opera).</p>
 				<div className="mt-3 h-32 w-full rounded-md bg-gray-100" />
 			</section>
 		</div>

@@ -8,8 +8,8 @@ export default function OrderDetailsPage({ params }: { params: { id: string } })
 				<div className="text-2xl font-bold">Order #{params.id}</div>
 				<div className="flex gap-2">
 					<Button>Mark as fulfilled</Button>
-					<Button variant="secondary">Send tracking</Button>
-					<Button variant="secondary">Issue refund</Button>
+					<Button variant="outline">Send tracking</Button>
+					<Button variant="outline">Issue refund</Button>
 					<Button variant="ghost">Print packing slip</Button>
 				</div>
 			</div>
@@ -56,7 +56,7 @@ export default function OrderDetailsPage({ params }: { params: { id: string } })
 					<Card className="p-4 space-y-2">
 						<div className="font-semibold">Notes</div>
 						<textarea className="w-full border rounded p-2 text-sm" rows={3} placeholder="Add internal note..." />
-						<Button variant="secondary">Add Note</Button>
+						<Button variant="outline">Add Note</Button>
 					</Card>
 				</div>
 			</div>

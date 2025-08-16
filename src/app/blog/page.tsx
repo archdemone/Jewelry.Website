@@ -1,6 +1,5 @@
 "use client"
 
-import type { Metadata } from 'next'
 import { useMemo, useState } from 'react'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
@@ -12,10 +11,6 @@ const posts = [
 	{ slug: 'ring-sizing', title: 'How to Find Your Ring Size', excerpt: 'A step-by-step guide to measuring your ring size accurately.', image: '/images/blog/size.jpg', date: 'Jan 2, 2025', category: 'Guides' },
 ]
 
-export const metadata: Metadata = {
-	title: 'Our Journal — Aurora Jewelry',
-	description: 'Read the latest stories, guides, and care tips from Aurora Jewelry.',
-}
 
 const categories = ['All', 'Care', 'Guides']
 

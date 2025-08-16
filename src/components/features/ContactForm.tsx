@@ -81,7 +81,7 @@ export default function ContactForm() {
 				<label htmlFor="file" className="text-sm font-medium text-secondary">Attachment (custom orders)</label>
 				<input id="file" type="file" className="text-sm" {...register('file')} />
 			</div>
-			<input type="text" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden name="hp" {...register('hp')} />
+			<input type="text" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden {...register('hp')} />
 			<input type="hidden" {...register('recaptchaToken')} />
 			<Button type="submit" disabled={loading}>{loading ? 'Sending…' : 'Send message'}</Button>
 		</form>

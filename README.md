@@ -23,11 +23,4 @@ GOOGLE_CLIENT_SECRET=your-google-client-secret
 
 Tech stack: Next.js (App Router) + TypeScript + Tailwind CSS + ESLint + Prettier.
 
-## Testing
-
-- Unit: `npm run test`
-- Coverage: `npm run test:coverage`
-- E2E (Cypress): `npm run cypress:run`
-- Lighthouse: `npm run test:lighthouse`
-
 
