@@ -1,19 +1,21 @@
 "use client"
 
 import Link from 'next/link';
-import { ShoppingBag, User, Search, LogOut } from 'lucide-react';
+import { ShoppingBag, User, Search, LogOut, ChevronDown } from 'lucide-react';
 import { useSession, signOut, signIn } from 'next-auth/react'
 import { useCartStore } from '@/store/cart';
 import * as React from 'react'
 import { useRouter } from 'next/navigation'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
+import { motion } from 'framer-motion'
 
 export function Header() {
 	const count = useCartStore((s) => s.count)
 	const [open, setOpen] = React.useState(false)
 	const [q, setQ] = React.useState('')
 	const [mounted, setMounted] = React.useState(false)
+	const [showRingCollections, setShowRingCollections] = React.useState(false)
 	const router = useRouter()
   const { data: session } = useSession()
 
@@ -29,16 +31,56 @@ export function Header() {
 		return () => clearTimeout(t)
 	}, [q, router])
 
+	const ringCollections = [
+		{ name: 'Engagement Rings', href: '/products?category=engagement-rings' },
+		{ name: 'Wedding Bands', href: '/products?category=wedding-bands' },
+		{ name: 'Eternity Rings', href: '/products?category=eternity-rings' },
+		{ name: 'Signet Rings', href: '/products?category=signet-rings' },
+		{ name: 'Statement Rings', href: '/products?category=statement-rings' },
+		{ name: 'Stackable Rings', href: '/products?category=stackable-rings' }
+	]
+
 	return (
 		<header className="sticky top-0 z-40 w-full border-b bg-white/70 backdrop-blur">
 			<div className="container flex h-16 items-center justify-between">
 				<Link href="/" className="font-[var(--font-serif)] text-xl font-semibold text-secondary">
-					Aurora Jewelry
+					Artisan Rings
 				</Link>
 				<nav className="hidden items-center gap-6 md:flex">
 					<Link href="/" className="text-sm text-text hover:text-secondary" data-testid="nav-home">Home</Link>
-					<Link href="/products" className="text-sm text-text hover:text-secondary" data-testid="nav-products">Collections</Link>
-					<Link href="/about" className="text-sm text-text hover:text-secondary">About</Link>
+					
+					{/* Ring Collections Dropdown */}
+					<div 
+						className="relative"
+						onMouseEnter={() => setShowRingCollections(true)}
+						onMouseLeave={() => setShowRingCollections(false)}
+					>
+						<button className="flex items-center gap-1 text-sm text-text hover:text-secondary">
+							Ring Collections
+							<ChevronDown className="h-4 w-4" />
+						</button>
+						{showRingCollections && (
+							<motion.div
+								initial={{ opacity: 0, y: 10 }}
+								animate={{ opacity: 1, y: 0 }}
+								exit={{ opacity: 0, y: 10 }}
+								className="absolute top-full left-0 mt-2 w-64 bg-white border rounded-lg shadow-lg py-2"
+							>
+								{ringCollections.map((collection) => (
+									<Link
+										key={collection.name}
+										href={collection.href}
+										className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gold-600"
+									>
+										{collection.name}
+									</Link>
+								))}
+							</motion.div>
+						)}
+					</div>
+					
+					<Link href="/about-artisan" className="text-sm text-text hover:text-secondary">The Artisan</Link>
+					<Link href="/crafting-process" className="text-sm text-text hover:text-secondary">Process</Link>
 					<Link href="/contact" className="text-sm text-text hover:text-secondary">Contact</Link>
 				</nav>
 				<div className="flex items-center gap-4">
@@ -50,9 +92,9 @@ export function Header() {
 						</DialogTrigger>
 						<DialogContent>
 							<DialogHeader>
-								<DialogTitle>Search products</DialogTitle>
+								<DialogTitle>Search rings</DialogTitle>
 							</DialogHeader>
-							<Input autoFocus placeholder="Search..." value={q} onChange={(e) => setQ(e.target.value)} />
+							<Input autoFocus placeholder="Search rings..." value={q} onChange={(e) => setQ(e.target.value)} />
 						</DialogContent>
 					</Dialog>
 					{session?.user ? (
