@@ -13,9 +13,10 @@ type SmartImageProps = {
 	sizes?: string
 	quality?: number
 	fill?: boolean
+	unoptimized?: boolean
 }
 
-export default function SmartImage({ srcs, alt, className, width, height, priority, sizes, quality, fill }: SmartImageProps) {
+export default function SmartImage({ srcs, alt, className, width, height, priority, sizes, quality, fill, unoptimized }: SmartImageProps) {
 	const [currentSrcIndex, setCurrentSrcIndex] = React.useState(0)
 	const [useFallback, setUseFallback] = React.useState(false)
 	const [clientTs, setClientTs] = React.useState<string | null>(null)
@@ -29,6 +30,13 @@ export default function SmartImage({ srcs, alt, className, width, height, priori
 
 	// Filter valid images (local paths starting with /)
 	const validImages = srcs.filter(src => src.startsWith('/'))
+
+	// If provided src candidates change, reset progression so we can retry primary
+	const srcKey = React.useMemo(() => validImages.join('|'), [validImages])
+	React.useEffect(() => {
+		setCurrentSrcIndex(0)
+		setUseFallback(false)
+	}, [srcKey])
 	const displayText = alt || 'Jewelry Item'
 
 	const handleError = () => {
@@ -42,15 +50,15 @@ export default function SmartImage({ srcs, alt, className, width, height, priori
 	const currentSrc = validImages[currentSrcIndex]
 
 	// Base version applied on both SSR and CSR so markup matches
-	const baseVersion = process.env.NODE_ENV === 'production' ? (process.env.NEXT_PUBLIC_ASSET_VERSION || '1') : 'dev'
+	const baseVersion = process.env.NEXT_PUBLIC_ASSET_VERSION || '1'
 	const baseSrc = currentSrc
 		? (currentSrc.includes('?') ? `${currentSrc}&v=${baseVersion}` : `${currentSrc}?v=${baseVersion}`)
 		: undefined
 
-	// In dev, append a timestamp to force-refresh edited assets. Use a stable one post-mount when available
+	// In dev, append a client-only timestamp AFTER hydration to force-refresh edited assets
 	const versionedSrc = baseSrc
-		? (process.env.NODE_ENV !== 'production'
-			? `${baseSrc}${baseSrc.includes('?') ? '&' : '?'}t=${clientTs ?? Date.now()}`
+		? (clientTs && process.env.NODE_ENV !== 'production'
+			? `${baseSrc}${baseSrc.includes('?') ? '&' : '?'}t=${clientTs}`
 			: baseSrc)
 		: undefined
 
@@ -117,6 +125,7 @@ export default function SmartImage({ srcs, alt, className, width, height, priori
 					sizes={sizes || '100vw'}
 					quality={quality || 90}
 					className="object-cover"
+					unoptimized={unoptimized}
 					onError={handleError}
 					priority={priority}
 				/>
@@ -133,6 +142,7 @@ export default function SmartImage({ srcs, alt, className, width, height, priori
 			height={height || 800}
 			sizes={sizes || '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'}
 			quality={quality || 90}
+			unoptimized={unoptimized}
 			onError={handleError}
 			priority={priority}
 		/>
