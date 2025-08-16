@@ -19,17 +19,24 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
 	const product = await getProductBySlug(params.slug)
 	if (!product) return notFound()
 
-	// Prefer DB images; fall back to curated mapping
+	// Prefer DB images; always append curated fallback to ensure a local image exists
 	const dbImages = Array.isArray((product as any).images) ? ((product as any).images as string[]) : []
-	const productImages = dbImages.length > 0
-		? dbImages
-		: getProductImageFallback({
-			productSlug: product.slug,
-			categorySlug: product.category?.slug,
-			name: product.name,
-		})
+	const fallbackImages = getProductImageFallback({
+		productSlug: product.slug,
+		categorySlug: product.category?.slug,
+		name: product.name,
+	})
+	const productImages = [...dbImages, ...fallbackImages]
 	const mainImage = productImages[0]
-	const related = await getRelatedProducts(product.id, product.categoryId)
+	const relatedRaw = await getRelatedProducts(product.id, product.categoryId)
+	const related = relatedRaw.map((r: any) => ({
+		id: r.id,
+		name: r.name,
+		slug: r.slug,
+		price: r.price,
+		images: Array.isArray(r.images) ? (r.images as string[]) : null,
+		category: r.category ? { slug: r.category.slug } : null,
+	}))
 
 	return (
 		<>

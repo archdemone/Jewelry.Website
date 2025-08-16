@@ -90,15 +90,15 @@ const PRODUCT_IMAGES = {
 };
 
 const CATEGORY_PLACEHOLDERS = {
-  rings: '/images/products/category-rings.jpg',
-  necklaces: '/images/products/category-necklaces.jpg',
-  bracelets: '/images/products/category-bracelets.jpg',
-  earrings: '/images/products/category-earrings.jpg',
-  watches: '/images/products/category-watches.jpg',
-  pendants: '/images/products/category-pendants.jpg',
+  rings: '/images/products/placeholder-ring.svg',
+  necklaces: '/images/products/placeholder-necklace.svg',
+  bracelets: '/images/products/placeholder-bracelet.svg',
+  earrings: '/images/products/placeholder-earrings.svg',
+  watches: '/images/products/placeholder-watch.svg',
+  pendants: '/images/products/placeholder-pendant.svg',
 };
 
-const DEFAULT_PLACEHOLDER = '/images/products/placeholder.jpg';
+const DEFAULT_PLACEHOLDER = '/images/products/placeholder.svg';
 
 const PRODUCTS_DIR = path.join(__dirname, '../public/images/products');
 

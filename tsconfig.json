@@ -28,7 +28,8 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "types": []
   },
   "include": [
     "next-env.d.ts",
@@ -37,6 +38,12 @@
     ".next/types/**/*.ts"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "cypress",
+    "**/cypress/**",
+    "**/*.cy.ts",
+    "**/*.cy.tsx",
+    "playwright.config.ts",
+    "**/playwright/**"
   ]
 }

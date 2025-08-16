@@ -32,12 +32,12 @@ const nextConfig = {
 	swcMinify: true,
 	compress: true,
 	poweredByHeader: false,
-	experimental: {
-		webVitalsAttribution: ['CLS', 'LCP'],
-		optimizeCss: true,
-		optimizePackageImports: ['lucide-react', '@headlessui/react'],
-	},
-	async headers() {
+			experimental: {
+			webVitalsAttribution: ['CLS', 'LCP'],
+			// optimizeCss: true, // disabled to avoid critters dependency issues
+			optimizePackageImports: ['lucide-react', '@headlessui/react'],
+		},
+async headers() {
 		return [
 			{
 				source: '/:path*',
