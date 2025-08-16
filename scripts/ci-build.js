@@ -27,11 +27,12 @@ try {
   // Apply migrations (or create schema) non-interactively
   const prismaMigrate = spawnSync('npx --no-install prisma migrate deploy', { stdio: 'inherit', cwd: projectRoot, env: process.env, shell: true })
   if (prismaMigrate.status !== 0) {
-    console.warn('[ci-build] prisma migrate deploy failed, attempting prisma db push')
-    const prismaPush = spawnSync('npx --no-install prisma db push', { stdio: 'inherit', cwd: projectRoot, env: process.env, shell: true })
-    if (prismaPush.status !== 0) {
-      console.warn(`[ci-build] prisma db push failed with code ${prismaPush.status}`)
-    }
+    console.warn('[ci-build] prisma migrate deploy failed')
+  }
+  // Always ensure schema is fully in sync with the current Prisma schema (covers cases where migrations lag behind)
+  const prismaPush = spawnSync('npx --no-install prisma db push', { stdio: 'inherit', cwd: projectRoot, env: process.env, shell: true })
+  if (prismaPush.status !== 0) {
+    console.warn(`[ci-build] prisma db push failed with code ${prismaPush.status}`)
   }
   // Seed minimal data for E2E flows
   const seed = spawnSync('npm run -s seed', { stdio: 'inherit', cwd: projectRoot, env: process.env, shell: true })
