@@ -67,6 +67,7 @@ export const RING_IMAGES: Record<string, string[]> = {
   ],
 };
 
+<<<<<<< HEAD
 // Ring category placeholder images
 export const RING_CATEGORY_PLACEHOLDERS = {
   'engagement-rings': '/images/products/category-engagement-rings.jpg?v=3',
@@ -75,10 +76,20 @@ export const RING_CATEGORY_PLACEHOLDERS = {
   'signet-rings': '/images/products/category-signet-rings.jpg?v=3',
   'statement-rings': '/images/products/category-statement-rings.jpg?v=3',
   'stackable-rings': '/images/products/category-stackable-rings.jpg?v=3',
+=======
+// Category-specific jewelry images - each category has its own unique, relevant image
+export const CATEGORY_PLACEHOLDERS = {
+  rings: '/images/products/placeholder-ring.svg',
+  necklaces: '/images/products/placeholder-necklace.svg',
+  bracelets: '/images/products/placeholder-bracelet.svg',
+  earrings: '/images/products/placeholder-earrings.svg',
+  watches: '/images/products/placeholder-watch.svg',
+  pendants: '/images/products/placeholder-pendant.svg',
+>>>>>>> main
 } as const;
 
 // Default placeholder for any missing images
-export const DEFAULT_PLACEHOLDER = '/images/products/placeholder.jpg';
+export const DEFAULT_PLACEHOLDER = '/images/products/placeholder.svg';
 
 // Get ring images by slug
 export function getRingImages(ringSlug: string): string[] {

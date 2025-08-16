@@ -64,9 +64,18 @@ export default async function ProductsPage({ searchParams }: { searchParams: { p
 					</div>
 				</form>
 				<div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+<<<<<<< HEAD
 					{items && items.length > 0 ? items.map((p: any) => {
 						const dbImages = Array.isArray(p.images) ? p.images : []
 						const productImages = dbImages.length > 0 ? dbImages : getProductImageFallback({ productSlug: p.slug, categorySlug: p.category?.slug, name: p.name })
+=======
+									{items.map((p) => {
+						// Prefer product's own images from DB; always append curated fallback
+						const dbImages = Array.isArray((p as any).images) ? ((p as any).images as string[]) : []
+						const fallback = getProductImageFallback({ productSlug: p.slug, categorySlug: p.category?.slug, name: p.name })
+						const productImages = [...dbImages, ...fallback]
+
+>>>>>>> main
 						return (
 							<Link key={p.id} href={`/products/${p.slug}`} className="rounded-lg border p-4 transition-shadow hover:shadow-sm" data-testid="product-card">
 								<div className="relative aspect-square w-full overflow-hidden rounded-md bg-accent">
