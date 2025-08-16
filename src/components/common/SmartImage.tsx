@@ -42,15 +42,15 @@ export default function SmartImage({ srcs, alt, className, width, height, priori
 	const currentSrc = validImages[currentSrcIndex]
 
 	// Base version applied on both SSR and CSR so markup matches
-	const baseVersion = process.env.NEXT_PUBLIC_ASSET_VERSION || '1'
+	const baseVersion = process.env.NODE_ENV === 'production' ? (process.env.NEXT_PUBLIC_ASSET_VERSION || '1') : 'dev'
 	const baseSrc = currentSrc
 		? (currentSrc.includes('?') ? `${currentSrc}&v=${baseVersion}` : `${currentSrc}?v=${baseVersion}`)
 		: undefined
 
-	// In dev, append a client-only timestamp AFTER hydration to force-refresh edited assets
+	// In dev, append a timestamp to force-refresh edited assets. Use a stable one post-mount when available
 	const versionedSrc = baseSrc
-		? (clientTs && process.env.NODE_ENV !== 'production'
-			? `${baseSrc}${baseSrc.includes('?') ? '&' : '?'}t=${clientTs}`
+		? (process.env.NODE_ENV !== 'production'
+			? `${baseSrc}${baseSrc.includes('?') ? '&' : '?'}t=${clientTs ?? Date.now()}`
 			: baseSrc)
 		: undefined
 
