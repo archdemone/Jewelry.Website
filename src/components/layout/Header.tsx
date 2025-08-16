@@ -56,7 +56,7 @@ export function Header() {
 						onMouseEnter={() => setShowRingCollections(true)}
 						onMouseLeave={() => setShowRingCollections(false)}
 					>
-						<button className="flex items-center gap-1 text-sm text-text hover:text-secondary" data-testid="nav-ring-collections">
+						<button className="flex items-center gap-1 text-sm text-text hover:text-secondary" data-testid="nav-ring-collections" onClick={() => router.push('/products')} type="button">
 							Ring Collections
 							<ChevronDown className="h-4 w-4" />
 						</button>
@@ -84,8 +84,8 @@ export function Header() {
 					<Link href="/crafting-process" className="text-sm text-text hover:text-secondary">Process</Link>
 					<Link href="/contact" className="text-sm text-text hover:text-secondary">Contact</Link>
 				</nav>
-				{/* Mobile fallback link for Products to satisfy e2e on narrow viewports */}
-				<Link href="/products" className="text-sm text-text hover:text-secondary md:hidden" data-testid="nav-products">Products</Link>
+				{/* Mobile fallback link for Products (no test id to avoid duplicates) */}
+				<Link href="/products" className="text-sm text-text hover:text-secondary md:hidden">Products</Link>
 				<div className="flex items-center gap-4">
 					<Dialog open={open} onOpenChange={setOpen}>
 						<DialogTrigger asChild>
