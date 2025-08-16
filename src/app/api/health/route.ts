@@ -25,6 +25,7 @@ export async function GET() {
 				database: 'connected',
 				payment: process.env.STRIPE_SECRET_KEY ? 'connected' : 'disabled',
 				cache: cacheStatus,
+				authSecret: Boolean(process.env.NEXTAUTH_SECRET || 'dev-secret'),
 			},
 			version: process.env.npm_package_version,
 		})
