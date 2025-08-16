@@ -39,9 +39,9 @@ const PRODUCT_IMAGES = {
   ],
   
   // Bracelets
-  'diamond-tennis-bracelet': [
-    '/images/products/diamond-tennis-bracelet-1.jpg',
-    '/images/products/diamond-tennis-bracelet-2.jpg',
+  'tennis-bracelet': [
+    '/images/products/tennis-bracelet-1.jpg',
+    '/images/products/tennis-bracelet-2.jpg',
   ],
   'gold-bangle-bracelet': [
     '/images/products/gold-bangle-bracelet-1.jpg',
@@ -67,9 +67,9 @@ const PRODUCT_IMAGES = {
   ],
   
   // Watches
-  'luxury-diamond-watch': [
-    '/images/products/luxury-diamond-watch-1.jpg',
-    '/images/products/luxury-diamond-watch-2.jpg',
+  'luxury-automatic-watch': [
+    '/images/products/luxury-automatic-watch-1.jpg',
+    '/images/products/luxury-automatic-watch-2.jpg',
   ],
   'gold-dress-watch': [
     '/images/products/gold-dress-watch-1.jpg',
