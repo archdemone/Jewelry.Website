@@ -1,32 +1,134 @@
-import Link from 'next/link'
-import { getAllCategories } from '@/lib/queries'
-import SmartImage from '@/components/common/SmartImage'
-import { getCategoryImage } from '@/lib/assets/images'
+"use client"
 
-export default async function CategoryShowcase() {
-	const categories = await getAllCategories()
+import { motion } from 'framer-motion'
+import Link from 'next/link'
+import SmartImage from '@/components/common/SmartImage'
+import { getCategoryPlaceholder } from '@/lib/assets/images'
+
+const CategoryShowcase = () => {
+	const ringCategories = [
+		{
+			id: 'engagement-rings',
+			name: 'Engagement Rings',
+			description: 'Handcrafted engagement rings with ethically sourced diamonds',
+			image: getCategoryPlaceholder('rings'),
+			count: '12 designs'
+		},
+		{
+			id: 'wedding-bands',
+			name: 'Wedding Bands',
+			description: 'Matching wedding bands for your special day',
+			image: getCategoryPlaceholder('rings'),
+			count: '8 designs'
+		},
+		{
+			id: 'eternity-rings',
+			name: 'Eternity Rings',
+			description: 'Celebrate eternal love with continuous stones',
+			image: getCategoryPlaceholder('rings'),
+			count: '6 designs'
+		},
+		{
+			id: 'signet-rings',
+			name: 'Signet Rings',
+			description: 'Classic signet rings with custom engraving options',
+			image: getCategoryPlaceholder('rings'),
+			count: '4 designs'
+		},
+		{
+			id: 'statement-rings',
+			name: 'Statement Rings',
+			description: 'Bold designs that express your personality',
+			image: getCategoryPlaceholder('rings'),
+			count: '10 designs'
+		},
+		{
+			id: 'stackable-rings',
+			name: 'Stackable Rings',
+			description: 'Delicate rings designed to be worn together',
+			image: getCategoryPlaceholder('rings'),
+			count: '15 designs'
+		}
+	]
+
 	return (
-		<section className="container py-12">
-			<h2 className="font-[var(--font-serif)] text-2xl font-semibold text-secondary">Shop by Category</h2>
-			<div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-				{categories.map((c) => {
-					const slug = String((c as any).slug || '').toLowerCase()
-					const srcs = getCategoryImage(slug)
-					return (
-						<Link key={c.id} href={`/products?category=${encodeURIComponent(slug)}`} className="group relative overflow-hidden rounded-lg border">
-							<div className="relative aspect-[16/10] w-full overflow-hidden">
-								<SmartImage srcs={srcs} alt={(c as any).name} className="h-full w-full" />
-							</div>
-							<div className="absolute inset-0 bg-black/20" />
-							<div className="absolute inset-x-0 bottom-0 p-4">
-								<div className="rounded-md bg-white/90 px-3 py-2 text-center text-sm font-medium text-secondary">{(c as any).name}</div>
-							</div>
-						</Link>
-					)
-				})}
+		<section className="py-20 bg-gray-50">
+			<div className="container">
+				<motion.div
+					initial={{ opacity: 0, y: 20 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					viewport={{ once: true }}
+					className="text-center mb-12"
+				>
+					<h2 className="text-4xl font-serif mb-4">Ring Collections</h2>
+					<p className="text-xl text-gray-600">
+						Explore our handcrafted ring categories, each designed with passion and precision
+					</p>
+				</motion.div>
+
+				<div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+					{ringCategories.map((category, index) => (
+						<motion.div
+							key={category.id}
+							initial={{ opacity: 0, y: 20 }}
+							whileInView={{ opacity: 1, y: 0 }}
+							viewport={{ once: true }}
+							transition={{ delay: index * 0.1 }}
+							whileHover={{ y: -8, scale: 1.02 }}
+							className="group relative"
+						>
+							<Link href={`/products?category=${category.id}`} className="block">
+								<div className="relative overflow-hidden rounded-xl bg-white shadow-lg">
+									{/* Image */}
+									<div className="relative h-64 overflow-hidden">
+										<motion.div
+											whileHover={{ scale: 1.1 }}
+											transition={{ duration: 0.6 }}
+										>
+											<SmartImage 
+												srcs={[category.image]} 
+												alt={category.name} 
+												className="h-full w-full" 
+												width={400}
+												height={256}
+											/>
+										</motion.div>
+										
+										{/* Overlay */}
+										<div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+										
+										{/* Content */}
+										<div className="absolute bottom-0 left-0 right-0 p-6 text-white">
+											<h3 className="text-xl font-semibold mb-2">{category.name}</h3>
+											<p className="text-sm text-gray-200 mb-2">{category.description}</p>
+											<span className="text-xs text-gold-300">{category.count}</span>
+										</div>
+									</div>
+								</div>
+							</Link>
+						</motion.div>
+					))}
+				</div>
+
+				<motion.div
+					initial={{ opacity: 0, y: 20 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					viewport={{ once: true }}
+					className="text-center mt-12"
+				>
+					<Link 
+						href="/products"
+						className="inline-block px-8 py-4 border-2 border-gold-500 text-gold-500 rounded-full font-medium 
+								   hover:bg-gold-500 hover:text-white transition-all duration-300 hover:scale-105"
+					>
+						Browse All Ring Collections
+					</Link>
+				</motion.div>
 			</div>
 		</section>
 	)
 }
+
+export default CategoryShowcase
 
 

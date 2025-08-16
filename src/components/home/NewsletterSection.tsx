@@ -1,17 +1,85 @@
-export default function NewsletterSection() {
+"use client"
+
+import { motion } from 'framer-motion'
+import { Mail, Sparkles } from 'lucide-react'
+
+const NewsletterSection = () => {
 	return (
-		<section className="container py-12">
-			<div className="rounded-2xl bg-accent p-8 text-center">
-				<h2 className="font-[var(--font-serif)] text-2xl font-semibold text-secondary">Get 10% Off Your First Order</h2>
-				<p className="mt-2 text-sm text-gray-700">Subscribe to receive exclusive offers and new collection updates.</p>
-				<form className="mx-auto mt-5 flex max-w-md gap-2">
-					<input type="email" required placeholder="you@example.com" className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
-					<button className="rounded-md bg-secondary px-4 py-2 text-sm text-white hover:opacity-90">Subscribe</button>
-				</form>
-				<p className="mt-2 text-xs text-gray-500">By subscribing, you agree to our privacy policy.</p>
+		<section className="py-20 bg-gold-50">
+			<div className="container">
+				<motion.div
+					initial={{ opacity: 0, y: 20 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					viewport={{ once: true }}
+					className="text-center max-w-3xl mx-auto"
+				>
+					<motion.div
+						whileHover={{ rotate: 360 }}
+						transition={{ duration: 0.6 }}
+						className="w-16 h-16 bg-gold-500 rounded-full flex items-center justify-center mx-auto mb-6"
+					>
+						<Mail className="w-8 h-8 text-white" />
+					</motion.div>
+					
+					<h2 className="text-4xl font-serif mb-4">Stay Connected with the Artisan</h2>
+					<p className="text-xl text-gray-600 mb-8">
+						Be the first to see new ring designs, artisan stories, and exclusive offers. 
+						Join our community of ring lovers and get 10% off your first purchase.
+					</p>
+
+					<motion.div
+						initial={{ opacity: 0, y: 20 }}
+						whileInView={{ opacity: 1, y: 0 }}
+						viewport={{ once: true }}
+						transition={{ delay: 0.2 }}
+						className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto"
+					>
+						<input
+							type="email"
+							placeholder="Enter your email address"
+							className="flex-1 px-6 py-4 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+						/>
+						<motion.button
+							whileHover={{ scale: 1.05, backgroundColor: '#B8961F' }}
+							whileTap={{ scale: 0.95 }}
+							className="px-8 py-4 bg-gold-500 text-white rounded-full font-medium 
+									   shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
+						>
+							<Sparkles className="w-5 h-5" />
+							Subscribe
+						</motion.button>
+					</motion.div>
+
+					<p className="text-sm text-gray-500 mt-4">
+						No spam, ever. Unsubscribe anytime. Your privacy is important to us.
+					</p>
+
+					<motion.div
+						initial={{ opacity: 0 }}
+						whileInView={{ opacity: 1 }}
+						viewport={{ once: true }}
+						transition={{ delay: 0.4 }}
+						className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6 text-sm"
+					>
+						<div className="flex items-center justify-center gap-2">
+							<Sparkles className="w-4 h-4 text-gold-500" />
+							<span>Early access to new designs</span>
+						</div>
+						<div className="flex items-center justify-center gap-2">
+							<Sparkles className="w-4 h-4 text-gold-500" />
+							<span>Artisan workshop stories</span>
+						</div>
+						<div className="flex items-center justify-center gap-2">
+							<Sparkles className="w-4 h-4 text-gold-500" />
+							<span>Exclusive member discounts</span>
+						</div>
+					</motion.div>
+				</motion.div>
 			</div>
 		</section>
 	)
 }
+
+export default NewsletterSection
 
 

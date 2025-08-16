@@ -5,7 +5,7 @@ export async function getFeaturedProducts(limit = 4): Promise<ProductWithRelatio
 	return db.product.findMany({
 		where: { featured: true }, // Removed active filter temporarily
 		take: limit,
-		orderBy: { createdAt: 'desc' },
+		orderBy: { createdAt: 'asc' },
 		include: { category: true, collections: true, reviews: true, wishlist: true },
 	}) as any
 }
@@ -28,15 +28,26 @@ export async function getPaginatedProducts({
 	sort?: 'new' | 'price-asc' | 'price-desc'
 }) {
 	const skip = (page - 1) * pageSize
-	const where: any = {} // Removed active filter temporarily
+	const where: any = {}
+	const ringCategorySlugs = [
+		'engagement-rings',
+		'wedding-bands',
+		'eternity-rings',
+		'signet-rings',
+		'statement-rings',
+		'stackable-rings',
+	] as const
 	if (q && q.trim()) {
 		where.OR = [
 			{ name: { contains: q, mode: 'insensitive' } },
 			{ description: { contains: q, mode: 'insensitive' } },
 		]
 	}
+	// Limit results to ring categories by default unless a category is explicitly requested
 	if (categorySlug) {
 		where.category = { slug: categorySlug }
+	} else {
+		where.category = { slug: { in: [...ringCategorySlugs] } }
 	}
 	if (typeof minPrice === 'number' || typeof maxPrice === 'number') {
 		where.price = {}
@@ -77,10 +88,18 @@ export async function getAllCategories() {
 }
 
 export async function getRelatedProducts(productId: string, categoryId: string, limit = 6) {
-	return db.product.findMany({
-		where: { categoryId, NOT: { id: productId } }, // Removed active filter temporarily
+	const items = await db.product.findMany({
+		where: { categoryId, NOT: { id: productId } },
 		take: limit,
 		orderBy: { createdAt: 'desc' },
+		select: {
+			id: true,
+			name: true,
+			slug: true,
+			price: true,
+			category: { select: { slug: true } },
+		},
 	})
+	return items
 }
 

@@ -5,7 +5,7 @@ describe('Complete User Journey', () => {
 		cy.contains('Collections').click()
 		cy.url().should('include', '/products')
 
-		cy.get('a[href^="/products/"]').first().click()
+		cy.get('[data-testid="product-card"]').first().click()
 		cy.url().should('include', '/products/')
 
 		cy.get('[data-testid="add-to-cart"]').click()

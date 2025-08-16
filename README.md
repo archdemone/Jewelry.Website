@@ -6,6 +6,9 @@ Development setup:
 - Run dev server: `npm run dev`
 - Lint: `npm run lint`
 - Build: `npm run build`
+- Start: `npm start`
+- Run unit tests: `npm test`
+- Run E2E tests: `npm run test:e2e`
 
 Environment:
 
@@ -15,7 +18,7 @@ Environment:
 
 ```
 NEXTAUTH_URL=http://localhost:3000
-NEXTAUTH_SECRET=dev-secret-change-me
+NEXTAUTH_SECRET=dev-secret
 GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
 ```

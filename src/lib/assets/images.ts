@@ -1,90 +1,69 @@
-// Product image management system
+// Ring image management system
 // Using local images stored in /public/images/products/
 
-export const PRODUCT_IMAGES: Record<string, string[]> = {
-  // Rings
-  'diamond-solitaire-ring': [
-    '/images/products/diamond-solitaire-ring-1.jpg',
-    '/images/products/diamond-solitaire-ring-2.jpg',
-    '/images/products/diamond-solitaire-ring-3.jpg',
+export const RING_IMAGES: Record<string, string[]> = {
+  // Engagement Rings
+  'classic-solitaire-engagement-ring': [
+    '/images/products/classic-solitaire-engagement-ring-1.jpg',
+    '/images/products/classic-solitaire-engagement-ring-2.jpg',
   ],
-  'gold-wedding-band': [
-    '/images/products/gold-wedding-band-1.jpg',
-    '/images/products/gold-wedding-band-2.jpg',
+  'vintage-inspired-halo-ring': [
+    '/images/products/vintage-halo-ring-1.jpg',
+    '/images/products/vintage-halo-ring-2.jpg',
   ],
-  'emerald-ring': [
-    '/images/products/emerald-ring-1.jpg',
-    '/images/products/emerald-ring-2.jpg',
-  ],
-
-  // Necklaces
-  'diamond-pendant-necklace': [
-    '/images/products/diamond-pendant-necklace-1.jpg',
-    '/images/products/diamond-pendant-necklace-2.jpg',
-  ],
-  'gold-chain-necklace': [
-    '/images/products/gold-chain-necklace-1.jpg',
-    '/images/products/gold-chain-necklace-2.jpg',
-  ],
-  'pearl-necklace': [
-    '/images/products/pearl-necklace-1.jpg',
-    '/images/products/pearl-necklace-2.jpg',
+  'modern-three-stone-ring': [
+    '/images/products/modern-three-stone-ring-1.jpg',
+    '/images/products/modern-three-stone-ring-2.jpg',
   ],
 
-  // Bracelets
-  'tennis-bracelet': [
-    '/images/products/tennis-bracelet-1.jpg',
-    '/images/products/tennis-bracelet-2.jpg',
+  // Wedding Bands
+  'hammered-wedding-band': [
+    '/images/products/hammered-wedding-band-1.jpg',
+    '/images/products/hammered-wedding-band-2.jpg',
   ],
-  'gold-bangle-bracelet': [
-    '/images/products/gold-bangle-bracelet-1.jpg',
-    '/images/products/gold-bangle-bracelet-2.jpg',
+  'classic-plain-wedding-band': [
+    '/images/products/classic-plain-wedding-band-1.jpg',
+    '/images/products/classic-plain-wedding-band-2.jpg',
   ],
-  'charm-bracelet': [
-    '/images/products/charm-bracelet-1.jpg',
-    '/images/products/charm-bracelet-2.jpg',
-  ],
-
-  // Earrings
-  'pearl-drop-earrings': [
-    '/images/products/pearl-drop-earrings-1.jpg',
-    '/images/products/pearl-drop-earrings-2.jpg',
-  ],
-  'diamond-stud-earrings': [
-    '/images/products/diamond-stud-earrings-1.jpg',
-    '/images/products/diamond-stud-earrings-2.jpg',
-  ],
-  'gold-hoop-earrings': [
-    '/images/products/gold-hoop-earrings-1.jpg',
-    '/images/products/gold-hoop-earrings-2.jpg',
+  'diamond-pave-wedding-band': [
+    '/images/products/diamond-pave-wedding-band-1.jpg',
+    '/images/products/diamond-pave-wedding-band-2.jpg',
   ],
 
-  // Watches
-  'luxury-automatic-watch': [
-    '/images/products/luxury-automatic-watch-1.jpg',
-    '/images/products/luxury-automatic-watch-2.jpg',
+  // Eternity Rings
+  'sapphire-eternity-ring': [
+    '/images/products/sapphire-eternity-ring-1.jpg',
+    '/images/products/sapphire-eternity-ring-2.jpg',
   ],
-  'gold-dress-watch': [
-    '/images/products/gold-dress-watch-1.jpg',
-    '/images/products/gold-dress-watch-2.jpg',
-  ],
-  'sport-luxury-watch': [
-    '/images/products/sport-luxury-watch-1.jpg',
-    '/images/products/sport-luxury-watch-2.jpg',
+  'diamond-eternity-ring': [
+    '/images/products/diamond-eternity-ring-1.jpg',
+    '/images/products/diamond-eternity-ring-2.jpg',
   ],
 
-  // Pendants
-  'diamond-cross-pendant': [
-    '/images/products/diamond-cross-pendant-1.jpg',
-    '/images/products/diamond-cross-pendant-2.jpg',
+  // Signet Rings
+  'classic-signet-ring': [
+    '/images/products/classic-signet-ring-1.jpg',
+    '/images/products/classic-signet-ring-2.jpg',
   ],
-  'gold-heart-pendant': [
-    '/images/products/gold-heart-pendant-1.jpg',
-    '/images/products/gold-heart-pendant-2.jpg',
+
+  // Statement Rings
+  'emerald-statement-ring': [
+    '/images/products/emerald-statement-ring-1.jpg',
+    '/images/products/emerald-statement-ring-2.jpg',
   ],
-  'emerald-pendant': [
-    '/images/products/emerald-pendant-1.jpg',
-    '/images/products/emerald-pendant-2.jpg',
+  'ruby-cocktail-ring': [
+    '/images/products/ruby-cocktail-ring-1.jpg',
+    '/images/products/ruby-cocktail-ring-2.jpg',
+  ],
+
+  // Stackable Rings
+  'minimalist-gold-band': [
+    '/images/products/minimalist-gold-band-1.jpg',
+    '/images/products/minimalist-gold-band-2.jpg',
+  ],
+  'diamond-accent-band': [
+    '/images/products/diamond-accent-band-1.jpg',
+    '/images/products/diamond-accent-band-2.jpg',
   ],
 };
 
@@ -101,14 +80,14 @@ export const CATEGORY_PLACEHOLDERS = {
 // Default placeholder for any missing images
 export const DEFAULT_PLACEHOLDER = '/images/products/placeholder.svg';
 
-// Get product images by slug
-export function getProductImages(productSlug: string): string[] {
-  const images = PRODUCT_IMAGES[productSlug as keyof typeof PRODUCT_IMAGES];
+// Get ring images by slug
+export function getRingImages(ringSlug: string): string[] {
+  const images = RING_IMAGES[ringSlug as keyof typeof RING_IMAGES];
   if (images && images.length > 0) {
     return images;
   }
   
-  // Fallback to category placeholder
+  // Fallback to default placeholder
   return [DEFAULT_PLACEHOLDER];
 }
 
@@ -118,17 +97,17 @@ export function getCategoryPlaceholder(categorySlug?: string): string {
   return CATEGORY_PLACEHOLDERS[categorySlug as keyof typeof CATEGORY_PLACEHOLDERS] || DEFAULT_PLACEHOLDER;
 }
 
-// Get product image fallback with category context
+// Get product image fallback with category context (updated for rings)
 export function getProductImageFallback(opts: { 
   productSlug?: string; 
   categorySlug?: string; 
   name?: string 
 }): string[] {
-  // First try to get specific product images
+  // First try to get specific ring images
   if (opts.productSlug) {
-    const productImages = getProductImages(opts.productSlug);
-    if (productImages[0] !== DEFAULT_PLACEHOLDER) {
-      return productImages;
+    const ringImages = getRingImages(opts.productSlug);
+    if (ringImages[0] !== DEFAULT_PLACEHOLDER) {
+      return ringImages;
     }
   }
   
@@ -137,7 +116,11 @@ export function getProductImageFallback(opts: {
   return [categoryPlaceholder];
 }
 
-// Legacy function for backward compatibility
+// Legacy helpers for backward compatibility
+export function getProductImages(productSlug: string): string[] {
+  return getRingImages(productSlug);
+}
+
 export function getCategoryImage(slug?: string): string[] {
   const placeholder = getCategoryPlaceholder(slug);
   return [placeholder];
