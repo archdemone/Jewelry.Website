@@ -12,19 +12,11 @@ type SmartImageProps = {
 	priority?: boolean
 	sizes?: string
 	quality?: number
-<<<<<<< HEAD
 	fill?: boolean
 	unoptimized?: boolean
 }
 
 export default function SmartImage({ srcs, alt, className, width, height, priority, sizes, quality, fill, unoptimized }: SmartImageProps) {
-=======
-	loading?: 'lazy' | 'eager'
-	fill?: boolean
-}
-
-export default function SmartImage({ srcs, alt, className, width, height, priority, sizes, quality, loading, fill }: SmartImageProps) {
->>>>>>> 89157ae2e7e741bb4ef533c424b09ac4fc0abaa2
 	const [currentSrcIndex, setCurrentSrcIndex] = React.useState(0)
 	const [useFallback, setUseFallback] = React.useState(false)
 	const [clientTs, setClientTs] = React.useState<string | null>(null)
@@ -118,7 +110,6 @@ export default function SmartImage({ srcs, alt, className, width, height, priori
 				width={width || 800}
 				height={height || 800}
 				onError={handleError as any}
-				loading={loading}
 			/>
 		)
 	}
@@ -146,20 +137,12 @@ export default function SmartImage({ srcs, alt, className, width, height, priori
 		<Image
 			src={versionedSrc as string}
 			alt={displayText}
-<<<<<<< HEAD
 			className={`object-cover ${className ?? ''}`}
 			width={width || 800}
 			height={height || 800}
 			sizes={sizes || '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'}
 			quality={quality || 90}
 			unoptimized={unoptimized}
-=======
-			className={`object-cover ${className}`}
-			{...(fill ? { fill: true } : { width: width || 800, height: height || 800 })}
-			sizes={sizes}
-			quality={quality}
-			loading={loading}
->>>>>>> 89157ae2e7e741bb4ef533c424b09ac4fc0abaa2
 			onError={handleError}
 			priority={priority}
 		/>

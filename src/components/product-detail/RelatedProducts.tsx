@@ -40,7 +40,6 @@ export default function RelatedProducts({ products }: RelatedProductsProps) {
 													height={800}
 													sizes="(min-width: 1280px) 300px, 50vw"
 													quality={90}
-													loading="lazy"
 												/>
 								</div>
 								<div className="mt-3">

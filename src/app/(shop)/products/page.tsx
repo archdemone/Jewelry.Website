@@ -78,7 +78,6 @@ export default async function ProductsPage({ searchParams }: { searchParams: { p
 										height={800}
 										sizes="(min-width: 1280px) 400px, 50vw"
 										quality={90}
-										loading="lazy"
 									/>
 								</div>
 								<div className="mt-3 text-sm font-medium">{p.name}</div>
