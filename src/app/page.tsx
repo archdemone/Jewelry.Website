@@ -3,7 +3,9 @@ import { Suspense } from 'react'
 
 // Lazy load components to reduce initial bundle size
 const HeroSection = dynamic(() => import('@/components/home/HeroSection'), {
-	loading: () => <div className="h-screen min-h-[600px] bg-gray-100 animate-pulse" />
+	loading: () => (
+		<div className="w-full overflow-hidden aspect-[16/9] md:aspect-[21/9] lg:aspect-[24/9] min-h-[400px] max-h-[600px] md:max-h-[700px] bg-gray-100 animate-pulse" />
+	)
 })
 
 const FeaturedProducts = dynamic(() => import('@/components/home/FeaturedProducts'), {

@@ -1,8 +1,6 @@
 export const dynamic = 'force-dynamic'
 
 import Link from 'next/link'
-import { Header } from '@/components/layout/Header'
-import { Footer } from '@/components/layout/Footer'
 import { getAllCategories, getPaginatedProducts } from '@/lib/queries'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -20,7 +18,6 @@ export default async function ProductsPage({ searchParams }: { searchParams: { p
 
 	return (
 		<>
-			<Header />
 			<main className="container py-10">
 				<div className="text-center mb-8">
 					<h1 className="font-[var(--font-serif)] text-4xl font-semibold text-secondary mb-4">Handcrafted Rings</h1>
@@ -100,7 +97,6 @@ export default async function ProductsPage({ searchParams }: { searchParams: { p
 					</nav>
 				)}
 			</main>
-			<Footer />
 		</>
 	)
 }
