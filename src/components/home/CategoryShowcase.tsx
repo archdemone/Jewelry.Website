@@ -2,7 +2,8 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import PlaceholderImage from '@/components/ui/PlaceholderImage'
+import SmartImage from '@/components/common/SmartImage'
+import { getRingCategoryPlaceholder } from '@/lib/assets/images'
 
 const CategoryShowcase = () => {
 	const ringCategories = [
@@ -10,42 +11,42 @@ const CategoryShowcase = () => {
 			id: 'engagement-rings',
 			name: 'Engagement Rings',
 			description: 'Handcrafted engagement rings with ethically sourced diamonds',
-			image: null, // Will use placeholder
+			image: getRingCategoryPlaceholder('engagement-rings'),
 			count: '12 designs'
 		},
 		{
 			id: 'wedding-bands',
 			name: 'Wedding Bands',
 			description: 'Matching wedding bands for your special day',
-			image: null, // Will use placeholder
+			image: getRingCategoryPlaceholder('wedding-bands'),
 			count: '8 designs'
 		},
 		{
 			id: 'eternity-rings',
 			name: 'Eternity Rings',
 			description: 'Celebrate eternal love with continuous stones',
-			image: null, // Will use placeholder
+			image: getRingCategoryPlaceholder('eternity-rings'),
 			count: '6 designs'
 		},
 		{
 			id: 'signet-rings',
 			name: 'Signet Rings',
 			description: 'Classic signet rings with custom engraving options',
-			image: null, // Will use placeholder
+			image: getRingCategoryPlaceholder('signet-rings'),
 			count: '4 designs'
 		},
 		{
 			id: 'statement-rings',
 			name: 'Statement Rings',
 			description: 'Bold designs that express your personality',
-			image: null, // Will use placeholder
+			image: getRingCategoryPlaceholder('statement-rings'),
 			count: '10 designs'
 		},
 		{
 			id: 'stackable-rings',
 			name: 'Stackable Rings',
 			description: 'Delicate rings designed to be worn together',
-			image: null, // Will use placeholder
+			image: getRingCategoryPlaceholder('stackable-rings'),
 			count: '15 designs'
 		}
 	]
@@ -84,7 +85,13 @@ const CategoryShowcase = () => {
 											whileHover={{ scale: 1.1 }}
 											transition={{ duration: 0.6 }}
 										>
-											<PlaceholderImage text={category.name} className="h-full w-full" />
+											<SmartImage 
+												srcs={[category.image]} 
+												alt={category.name} 
+												className="h-full w-full" 
+												width={400}
+												height={256}
+											/>
 										</motion.div>
 										
 										{/* Overlay */}
