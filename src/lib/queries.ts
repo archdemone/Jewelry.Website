@@ -77,10 +77,18 @@ export async function getAllCategories() {
 }
 
 export async function getRelatedProducts(productId: string, categoryId: string, limit = 6) {
-	return db.product.findMany({
-		where: { categoryId, NOT: { id: productId } }, // Removed active filter temporarily
+	const items = await db.product.findMany({
+		where: { categoryId, NOT: { id: productId } },
 		take: limit,
 		orderBy: { createdAt: 'desc' },
+		select: {
+			id: true,
+			name: true,
+			slug: true,
+			price: true,
+			category: { select: { slug: true } },
+		},
 	})
+	return items
 }
 

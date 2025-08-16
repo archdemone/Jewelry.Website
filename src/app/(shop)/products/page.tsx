@@ -33,7 +33,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: { p
 						<Label htmlFor="category">Category</Label>
 						<select id="category" name="category" defaultValue={category} className="mt-1 w-full rounded-md border px-3 py-2 text-sm">
 							<option value="">All</option>
-							{categories.map(c => (
+							{categories.map((c: { id: string; slug: string; name: string }) => (
 								<option key={c.id} value={c.slug}>{c.name}</option>
 							))}
 						</select>
@@ -59,7 +59,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: { p
 					</div>
 				</form>
 				<div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-									{items.map((p) => {
+										{items.map((p: { id: string; slug: string; name: string; price: number; images?: any; category?: { slug?: string } }) => {
 						// Prefer product's own images from DB; fall back to curated mapping
 						const dbImages = Array.isArray((p as any).images) ? ((p as any).images as string[]) : []
 						const productImages = dbImages.length > 0
