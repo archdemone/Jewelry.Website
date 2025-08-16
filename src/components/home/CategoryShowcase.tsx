@@ -85,13 +85,16 @@ const CategoryShowcase = () => {
 											whileHover={{ scale: 1.1 }}
 											transition={{ duration: 0.6 }}
 										>
-											<SmartImage 
-												srcs={[category.image]} 
-												alt={category.name} 
-												className="h-full w-full" 
-												width={400}
-												height={256}
-											/>
+																								<SmartImage 
+														srcs={[category.image]} 
+														alt={category.name} 
+														className="h-full w-full" 
+														width={800}
+														height={512}
+														sizes="(min-width: 1280px) 400px, 50vw"
+														quality={90}
+														loading="lazy"
+													/>
 										</motion.div>
 										
 										{/* Overlay */}
