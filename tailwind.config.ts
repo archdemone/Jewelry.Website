@@ -6,6 +6,14 @@ const config: Config = {
 		'./src/components/**/*.{js,ts,jsx,tsx,mdx}',
 		'./src/app/**/*.{js,ts,jsx,tsx,mdx}',
 	],
+	safelist: [
+		'bg-blue-100', 'border-blue-400', 'text-blue-600',
+		'bg-amber-100', 'border-amber-400', 'text-amber-600',
+		'bg-green-100', 'border-green-400', 'text-green-600',
+		'bg-purple-100', 'border-purple-400', 'text-purple-600',
+		'bg-indigo-100', 'border-indigo-400', 'text-indigo-600',
+		'bg-emerald-100', 'border-emerald-400', 'text-emerald-600',
+	],
 	theme: {
 		container: {
 			center: true,

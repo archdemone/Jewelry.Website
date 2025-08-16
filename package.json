@@ -23,7 +23,8 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "test:ci": "npm run test:unit && npm run test:e2e",
-    "setup:prod": "node scripts/setup-production-env.js"
+    "setup:prod": "node scripts/setup-production-env.js",
+    "generate-process-images": "node scripts/generate-process-images.js"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.10.0",
