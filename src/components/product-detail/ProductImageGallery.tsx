@@ -25,9 +25,11 @@ export default function ProductImageGallery({ images, productName }: ProductImag
 					<SmartImage
 						srcs={[displayImages[selectedImage] || displayImages[0]]}
 						alt={`${safeProductName} - Image ${selectedImage + 1}`}
-						className="h-full w-full object-cover"
-						width={800}
-						height={800}
+						className="h-full w-full"
+						width={1200}
+						height={1200}
+						sizes="(max-width: 1024px) 100vw, 60vw"
+						quality={95}
 					/>
 				</div>
 			</div>
@@ -49,9 +51,10 @@ export default function ProductImageGallery({ images, productName }: ProductImag
 								<SmartImage
 									srcs={[image]}
 									alt={`${safeProductName} - Thumbnail ${index + 1}`}
-									className="h-full w-full object-cover"
-									width={200}
-									height={200}
+									className="h-full w-full"
+									width={240}
+									height={240}
+									quality={90}
 								/>
 							</button>
 						))}
