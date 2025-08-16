@@ -14,7 +14,7 @@ public/
         ├── diamond-solitaire-ring-1.jpg
         ├── diamond-solitaire-ring-2.jpg
         ├── gold-wedding-band-1.jpg
-        ├── placeholder.jpg
+        ├── placeholder.svg
         ├── placeholder-ring.svg
         └── ... (other product images)
 ```
@@ -44,9 +44,12 @@ export const PRODUCT_IMAGES: Record<string, string[]> = {
 #### Category Placeholders
 ```typescript
 export const CATEGORY_PLACEHOLDERS = {
-  rings: '/images/products/placeholder-ring.jpg',
-  necklaces: '/images/products/placeholder-necklace.jpg',
-  // ... other categories
+  rings: '/images/products/placeholder-ring.svg',
+  necklaces: '/images/products/placeholder-necklace.svg',
+  bracelets: '/images/products/placeholder-bracelet.svg',
+  earrings: '/images/products/placeholder-earrings.svg',
+  watches: '/images/products/placeholder-watch.svg',
+  pendants: '/images/products/placeholder-pendant.svg',
 };
 ```
 
@@ -186,7 +189,7 @@ npm run validate-images
 ### Image Loading Priority
 1. **Specific Product Images**: Exact matches for product slug
 2. **Category Placeholders**: Relevant category placeholder
-3. **Default Placeholder**: Generic jewelry placeholder
+3. **Default Placeholder**: Generic jewelry placeholder (SVG)
 4. **CSS Gradient**: Beautiful gold gradient with text overlay
 
 ### Error Handling
