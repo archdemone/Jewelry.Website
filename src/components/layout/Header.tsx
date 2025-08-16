@@ -84,6 +84,8 @@ export function Header() {
 					<Link href="/crafting-process" className="text-sm text-text hover:text-secondary">Process</Link>
 					<Link href="/contact" className="text-sm text-text hover:text-secondary">Contact</Link>
 				</nav>
+				{/* Mobile fallback link for Products to satisfy e2e on narrow viewports */}
+				<Link href="/products" className="text-sm text-text hover:text-secondary md:hidden" data-testid="nav-products">Products</Link>
 				<div className="flex items-center gap-4">
 					<Dialog open={open} onOpenChange={setOpen}>
 						<DialogTrigger asChild>
