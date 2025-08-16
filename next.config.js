@@ -13,7 +13,7 @@ const securityHeaders = [
 const nextConfig = {
 	reactStrictMode: true,
 	env: {
-		NEXT_PUBLIC_ASSET_VERSION: `${Date.now()}`,
+		NEXT_PUBLIC_ASSET_VERSION: process.env.NODE_ENV === 'production' ? '1' : `${Date.now()}`,
 	},
 	transpilePackages: [
 		'@radix-ui/react-icons',
@@ -32,11 +32,21 @@ const nextConfig = {
 	swcMinify: true,
 	compress: true,
 	poweredByHeader: false,
-			experimental: {
-			webVitalsAttribution: ['CLS', 'LCP'],
-			// optimizeCss: true, // disabled to avoid critters dependency issues
-			optimizePackageImports: ['lucide-react', '@headlessui/react'],
+				experimental: {
+		webVitalsAttribution: ['CLS', 'LCP'],
+		// optimizeCss: true, // disabled to avoid critters dependency issues
+		optimizePackageImports: ['lucide-react', '@headlessui/react'],
+		// Performance optimizations
+		optimizeServerReact: true,
+		turbo: {
+			rules: {
+				'*.svg': {
+					loaders: ['@svgr/webpack'],
+					as: '*.js',
+				},
+			},
 		},
+	},
 async headers() {
 		return [
 			{
