@@ -86,6 +86,7 @@ const CategoryShowcase = () => {
 											transition={{ duration: 0.6 }}
 											className="relative h-full w-full"
 										>
+<<<<<<< HEAD
 											<SmartImage 
 												key={`cat-img-${category.id}`}
 												srcs={[
@@ -101,6 +102,18 @@ const CategoryShowcase = () => {
 												unoptimized={process.env.NODE_ENV !== 'production'}
 												priority={index === 0}
 											/>
+=======
+																								<SmartImage 
+														srcs={[category.image]} 
+														alt={category.name} 
+														className="h-full w-full" 
+														width={800}
+														height={512}
+														sizes="(min-width: 1280px) 400px, 50vw"
+														quality={90}
+														loading="lazy"
+													/>
+>>>>>>> 89157ae2e7e741bb4ef533c424b09ac4fc0abaa2
 										</motion.div>
 										
 										{/* Overlay */}

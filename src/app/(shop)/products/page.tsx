@@ -5,6 +5,7 @@ import { getAllCategories, getPaginatedProducts } from '@/lib/queries'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { getProductImageFallback } from '@/lib/assets/images'
+import SmartImage from '@/components/common/SmartImage'
 
 export default async function ProductsPage({ searchParams }: { searchParams: { page?: string; q?: string; category?: string; min?: string; max?: string; sort?: string } }) {
 	const page = Number(searchParams?.page ?? '1') || 1
@@ -69,7 +70,16 @@ export default async function ProductsPage({ searchParams }: { searchParams: { p
 						return (
 							<Link key={p.id} href={`/products/${p.slug}`} className="rounded-lg border p-4 transition-shadow hover:shadow-sm" data-testid="product-card">
 								<div className="relative aspect-square w-full overflow-hidden rounded-md bg-accent">
-									<img src={productImages[0]} alt={p.name} className="h-full w-full object-cover" width={300} height={300} />
+									<SmartImage
+										srcs={[productImages[0]]}
+										alt={p.name}
+										className="h-full w-full"
+										width={800}
+										height={800}
+										sizes="(min-width: 1280px) 400px, 50vw"
+										quality={90}
+										loading="lazy"
+									/>
 								</div>
 								<div className="mt-3 text-sm font-medium">{p.name}</div>
 								<div className="text-sm text-gray-600">{p.material} • {p.gemstones || 'No stones'}</div>

@@ -33,6 +33,7 @@ export default function manifest(): MetadataRoute.Manifest {
 				purpose: 'any',
 			},
 		],
+<<<<<<< HEAD
 		screenshots: [
 			{
 				src: '/images/products/category-engagement-rings.jpg',
@@ -40,6 +41,15 @@ export default function manifest(): MetadataRoute.Manifest {
 				type: 'image/jpeg',
 			},
 		],
+=======
+					screenshots: [
+				{
+					src: '/images/products/category-engagement-rings.jpg',
+					sizes: '800x600',
+					type: 'image/jpeg',
+				},
+			],
+>>>>>>> 89157ae2e7e741bb4ef533c424b09ac4fc0abaa2
 		shortcuts: [
 			{
 				name: 'Engagement Rings',

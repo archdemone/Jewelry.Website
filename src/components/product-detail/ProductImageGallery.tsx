@@ -22,6 +22,7 @@ export default function ProductImageGallery({ images, productName }: ProductImag
 			{/* Main Image */}
 			<div className="lg:col-span-4">
 				<div className="aspect-square overflow-hidden rounded-lg">
+<<<<<<< HEAD
 					<SmartImage
 						srcs={[displayImages[selectedImage] || displayImages[0]]}
 						alt={`${safeProductName} - Image ${selectedImage + 1}`}
@@ -31,6 +32,17 @@ export default function ProductImageGallery({ images, productName }: ProductImag
 						sizes="(max-width: 1024px) 100vw, 60vw"
 						quality={95}
 					/>
+=======
+											<SmartImage
+							srcs={[displayImages[selectedImage] || displayImages[0]]}
+							alt={`${safeProductName} - Image ${selectedImage + 1}`}
+							className="h-full w-full object-cover"
+							width={800}
+							height={800}
+							sizes="(min-width: 1024px) 400px, 100vw"
+							quality={90}
+						/>
+>>>>>>> 89157ae2e7e741bb4ef533c424b09ac4fc0abaa2
 				</div>
 			</div>
 
