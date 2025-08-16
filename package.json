@@ -19,7 +19,7 @@
     "test:coverage": "jest --coverage",
     "test:unit": "jest --ci --runInBand",
     "pretest:e2e": "node scripts/ci-build.js",
-    "test:e2e": "start-server-and-test \"next start -p 3000\" http://localhost:3000 \"cypress run --config video=false\"",
+    "test:e2e": "node scripts/run-e2e.js",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "test:ci": "npm run test:unit && npm run test:e2e"
