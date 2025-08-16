@@ -38,7 +38,7 @@ async function findOpenPort(start, end) {
 ;(async () => {
   // Always pick a free port in range (ignore existing PORT to avoid stale collisions)
   const PORT = String(await findOpenPort(3010, 3090))
-  const env = { ...process.env, HOST: '127.0.0.1', PORT, NEXTAUTH_URL: `http://localhost:${PORT}`, NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || 'dev-secret' }
+  const env = { ...process.env, HOST: '127.0.0.1', PORT, NEXTAUTH_URL: `http://localhost:${PORT}`, NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || 'dev-secret', E2E_NO_DB: '1', CI: process.env.CI || 'true' }
 
   const server = spawn('npx', ['--no-install', 'next', 'start', '-p', PORT, '--hostname', '127.0.0.1'], { cwd: projectRoot, env, shell: true, stdio: 'inherit' })
 
