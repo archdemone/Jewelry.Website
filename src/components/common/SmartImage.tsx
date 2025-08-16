@@ -12,9 +12,10 @@ type SmartImageProps = {
 	priority?: boolean
 	sizes?: string
 	quality?: number
+	fill?: boolean
 }
 
-export default function SmartImage({ srcs, alt, className, width, height, priority, sizes, quality }: SmartImageProps) {
+export default function SmartImage({ srcs, alt, className, width, height, priority, sizes, quality, fill }: SmartImageProps) {
 	const [currentSrcIndex, setCurrentSrcIndex] = React.useState(0)
 	const [useFallback, setUseFallback] = React.useState(false)
 	const [clientTs, setClientTs] = React.useState<string | null>(null)
@@ -106,11 +107,28 @@ export default function SmartImage({ srcs, alt, className, width, height, priori
 	}
 
 	// Try to load local non-SVG image via Next Image
+	if (fill) {
+		return (
+			<div className={`relative ${className ?? ''}`}>
+				<Image
+					src={versionedSrc as string}
+					alt={displayText}
+					fill
+					sizes={sizes || '100vw'}
+					quality={quality || 90}
+					className="object-cover"
+					onError={handleError}
+					priority={priority}
+				/>
+			</div>
+		)
+	}
+
 	return (
 		<Image
 			src={versionedSrc as string}
 			alt={displayText}
-			className={`object-cover ${className}`}
+			className={`object-cover ${className ?? ''}`}
 			width={width || 800}
 			height={height || 800}
 			sizes={sizes || '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'}

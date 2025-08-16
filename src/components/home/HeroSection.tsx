@@ -20,7 +20,7 @@ const HeroSection = () => {
 	}, [images.length])
 
 	return (
-		<section className="relative h-screen min-h-[600px] overflow-hidden">
+		<section className="relative w-full overflow-hidden aspect-[16/9] md:aspect-[21/9] lg:aspect-[24/9] min-h-[400px] max-h-[600px] md:max-h-[700px]">
 			{/* Background Image */}
 			<div className="absolute inset-0 bg-black">
 				<AnimatePresence>
@@ -35,10 +35,11 @@ const HeroSection = () => {
 						<SmartImage
 							srcs={[images[index]]}
 							alt="Artisan Crafting Ring"
-							className="h-full w-full object-cover"
-							width={1600}
-							height={900}
+							className="h-full w-full"
+							fill
 							priority
+							sizes="100vw"
+							quality={90}
 						/>
 					</motion.div>
 				</AnimatePresence>

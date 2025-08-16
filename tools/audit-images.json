@@ -1,20 +1,20 @@
 [
   {
     "type": "img",
-    "url": "http://localhost:3000/_next/image?url=%2Fimages%2Fheader%2Fhero-1.jpg%3Fv%3D1755372760225%26t%3D1755374792280&w=640&q=90",
-    "selector": "<img alt=\"Artisan Crafting Ring\" fetchpriority=\"high\" width=\"1600\" height=\"900\" decoding=\"async\" data-nimg=\"1\" class=\"ob",
+    "url": "http://localhost:3000/_next/image?url=%2Fimages%2Fheader%2Fhero-1.jpg%3Fv%3D1755375969669%26t%3D1755376281176&w=828&q=90",
+    "selector": "<img alt=\"Artisan Crafting Ring\" fetchpriority=\"high\" decoding=\"async\" data-nimg=\"fill\" class=\"object-cover\" style=\"posi",
     "rendered": "800x600",
-    "natural": "400x400",
+    "natural": "800x800",
     "dpr": 1,
-    "scale": 2,
+    "scale": 1,
     "contentType": "text/html; charset=utf-8",
     "bytes": "2132",
-    "notes": "Upscaled on this device DPR → possible blur",
+    "notes": "",
     "page": "/"
   },
   {
     "type": "img",
-    "url": "http://localhost:3000/_next/image?url=%2Fimages%2Fproducts%2Fclassic-solitaire-engagement-ring-1.jpg%3Fv%3D1755372760225%26t%3D1755374792311&w=640&q=90",
+    "url": "http://localhost:3000/_next/image?url=%2Fimages%2Fproducts%2Fclassic-solitaire-engagement-ring-1.jpg%3Fv%3D1755375969669%26t%3D1755376281211&w=640&q=90",
     "selector": "<img alt=\"Classic Solitaire Engagement Ring\" loading=\"lazy\" width=\"400\" height=\"320\" decoding=\"async\" data-nimg=\"1\" clas",
     "rendered": "352x352",
     "natural": "400x400",
@@ -27,7 +27,7 @@
   },
   {
     "type": "img",
-    "url": "http://localhost:3000/_next/image?url=%2Fimages%2Fproducts%2Fhammered-wedding-band-1.jpg%3Fv%3D1755372760225%26t%3D1755374792311&w=640&q=90",
+    "url": "http://localhost:3000/_next/image?url=%2Fimages%2Fproducts%2Fhammered-wedding-band-1.jpg%3Fv%3D1755375969669%26t%3D1755376281211&w=640&q=90",
     "selector": "<img alt=\"Hammered Wedding Band\" loading=\"lazy\" width=\"400\" height=\"320\" decoding=\"async\" data-nimg=\"1\" class=\"object-co",
     "rendered": "352x352",
     "natural": "400x400",
@@ -40,7 +40,7 @@
   },
   {
     "type": "img",
-    "url": "http://localhost:3000/_next/image?url=%2Fimages%2Fproducts%2Fsapphire-eternity-ring-1.jpg%3Fv%3D1755372760225%26t%3D1755374792311&w=3840&q=90",
+    "url": "http://localhost:3000/_next/image?url=%2Fimages%2Fproducts%2Fsapphire-eternity-ring-1.jpg%3Fv%3D1755375969669%26t%3D1755376281211&w=3000&q=90",
     "selector": "<img alt=\"Sapphire Eternity Ring\" loading=\"lazy\" width=\"400\" height=\"320\" decoding=\"async\" data-nimg=\"1\" class=\"object-c",
     "rendered": "352x282",
     "natural": "0x0",
@@ -53,7 +53,7 @@
   },
   {
     "type": "img",
-    "url": "http://localhost:3000/_next/image?url=%2Fimages%2Fproducts%2Fclassic-signet-ring-1.jpg%3Fv%3D1755372760225%26t%3D1755374792311&w=3840&q=90",
+    "url": "http://localhost:3000/_next/image?url=%2Fimages%2Fproducts%2Fclassic-signet-ring-1.jpg%3Fv%3D1755375969669%26t%3D1755376281211&w=3000&q=90",
     "selector": "<img alt=\"Vintage Signet Ring\" loading=\"lazy\" width=\"400\" height=\"320\" decoding=\"async\" data-nimg=\"1\" class=\"object-cove",
     "rendered": "352x282",
     "natural": "0x0",
@@ -66,7 +66,7 @@
   },
   {
     "type": "img",
-    "url": "http://localhost:3000/_next/image?url=%2Fimages%2Fproducts%2Fclassic-solitaire-engagement-ring-1.jpg%3Fv%3D1755372760225%26t%3D1755374792311&w=640&q=90",
+    "url": "http://localhost:3000/_next/image?url=%2Fimages%2Fproducts%2Fclassic-solitaire-engagement-ring-1.jpg%3Fv%3D1755375969669%26t%3D1755376281211&w=640&q=90",
     "selector": "<img alt=\"Engagement Rings\" loading=\"lazy\" width=\"400\" height=\"256\" decoding=\"async\" data-nimg=\"1\" class=\"object-cover h",
     "rendered": "352x352",
     "natural": "400x400",
@@ -79,7 +79,7 @@
   },
   {
     "type": "img",
-    "url": "http://localhost:3000/_next/image?url=%2Fimages%2Fproducts%2Fhammered-wedding-band-1.jpg%3Fv%3D1755372760225%26t%3D1755374792311&w=640&q=90",
+    "url": "http://localhost:3000/_next/image?url=%2Fimages%2Fproducts%2Fhammered-wedding-band-1.jpg%3Fv%3D1755375969669%26t%3D1755376281211&w=640&q=90",
     "selector": "<img alt=\"Wedding Bands\" loading=\"lazy\" width=\"400\" height=\"256\" decoding=\"async\" data-nimg=\"1\" class=\"object-cover h-fu",
     "rendered": "352x352",
     "natural": "400x400",
@@ -92,7 +92,7 @@
   },
   {
     "type": "img",
-    "url": "http://localhost:3000/_next/image?url=%2Fimages%2Fproducts%2Fsapphire-eternity-ring-1.jpg%3Fv%3D1755372760225%26t%3D1755374792311&w=3840&q=90",
+    "url": "http://localhost:3000/_next/image?url=%2Fimages%2Fproducts%2Fsapphire-eternity-ring-1.jpg%3Fv%3D1755375969669%26t%3D1755376281211&w=3000&q=90",
     "selector": "<img alt=\"Eternity Rings\" loading=\"lazy\" width=\"400\" height=\"256\" decoding=\"async\" data-nimg=\"1\" class=\"object-cover h-f",
     "rendered": "352x225",
     "natural": "0x0",
@@ -105,7 +105,7 @@
   },
   {
     "type": "img",
-    "url": "http://localhost:3000/_next/image?url=%2Fimages%2Fproducts%2Fclassic-signet-ring-1.jpg%3Fv%3D1755372760225%26t%3D1755374792311&w=3840&q=90",
+    "url": "http://localhost:3000/_next/image?url=%2Fimages%2Fproducts%2Fclassic-signet-ring-1.jpg%3Fv%3D1755375969669%26t%3D1755376281211&w=3000&q=90",
     "selector": "<img alt=\"Signet Rings\" loading=\"lazy\" width=\"400\" height=\"256\" decoding=\"async\" data-nimg=\"1\" class=\"object-cover h-ful",
     "rendered": "352x225",
     "natural": "0x0",
@@ -118,7 +118,7 @@
   },
   {
     "type": "img",
-    "url": "http://localhost:3000/_next/image?url=%2Fimages%2Fproducts%2Femerald-statement-ring-1.jpg%3Fv%3D1755372760225%26t%3D1755374792311&w=3840&q=90",
+    "url": "http://localhost:3000/_next/image?url=%2Fimages%2Fproducts%2Femerald-statement-ring-1.jpg%3Fv%3D1755375969669%26t%3D1755376281211&w=3000&q=90",
     "selector": "<img alt=\"Statement Rings\" loading=\"lazy\" width=\"400\" height=\"256\" decoding=\"async\" data-nimg=\"1\" class=\"object-cover h-",
     "rendered": "352x225",
     "natural": "0x0",
@@ -131,7 +131,7 @@
   },
   {
     "type": "img",
-    "url": "http://localhost:3000/_next/image?url=%2Fimages%2Fproducts%2Fminimalist-gold-band-1.jpg%3Fv%3D1755372760225%26t%3D1755374792311&w=3840&q=90",
+    "url": "http://localhost:3000/_next/image?url=%2Fimages%2Fproducts%2Fminimalist-gold-band-1.jpg%3Fv%3D1755375969669%26t%3D1755376281211&w=3000&q=90",
     "selector": "<img alt=\"Stackable Rings\" loading=\"lazy\" width=\"400\" height=\"256\" decoding=\"async\" data-nimg=\"1\" class=\"object-cover h-",
     "rendered": "352x225",
     "natural": "0x0",
