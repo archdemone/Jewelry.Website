@@ -115,12 +115,14 @@ export default function ArtisanPage() {
 										about how things are made slowly grew into a genuine passion for crafting.
 									</p>
 									<div className="mt-4">
-										<Image
-											src="/images/artisan/early-work-2015.jpg"
+										<SmartImage
+											srcs={['/images/artisan/early-work-2015.jpg']}
 											alt="Early jewelry experiments from 2015"
 											width={300}
 											height={200}
 											className="rounded-lg"
+											sizes="(max-width: 768px) 100vw, 300px"
+											quality={90}
 										/>
 									</div>
 								</div>
@@ -143,12 +145,14 @@ export default function ArtisanPage() {
 										This was the moment I realized I could create something truly special.
 									</p>
 									<div className="mt-4">
-										<Image
-											src="/images/artisan/first-inlay-rings-2020.jpg"
+										<SmartImage
+											srcs={['/images/artisan/first-inlay-rings-2020.jpg']}
 											alt="First gem inlay rings with carbon fiber"
 											width={300}
 											height={200}
 											className="rounded-lg"
+											sizes="(max-width: 768px) 100vw, 300px"
+											quality={90}
 										/>
 									</div>
 								</div>
@@ -234,12 +238,14 @@ export default function ArtisanPage() {
 								whileInView={{ opacity: 1, x: 0 }}
 								viewport={{ once: true }}
 							>
-								<Image
-									src="/images/artisan/bedroom-workshop-1.jpg"
+								<SmartImage
+									srcs={['/images/artisan/bedroom-workshop-1.jpg']}
 									alt="My bedroom workshop setup"
 									width={500}
 									height={350}
 									className="rounded-lg shadow-lg w-full"
+									sizes="(max-width: 768px) 100vw, 500px"
+									quality={90}
 								/>
 								<p className="text-sm text-gray-500 mt-2 text-center">
 									Where the magic happens - my bedroom workshop
@@ -251,12 +257,14 @@ export default function ArtisanPage() {
 								whileInView={{ opacity: 1, x: 0 }}
 								viewport={{ once: true }}
 							>
-								<Image
-									src="/images/artisan/workshop-tools.jpg"
+								<SmartImage
+									srcs={['/images/artisan/workshop-tools.jpg']}
 									alt="Ring making tools and materials"
 									width={500}
 									height={350}
 									className="rounded-lg shadow-lg w-full"
+									sizes="(max-width: 768px) 100vw, 500px"
+									quality={90}
 								/>
 								<p className="text-sm text-gray-500 mt-2 text-center">
 									Simple tools, endless possibilities

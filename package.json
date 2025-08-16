@@ -19,7 +19,7 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:unit": "jest --ci --runInBand",
-    "pretest:e2e": "node scripts/ci-build.js",
+    "pretest:e2e": "node scripts/ci-build-fast.js",
     "test:e2e": "node scripts/run-e2e.js",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",

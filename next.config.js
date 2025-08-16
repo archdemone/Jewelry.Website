@@ -62,21 +62,66 @@ async headers() {
 		} else {
 			config.performance = {
 				hints: 'warning',
-				maxEntrypointSize: 512000,
-				maxAssetSize: 512000,
+				maxEntrypointSize: 1024000, // Increased to 1MB for production
+				maxAssetSize: 1024000,
 			};
 		}
-		if (!dev && !isServer) {
-			config.optimization.splitChunks = {
-				chunks: 'all',
-				cacheGroups: {
-					default: false,
-					vendors: false,
-					vendor: { name: 'vendor', chunks: 'all', test: /node_modules/, priority: 20 },
-					common: { name: 'common', minChunks: 2, chunks: 'all', priority: 10, reuseExistingChunk: true, enforce: true },
+		
+		// Fix server-side rendering issues
+		if (isServer) {
+			config.resolve.fallback = {
+				...config.resolve.fallback,
+				fs: false,
+				net: false,
+				tls: false,
+			};
+		}
+		
+		// Disable problematic optimizations for server build
+		if (isServer) {
+			config.optimization = {
+				...config.optimization,
+				splitChunks: false,
+			};
+		}
+		
+		// Optimize bundle splitting for both dev and prod
+		config.optimization.splitChunks = {
+			chunks: 'all',
+			cacheGroups: {
+				default: false,
+				vendors: false,
+				vendor: { 
+					name: 'vendor', 
+					chunks: 'all', 
+					test: /node_modules/, 
+					priority: 20,
+					enforce: true
 				},
-			};
-		}
+				common: { 
+					name: 'common', 
+					minChunks: 2, 
+					chunks: 'all', 
+					priority: 10, 
+					reuseExistingChunk: true, 
+					enforce: true 
+				},
+				// Separate large libraries
+				framer: {
+					name: 'framer',
+					test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
+					chunks: 'all',
+					priority: 30,
+				},
+				radix: {
+					name: 'radix',
+					test: /[\\/]node_modules[\\/]@radix-ui[\\/]/,
+					chunks: 'all',
+					priority: 25,
+				},
+			},
+		};
+		
 		return config;
 	},
 };
