@@ -1,39 +1,104 @@
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import SmartImage from '@/components/common/SmartImage'
+"use client"
 
-export default function HeroSection() {
+import { motion } from 'framer-motion'
+import Link from 'next/link'
+import PlaceholderImage from '@/components/ui/PlaceholderImage'
+
+const HeroSection = () => {
 	return (
-		<section className="relative h-[60vh] min-h-[420px] w-full overflow-hidden sm:h-[70vh]">
+		<section className="relative h-screen min-h-[600px] overflow-hidden">
+			{/* Background Image */}
 			<div className="absolute inset-0">
-				<SmartImage
-					srcs={[
-						'Luxury Jewelry Collection',
-						'Exquisite Jewelry',
-						'Premium Jewelry',
-				]}
-				alt="Luxury Jewelry Collection"
-				className="h-full w-full"
-			/>
+				<motion.div
+					initial={{ scale: 1.1 }}
+					animate={{ scale: 1 }}
+					transition={{ duration: 10, repeat: Infinity, repeatType: 'reverse' }}
+				>
+					<PlaceholderImage 
+						text="Artisan Crafting Ring" 
+						className="h-full w-full object-cover" 
+					/>
+				</motion.div>
+				
+				{/* Gradient Overlay */}
+				<div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
 			</div>
-			<div className="absolute inset-0 bg-gradient-to-br from-secondary/80 via-secondary/70 to-black/30" />
-			<div className="pointer-events-none absolute inset-0 opacity-20" style={{ backgroundImage: 'radial-gradient(circle at 20% 20%, rgba(255,255,255,0.25) 0, transparent 40%), radial-gradient(circle at 80% 30%, rgba(255,255,255,0.15) 0, transparent 35%)' }} />
-			<div className="relative z-10 mx-auto flex h-full max-w-6xl items-center px-6">
-				<div className="max-w-xl text-white">
-					<h1 className="font-[var(--font-serif)] text-4xl font-bold sm:text-5xl">Exquisite Jewelry for Every Moment</h1>
-					<p className="mt-3 text-sm text-white/90 sm:text-base">Handcrafted with love, designed for life. Discover timeless elegance in our curated collections.</p>
-					<div className="mt-6 flex gap-3">
-						<Button variant="primary" asChild>
-							<Link href="/products">Shop Collection</Link>
-						</Button>
-						<Button variant="outline" asChild>
-							<Link href="/about">View Catalog</Link>
-						</Button>
-					</div>
+
+			{/* Content */}
+			<div className="relative z-10 container h-full flex items-center">
+				<div className="max-w-2xl">
+					<motion.div
+						initial={{ opacity: 0, y: 30 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.8 }}
+					>
+						<span className="text-gold-400 font-medium tracking-wider uppercase text-sm">
+							Locally Crafted • Single Artisan • Lifetime Warranty
+						</span>
+					</motion.div>
+
+					<motion.h1
+						initial={{ opacity: 0, y: 30 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.8, delay: 0.2 }}
+						className="text-5xl md:text-7xl font-serif text-white mt-4 mb-6"
+					>
+						Rings Crafted<br />
+						<span className="text-gold-400">With Passion</span>
+					</motion.h1>
+
+					<motion.p
+						initial={{ opacity: 0, y: 30 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.8, delay: 0.4 }}
+						className="text-xl text-gray-200 mb-8"
+					>
+						Each ring is personally handcrafted from start to finish using 
+						locally-sourced materials. No mass production, no teams – 
+						just one artisan's dedication to your perfect ring.
+					</motion.p>
+
+					<motion.div
+						initial={{ opacity: 0, y: 30 }}
+						animate={{ opacity: 1, y: 0 }}
+						transition={{ duration: 0.8, delay: 0.6 }}
+						className="flex gap-4 flex-wrap"
+					>
+						<motion.button
+							whileHover={{ scale: 1.05, backgroundColor: '#B8961F' }}
+							whileTap={{ scale: 0.95 }}
+							className="px-8 py-4 bg-gold-500 text-white rounded-full font-medium 
+									   shadow-lg hover:shadow-xl transition-all duration-300"
+						>
+							<Link href="/products">Explore Rings</Link>
+						</motion.button>
+						
+						<motion.button
+							whileHover={{ scale: 1.05 }}
+							whileTap={{ scale: 0.95 }}
+							className="px-8 py-4 border-2 border-white text-white rounded-full 
+									   font-medium hover:bg-white hover:text-black transition-all duration-300"
+						>
+							<Link href="/contact">Book Consultation</Link>
+						</motion.button>
+					</motion.div>
 				</div>
 			</div>
+
+			{/* Scroll Indicator */}
+			<motion.div
+				animate={{ y: [0, 10, 0] }}
+				transition={{ duration: 2, repeat: Infinity }}
+				className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+			>
+				<div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
+					<div className="w-1 h-3 bg-white/50 rounded-full mt-2" />
+				</div>
+			</motion.div>
 		</section>
 	)
 }
+
+export default HeroSection
 
 

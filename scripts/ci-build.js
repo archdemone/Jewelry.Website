@@ -1,23 +1,13 @@
 /*
- Cross-platform CI build: temporarily disable Babel config so Next.js can use SWC (required by next/font),
- then run a production build, and finally restore the Babel config if it existed.
+ Cross-platform CI build: run a production build with database setup
 */
 const fs = require('fs')
 const path = require('path')
 const { spawnSync } = require('child_process')
 
 const projectRoot = path.resolve(__dirname, '..')
-const babelrcPath = path.join(projectRoot, '.babelrc')
-const babelrcBackupPath = path.join(projectRoot, '.babelrc.ci.bak')
-
-let babelTemporarilyMoved = false
 
 try {
-  if (fs.existsSync(babelrcPath)) {
-    // Move .babelrc out of the way to allow SWC
-    fs.renameSync(babelrcPath, babelrcBackupPath)
-    babelTemporarilyMoved = true
-  }
 
   // Ensure Prisma client is generated and database is ready for pages relying on data
   const prismaGen = spawnSync('npx --no-install prisma generate', { stdio: 'inherit', cwd: projectRoot, env: process.env, shell: true })
@@ -52,11 +42,6 @@ try {
 
   if (result.status !== 0) {
     throw new Error(`next build failed with exit code ${result.status}`)
-  }
-} finally {
-  // Always attempt to restore Babel config
-  if (babelTemporarilyMoved && fs.existsSync(babelrcBackupPath)) {
-    try { fs.renameSync(babelrcBackupPath, babelrcPath) } catch {}
   }
 }
 
