@@ -13,11 +13,11 @@ export default async function FeaturedProducts() {
 					<Link key={p.id} href={`/products/${p.slug}`} className="group rounded-lg border p-4 transition-shadow hover:shadow-sm">
 						<div className="relative aspect-square w-full overflow-hidden rounded-md">
 							<SmartImage 
-								srcs={getProductImageFallback({ 
+								srcs={[...(Array.isArray((p as any).images) ? ((p as any).images as string[]) : []), ...getProductImageFallback({ 
 									productSlug: p.slug, 
 									categorySlug: p.category?.slug, 
 									name: p.name 
-								})} 
+								})]} 
 								alt={p.name} 
 								className="h-full w-full" 
 							/>

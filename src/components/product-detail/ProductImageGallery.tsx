@@ -1,6 +1,7 @@
 "use client"
 import { useState } from 'react'
 import SmartImage from '@/components/common/SmartImage'
+import { DEFAULT_PLACEHOLDER } from '@/lib/assets/images'
 
 type ProductImageGalleryProps = {
 	images: string[]
@@ -11,7 +12,7 @@ export default function ProductImageGallery({ images, productName }: ProductImag
 	const [selectedImage, setSelectedImage] = useState(0)
 
 	// Ensure we have at least one image to display
-	const displayImages = images.length > 0 ? images : ['/images/products/placeholder.svg']
+	const displayImages = images.length > 0 ? images : [DEFAULT_PLACEHOLDER]
 	
 	// Ensure productName is never undefined
 	const safeProductName = productName || 'Jewelry Item'

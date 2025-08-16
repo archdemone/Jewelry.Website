@@ -6,6 +6,7 @@ import { Trash2, Minus, Plus } from 'lucide-react'
 import SmartImage from '@/components/common/SmartImage'
 import { useCartStore } from '@/store/cart'
 import toast from 'react-hot-toast'
+import { DEFAULT_PLACEHOLDER } from '@/lib/assets/images'
 
 type CartItemProps = {
 	id: string
@@ -19,10 +20,7 @@ export default function CartItem({ id, name, price, quantity, image }: CartItemP
 	const { removeItem, setQuantity } = useCartStore()
 	const [isUpdating, setIsUpdating] = useState(false)
 
-	// Use text-based fallbacks instead of external URLs
-				const fallbacks = [
-				'/images/products/placeholder.svg',
-			]
+	const fallbacks = [DEFAULT_PLACEHOLDER]
 
 	const safePrice = typeof price === 'number' && !Number.isNaN(price) ? price : 0
 

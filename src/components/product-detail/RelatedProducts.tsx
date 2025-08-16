@@ -17,20 +17,13 @@ type RelatedProductsProps = {
 export default function RelatedProducts({ products }: RelatedProductsProps) {
 	if (!products.length) return null
 
-	// Use text-based fallbacks instead of external URLs
-	const fallbacks = [
-		'Premium Jewelry',
-		'Luxury Jewelry', 
-		'Exquisite Jewelry',
-	]
-
 	return (
 		<section className="py-12">
 			<div className="mx-auto max-w-6xl px-6">
 				<h2 className="mb-8 text-2xl font-bold">You Might Also Like</h2>
 				<div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
 					{products.map((product) => {
-												const productImages = getProductImageFallback({ 
+											const productImages = getProductImageFallback({ 
 							productSlug: product.slug, 
 							categorySlug: product.category?.slug, 
 							name: product.name 
