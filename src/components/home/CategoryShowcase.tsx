@@ -87,7 +87,7 @@ const CategoryShowcase = () => {
 											className="relative h-full w-full"
 										>
 											<SmartImage 
-												srcs={[category.image, `/images/categories/${category.id}.jpg`]} 
+												srcs={[`/images/categories/category-${category.id}.jpg`, category.image]} 
 												alt={category.name} 
 												className="h-full w-full" 
 												fill
