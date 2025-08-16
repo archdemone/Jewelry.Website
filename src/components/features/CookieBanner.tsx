@@ -39,7 +39,7 @@ export default function CookieBanner() {
 					<strong>We use cookies.</strong> We use essential cookies to make our site work and optional analytics for a better experience. See our <a href="/privacy" className="underline">Privacy Policy</a>.
 				</div>
 				<div className="flex flex-wrap gap-2">
-					<Button variant="secondary" onClick={() => { setPrefs({ nessary: true, analytics: false, marketing: false }); remember({ type: 'reject_all' }) }}>Reject</Button>
+					<Button variant="outline" onClick={() => { setPrefs({ nessary: true, analytics: false, marketing: false }); remember({ type: 'reject_all' }) }}>Reject</Button>
 					<Button onClick={() => remember({ type: 'accept_all' })}>Accept</Button>
 					<Button variant="ghost" onClick={() => setCustomizing(v => !v)}>Customize</Button>
 				</div>
@@ -60,7 +60,7 @@ export default function CookieBanner() {
 							<input type="checkbox" checked={prefs.marketing} onChange={(e) => setPrefs(p => ({ ...p, marketing: e.target.checked }))} />
 						</div>
 						<div className="mt-2 flex justify-end gap-2">
-							<Button variant="secondary" onClick={() => setCustomizing(false)}>Cancel</Button>
+							<Button variant="outline" onClick={() => setCustomizing(false)}>Cancel</Button>
 							<Button onClick={() => remember({ type: 'custom', prefs })}>Save preferences</Button>
 						</div>
 					</div>

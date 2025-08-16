@@ -26,8 +26,13 @@ const nextConfig = {
 		imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
 		minimumCacheTTL: 60 * 60 * 24 * 365,
 	},
+	swcMinify: true,
+	compress: true,
+	poweredByHeader: false,
 	experimental: {
 		webVitalsAttribution: ['CLS', 'LCP'],
+		optimizeCss: true,
+		optimizePackageImports: ['lucide-react', '@headlessui/react'],
 	},
 	async headers() {
 		return [
@@ -37,12 +42,23 @@ const nextConfig = {
 			},
 		];
 	},
-	webpack: (config) => {
+	webpack: (config, { dev, isServer }) => {
 		config.performance = {
 			hints: 'warning',
 			maxEntrypointSize: 512000,
 			maxAssetSize: 512000,
 		};
+		if (!dev && !isServer) {
+			config.optimization.splitChunks = {
+				chunks: 'all',
+				cacheGroups: {
+					default: false,
+					vendors: false,
+					vendor: { name: 'vendor', chunks: 'all', test: /node_modules/, priority: 20 },
+					common: { name: 'common', minChunks: 2, chunks: 'all', priority: 10, reuseExistingChunk: true, enforce: true },
+				},
+			};
+		}
 		return config;
 	},
 };

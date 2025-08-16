@@ -12,12 +12,8 @@ import { getProductImageFallback } from '@/lib/assets/images'
 import { db } from '@/lib/db'
 import { ProductJsonLd, BreadcrumbsJsonLd } from '@/components/seo/JsonLd'
 
+export const dynamic = 'force-dynamic'
 export const revalidate = 3600
-
-export async function generateStaticParams() {
-	const products = await db.product.findMany({ select: { slug: true } })
-	return products.map((p) => ({ slug: p.slug }))
-}
 
 export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
 	const product = await getProductBySlug(params.slug)
@@ -63,11 +59,7 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
 					</div>
 				</div>
 			</div>
-<<<<<<< HEAD
 			<RelatedProducts products={related} />
-=======
-			<RelatedProducts products={related.map(p => ({ id: p.id, name: p.name, slug: p.slug, price: p.price, images: null, category: null }))} />
->>>>>>> 1f6614227d09fbae5c668d4bd2d9ce0a5d45c538
 		</div>
 	)
 }

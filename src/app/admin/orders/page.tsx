@@ -28,7 +28,7 @@ export default function AdminOrdersPage() {
 					</select>
 					<input type="date" className="border rounded px-2 py-1 text-sm" />
 					<input type="date" className="border rounded px-2 py-1 text-sm" />
-					<Button variant="secondary">Export</Button>
+					<Button variant="outline">Export</Button>
 				</div>
 				<div className="overflow-x-auto">
 					<table className="w-full text-sm">

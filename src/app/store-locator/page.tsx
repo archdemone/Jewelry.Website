@@ -1,5 +1,3 @@
-import type { Metadata } from 'next'
-
 "use client"
 
 import { useState } from 'react'
@@ -14,10 +12,6 @@ const stores = [
 	{ id: 'la', name: 'Aurora LA', address: '456 Sunset Blvd, Los Angeles, CA', phone: '(310) 555-5678', hours: 'Daily 11–7', services: ['Repairs'] },
 ]
 
-export const metadata: Metadata = {
-	title: 'Store Locator — Aurora Jewelry',
-	description: 'Find Aurora Jewelry stores near you. View hours, services, and directions.',
-}
 
 export default function StoreLocatorPage() {
 	const [query, setQuery] = useState('Aurora Jewelry store')
@@ -39,7 +33,7 @@ export default function StoreLocatorPage() {
 					<aside className="md:col-span-1">
 						<div className="flex gap-2">
 							<Input placeholder="Search by city or ZIP" value={query} onChange={(e) => setQuery(e.target.value)} />
-							<Button variant="secondary" onClick={useMyLocation}>Use my location</Button>
+							<Button variant="outline" onClick={useMyLocation}>Use my location</Button>
 						</div>
 						<ul className="mt-4 space-y-3">
 							{stores.map(s => (

@@ -1,8 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 
-export default function ResetPasswordPage() {
+function ResetPasswordInner() {
 	const params = useSearchParams();
 	const router = useRouter();
 	const token = params.get("token") || "";
@@ -68,6 +68,14 @@ export default function ResetPasswordPage() {
 			)}
 		</div>
 	);
+}
+
+export default function ResetPasswordPage() {
+	return (
+		<Suspense fallback={<div className="mx-auto max-w-md px-4 py-16 text-sm text-gray-600">Loading…</div>}>
+			<ResetPasswordInner />
+		</Suspense>
+	)
 }
 
 
