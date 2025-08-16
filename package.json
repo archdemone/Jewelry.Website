@@ -14,7 +14,7 @@
     "check-images": "node scripts/validate-images.js full-check",
     "download-images": "node scripts/download-images.js",
     "qa-images": "node scripts/validate-image-system.js",
-    "audit:images": "cross-env AUDIT_BASE_URL=http://localhost:3000 node tools/audit-images.mjs",
+    "audit:images": "cross-env AUDIT_BASE_URL=http://localhost:3000 node scripts/audit-images.js",
     "analyze": "ANALYZE=true next build",
     "test": "jest",
     "test:coverage": "jest --coverage",

@@ -1,345 +1,195 @@
-<!doctype html><html><head><meta charset="utf-8"><title>Image Audit</title>
-  <style>body{font-family:system-ui,Arial} table{border-collapse:collapse;width:100%} td,th{border:1px solid #ddd;padding:6px;font-size:12px} th{background:#f5f5f5;position:sticky;top:0}</style>
-  </head><body>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Image Audit Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .critical { color: red; }
+    .warning { color: orange; }
+    .good { color: green; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
   <h1>Image Audit Report</h1>
-  <p>Base: http://localhost:3000</p>
-  <table><thead><tr><th>Page</th><th>Type</th><th>Selector</th><th>Rendered</th><th>Natural</th><th>DPR</th><th>Scale</th><th>URL</th><th>Type</th><th>Bytes</th><th>Notes</th></tr></thead>
-  <tbody><tr style="background:#fff">
-    <td>/</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Artisan Crafting Ring" fetchpriority="high" decoding="async" data-nimg="fill" class="object-cover" style="posi</code></td>
-    <td>784x0</td>
-    <td>1600x1600</td>
-    <td>1</td>
-    <td>0.49</td>
-    <td><a href="http://localhost:3000/images/header/hero-1.jpg?v=1755382492897">http://localhost:3000/images/header/hero-1.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>295749</td>
-    <td></td>
-  </tr>
-<tr style="background:#fff">
-    <td>/</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Classic Solitaire Engagement Ring" fetchpriority="high" width="600" height="480" decoding="async" data-nimg="1</code></td>
-    <td>600x480</td>
-    <td>800x800</td>
-    <td>1</td>
-    <td>0.75</td>
-    <td><a href="http://localhost:3000/images/products/classic-solitaire-engagement-ring-1.jpg?v=1755382492897">http://localhost:3000/images/products/classic-solitaire-engagement-ring-1.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>46002</td>
-    <td></td>
-  </tr>
-<tr style="background:#fff">
-    <td>/</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Hammered Wedding Band" fetchpriority="high" width="600" height="480" decoding="async" data-nimg="1" class="obj</code></td>
-    <td>600x480</td>
-    <td>800x800</td>
-    <td>1</td>
-    <td>0.75</td>
-    <td><a href="http://localhost:3000/images/products/hammered-wedding-band-1.jpg?v=1755382492897">http://localhost:3000/images/products/hammered-wedding-band-1.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>42864</td>
-    <td></td>
-  </tr>
-<tr style="background:#fff">
-    <td>/</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Sapphire Eternity Ring" loading="lazy" width="600" height="480" decoding="async" data-nimg="1" class="object-c</code></td>
-    <td>600x480</td>
-    <td>0x0</td>
-    <td>1</td>
-    <td>0</td>
-    <td><a href="http://localhost:3000/images/products/sapphire-eternity-ring-1.jpg?v=1755382492897">http://localhost:3000/images/products/sapphire-eternity-ring-1.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>43352</td>
-    <td></td>
-  </tr>
-<tr style="background:#fff">
-    <td>/</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Vintage Signet Ring" loading="lazy" width="600" height="480" decoding="async" data-nimg="1" class="object-cove</code></td>
-    <td>600x480</td>
-    <td>0x0</td>
-    <td>1</td>
-    <td>0</td>
-    <td><a href="http://localhost:3000/images/products/classic-signet-ring-1.jpg?v=1755382492897">http://localhost:3000/images/products/classic-signet-ring-1.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>44179</td>
-    <td></td>
-  </tr>
-<tr style="background:#fff7e6">
-    <td>/</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Engagement Rings" fetchpriority="high" decoding="async" data-nimg="fill" class="object-cover" style="position:</code></td>
-    <td>784x93</td>
-    <td>800x800</td>
-    <td>1</td>
-    <td>0.98</td>
-    <td><a href="http://localhost:3000/images/products/category-engagement-rings.jpg?v=1755382492897">http://localhost:3000/images/products/category-engagement-rings.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>246159</td>
-    <td></td>
-  </tr>
-<tr style="background:#fff">
-    <td>/</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Wedding Bands" loading="lazy" decoding="async" data-nimg="fill" class="object-cover" style="position:absolute;</code></td>
-    <td>784x93</td>
-    <td>0x0</td>
-    <td>1</td>
-    <td>0</td>
-    <td><a href="http://localhost:3000/images/products/category-wedding-bands.jpg?v=1755382492897">http://localhost:3000/images/products/category-wedding-bands.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>152880</td>
-    <td></td>
-  </tr>
-<tr style="background:#fff">
-    <td>/</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Eternity Rings" loading="lazy" decoding="async" data-nimg="fill" class="object-cover" style="position:absolute</code></td>
-    <td>784x93</td>
-    <td>0x0</td>
-    <td>1</td>
-    <td>0</td>
-    <td><a href="http://localhost:3000/images/products/category-eternity-rings.jpg?v=1755382492897">http://localhost:3000/images/products/category-eternity-rings.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>254074</td>
-    <td></td>
-  </tr>
-<tr style="background:#fff">
-    <td>/</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Signet Rings" loading="lazy" decoding="async" data-nimg="fill" class="object-cover" style="position:absolute;h</code></td>
-    <td>784x93</td>
-    <td>0x0</td>
-    <td>1</td>
-    <td>0</td>
-    <td><a href="http://localhost:3000/images/products/category-signet-rings.jpg?v=1755382492897">http://localhost:3000/images/products/category-signet-rings.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>272464</td>
-    <td></td>
-  </tr>
-<tr style="background:#fff">
-    <td>/</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Statement Rings" loading="lazy" decoding="async" data-nimg="fill" class="object-cover" style="position:absolut</code></td>
-    <td>784x93</td>
-    <td>0x0</td>
-    <td>1</td>
-    <td>0</td>
-    <td><a href="http://localhost:3000/images/products/category-statement-rings.jpg?v=1755382492897">http://localhost:3000/images/products/category-statement-rings.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>252573</td>
-    <td></td>
-  </tr>
-<tr style="background:#fff">
-    <td>/</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Stackable Rings" loading="lazy" decoding="async" data-nimg="fill" class="object-cover" style="position:absolut</code></td>
-    <td>784x93</td>
-    <td>0x0</td>
-    <td>1</td>
-    <td>0</td>
-    <td><a href="http://localhost:3000/images/products/category-stackable-rings.jpg?v=1755382492897">http://localhost:3000/images/products/category-stackable-rings.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>241770</td>
-    <td></td>
-  </tr>
-<tr style="background:#fff7e6">
-    <td>/products</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Sapphire Eternity Ring" loading="lazy" width="800" height="800" decoding="async" data-nimg="1" class="object-c</code></td>
-    <td>800x800</td>
-    <td>800x800</td>
-    <td>1</td>
-    <td>1</td>
-    <td><a href="http://localhost:3000/images/products/sapphire-eternity-ring-1.jpg?v=1755382492897">http://localhost:3000/images/products/sapphire-eternity-ring-1.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>43352</td>
-    <td></td>
-  </tr>
-<tr style="background:#fff7e6">
-    <td>/products</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Classic Signet Ring" loading="lazy" width="800" height="800" decoding="async" data-nimg="1" class="object-cove</code></td>
-    <td>800x800</td>
-    <td>800x800</td>
-    <td>1</td>
-    <td>1</td>
-    <td><a href="http://localhost:3000/images/products/classic-signet-ring-1.jpg?v=1755382492897">http://localhost:3000/images/products/classic-signet-ring-1.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>44179</td>
-    <td></td>
-  </tr>
-<tr style="background:#fff">
-    <td>/products</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Minimalist Gold Band" loading="lazy" width="800" height="800" decoding="async" data-nimg="1" class="object-cov</code></td>
-    <td>800x800</td>
-    <td>0x0</td>
-    <td>1</td>
-    <td>0</td>
-    <td><a href="http://localhost:3000/images/products/minimalist-gold-band-1.jpg?v=1755382492897">http://localhost:3000/images/products/minimalist-gold-band-1.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>44483</td>
-    <td></td>
-  </tr>
-<tr style="background:#fff">
-    <td>/products</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Diamond Accent Band" loading="lazy" width="800" height="800" decoding="async" data-nimg="1" class="object-cove</code></td>
-    <td>800x800</td>
-    <td>0x0</td>
-    <td>1</td>
-    <td>0</td>
-    <td><a href="http://localhost:3000/images/products/diamond-accent-band-1.jpg?v=1755382492897">http://localhost:3000/images/products/diamond-accent-band-1.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>43581</td>
-    <td></td>
-  </tr>
-<tr style="background:#fff">
-    <td>/products</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Emerald Statement Ring" loading="lazy" width="800" height="800" decoding="async" data-nimg="1" class="object-c</code></td>
-    <td>800x800</td>
-    <td>0x0</td>
-    <td>1</td>
-    <td>0</td>
-    <td><a href="http://localhost:3000/images/products/emerald-statement-ring-1.jpg?v=1755382492897">http://localhost:3000/images/products/emerald-statement-ring-1.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>44883</td>
-    <td></td>
-  </tr>
-<tr style="background:#fff">
-    <td>/products</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Ruby Cocktail Ring" loading="lazy" width="800" height="800" decoding="async" data-nimg="1" class="object-cover</code></td>
-    <td>800x800</td>
-    <td>0x0</td>
-    <td>1</td>
-    <td>0</td>
-    <td><a href="http://localhost:3000/images/products/ruby-cocktail-ring-1.jpg?v=1755382492897">http://localhost:3000/images/products/ruby-cocktail-ring-1.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>41531</td>
-    <td></td>
-  </tr>
-<tr style="background:#fff7e6">
-    <td>/products</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Classic Solitaire Engagement Ring" loading="lazy" width="800" height="800" decoding="async" data-nimg="1" clas</code></td>
-    <td>800x800</td>
-    <td>800x800</td>
-    <td>1</td>
-    <td>1</td>
-    <td><a href="http://localhost:3000/images/products/classic-solitaire-engagement-ring-1.jpg?v=1755382492897">http://localhost:3000/images/products/classic-solitaire-engagement-ring-1.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>46002</td>
-    <td></td>
-  </tr>
-<tr style="background:#fff">
-    <td>/products</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Vintage-Inspired Halo Ring" loading="lazy" width="800" height="800" decoding="async" data-nimg="1" class="obje</code></td>
-    <td>800x800</td>
-    <td>0x0</td>
-    <td>1</td>
-    <td>0</td>
-    <td><a href="http://localhost:3000/images/products/vintage-halo-ring-1.jpg?v=1755382492897">http://localhost:3000/images/products/vintage-halo-ring-1.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>44459</td>
-    <td></td>
-  </tr>
-<tr style="background:#fff">
-    <td>/products</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Modern Three-Stone Ring" loading="lazy" width="800" height="800" decoding="async" data-nimg="1" class="object-</code></td>
-    <td>800x800</td>
-    <td>0x0</td>
-    <td>1</td>
-    <td>0</td>
-    <td><a href="http://localhost:3000/images/products/modern-three-stone-ring-1.jpg?v=1755382492897">http://localhost:3000/images/products/modern-three-stone-ring-1.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>42241</td>
-    <td></td>
-  </tr>
-<tr style="background:#fff">
-    <td>/products</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Diamond Eternity Ring" loading="lazy" width="800" height="800" decoding="async" data-nimg="1" class="object-co</code></td>
-    <td>800x800</td>
-    <td>0x0</td>
-    <td>1</td>
-    <td>0</td>
-    <td><a href="http://localhost:3000/images/products/diamond-eternity-ring-1.jpg?v=1755382492897">http://localhost:3000/images/products/diamond-eternity-ring-1.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>41341</td>
-    <td></td>
-  </tr>
-<tr style="background:#fff7e6">
-    <td>/products</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Hammered Wedding Band" loading="lazy" width="800" height="800" decoding="async" data-nimg="1" class="object-co</code></td>
-    <td>800x800</td>
-    <td>800x800</td>
-    <td>1</td>
-    <td>1</td>
-    <td><a href="http://localhost:3000/images/products/hammered-wedding-band-1.jpg?v=1755382492897">http://localhost:3000/images/products/hammered-wedding-band-1.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>42864</td>
-    <td></td>
-  </tr>
-<tr style="background:#fff">
-    <td>/products</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Diamond Pave Wedding Band" loading="lazy" width="800" height="800" decoding="async" data-nimg="1" class="objec</code></td>
-    <td>800x800</td>
-    <td>0x0</td>
-    <td>1</td>
-    <td>0</td>
-    <td><a href="http://localhost:3000/images/products/diamond-pave-wedding-band-1.jpg?v=1755382492897">http://localhost:3000/images/products/diamond-pave-wedding-band-1.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>44949</td>
-    <td></td>
-  </tr>
-<tr style="background:#fff7e6">
-    <td>/products?category=engagement-rings</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Classic Solitaire Engagement Ring" loading="lazy" width="800" height="800" decoding="async" data-nimg="1" clas</code></td>
-    <td>800x800</td>
-    <td>800x800</td>
-    <td>1</td>
-    <td>1</td>
-    <td><a href="http://localhost:3000/images/products/classic-solitaire-engagement-ring-1.jpg?v=1755382492897">http://localhost:3000/images/products/classic-solitaire-engagement-ring-1.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>46002</td>
-    <td></td>
-  </tr>
-<tr style="background:#fff7e6">
-    <td>/products?category=engagement-rings</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Vintage-Inspired Halo Ring" loading="lazy" width="800" height="800" decoding="async" data-nimg="1" class="obje</code></td>
-    <td>800x800</td>
-    <td>800x800</td>
-    <td>1</td>
-    <td>1</td>
-    <td><a href="http://localhost:3000/images/products/vintage-halo-ring-1.jpg?v=1755382492897">http://localhost:3000/images/products/vintage-halo-ring-1.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>44459</td>
-    <td></td>
-  </tr>
-<tr style="background:#fff">
-    <td>/products?category=engagement-rings</td>
-    <td>img</td>
-    <td><code>&lt;img alt="Modern Three-Stone Ring" loading="lazy" width="800" height="800" decoding="async" data-nimg="1" class="object-</code></td>
-    <td>800x800</td>
-    <td>0x0</td>
-    <td>1</td>
-    <td>0</td>
-    <td><a href="http://localhost:3000/images/products/modern-three-stone-ring-1.jpg?v=1755382492897">http://localhost:3000/images/products/modern-three-stone-ring-1.jpg?v=1755382492897</a></td>
-    <td>image/jpeg</td>
-    <td>42241</td>
-    <td></td>
-  </tr></tbody></table>
-  </body></html>
+  <p>Total images: 23</p>
+  <p class="critical">Critical issues: 0</p>
+  
+  <h2>All Images</h2>
+  <table>
+    <tr>
+      <th>Page</th>
+      <th>URL</th>
+      <th>Rendered</th>
+      <th>Natural</th>
+      <th>Scale</th>
+      <th>Status</th>
+    </tr>
+    <tr class="good">
+        <td>http://localhost:3000/</td>
+        <td>http://localhost:3000/images/header/hero-1.jpg?v=1755384320770</td>
+        <td>1280x480</td>
+        <td>1600x1600</td>
+        <td>0.8</td>
+        <td>GOOD</td>
+      </tr><tr class="good">
+        <td>http://localhost:3000/</td>
+        <td>http://localhost:3000/images/products/classic-solitaire-engagement-ring-1.jpg?v=1755384320770</td>
+        <td>288x288</td>
+        <td>800x800</td>
+        <td>0.36</td>
+        <td>GOOD</td>
+      </tr><tr class="good">
+        <td>http://localhost:3000/</td>
+        <td>http://localhost:3000/images/products/hammered-wedding-band-1.jpg?v=1755384320770</td>
+        <td>288x288</td>
+        <td>800x800</td>
+        <td>0.36</td>
+        <td>GOOD</td>
+      </tr><tr class="good">
+        <td>http://localhost:3000/</td>
+        <td>http://localhost:3000/images/products/sapphire-eternity-ring-1.jpg?v=1755384320770</td>
+        <td>288x288</td>
+        <td>800x800</td>
+        <td>0.36</td>
+        <td>GOOD</td>
+      </tr><tr class="good">
+        <td>http://localhost:3000/</td>
+        <td>http://localhost:3000/images/products/classic-signet-ring-1.jpg?v=1755384320770</td>
+        <td>288x288</td>
+        <td>800x800</td>
+        <td>0.36</td>
+        <td>GOOD</td>
+      </tr><tr class="good">
+        <td>http://localhost:3000/</td>
+        <td>http://localhost:3000/images/products/category-engagement-rings.jpg?v=1755384320770</td>
+        <td>395x256</td>
+        <td>800x800</td>
+        <td>0.49</td>
+        <td>GOOD</td>
+      </tr><tr class="good">
+        <td>http://localhost:3000/</td>
+        <td>http://localhost:3000/images/products/category-wedding-bands.jpg?v=1755384320770</td>
+        <td>395x256</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://localhost:3000/</td>
+        <td>http://localhost:3000/images/products/category-eternity-rings.jpg?v=1755384320770</td>
+        <td>395x256</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://localhost:3000/</td>
+        <td>http://localhost:3000/images/products/category-signet-rings.jpg?v=1755384320770</td>
+        <td>395x256</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://localhost:3000/</td>
+        <td>http://localhost:3000/images/products/category-statement-rings.jpg?v=1755384320770</td>
+        <td>395x256</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://localhost:3000/</td>
+        <td>http://localhost:3000/images/products/category-stackable-rings.jpg?v=1755384320770</td>
+        <td>395x256</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://localhost:3000/products</td>
+        <td>http://localhost:3000/images/products/sapphire-eternity-ring-1.jpg?v=1755384320770</td>
+        <td>260x260</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://localhost:3000/products</td>
+        <td>http://localhost:3000/images/products/classic-signet-ring-1.jpg?v=1755384320770</td>
+        <td>260x260</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://localhost:3000/products</td>
+        <td>http://localhost:3000/images/products/minimalist-gold-band-1.jpg?v=1755384320770</td>
+        <td>260x260</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://localhost:3000/products</td>
+        <td>http://localhost:3000/images/products/diamond-accent-band-1.jpg?v=1755384320770</td>
+        <td>260x260</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://localhost:3000/products</td>
+        <td>http://localhost:3000/images/products/emerald-statement-ring-1.jpg?v=1755384320770</td>
+        <td>260x260</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://localhost:3000/products</td>
+        <td>http://localhost:3000/images/products/ruby-cocktail-ring-1.jpg?v=1755384320770</td>
+        <td>260x260</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://localhost:3000/products</td>
+        <td>http://localhost:3000/images/products/classic-solitaire-engagement-ring-1.jpg?v=1755384320770</td>
+        <td>260x260</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://localhost:3000/products</td>
+        <td>http://localhost:3000/images/products/vintage-halo-ring-1.jpg?v=1755384320770</td>
+        <td>260x260</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://localhost:3000/products</td>
+        <td>http://localhost:3000/images/products/modern-three-stone-ring-1.jpg?v=1755384320770</td>
+        <td>260x260</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://localhost:3000/products</td>
+        <td>http://localhost:3000/images/products/diamond-eternity-ring-1.jpg?v=1755384320770</td>
+        <td>260x260</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://localhost:3000/products</td>
+        <td>http://localhost:3000/images/products/hammered-wedding-band-1.jpg?v=1755384320770</td>
+        <td>260x260</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://localhost:3000/products</td>
+        <td>http://localhost:3000/images/products/diamond-pave-wedding-band-1.jpg?v=1755384320770</td>
+        <td>260x260</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr>
+  </table>
+</body>
+</html>
