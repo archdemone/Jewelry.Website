@@ -9,89 +9,68 @@ const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.webp', '.svg'];
 
 // Product image mapping from our assets file
 const PRODUCT_IMAGES = {
-  // Rings
-  'diamond-solitaire-ring': [
-    '/images/products/diamond-solitaire-ring-1.jpg',
-    '/images/products/diamond-solitaire-ring-2.jpg',
-    '/images/products/diamond-solitaire-ring-3.jpg',
+  // Engagement Rings
+  'classic-solitaire-engagement-ring': [
+    '/images/products/classic-solitaire-engagement-ring-1.jpg',
+    '/images/products/classic-solitaire-engagement-ring-2.jpg',
   ],
-  'gold-wedding-band': [
-    '/images/products/gold-wedding-band-1.jpg',
-    '/images/products/gold-wedding-band-2.jpg',
+  'vintage-inspired-halo-ring': [
+    '/images/products/vintage-halo-ring-1.jpg',
+    '/images/products/vintage-halo-ring-2.jpg',
   ],
-  'emerald-ring': [
-    '/images/products/emerald-ring-1.jpg',
-    '/images/products/emerald-ring-2.jpg',
+  'modern-three-stone-ring': [
+    '/images/products/modern-three-stone-ring-1.jpg',
+    '/images/products/modern-three-stone-ring-2.jpg',
   ],
-  
-  // Necklaces
-  'diamond-pendant-necklace': [
-    '/images/products/diamond-pendant-necklace-1.jpg',
-    '/images/products/diamond-pendant-necklace-2.jpg',
+
+  // Wedding Bands
+  'hammered-wedding-band': [
+    '/images/products/hammered-wedding-band-1.jpg',
+    '/images/products/hammered-wedding-band-2.jpg',
   ],
-  'gold-chain-necklace': [
-    '/images/products/gold-chain-necklace-1.jpg',
-    '/images/products/gold-chain-necklace-2.jpg',
+  'classic-plain-wedding-band': [
+    '/images/products/classic-plain-wedding-band-1.jpg',
+    '/images/products/classic-plain-wedding-band-2.jpg',
   ],
-  'pearl-necklace': [
-    '/images/products/pearl-necklace-1.jpg',
-    '/images/products/pearl-necklace-2.jpg',
+  'diamond-pave-wedding-band': [
+    '/images/products/diamond-pave-wedding-band-1.jpg',
+    '/images/products/diamond-pave-wedding-band-2.jpg',
   ],
-  
-  // Bracelets
-  'tennis-bracelet': [
-    '/images/products/tennis-bracelet-1.jpg',
-    '/images/products/tennis-bracelet-2.jpg',
+
+  // Eternity Rings
+  'sapphire-eternity-ring': [
+    '/images/products/sapphire-eternity-ring-1.jpg',
+    '/images/products/sapphire-eternity-ring-2.jpg',
   ],
-  'gold-bangle-bracelet': [
-    '/images/products/gold-bangle-bracelet-1.jpg',
-    '/images/products/gold-bangle-bracelet-2.jpg',
+  'diamond-eternity-ring': [
+    '/images/products/diamond-eternity-ring-1.jpg',
+    '/images/products/diamond-eternity-ring-2.jpg',
   ],
-  'charm-bracelet': [
-    '/images/products/charm-bracelet-1.jpg',
-    '/images/products/charm-bracelet-2.jpg',
+
+  // Signet Rings
+  'classic-signet-ring': [
+    '/images/products/classic-signet-ring-1.jpg',
+    '/images/products/classic-signet-ring-2.jpg',
   ],
-  
-  // Earrings
-  'diamond-stud-earrings': [
-    '/images/products/diamond-stud-earrings-1.jpg',
-    '/images/products/diamond-stud-earrings-2.jpg',
+
+  // Statement Rings
+  'emerald-statement-ring': [
+    '/images/products/emerald-statement-ring-1.jpg',
+    '/images/products/emerald-statement-ring-2.jpg',
   ],
-  'gold-hoop-earrings': [
-    '/images/products/gold-hoop-earrings-1.jpg',
-    '/images/products/gold-hoop-earrings-2.jpg',
+  'ruby-cocktail-ring': [
+    '/images/products/ruby-cocktail-ring-1.jpg',
+    '/images/products/ruby-cocktail-ring-2.jpg',
   ],
-  'pearl-drop-earrings': [
-    '/images/products/pearl-drop-earrings-1.jpg',
-    '/images/products/pearl-drop-earrings-2.jpg',
+
+  // Stackable Rings
+  'minimalist-gold-band': [
+    '/images/products/minimalist-gold-band-1.jpg',
+    '/images/products/minimalist-gold-band-2.jpg',
   ],
-  
-  // Watches
-  'luxury-automatic-watch': [
-    '/images/products/luxury-automatic-watch-1.jpg',
-    '/images/products/luxury-automatic-watch-2.jpg',
-  ],
-  'gold-dress-watch': [
-    '/images/products/gold-dress-watch-1.jpg',
-    '/images/products/gold-dress-watch-2.jpg',
-  ],
-  'sport-luxury-watch': [
-    '/images/products/sport-luxury-watch-1.jpg',
-    '/images/products/sport-luxury-watch-2.jpg',
-  ],
-  
-  // Pendants
-  'diamond-cross-pendant': [
-    '/images/products/diamond-cross-pendant-1.jpg',
-    '/images/products/diamond-cross-pendant-2.jpg',
-  ],
-  'gold-heart-pendant': [
-    '/images/products/gold-heart-pendant-1.jpg',
-    '/images/products/gold-heart-pendant-2.jpg',
-  ],
-  'emerald-pendant': [
-    '/images/products/emerald-pendant-1.jpg',
-    '/images/products/emerald-pendant-2.jpg',
+  'diamond-accent-band': [
+    '/images/products/diamond-accent-band-1.jpg',
+    '/images/products/diamond-accent-band-2.jpg',
   ],
 };
 

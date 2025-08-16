@@ -55,7 +55,6 @@ const FeaturedProducts = () => {
 	]
 
 	return (
-<<<<<<< HEAD
 		<section className="py-20 bg-white">
 			<div className="container">
 				<motion.div
@@ -79,7 +78,6 @@ const FeaturedProducts = () => {
 							viewport={{ once: true }}
 							transition={{ delay: index * 0.1 }}
 							whileHover={{ y: -8 }}
-							transition={{ duration: 0.3 }}
 							onHoverStart={() => setHoveredProduct(ring.id)}
 							onHoverEnd={() => setHoveredProduct(null)}
 							className="group relative"
@@ -157,26 +155,6 @@ const FeaturedProducts = () => {
 								   shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
 					>
 						View All Handcrafted Rings
-=======
-		<section className="container py-12">
-			<h2 className="font-[var(--font-serif)] text-2xl font-semibold text-secondary">Featured Collection</h2>
-			<div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-				{products.map((p) => (
-					<Link key={p.id} href={`/products/${p.slug}`} className="group rounded-lg border p-4 transition-shadow hover:shadow-sm">
-						<div className="relative aspect-square w-full overflow-hidden rounded-md">
-							<SmartImage 
-								srcs={[...(Array.isArray((p as any).images) ? ((p as any).images as string[]) : []), ...getProductImageFallback({ 
-									productSlug: p.slug, 
-									categorySlug: p.category?.slug, 
-									name: p.name 
-								})]} 
-								alt={p.name} 
-								className="h-full w-full" 
-							/>
-						</div>
-						<div className="mt-3 text-sm font-medium">{p.name}</div>
-						<div className="text-sm text-gray-600">${p.price.toFixed(2)}</div>
->>>>>>> main
 					</Link>
 				</motion.div>
 			</div>

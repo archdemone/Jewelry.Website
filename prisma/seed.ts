@@ -9,17 +9,10 @@ async function main() {
 			where: { slug: 'engagement-rings' },
 			update: {},
 			create: {
-<<<<<<< HEAD
 				name: 'Engagement Rings',
 				slug: 'engagement-rings',
 				description: 'Handcrafted engagement rings with ethically sourced diamonds',
 				image: '/images/products/category-engagement-rings.jpg',
-=======
-				name: 'Rings',
-				slug: 'rings',
-				description: 'Beautiful rings for every occasion',
-				image: '/images/products/placeholder-ring.svg',
->>>>>>> main
 				order: 1,
 			},
 		}),
@@ -27,17 +20,10 @@ async function main() {
 			where: { slug: 'wedding-bands' },
 			update: {},
 			create: {
-<<<<<<< HEAD
 				name: 'Wedding Bands',
 				slug: 'wedding-bands',
 				description: 'Matching wedding bands for your special day',
 				image: '/images/products/category-wedding-bands.jpg',
-=======
-				name: 'Necklaces',
-				slug: 'necklaces',
-				description: 'Elegant necklaces to complement your style',
-				image: '/images/products/placeholder-necklace.svg',
->>>>>>> main
 				order: 2,
 			},
 		}),
@@ -45,17 +31,10 @@ async function main() {
 			where: { slug: 'eternity-rings' },
 			update: {},
 			create: {
-<<<<<<< HEAD
 				name: 'Eternity Rings',
 				slug: 'eternity-rings',
 				description: 'Celebrate eternal love with continuous stones',
 				image: '/images/products/category-eternity-rings.jpg',
-=======
-				name: 'Bracelets',
-				slug: 'bracelets',
-				description: 'Stylish bracelets for your wrist',
-				image: '/images/products/placeholder-bracelet.svg',
->>>>>>> main
 				order: 3,
 			},
 		}),
@@ -63,17 +42,10 @@ async function main() {
 			where: { slug: 'signet-rings' },
 			update: {},
 			create: {
-<<<<<<< HEAD
 				name: 'Signet Rings',
 				slug: 'signet-rings',
 				description: 'Classic signet rings with custom engraving options',
 				image: '/images/products/category-signet-rings.jpg',
-=======
-				name: 'Earrings',
-				slug: 'earrings',
-				description: 'Dazzling earrings to frame your face',
-				image: '/images/products/placeholder-earrings.svg',
->>>>>>> main
 				order: 4,
 			},
 		}),
@@ -81,17 +53,10 @@ async function main() {
 			where: { slug: 'statement-rings' },
 			update: {},
 			create: {
-<<<<<<< HEAD
 				name: 'Statement Rings',
 				slug: 'statement-rings',
 				description: 'Bold designs that express your personality',
 				image: '/images/products/category-statement-rings.jpg',
-=======
-				name: 'Watches',
-				slug: 'watches',
-				description: 'Luxury timepieces for the discerning collector',
-				image: '/images/products/placeholder-watch.svg',
->>>>>>> main
 				order: 5,
 			},
 		}),
@@ -99,17 +64,10 @@ async function main() {
 			where: { slug: 'stackable-rings' },
 			update: {},
 			create: {
-<<<<<<< HEAD
 				name: 'Stackable Rings',
 				slug: 'stackable-rings',
 				description: 'Delicate rings designed to be worn together',
 				image: '/images/products/category-stackable-rings.jpg',
-=======
-				name: 'Pendants',
-				slug: 'pendants',
-				description: 'Stunning pendants to adorn your neck',
-				image: '/images/products/placeholder-pendant.svg',
->>>>>>> main
 				order: 6,
 			},
 		}),

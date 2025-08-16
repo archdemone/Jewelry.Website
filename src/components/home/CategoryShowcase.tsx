@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import SmartImage from '@/components/common/SmartImage'
-import { getRingCategoryPlaceholder } from '@/lib/assets/images'
+import { getCategoryPlaceholder } from '@/lib/assets/images'
 
 const CategoryShowcase = () => {
 	const ringCategories = [
@@ -11,42 +11,42 @@ const CategoryShowcase = () => {
 			id: 'engagement-rings',
 			name: 'Engagement Rings',
 			description: 'Handcrafted engagement rings with ethically sourced diamonds',
-			image: getRingCategoryPlaceholder('engagement-rings'),
+			image: getCategoryPlaceholder('rings'),
 			count: '12 designs'
 		},
 		{
 			id: 'wedding-bands',
 			name: 'Wedding Bands',
 			description: 'Matching wedding bands for your special day',
-			image: getRingCategoryPlaceholder('wedding-bands'),
+			image: getCategoryPlaceholder('rings'),
 			count: '8 designs'
 		},
 		{
 			id: 'eternity-rings',
 			name: 'Eternity Rings',
 			description: 'Celebrate eternal love with continuous stones',
-			image: getRingCategoryPlaceholder('eternity-rings'),
+			image: getCategoryPlaceholder('rings'),
 			count: '6 designs'
 		},
 		{
 			id: 'signet-rings',
 			name: 'Signet Rings',
 			description: 'Classic signet rings with custom engraving options',
-			image: getRingCategoryPlaceholder('signet-rings'),
+			image: getCategoryPlaceholder('rings'),
 			count: '4 designs'
 		},
 		{
 			id: 'statement-rings',
 			name: 'Statement Rings',
 			description: 'Bold designs that express your personality',
-			image: getRingCategoryPlaceholder('statement-rings'),
+			image: getCategoryPlaceholder('rings'),
 			count: '10 designs'
 		},
 		{
 			id: 'stackable-rings',
 			name: 'Stackable Rings',
 			description: 'Delicate rings designed to be worn together',
-			image: getRingCategoryPlaceholder('stackable-rings'),
+			image: getCategoryPlaceholder('rings'),
 			count: '15 designs'
 		}
 	]

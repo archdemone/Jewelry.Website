@@ -32,11 +32,7 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
 			<nav className="flex-1 p-2">
 				{navItems.map((item) => {
 					const Icon = item.icon;
-<<<<<<< HEAD
-					const active = pathname === item.href || pathname?.startsWith(`${item.href}/`);
-=======
 					const active = !!pathname && (pathname === item.href || pathname.startsWith(`${item.href}/`));
->>>>>>> main
 					return (
 						<Link
 							key={item.href}
