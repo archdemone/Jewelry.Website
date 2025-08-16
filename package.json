@@ -23,7 +23,8 @@
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
     "test:ci": "npm run test:unit && npm run test:e2e",
-    "setup:prod": "node scripts/setup-production-env.js"
+    "setup:prod": "node scripts/setup-production-env.js",
+    "audit:images": "cross-env AUDIT_BASE_URL=http://localhost:3000 node tools/audit-images.mjs"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.10.0",
