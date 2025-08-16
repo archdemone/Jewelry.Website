@@ -4,7 +4,8 @@
     "react/no-unescaped-entities": "off",
     "@next/next/no-sync-scripts": "warn",
     "@next/next/no-img-element": "warn",
-    "react-hooks/exhaustive-deps": "warn"
+    "react-hooks/exhaustive-deps": "warn",
+    "no-undef": "warn"
   }
 }
 
