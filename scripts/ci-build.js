@@ -43,6 +43,9 @@ try {
   if (result.status !== 0) {
     throw new Error(`next build failed with exit code ${result.status}`)
   }
+} catch (err) {
+  console.error('[ci-build] Fatal error:', err && err.message ? err.message : err)
+  process.exit(1)
 }
 
 
