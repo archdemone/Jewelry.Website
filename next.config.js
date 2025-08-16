@@ -46,11 +46,16 @@ async headers() {
 		];
 	},
 	webpack: (config, { dev, isServer }) => {
-		config.performance = {
-			hints: 'warning',
-			maxEntrypointSize: 512000,
-			maxAssetSize: 512000,
-		};
+		// Silence large bundle warnings in dev hot-reload; keep defaults in prod
+		if (dev) {
+			config.performance = false;
+		} else {
+			config.performance = {
+				hints: 'warning',
+				maxEntrypointSize: 512000,
+				maxAssetSize: 512000,
+			};
+		}
 		if (!dev && !isServer) {
 			config.optimization.splitChunks = {
 				chunks: 'all',

@@ -10,11 +10,21 @@ type SmartImageProps = {
 	width?: number
 	height?: number
 	priority?: boolean
+	sizes?: string
+	quality?: number
 }
 
-export default function SmartImage({ srcs, alt, className, width, height, priority }: SmartImageProps) {
+export default function SmartImage({ srcs, alt, className, width, height, priority, sizes, quality }: SmartImageProps) {
 	const [currentSrcIndex, setCurrentSrcIndex] = React.useState(0)
 	const [useFallback, setUseFallback] = React.useState(false)
+	const [clientTs, setClientTs] = React.useState<string | null>(null)
+
+	// After mount, set a stable client-only timestamp to bust cache in dev without SSR/CSR mismatch
+	React.useEffect(() => {
+		if (process.env.NODE_ENV !== 'production') {
+			setClientTs(String(Date.now()))
+		}
+	}, [])
 
 	// Filter valid images (local paths starting with /)
 	const validImages = srcs.filter(src => src.startsWith('/'))
@@ -30,10 +40,17 @@ export default function SmartImage({ srcs, alt, className, width, height, priori
 
 	const currentSrc = validImages[currentSrcIndex]
 
-	// Add a small cache-busting param for local images so updated assets show
-	const assetVersion = process.env.NEXT_PUBLIC_ASSET_VERSION || '1'
-	const versionedSrc = currentSrc
-		? (currentSrc.includes('?') ? currentSrc : `${currentSrc}?v=${assetVersion}`)
+	// Base version applied on both SSR and CSR so markup matches
+	const baseVersion = process.env.NEXT_PUBLIC_ASSET_VERSION || '1'
+	const baseSrc = currentSrc
+		? (currentSrc.includes('?') ? `${currentSrc}&v=${baseVersion}` : `${currentSrc}?v=${baseVersion}`)
+		: undefined
+
+	// In dev, append a client-only timestamp AFTER hydration to force-refresh edited assets
+	const versionedSrc = baseSrc
+		? (clientTs && process.env.NODE_ENV !== 'production'
+			? `${baseSrc}${baseSrc.includes('?') ? '&' : '?'}t=${clientTs}`
+			: baseSrc)
 		: undefined
 
 	// If we're using fallback or no valid images, show CSS gradient
@@ -96,6 +113,8 @@ export default function SmartImage({ srcs, alt, className, width, height, priori
 			className={`object-cover ${className}`}
 			width={width || 800}
 			height={height || 800}
+			sizes={sizes || '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'}
+			quality={quality || 90}
 			onError={handleError}
 			priority={priority}
 		/>
