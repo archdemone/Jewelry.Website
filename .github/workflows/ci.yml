@@ -22,21 +22,58 @@ jobs:
       - name: Install dependencies
         run: npm ci --no-audit --no-fund
 
-      - name: Set up env
+      - name: Setup env
         run: |
           echo "NEXTAUTH_SECRET=dev-secret" >> $GITHUB_ENV
           echo "NEXTAUTH_URL=http://localhost:3010" >> $GITHUB_ENV
           echo "DATABASE_URL=file:./dev.db" >> $GITHUB_ENV
           echo "NEXT_PUBLIC_STRIPE_PUBLIC_KEY=" >> $GITHUB_ENV
           echo "STRIPE_SECRET_KEY=" >> $GITHUB_ENV
+          echo "HOST=127.0.0.1" >> $GITHUB_ENV
+          echo "PORT=3010" >> $GITHUB_ENV
+          echo "READINESS_PROBE_SKIP_DB=true" >> $GITHUB_ENV
 
-      - name: Run tests (unit + e2e)
-        run: npm run test:ci
+      - name: Lint
+        run: npm run lint --if-present
+
+      - name: Typecheck
+        run: npm run typecheck --if-present
+
+      - name: Validate DB migrations
+        run: npx prisma migrate deploy --schema=prisma/schema.prisma
+        env:
+          DATABASE_URL: file:./dev.db
+
+      - name: Unit tests
+        run: npm run test:unit --if-present
+
+      - name: Build
+        run: npm run build
+
+      - name: Start server
+        run: npx --no-install next start -p 3010 --hostname 127.0.0.1 &
+
+      - name: Wait for server
+        run: npx wait-on http://127.0.0.1:3010/api/healthz
+
+      - name: Smoke tests
+        run: node tools/smoke.mjs
 
       - name: Install Playwright Browsers (for image audit)
         run: npx playwright install --with-deps
 
       - name: Run image audit
         run: npm run audit:images
+
+      - name: Security audit (production deps)
+        run: npm audit --production --audit-level=high || true
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs-and-audits
+          path: |
+            tools/**
+            .next/**
 
 
