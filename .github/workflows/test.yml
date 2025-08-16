@@ -69,7 +69,6 @@ jobs:
 
     - name: Run unit tests
       run: npm run test:ci
-      working-directory: Jewelry.Website
 
     - name: Build and start app
       run: |
