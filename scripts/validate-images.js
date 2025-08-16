@@ -74,15 +74,10 @@ const PRODUCT_IMAGES = {
   ],
 };
 
-// Required placeholder images
+// Required placeholder images (only ring-related ones for our business)
 const REQUIRED_PLACEHOLDERS = [
   '/images/products/placeholder.svg',
   '/images/products/placeholder-ring.svg',
-  '/images/products/placeholder-necklace.svg',
-  '/images/products/placeholder-bracelet.svg',
-  '/images/products/placeholder-earrings.svg',
-  '/images/products/placeholder-watch.svg',
-  '/images/products/placeholder-pendant.svg',
 ];
 
 function getActualFiles() {
