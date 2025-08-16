@@ -12,6 +12,9 @@ const securityHeaders = [
 
 const nextConfig = {
 	reactStrictMode: true,
+	env: {
+		NEXT_PUBLIC_ASSET_VERSION: '2',
+	},
 	transpilePackages: [
 		'@radix-ui/react-icons',
 		'@radix-ui/react-dialog',

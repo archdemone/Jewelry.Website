@@ -98,6 +98,7 @@ export default async function ProductsPage({ searchParams }: { searchParams: { p
 								<Link
 									key={pageNum}
 									href={`/products?page=${pageNum}&q=${encodeURIComponent(q)}&category=${encodeURIComponent(category)}&min=${min ?? ''}&max=${max ?? ''}&sort=${sort}`}
+									scroll={false}
 									className={`rounded-md border px-3 py-1 text-sm ${isActive ? 'bg-secondary text-white' : 'bg-white text-secondary hover:bg-accent'}`}
 								>
 									{pageNum}
