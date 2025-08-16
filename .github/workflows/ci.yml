@@ -33,4 +33,10 @@ jobs:
       - name: Run tests (unit + e2e)
         run: npm run test:ci
 
+      - name: Install Playwright Browsers (for image audit)
+        run: npx playwright install --with-deps
+
+      - name: Run image audit
+        run: npm run audit:images
+
 

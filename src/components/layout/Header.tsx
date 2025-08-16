@@ -48,7 +48,11 @@ export function Header() {
 				</Link>
 				<nav className="hidden items-center gap-6 md:flex">
 					<Link href="/" className="text-sm text-text hover:text-secondary" data-testid="nav-home">Home</Link>
+<<<<<<< HEAD
 					<Link href="/products" className="text-sm text-text hover:text-secondary" data-testid="nav-products">Products</Link>
+=======
+					<Link href="/products" className="text-sm text-text hover:text-secondary" data-testid="nav-products">Collections</Link>
+>>>>>>> 89157ae2e7e741bb4ef533c424b09ac4fc0abaa2
 					
 					{/* Ring Collections Dropdown */}
 					<div 
