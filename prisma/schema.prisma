@@ -46,7 +46,7 @@ model User {
 	email         String      @unique
 	name          String?
 	password      String?
-	role          Role        @default(CUSTOMER)
+	role          String      @default("CUSTOMER") // Changed from enum to String
 	image         String?
 	emailVerified DateTime?
 	accounts      Account[]
@@ -81,7 +81,7 @@ model Product {
 	material      String?
 	gemstones     String?
 	size          String?
-	images        Json
+	images        String       // Changed from Json to String (JSON stored as text)
 	featured      Boolean      @default(false)
 	active        Boolean      @default(true)
 	category      Category     @relation(fields: [categoryId], references: [id])
@@ -92,7 +92,7 @@ model Product {
 	reviews       Review[]
 	wishlist      Wishlist[]
 	tags          String?
-	metadata      Json?
+	metadata      String?      // Changed from Json to String (JSON stored as text)
 	createdAt     DateTime     @default(now())
 	updatedAt     DateTime     @updatedAt
 
@@ -138,8 +138,8 @@ model Order {
 	userId          String?
 	email           String
 	phone           String?
-	status          OrderStatus   @default(PENDING)
-	paymentStatus   PaymentStatus @default(UNPAID)
+	status          String        @default("PENDING") // Changed from enum to String
+	paymentStatus   String        @default("UNPAID") // Changed from enum to String
 	paymentMethod   String?
 	paymentIntentId String?
 	subtotal        Float
@@ -148,10 +148,10 @@ model Order {
 	total           Float
 	currency        String        @default("USD")
 	items           OrderItem[]
-	shippingAddress Json
-	billingAddress  Json
+	shippingAddress String        // Changed from Json to String (JSON stored as text)
+	billingAddress  String        // Changed from Json to String (JSON stored as text)
 	notes           String?
-	metadata        Json?
+	metadata        String?       // Changed from Json to String (JSON stored as text)
 	createdAt       DateTime      @default(now())
 	updatedAt       DateTime      @updatedAt
 
@@ -170,7 +170,7 @@ model OrderItem {
 	price     Float
 	quantity  Int
 	total     Float
-	metadata  Json?
+	metadata  String?  // Changed from Json to String (JSON stored as text)
 	createdAt DateTime @default(now())
 }
 
@@ -182,7 +182,7 @@ model CartItem {
 	product   Product  @relation(fields: [productId], references: [id])
 	productId String
 	quantity  Int
-	metadata  Json?
+	metadata  String?  // Changed from Json to String (JSON stored as text)
 	createdAt DateTime @default(now())
 	updatedAt DateTime @updatedAt
 
@@ -195,7 +195,7 @@ model Address {
 	id         String      @id @default(cuid())
 	user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 	userId     String
-	type       AddressType @default(SHIPPING)
+	type       String      @default("SHIPPING") // Changed from enum to String
 	isDefault  Boolean    @default(false)
 	firstName  String
 	lastName   String
@@ -222,7 +222,7 @@ model Review {
 	comment   String
 	verified  Boolean  @default(false)
 	helpful   Int      @default(0)
-	images    Json?
+	images    String?  // Changed from Json to String (JSON stored as text)
 	createdAt DateTime @default(now())
 	updatedAt DateTime @updatedAt
 
@@ -248,39 +248,11 @@ model AuditLog {
 	action    String
 	entity    String
 	entityId  String?
-	before    Json?
-	after     Json?
+	before    String?  // Changed from Json to String (JSON stored as text)
+	after     String?  // Changed from Json to String (JSON stored as text)
 	ip        String?
 	ua        String?
 	ts        DateTime @default(now())
-}
-
-enum Role {
-	CUSTOMER
-	ADMIN
-	STAFF
-}
-
-enum OrderStatus {
-	PENDING
-	PROCESSING
-	SHIPPED
-	DELIVERED
-	CANCELLED
-	REFUNDED
-}
-
-enum PaymentStatus {
-	UNPAID
-	PAID
-	PARTIALLY_PAID
-	REFUNDED
-	PARTIALLY_REFUNDED
-}
-
-enum AddressType {
-	SHIPPING
-	BILLING
 }
 
 
