@@ -29,18 +29,6 @@ const nextConfig = {
 	experimental: {
 		instrumentationHook: true,
 		webVitalsAttribution: ['CLS', 'LCP'],
-		// optimizeCss: true, // disabled to avoid critters dependency issues
-		optimizePackageImports: ['lucide-react', '@headlessui/react'],
-		// Performance optimizations
-		optimizeServerReact: true,
-		turbo: {
-			rules: {
-				'*.svg': {
-					loaders: ['@svgr/webpack'],
-					as: '*.js',
-				},
-			},
-		},
 	},
 	async headers() {
 		const headers = [];
@@ -83,45 +71,6 @@ const nextConfig = {
 					self: 'globalThis',
 				})
 			);
-		}
-		
-		// Optimize bundle splitting for client builds only
-		if (!isServer) {
-			config.optimization.splitChunks = {
-				chunks: 'all',
-				cacheGroups: {
-					default: false,
-					vendors: false,
-					vendor: {
-						name: 'vendor',
-						chunks: 'all',
-						test: /node_modules/,
-						priority: 20,
-						enforce: true
-					},
-					common: {
-						name: 'common',
-						minChunks: 2,
-						chunks: 'all',
-						priority: 10,
-						reuseExistingChunk: true,
-						enforce: true
-					},
-					// Separate large libraries
-					framer: {
-						name: 'framer',
-						test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
-						chunks: 'all',
-						priority: 30,
-					},
-					radix: {
-						name: 'radix',
-						test: /[\\/]node_modules[\\/]@radix-ui[\\/]/,
-						chunks: 'all',
-						priority: 25,
-					},
-				},
-			};
 		}
 		
 		return config;

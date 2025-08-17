@@ -3,9 +3,9 @@ import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import './globals.css';
 import '../styles/fonts.css';
-import { AuthSessionProvider } from '@/lib/auth/session-provider';
-import { Toaster } from 'react-hot-toast';
 import dynamic from 'next/dynamic';
+const AuthSessionProvider = dynamic(() => import('@/lib/auth/SessionProviderClient'), { ssr: false });
+import { Toaster } from 'react-hot-toast';
 import { Inter, Playfair_Display } from 'next/font/google';
 // Lazy load non-critical components to reduce initial bundle size
 const NewsletterPopup = dynamic(() => import('@/components/features/NewsletterPopup'), {
@@ -144,7 +144,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
                 dangerouslySetInnerHTML={{
                   __html: `
 										window.dataLayer = window.dataLayer || [];
-										function gtag(){dataLayer.push(arguments);}
+										function gtag(){dataLayer.push(arguments);} 
 										gtag('js', new Date());
 										gtag('config', '${process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID}');
 									`,
