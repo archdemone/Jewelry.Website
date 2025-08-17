@@ -1,72 +1,13 @@
-import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 
-// Lazy load components to reduce initial bundle size
-const HeroSection = dynamic(() => import('@/components/home/HeroSection'), {
-  loading: () => (
-    <div className="aspect-[16/9] max-h-[600px] min-h-[400px] w-full animate-pulse overflow-hidden bg-gray-100 md:aspect-[21/9] md:max-h-[700px] lg:aspect-[24/9]" />
-  ),
-});
-
-const FeaturedProducts = dynamic(() => import('@/components/home/FeaturedProducts'), {
-  loading: () => (
-    <div className="bg-white py-20">
-      <div className="container">
-        <div className="h-64 animate-pulse rounded-lg bg-gray-100" />
-      </div>
-    </div>
-  ),
-});
-
-const CategoryShowcase = dynamic(() => import('@/components/home/CategoryShowcase'), {
-  loading: () => (
-    <div className="bg-gray-50 py-20">
-      <div className="container">
-        <div className="h-64 animate-pulse rounded-lg bg-gray-100" />
-      </div>
-    </div>
-  ),
-});
-
-const TestimonialsSection = dynamic(() => import('@/components/home/TestimonialsSection'), {
-  loading: () => (
-    <div className="bg-white py-20">
-      <div className="container">
-        <div className="h-64 animate-pulse rounded-lg bg-gray-100" />
-      </div>
-    </div>
-  ),
-});
-
-const NewsletterSection = dynamic(() => import('@/components/home/NewsletterSection'), {
-  loading: () => (
-    <div className="bg-gray-50 py-20">
-      <div className="container">
-        <div className="h-32 animate-pulse rounded-lg bg-gray-100" />
-      </div>
-    </div>
-  ),
-});
-
-const WhyChooseUs = dynamic(() => import('@/components/home/WhyChooseUs'), {
-  loading: () => (
-    <div className="bg-white py-20">
-      <div className="container">
-        <div className="h-64 animate-pulse rounded-lg bg-gray-100" />
-      </div>
-    </div>
-  ),
-});
-
-const WorkshopSection = dynamic(() => import('@/components/home/WorkshopSection'), {
-  loading: () => (
-    <div className="bg-stone-50 py-20">
-      <div className="container">
-        <div className="h-64 animate-pulse rounded-lg bg-gray-100" />
-      </div>
-    </div>
-  ),
-});
+// Static imports for stability in dev
+import HeroSection from '@/components/home/HeroSection';
+import FeaturedProducts from '@/components/home/FeaturedProducts';
+import CategoryShowcase from '@/components/home/CategoryShowcase';
+import TestimonialsSection from '@/components/home/TestimonialsSection';
+import NewsletterSection from '@/components/home/NewsletterSection';
+import WhyChooseUs from '@/components/home/WhyChooseUs';
+import WorkshopSection from '@/components/home/WorkshopSection';
 
 // Keep Header and Footer as regular imports since they're needed immediately
 import { Header } from '@/components/layout/Header';
