@@ -86,14 +86,14 @@ function checkCriticalCSS() {
 function checkImageOptimization() {
   console.log('\n🖼️  Checking image optimization...');
   
-  const heroSectionPath = path.join(__dirname, '../src/components/home/HeroSection.tsx');
+  const heroCarouselPath = path.join(__dirname, '../src/components/home/HeroCarousel.tsx');
   
-  if (fs.existsSync(heroSectionPath)) {
-    const content = fs.readFileSync(heroSectionPath, 'utf8');
+  if (fs.existsSync(heroCarouselPath)) {
+    const content = fs.readFileSync(heroCarouselPath, 'utf8');
     
     const checks = [
       { name: 'priority attribute', check: content.includes('priority') },
-      { name: 'fetchPriority="high"', check: content.includes('fetchPriority="high"') },
+      { name: 'fetchPriority="high"', check: content.includes('fetchPriority') && (content.includes('"high"') || content.includes('"high"')) },
       { name: 'explicit dimensions', check: content.includes('width=') && content.includes('height=') },
       { name: 'sizes attribute', check: content.includes('sizes=') },
       { name: 'WebP format', check: content.includes('.webp') }

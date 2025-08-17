@@ -33,7 +33,8 @@
     "pre-commit": "npm run web-vitals-check && npm run lint && npm run type-check",
     "lighthouse": "lighthouse http://localhost:3000 --output json --output-path ./lighthouse-report.json",
     "lighthouse:ci": "lighthouse http://localhost:3000 --only-categories=performance --output json --output-path ./lighthouse-report.json",
-    "lighthouse:html": "lighthouse http://localhost:3000 --output html --output-path ./lighthouse-report.html"
+    "lighthouse:html": "lighthouse http://localhost:3000 --output html --output-path ./lighthouse-report.html",
+    "optimize:hero": "node scripts/optimize-hero-images.mjs"
   },
   "size-limit": [
     {
