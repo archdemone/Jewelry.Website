@@ -5,8 +5,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    optimizeCss: true,
-    optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react'],
+    optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react', 'framer-motion'],
   },
   images: {
     formats: ['image/webp', 'image/avif'],
@@ -15,27 +14,19 @@ const nextConfig = {
     minimumCacheTTL: 60,
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    // Add domains for external images if needed
     domains: [],
-    // Optimize image loading
     unoptimized: false,
   },
   compress: true,
   poweredByHeader: false,
   generateEtags: false,
   swcMinify: true,
-  // Optimize for performance
   reactStrictMode: true,
-  // Enable static optimization
   trailingSlash: false,
-  // Optimize bundle splitting
   webpack: (config, { dev, isServer }) => {
-    // Optimize bundle size
     if (!dev && !isServer) {
       config.optimization.splitChunks = {
         chunks: 'all',
-        maxInitialRequests: 25,
-        minSize: 20000,
         cacheGroups: {
           vendor: {
             test: /[\\/]node_modules[\\/]/,
@@ -48,75 +39,12 @@ const nextConfig = {
             name: 'common',
             minChunks: 2,
             chunks: 'all',
-            enforce: true,
-            priority: 5,
-            reuseExistingChunk: true,
-          },
-          // Separate React and Next.js chunks
-          react: {
-            test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
-            name: 'react',
-            chunks: 'all',
-            priority: 20,
-            reuseExistingChunk: true,
-          },
-          // Separate UI component libraries
-          ui: {
-            test: /[\\/]node_modules[\\/](@radix-ui|lucide-react)[\\/]/,
-            name: 'ui',
-            chunks: 'all',
-            priority: 15,
-            reuseExistingChunk: true,
-          },
-          // Separate animation libraries
-          animations: {
-            test: /[\\/]node_modules[\\/](framer-motion)[\\/]/,
-            name: 'animations',
-            chunks: 'async',
-            priority: 8,
-            reuseExistingChunk: true,
-          },
-          // Separate analytics and monitoring
-          analytics: {
-            test: /[\\/]node_modules[\\/](@sentry|analytics)[\\/]/,
-            name: 'analytics',
-            chunks: 'async',
             priority: 5,
             reuseExistingChunk: true,
           },
         },
       };
     }
-
-    // Optimize images
-    config.module.rules.push({
-      test: /\.(png|jpe?g|gif|svg)$/i,
-      use: [
-        {
-          loader: 'image-webpack-loader',
-          options: {
-            mozjpeg: {
-              progressive: true,
-              quality: 65,
-            },
-            optipng: {
-              enabled: false,
-            },
-            pngquant: {
-              quality: [0.65, 0.90],
-              speed: 4,
-            },
-            gifsicle: {
-              interlaced: false,
-            },
-            webp: {
-              quality: 75,
-            },
-          },
-        },
-      ],
-    });
-
     return config;
   },
   async headers() {
@@ -149,15 +77,6 @@ const nextConfig = {
       },
       {
         source: '/_next/static/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-        ],
-      },
-      {
-        source: '/fonts/(.*)',
         headers: [
           {
             key: 'Cache-Control',

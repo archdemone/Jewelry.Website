@@ -1,11 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 
-// Bundle size limits (in bytes) - Realistic limits based on current app
+// Bundle size limits (in bytes) - Realistic limits for e-commerce app
 const LIMITS = {
-  'First Load JS': 6000 * 1024, // 6MB (realistic for feature-rich app with all dependencies)
-  'Vendor Bundle': 2500 * 1024, // 2.5MB
-  'React Bundle': 2500 * 1024,   // 2.5MB (includes React DOM)
+  'First Load JS': 2000 * 1024, // 2MB (realistic for e-commerce with auth, cart, etc.)
+  'Vendor Bundle': 1500 * 1024, // 1.5MB
+  'React Bundle': 500 * 1024,   // 500KB (includes React DOM)
   'Common Bundle': 300 * 1024,  // 300KB
 };
 

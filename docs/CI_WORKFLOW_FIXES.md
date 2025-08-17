@@ -56,11 +56,11 @@ This document outlines all the fixes implemented to ensure the CI workflow passe
 
 ### 📊 **Performance Metrics**
 
-- **Bundle Sizes**: All within limits
-  - Vendor Bundle: 1.15 MB (limit: 2.44 MB)
-  - React Bundle: 132.96 KB (limit: 2.44 MB)
+- **Bundle Sizes**: All within realistic e-commerce limits
+  - Vendor Bundle: 1.15 MB (limit: 1.5 MB)
+  - React Bundle: 132.96 KB (limit: 500 KB)
   - Common Bundle: 29.18 KB (limit: 300 KB)
-  - First Load JS: 1.31 MB (limit: 5.86 MB)
+  - First Load JS: 1.31 MB (limit: 2 MB)
 
 - **Web Vitals**: All checks pass
   - Hero image: 31KB (under 200KB limit)
@@ -68,6 +68,11 @@ This document outlines all the fixes implemented to ensure the CI workflow passe
   - Image optimization: ✅
   - JavaScript optimization: ✅
   - Font optimization: ✅
+
+- **Lighthouse Performance**: Ready for optimization
+  - Current thresholds set to realistic e-commerce levels
+  - Performance optimization guide created
+  - Ready for Lighthouse audit and further improvements
 
 ## Files Modified
 
