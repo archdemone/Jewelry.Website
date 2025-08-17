@@ -1,6 +1,14 @@
 export async function register() {
-  if ((global as any).__gracefulSetup) return;
-  (global as any).__gracefulSetup = true;
-  const shutdown = await import('@/lib/shutdown');
-  shutdown.setupGracefulShutdown();
+  try {
+    // Only run graceful shutdown wiring in Node.js runtimes (not Edge)
+    if (typeof process === 'object' && typeof (process as any).on === 'function') {
+      const globalRef = globalThis as any;
+      if (globalRef.__gracefulSetup) return;
+      globalRef.__gracefulSetup = true;
+      const { setupGracefulShutdown } = await import('@/lib/shutdown');
+      setupGracefulShutdown();
+    }
+  } catch {
+    // No-op in Edge or if any unexpected error occurs
+  }
 }
