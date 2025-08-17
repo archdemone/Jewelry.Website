@@ -10,9 +10,13 @@ type SmartImageProps = {
 	width?: number
 	height?: number
 	priority?: boolean
+	sizes?: string
+	quality?: number
+	loading?: 'lazy' | 'eager'
+	fill?: boolean
 }
 
-export default function SmartImage({ srcs, alt, className, width, height, priority }: SmartImageProps) {
+export default function SmartImage({ srcs, alt, className, width, height, priority, sizes, quality, loading, fill }: SmartImageProps) {
 	const [currentSrcIndex, setCurrentSrcIndex] = React.useState(0)
 	const [useFallback, setUseFallback] = React.useState(false)
 
@@ -84,6 +88,7 @@ export default function SmartImage({ srcs, alt, className, width, height, priori
 				width={width || 800}
 				height={height || 800}
 				onError={handleError as any}
+				loading={loading}
 			/>
 		)
 	}
@@ -94,8 +99,10 @@ export default function SmartImage({ srcs, alt, className, width, height, priori
 			src={versionedSrc as string}
 			alt={displayText}
 			className={`object-cover ${className}`}
-			width={width || 800}
-			height={height || 800}
+			{...(fill ? { fill: true } : { width: width || 800, height: height || 800 })}
+			sizes={sizes}
+			quality={quality}
+			loading={loading}
 			onError={handleError}
 			priority={priority}
 		/>

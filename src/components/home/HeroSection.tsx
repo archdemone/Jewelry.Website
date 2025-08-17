@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import PlaceholderImage from '@/components/ui/PlaceholderImage'
+import SmartImage from '@/components/common/SmartImage'
 
 const HeroSection = () => {
 	return (
@@ -14,10 +14,17 @@ const HeroSection = () => {
 					animate={{ scale: 1 }}
 					transition={{ duration: 10, repeat: Infinity, repeatType: 'reverse' }}
 				>
-					<PlaceholderImage 
-						text="Artisan Crafting Ring" 
-						className="h-full w-full object-cover" 
-					/>
+					<div className="absolute inset-0">
+													<SmartImage
+								srcs={["/images/artisan/bedroom-workshop-hero.jpg"]}
+								alt="Hero Ring Showcase"
+								className="object-cover"
+								fill
+								sizes="(min-width:1280px) 800px, 100vw"
+								priority
+								quality={90}
+							/>
+					</div>
 				</motion.div>
 				
 				{/* Gradient Overlay */}
@@ -68,7 +75,7 @@ const HeroSection = () => {
 							whileHover={{ scale: 1.05, backgroundColor: '#B8961F' }}
 							whileTap={{ scale: 0.95 }}
 							className="px-8 py-4 bg-gold-500 text-white rounded-full font-medium 
-									   shadow-lg hover:shadow-xl transition-all duration-300"
+								   shadow-lg hover:shadow-xl transition-all duration-300"
 						>
 							<Link href="/products">Explore Rings</Link>
 						</motion.button>
@@ -77,7 +84,7 @@ const HeroSection = () => {
 							whileHover={{ scale: 1.05 }}
 							whileTap={{ scale: 0.95 }}
 							className="px-8 py-4 border-2 border-white text-white rounded-full 
-									   font-medium hover:bg-white hover:text-black transition-all duration-300"
+								   font-medium hover:bg-white hover:text-black transition-all duration-300"
 						>
 							<Link href="/contact">Book Consultation</Link>
 						</motion.button>
