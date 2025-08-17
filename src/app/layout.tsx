@@ -115,7 +115,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`} style={{ height: '100%', width: '100%', overflowX: 'hidden' }}>
       <head>
-        {/* Minimal critical CSS for above-the-fold content only */}
+        {/* Ultra-minimal critical CSS for FCP optimization */}
         <style
           dangerouslySetInnerHTML={{
             __html: `
@@ -124,43 +124,42 @@ export default function RootLayout({
               min-height: 100vh;
               position: relative;
               overflow: hidden;
-              background: linear-gradient(135deg, #fef3c7 0%, #fed7aa 100%);
             }
-            
+
             .hero-image {
               width: 100%;
               height: 100%;
               object-fit: cover;
-              object-position: center 30%;
             }
-            
+
             /* CRITICAL: Basic layout stability */
             html, body {
               margin: 0;
               padding: 0;
               width: 100%;
               height: 100%;
-              overflow-x: hidden;
+              font-family: var(--font-inter);
             }
-            
-            /* CRITICAL: Font display optimization */
-            .font-inter { font-family: var(--font-inter), system-ui, -apple-system, sans-serif; }
-            .font-playfair { font-family: var(--font-playfair), Georgia, serif; }
-            
-            /* CRITICAL: Prevent layout shifts */
-            .content-area {
-              min-height: 100vh;
-              width: 100vw;
-              position: relative;
-              overflow: hidden;
-              contain: layout style paint;
-              transform: translateZ(0);
+
+            /* CRITICAL: Button styles for above-the-fold */
+            .btn-stable {
+              display: inline-flex;
+              align-items: center;
+              justify-content: center;
+              padding: 0.75rem 1.5rem;
+              border-radius: 0.5rem;
+              font-weight: 600;
+              text-align: center;
+              text-decoration: none;
+              min-width: 150px;
+              min-height: 48px;
             }
           `
-        }} />
+          }}
+        />
         
         {/* Preload critical hero image */}
-        <link rel="preload" href="/images/header/hero-optimized.webp" as="image" type="image/webp" fetchPriority="high" />
+        <link rel="preload" href="/images/header/hero-1-480.webp" as="image" type="image/webp" fetchPriority="high" />
         
         {/* Preconnect to critical origins */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
