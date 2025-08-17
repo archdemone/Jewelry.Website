@@ -33,13 +33,14 @@ export default function manifest(): MetadataRoute.Manifest {
 				purpose: 'any',
 			},
 		],
-		screenshots: [
-			{
-				src: '/images/products/category-engagement-rings.jpg',
-				sizes: '800x600',
-				type: 'image/jpeg',
-			},
-		],
+screenshots: [
+  {
+    src: '/images/products/category-engagement-rings.jpg',
+    sizes: '800x600',
+    type: 'image/jpeg',
+  },
+],
+
 		shortcuts: [
 			{
 				name: 'Engagement Rings',

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { LogOut, Menu, Package, Settings, ShoppingBag, TrendingUp, Users, LayoutGrid, Box } from "lucide-react";
+import { LogOut, Menu, Package, Settings, ShoppingBag, TrendingUp, Users, LayoutGrid, Box, Shield } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { buttonVariants } from "@/components/ui/button";
 import { signOut, useSession } from "next-auth/react";
@@ -16,6 +16,8 @@ const navItems = [
 	{ href: "/admin/customers", label: "Customers", icon: Users },
 	{ href: "/admin/inventory", label: "Inventory", icon: Box },
 	{ href: "/admin/analytics", label: "Analytics", icon: TrendingUp },
+	{ href: "/admin/media", label: "Media", icon: Package },
+	{ href: "/admin/audit", label: "Audit", icon: TrendingUp },
 	{ href: "/admin/settings", label: "Settings", icon: Settings },
 ];
 
@@ -58,6 +60,12 @@ function UserSection() {
 	const { data } = useSession();
 	const name = data?.user?.name || "Admin User";
 	const email = data?.user?.email || "admin@example.com";
+	const role = (data?.user as any)?.role || 'UNKNOWN'
+	const mfa = (data?.user as any)?.mfaEnabled ? 'MFA On' : 'MFA Off'
+	async function revokeOthers() {
+		await fetch('/api/admin/revoke-sessions', { method: 'POST' })
+		// optional: toast
+	}
 	return (
 		<div className="border-t p-3">
 			<div className="flex items-center gap-3">
@@ -65,6 +73,7 @@ function UserSection() {
 				<div className="flex-1">
 					<div className="text-sm font-medium">{name}</div>
 					<div className="text-xs text-gray-500">{email}</div>
+					<div className="text-[11px] text-gray-500 flex items-center gap-2 mt-1"><Shield className="h-3 w-3" /> Role: {role} • {mfa}</div>
 				</div>
 				<button
 					onClick={() => signOut({ callbackUrl: "/" })}
@@ -72,6 +81,9 @@ function UserSection() {
 				>
 					<LogOut className="h-4 w-4" />
 				</button>
+			</div>
+			<div className="mt-2">
+				<button onClick={revokeOthers} className={clsx(buttonVariants({ variant: 'outline', size: 'sm' }))}>Revoke other sessions</button>
 			</div>
 		</div>
 	);

@@ -2,14 +2,7 @@
 const withBundleAnalyzer = require('@next/bundle-analyzer')({ enabled: process.env.ANALYZE === 'true' });
 const webpack = require('webpack');
 
-const securityHeaders = [
-	{ key: 'X-DNS-Prefetch-Control', value: 'on' },
-	{ key: 'X-XSS-Protection', value: '1; mode=block' },
-	{ key: 'X-Frame-Options', value: 'SAMEORIGIN' },
-	{ key: 'X-Content-Type-Options', value: 'nosniff' },
-	{ key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
-	{ key: 'Content-Security-Policy', value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline';" },
-];
+const securityHeaders = []; // handled in middleware
 
 const nextConfig = {
 	reactStrictMode: true,
@@ -33,28 +26,38 @@ const nextConfig = {
 	swcMinify: true,
 	compress: true,
 	poweredByHeader: false,
-				experimental: {
-		webVitalsAttribution: ['CLS', 'LCP'],
-		// optimizeCss: true, // disabled to avoid critters dependency issues
-		optimizePackageImports: ['lucide-react', '@headlessui/react'],
-		// Performance optimizations
-		optimizeServerReact: true,
-		turbo: {
-			rules: {
-				'*.svg': {
-					loaders: ['@svgr/webpack'],
-					as: '*.js',
-				},
-			},
-		},
-	},
+experimental: {
+  instrumentationHook: true,
+  webVitalsAttribution: ['CLS', 'LCP'],
+  // optimizeCss: true, // disabled to avoid critters dependency issues
+  optimizePackageImports: ['lucide-react', '@headlessui/react'],
+  // Performance optimizations
+  optimizeServerReact: true,
+  turbo: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
+      },
+    },
+  },
+},
 async headers() {
-		return [
-			{
-				source: '/:path*',
-				headers: securityHeaders,
-			},
-		];
+  const headers = [];
+  if (securityHeaders.length > 0) {
+    headers.push({ source: '/:path*', headers: securityHeaders });
+  }
+  headers.push({
+    source: '/_next/static/:path*',
+    headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+  });
+  headers.push({
+    source: '/images/:path*',
+    headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+  });
+  return headers;
+},
+
 	},
 	webpack: (config, { dev, isServer }) => {
 		// Silence large bundle warnings in dev hot-reload; keep defaults in prod

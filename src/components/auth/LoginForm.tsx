@@ -1,5 +1,6 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -9,12 +10,22 @@ export default function LoginForm() {
 	const [password, setPassword] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [error, setError] = useState<string | null>(null);
+	const [tsToken, setTsToken] = useState<string | undefined>(undefined)
+	const [requireCaptcha, setRequireCaptcha] = useState<boolean>(false)
+
+	useEffect(() => {
+		// If Turnstile key is configured, we can render widget when backend indicates needed
+		if (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) {
+			// Always render; backend will enforce after too many failures
+			setRequireCaptcha(true)
+		}
+	}, [])
 
 	async function onSubmit(e: React.FormEvent) {
 		e.preventDefault();
 		setError(null);
 		setLoading(true);
-		const res = await signIn("credentials", { redirect: false, email, password });
+		const res = await signIn("credentials", { redirect: false, email, password, turnstileToken: tsToken });
 		setLoading(false);
 		if (res?.error) {
 			setError("Invalid email or password.");
@@ -45,6 +56,12 @@ export default function LoginForm() {
 					required
 				/>
 			</div>
+			{requireCaptcha && (
+				<div>
+					{/* Cloudflare Turnstile placeholder; apps can replace with real widget */}
+					<input type="text" placeholder="Turnstile token (if required)" className="w-full rounded-md border border-gray-300 px-3 py-2" onChange={(e) => setTsToken(e.target.value)} />
+				</div>
+			)}
 			{error && <p className="text-sm text-red-600">{error}</p>}
 			<button
 				type="submit"

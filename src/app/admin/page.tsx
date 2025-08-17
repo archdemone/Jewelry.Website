@@ -5,6 +5,8 @@ import RecentOrders from "@/components/admin/RecentOrders";
 import QuickActions from "@/components/admin/QuickActions";
 import { Card } from "@/components/ui/card";
 
+export const metadata = { robots: { index: false, follow: false, googleBot: { index: false, follow: false } } }
+
 const stats = [
 	{ title: "Total Revenue", value: "$45,231.89", change: "+20.1% from last month", icon: DollarSign },
 	{ title: "Orders", value: "145", change: "+12% from last month", icon: ShoppingBag },
