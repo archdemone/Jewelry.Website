@@ -79,7 +79,7 @@ const CategoryShowcase = () => {
                   />
                   {category.featured && (
                     <div className="absolute top-4 left-4">
-                      <span className="rounded-full bg-orange-500 px-3 py-1 text-sm font-medium text-white">
+                      <span className="rounded-full bg-primary px-3 py-1 text-sm font-medium text-white">
                         Featured
                       </span>
                     </div>
@@ -91,7 +91,7 @@ const CategoryShowcase = () => {
                     <h3 className="mb-2 text-xl font-semibold text-gray-900">{category.name}</h3>
                     <p className="text-gray-600">{category.description}</p>
                   </div>
-                  <div className="mt-4 flex items-center text-orange-500 group-hover:text-orange-600">
+                  <div className="mt-4 flex items-center text-primary group-hover:opacity-80">
                     <span className="font-medium">Explore Collection</span>
                     <svg
                       className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"

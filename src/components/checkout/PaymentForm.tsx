@@ -42,7 +42,7 @@ function InnerPaymentForm({ clientSecret }: { clientSecret: string }) {
 }
 
 export default function PaymentForm() {
-  const { subtotal } = useCartStore();
+  const { subtotal, isHydrated } = useCartStore();
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [disabled, setDisabled] = useState<boolean>(false);
 
@@ -73,6 +73,11 @@ export default function PaymentForm() {
   }, [subtotal, stripeEnabled]);
 
   const options = useMemo(() => ({ clientSecret: clientSecret ?? '' }), [clientSecret]);
+  
+  if (!isHydrated) {
+    return <p className="text-muted-foreground text-sm">Loading cart...</p>;
+  }
+  
   if (disabled)
     return (
       <p className="text-muted-foreground text-sm">Payments are disabled in this environment.</p>

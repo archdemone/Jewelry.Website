@@ -126,7 +126,7 @@ export default function NewsletterPopup({
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white"
+                  className="w-full bg-gradient-to-r from-primary to-orange-500 hover:opacity-90 text-white"
                 >
                   {isSubmitting ? (
                     <div className="flex items-center gap-2">
@@ -153,11 +153,11 @@ export default function NewsletterPopup({
 
               <div className="flex items-center justify-center gap-4 text-sm text-gray-500 dark:text-gray-400">
                 <div className="flex items-center gap-1">
-                  <Gift className="h-4 w-4 text-orange-500" />
+                  <Gift className="h-4 w-4 text-primary" />
                   <span>10% off first purchase</span>
                 </div>
                 <div className="flex items-center gap-1">
-                  <Sparkles className="h-4 w-4 text-orange-500" />
+                  <Sparkles className="h-4 w-4 text-primary" />
                   <span>Exclusive updates</span>
                 </div>
               </div>

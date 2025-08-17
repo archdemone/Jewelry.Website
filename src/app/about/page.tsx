@@ -1,6 +1,4 @@
 import type { Metadata } from 'next';
-import { Header } from '@/components/layout/Header';
-import { Footer } from '@/components/layout/Footer';
 
 export const metadata: Metadata = {
   title: 'About Us — Aurora Jewelry',
@@ -10,9 +8,7 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <>
-      <Header />
-      <main className="container px-4 md:px-6">
+    <main className="container px-4 md:px-6">
         <section className="py-12 md:py-20">
           <div className="mx-auto max-w-5xl text-center">
             <h1 className="text-4xl font-[var(--font-serif)] font-bold">
@@ -155,14 +151,12 @@ export default function AboutPage() {
               </div>
             </div>
             <div className="mt-8">
-              <a href="/products" className="inline-block rounded-md bg-black px-6 py-3 text-white">
+              <a href="/products" className="inline-block rounded-md bg-primary px-6 py-3 text-white hover:opacity-90">
                 Shop the Collection
               </a>
             </div>
           </div>
         </section>
       </main>
-      <Footer />
-    </>
   );
 }

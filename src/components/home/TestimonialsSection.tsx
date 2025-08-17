@@ -58,7 +58,7 @@ const TestimonialsSection = () => {
               <motion.div
                 whileHover={{ rotate: 360 }}
                 transition={{ duration: 0.6 }}
-                className="absolute -top-4 left-8 flex h-8 w-8 items-center justify-center rounded-full bg-gold-500"
+                className="absolute -top-4 left-8 flex h-8 w-8 items-center justify-center rounded-full bg-primary"
               >
                 <Quote className="h-4 w-4 text-white" />
               </motion.div>
@@ -66,7 +66,7 @@ const TestimonialsSection = () => {
               {/* Rating */}
               <div className="mb-4 flex gap-1">
                 {Array.from({ length: testimonial.rating }).map((_, i) => (
-                  <Star key={i} className="h-5 w-5 fill-gold-400 text-gold-400" />
+                  <Star key={i} className="h-5 w-5 fill-amber-400 text-amber-400" />
                 ))}
               </div>
 
@@ -74,7 +74,7 @@ const TestimonialsSection = () => {
               <p className="mb-6 italic text-gray-700">"{testimonial.text}"</p>
 
               {/* Ring Type */}
-              <p className="mb-4 text-sm font-medium text-gold-600">{testimonial.ring}</p>
+              <p className="mb-4 text-sm font-medium text-primary">{testimonial.ring}</p>
 
               {/* Customer Info */}
               <div>
@@ -91,7 +91,7 @@ const TestimonialsSection = () => {
           viewport={{ once: true }}
           className="mt-12 text-center"
         >
-          <div className="mx-auto max-w-2xl rounded-2xl bg-gold-50 p-8">
+          <div className="mx-auto max-w-2xl rounded-2xl bg-primary/5 p-8">
             <h3 className="mb-4 font-serif text-2xl">Join Our Happy Customers</h3>
             <p className="mb-6 text-gray-700">
               Every ring tells a story. Let us help you create yours with a handcrafted piece that
@@ -100,7 +100,7 @@ const TestimonialsSection = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="rounded-full bg-gold-500 px-8 py-4 font-medium text-white shadow-lg transition-all duration-300 hover:shadow-xl"
+              className="rounded-full bg-primary px-8 py-4 font-medium text-white shadow-lg transition-all duration-300 hover:shadow-xl"
             >
               Start Your Ring Journey
             </motion.button>

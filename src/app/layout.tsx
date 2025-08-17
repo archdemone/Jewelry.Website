@@ -5,6 +5,8 @@ import './globals.css';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { AuthSessionProvider } from '@/lib/auth/session-provider';
+import { CartProvider } from '@/components/providers/CartProvider';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { Toaster } from 'react-hot-toast';
 import dynamic from 'next/dynamic';
 
@@ -119,25 +121,10 @@ export default function RootLayout({
         <style
           dangerouslySetInnerHTML={{
             __html: `
-            /* CRITICAL: Absolute minimum for hero section */
-            .hero-section {
-              min-height: 100vh;
-              position: relative;
-              overflow: hidden;
-            }
-
-            .hero-image {
-              width: 100%;
-              height: 100%;
-              object-fit: cover;
-            }
-
             /* CRITICAL: Basic layout stability */
             html, body {
               margin: 0;
               padding: 0;
-              width: 100%;
-              height: 100%;
               font-family: var(--font-inter);
             }
 
@@ -159,7 +146,7 @@ export default function RootLayout({
         />
         
         {/* Preload critical hero image */}
-        <link rel="preload" href="/images/header/hero-1-480.webp" as="image" type="image/webp" fetchPriority="high" />
+        <link rel="preload" href="/images/header/hero-1-1920.webp" as="image" type="image/webp" fetchPriority="high" />
         
         {/* Preconnect to critical origins */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -177,22 +164,26 @@ export default function RootLayout({
         <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" />
         <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" as="style" />
       </head>
-      <body className={`${inter.className} antialiased font-inter`} style={{ height: '100%', width: '100%', margin: 0, padding: 0, overflowX: 'hidden' }}>
+      <body className={`${inter.className} antialiased font-inter`}>
         <AuthSessionProvider>
-          <div className="viewport-layout">
-            <Header />
-            <main className="content-area">{children}</main>
-            <Footer />
-          </div>
-          
-          {/* Site-wide widgets */}
-          <Toaster position="top-right" toastOptions={{ duration: 3500 }} />
-          <NewsletterPopup />
-          <CookieBanner />
-          <LiveChat />
-          
-          {/* Development helper */}
-          {process.env.NODE_ENV === 'development' && <DevReloadHelper />}
+          <ErrorBoundary>
+            <CartProvider>
+              <div className="min-h-screen flex flex-col">
+                <Header />
+                <main className="flex-1">{children}</main>
+                <Footer />
+              </div>
+              
+              {/* Site-wide widgets */}
+              <Toaster position="top-right" toastOptions={{ duration: 3500 }} />
+              <NewsletterPopup />
+              <CookieBanner />
+              <LiveChat />
+              
+              {/* Development helper */}
+              {process.env.NODE_ENV === 'development' && <DevReloadHelper />}
+            </CartProvider>
+          </ErrorBoundary>
           
           {/* Performance optimizations */}
           <script

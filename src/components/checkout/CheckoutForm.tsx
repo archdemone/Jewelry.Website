@@ -27,7 +27,7 @@ const formSchema = checkoutDataSchema.partial();
 type CheckoutFormValues = z.infer<typeof formSchema>;
 
 export default function CheckoutForm() {
-  const { items, subtotal } = useCartStore();
+  const { items, subtotal, isHydrated } = useCartStore();
   const [currentStep, setCurrentStep] = useState<number>(0);
 
   const methods = useForm<CheckoutFormValues>({
@@ -70,6 +70,17 @@ export default function CheckoutForm() {
 
   const selectedShippingId = methods.watch('shippingMethod.id') as string | undefined;
 
+  if (!isHydrated) {
+    return (
+      <div className="space-y-6">
+        <div className="text-center py-8">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-2 text-gray-600">Loading checkout...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <FormProvider {...methods}>
       <div className="space-y-6">
@@ -104,7 +115,7 @@ export default function CheckoutForm() {
               <button
                 type="button"
                 data-testid="checkout-continue"
-                className="rounded-md bg-yellow-500 px-4 py-2 text-white"
+                className="rounded-md bg-primary px-4 py-2 text-white hover:opacity-90"
                 onClick={next}
               >
                 {currentStep === steps.length - 1 ? 'Place order' : 'Continue'}

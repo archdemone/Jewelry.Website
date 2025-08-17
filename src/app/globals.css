@@ -90,3 +90,79 @@ html {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Debug styles - remove after fixing */
+.viewport-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-area {
+  flex: 1;
+}
+
+/* Fix white text on white background issues */
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+/* Ensure proper text contrast */
+.bg-white .text-white {
+  color: #1f2937; /* gray-800 */
+}
+
+/* Tighter spacing throughout site */
+section {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  section {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}
+
+/* Reduce excessive margins */
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: 1rem;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+/* Compact card spacing */
+.product-card {
+  padding: 1rem;
+}
+
+/* Fix container max widths for less scrolling */
+.container {
+  max-width: 1280px;
+}
+
+/* Ensure buttons have proper contrast */
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Fix any invisible text issues */
+.bg-gradient-to-r.from-gold-500.to-amber-500 {
+  color: white !important;
+}
+
+/* Compact navigation spacing */
+nav {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+/* Reduce hero section heights */
+.hero-section {
+  min-height: 50vh; /* Instead of 100vh */
+}

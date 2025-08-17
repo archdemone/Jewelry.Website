@@ -31,9 +31,9 @@ const AnimatedButton = ({
   };
 
   const variantClasses = {
-    primary: 'bg-gradient-to-r from-orange-500 to-amber-500 text-white hover:from-orange-600 hover:to-amber-600 focus:ring-orange-500',
-    secondary: 'bg-white text-black border-2 border-gray-200 hover:border-orange-500 focus:ring-orange-500',
-    outline: 'border-2 border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white focus:ring-orange-500',
+    primary: 'bg-gradient-to-r from-primary to-orange-500 text-white hover:from-orange-600 hover:to-amber-600 focus:ring-primary',
+    secondary: 'bg-white text-secondary border-2 border-gray-200 hover:border-primary focus:ring-primary',
+    outline: 'border-2 border-primary text-primary hover:bg-primary hover:text-white focus:ring-primary',
   };
 
   return (
