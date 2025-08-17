@@ -18,6 +18,7 @@ import { motion } from 'framer-motion';
 
 export function Header() {
   const count = useCartStore((s) => s.count);
+  const isHydrated = useCartStore((s) => s.isHydrated);
   const [open, setOpen] = useState(false);
   const [q, setQ] = useState('');
   const [mounted, setMounted] = useState(false);
@@ -50,7 +51,7 @@ export function Header() {
     <header className="sticky top-0 z-40 w-full border-b bg-white/70 backdrop-blur">
       <div className="container flex h-16 items-center justify-between">
         <Link href="/" className="text-xl font-[var(--font-serif)] font-semibold text-secondary">
-          Artisan Rings
+          Aurora Jewelry
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
           <Link href="/" className="text-sm text-text hover:text-secondary" data-testid="nav-home">
@@ -90,7 +91,7 @@ export function Header() {
                   <Link
                     key={collection.name}
                     href={collection.href}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-orange-600"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary"
                   >
                     {collection.name}
                   </Link>
@@ -165,7 +166,7 @@ export function Header() {
             data-testid="cart-icon"
           >
             <ShoppingBag className="h-5 w-5" />
-            {mounted && count > 0 && (
+            {mounted && isHydrated && count > 0 && (
               <span
                 className="absolute -right-1 -top-1 inline-flex min-w-[1rem] items-center justify-center rounded-full bg-primary px-1.5 text-[10px] font-medium text-white"
                 data-testid="cart-count"

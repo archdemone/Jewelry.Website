@@ -22,8 +22,7 @@ import {
 	Users,
 	Heart
 } from 'lucide-react'
-import { Header } from '@/components/layout/Header'
-import { Footer } from '@/components/layout/Footer'
+
 import Image from 'next/image';
 
 export default function CraftingProcessPage() {
@@ -83,9 +82,7 @@ export default function CraftingProcessPage() {
 	]
 
 	return (
-		<>
-			<Header />
-			<main className="space-y-0">
+		<main className="space-y-0">
 				<div className="min-h-screen bg-white">
 					{/* Hero Section */}
 					<section className="relative h-[60vh] min-h-[500px] overflow-hidden bg-gradient-to-br from-amber-50 to-orange-50">
@@ -115,7 +112,7 @@ export default function CraftingProcessPage() {
 									initial={{ opacity: 0, y: 30 }}
 									animate={{ opacity: 1, y: 0 }}
 									transition={{ duration: 0.8, delay: 0.2 }}
-									className="mx-auto max-w-2xl text-xl text-gray-200"
+									className="mx-auto max-w-2xl text-xl text-orange-100"
 								>
 									Discover how each ring is carefully crafted from raw materials to finished masterpiece
 								</motion.p>
@@ -195,11 +192,11 @@ export default function CraftingProcessPage() {
 										viewport={{ once: true }}
 										transition={{ delay: index * 0.1 }}
 										onClick={() => setActiveStep(step.number)}
-										className={`w-full flex items-center gap-4 p-4 rounded-xl transition-all ${
-											activeStep === step.number 
-												? 'bg-gradient-to-r from-amber-50 to-orange-50 shadow-lg' 
-												: 'bg-gray-50 hover:bg-gray-100'
-										}`}
+																			className={`w-full flex items-center gap-4 p-4 rounded-xl transition-all ${
+										activeStep === step.number 
+											? 'bg-gradient-to-r from-orange-50 to-amber-50 shadow-lg' 
+											: 'bg-gray-50 hover:bg-gray-100'
+									}`}
 									>
 										<div className={`
 											w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0
@@ -445,7 +442,7 @@ export default function CraftingProcessPage() {
 								initial={{ opacity: 0, y: 20 }}
 								whileInView={{ opacity: 1, y: 0 }}
 								viewport={{ once: true }}
-								className="text-3xl font-serif text-center mb-12"
+								className="text-3xl font-serif text-center mb-12 text-gray-900"
 							>
 								Common Questions About the Process
 							</motion.h2>
@@ -500,7 +497,7 @@ export default function CraftingProcessPage() {
 					</section>
 
 					{/* Special Offer Banner - First 100 Customers */}
-					<section className="py-8 bg-gradient-to-r from-gold-500 to-amber-500">
+														<section className="py-8 bg-gradient-to-r from-orange-500 to-amber-500">
 						<div className="container max-w-4xl">
 							<motion.div
 								initial={{ opacity: 0, scale: 0.95 }}
@@ -509,11 +506,11 @@ export default function CraftingProcessPage() {
 								className="bg-white/95 backdrop-blur p-8 rounded-2xl shadow-2xl"
 							>
 								<div className="flex items-center justify-center mb-4">
-									<Gift className="w-8 h-8 text-gold-600 mr-2" />
+									<Gift className="w-8 h-8 text-orange-600 mr-2" />
 									<h3 className="text-2xl font-bold text-gray-900">
 										🎉 First 100 Customers Special!
 									</h3>
-									<Gift className="w-8 h-8 text-gold-600 ml-2" />
+									<Gift className="w-8 h-8 text-orange-600 ml-2" />
 								</div>
 								
 								<div className="text-center">
@@ -549,22 +546,22 @@ export default function CraftingProcessPage() {
 								</p>
 								<div className="flex flex-col sm:flex-row gap-4 justify-center">
 									<Link href="/products">
-										<motion.button
-											whileHover={{ scale: 1.05 }}
-											whileTap={{ scale: 0.95 }}
-											className="px-8 py-4 bg-gold-500 text-white rounded-full font-medium 
-											   shadow-lg hover:bg-gold-600 transition-all inline-flex items-center gap-2"
-										>
-											<ShoppingCart className="w-5 h-5" />
-											Browse Collection
-											</motion.button>
+																		<motion.button
+									whileHover={{ scale: 1.05 }}
+									whileTap={{ scale: 0.95 }}
+									className="px-8 py-4 bg-primary text-white rounded-full font-medium 
+									   shadow-lg hover:opacity-90 transition-all inline-flex items-center gap-2"
+								>
+									<ShoppingCart className="w-5 h-5" />
+									Browse Collection
+									</motion.button>
 										</Link>
 										<Link href="/custom-design">
 											<motion.button
 												whileHover={{ scale: 1.05 }}
 												whileTap={{ scale: 0.95 }}
-												className="px-8 py-4 border-2 border-gold-500 text-gold-600 rounded-full 
-												   font-medium hover:bg-gold-50 transition-all inline-flex items-center gap-2"
+												className="px-8 py-4 border-2 border-primary text-primary rounded-full 
+												   font-medium hover:bg-primary/5 transition-all inline-flex items-center gap-2"
 											>
 											<Hammer className="w-5 h-5" />
 											Custom Design
@@ -576,7 +573,5 @@ export default function CraftingProcessPage() {
 					</section>
 				</div>
 			</main>
-			<Footer />
-		</>
 	)
 }

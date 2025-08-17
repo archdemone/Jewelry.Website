@@ -19,12 +19,12 @@ export function Footer() {
               </Link>
             </li>
             <li>
-              <Link href="/(shop)/products" className="hover:underline">
+              <Link href="/products" className="hover:underline">
                 Shop
               </Link>
             </li>
             <li>
-              <Link href="/(shop)/about" className="hover:underline">
+              <Link href="/about" className="hover:underline">
                 About
               </Link>
             </li>
@@ -66,7 +66,7 @@ export function Footer() {
               className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
               autoComplete="email"
             />
-            <button className="rounded-md bg-secondary px-4 py-2 text-sm text-white hover:opacity-90">
+            <button className="rounded-md bg-primary px-4 py-2 text-sm text-white hover:opacity-90">
               Subscribe
             </button>
           </form>

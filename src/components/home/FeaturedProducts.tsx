@@ -140,7 +140,7 @@ const FeaturedProducts = () => {
                       <span className="text-lg font-bold text-gray-900">${ring.price}</span>
                       <Link
                         href={`/products/${ring.slug}`}
-                        className="text-orange-500 hover:text-orange-600"
+                        className="text-primary hover:opacity-80"
                       >
                         View Details →
                       </Link>
@@ -151,7 +151,7 @@ const FeaturedProducts = () => {
                   <div className="mt-4 h-[60px] flex items-end">
                     <Link
                       href={`/products/${ring.slug}`}
-                      className="inline-block w-full rounded-full bg-gradient-to-r from-orange-500 to-amber-500 px-8 py-4 text-center font-medium text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                      className="inline-block w-full rounded-full bg-gradient-to-r from-primary to-orange-500 px-8 py-4 text-center font-medium text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
                     >
                       View Ring
                     </Link>
@@ -170,7 +170,7 @@ const FeaturedProducts = () => {
         >
           <Link
             href="/products"
-            className="inline-block rounded-full bg-gold-500 px-8 py-4 font-medium text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
+            className="inline-block rounded-full bg-primary px-8 py-4 font-medium text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
           >
             View All Handcrafted Rings
           </Link>

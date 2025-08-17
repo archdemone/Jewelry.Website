@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 const heroImages = [
   {
-    src: '/images/header/hero-1-320.webp',
+    src: '/images/header/hero-1-1920.webp',
     alt: 'Elegant handcrafted jewelry',
     title: 'Discover Timeless Jewelry',
     subtitle: 'Handcrafted pieces for every occasion',
@@ -16,7 +16,7 @@ const heroImages = [
     secondaryCtaLink: '/about-artisan'
   },
   {
-    src: '/images/header/hero-2-768.webp',
+    src: '/images/header/hero-2-1920.webp',
     alt: 'Master craftsmanship in jewelry making',
     title: 'Master Craftsmanship',
     subtitle: 'Each piece tells a unique story',
@@ -26,7 +26,7 @@ const heroImages = [
     secondaryCtaLink: '/about'
   },
   {
-    src: '/images/header/hero-3-768.webp',
+    src: '/images/header/hero-3-1920.webp',
     alt: 'Luxury engagement rings collection',
     title: 'Luxury Engagement Rings',
     subtitle: 'Perfect for your special moment',
@@ -61,13 +61,15 @@ const HeroCarousel = () => {
           <Image
             src={image.src}
             alt={image.alt}
-            priority={index === 0} // Only priority the first image
+            priority={index === 0} // Only priority the first image (LCP target)
             loading={index === 0 ? 'eager' : 'lazy'} // Eager for first, lazy for others
             quality={70}
             fill
             sizes="100vw"
             style={{ objectFit: "cover" }}
             fetchPriority={index === 0 ? "high" : "auto"}
+            placeholder={index === 0 ? "blur" : "empty"}
+            blurDataURL={index === 0 ? "/images/header/hero-1-blur.webp" : undefined}
           />
         </div>
       ))}

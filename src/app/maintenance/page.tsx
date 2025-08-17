@@ -3,7 +3,7 @@ export default function MaintenancePage() {
     <div className="flex min-h-screen items-center justify-center bg-gray-50">
       <div className="px-4 text-center">
         <div className="mb-8">
-          <svg className="mx-auto h-24 w-24 text-gold-500" />
+          <svg className="mx-auto h-24 w-24 text-primary" />
         </div>
         <h1 className="mb-4 text-4xl font-bold text-gray-900">We&#39;ll be back soon!</h1>
         <p className="mx-auto mb-8 max-w-md text-lg text-gray-600">

@@ -9,10 +9,21 @@ export default function OrderReview({
 }: {
   onEdit?: (section: 'information' | 'shipping' | 'payment') => void;
 }) {
-  const { items } = useCartStore();
+  const { items, isHydrated } = useCartStore();
   const { getValues } = useFormContext();
   const shipping = useWatch({ name: 'shipping' });
   const shippingMethod = useWatch({ name: 'shippingMethod' });
+
+  if (!isHydrated) {
+    return (
+      <div className="space-y-6">
+        <div className="text-center py-8">
+          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-2 text-sm text-gray-600">Loading order review...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">

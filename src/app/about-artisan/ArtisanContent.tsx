@@ -5,8 +5,7 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Heart, Home, Users, Award } from 'lucide-react';
-import { Header } from '@/components/layout/Header';
-import { Footer } from '@/components/layout/Footer';
+
 import Image from 'next/image';
 
 export default function ArtisanContent() {
@@ -16,9 +15,7 @@ export default function ArtisanContent() {
   if (!mounted) return null;
 
   return (
-    <>
-      <Header />
-      <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white">
         {/* Hero Section - Personal Introduction */}
         <section className="relative h-[55vh] min-h-[480px] overflow-hidden bg-gradient-to-br from-stone-100 to-stone-200">
           <div className="absolute inset-0">
@@ -450,8 +447,6 @@ export default function ArtisanContent() {
           </div>
         </section>
       </div>
-      <Footer />
-    </>
   );
 }
 

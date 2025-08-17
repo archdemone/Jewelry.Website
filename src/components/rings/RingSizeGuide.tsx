@@ -60,25 +60,25 @@ const RingSizeGuide = () => {
           <h4 className="mb-2 font-medium">How to Measure</h4>
           <ol className="space-y-2 text-sm">
             <li className="flex items-start gap-2">
-              <span className="mt-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-gold-500 text-xs font-bold text-white">
+              <span className="mt-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
                 1
               </span>
               <span>Wrap a piece of string or paper around your finger</span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="mt-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-gold-500 text-xs font-bold text-white">
+              <span className="mt-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
                 2
               </span>
               <span>Mark where the string overlaps</span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="mt-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-gold-500 text-xs font-bold text-white">
+              <span className="mt-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
                 3
               </span>
               <span>Measure the length in millimeters</span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="mt-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-gold-500 text-xs font-bold text-white">
+              <span className="mt-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
                 4
               </span>
               <span>Find your size in the chart above</span>
@@ -88,7 +88,7 @@ const RingSizeGuide = () => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="mt-4 flex items-center gap-2 text-sm text-gold-500 underline hover:text-gold-600"
+            className="mt-4 flex items-center gap-2 text-sm text-primary underline hover:opacity-80"
           >
             <Download className="h-4 w-4" />
             Download Printable Ring Sizer
@@ -99,7 +99,7 @@ const RingSizeGuide = () => {
       {/* Tips */}
       <div className="mt-6 rounded-lg border bg-white p-4">
         <h4 className="mb-2 flex items-center gap-2 font-medium">
-          <Ruler className="h-4 w-4 text-gold-500" />
+          <Ruler className="h-4 w-4 text-primary" />
           Pro Tips
         </h4>
         <ul className="space-y-1 text-sm text-gray-600">

@@ -1,5 +1,3 @@
-import { Header } from '@/components/layout/Header';
-import { Footer } from '@/components/layout/Footer';
 import HeroSection from '@/components/home/HeroSection';
 import FeaturedProducts from '@/components/home/FeaturedProducts';
 import CategoryShowcase from '@/components/home/CategoryShowcase';
@@ -16,14 +14,12 @@ const TestimonialsSection = dynamic(() => import('@/components/home/Testimonials
 export default function ShopHomePage() {
   return (
     <>
-      <Header />
       <HeroSection />
       <FeaturedProducts />
       <CategoryShowcase />
       <WhyChooseUs />
       <TestimonialsSection />
       <NewsletterSection />
-      <Footer />
     </>
   );
 }
