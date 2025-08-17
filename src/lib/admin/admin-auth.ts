@@ -1,4 +1,6 @@
-export type AdminRole = 'ADMIN' | 'STAFF';
+import { UserRole, UserRoleType } from '@/types/enums';
+
+export type AdminRole = UserRoleType;
 
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/auth-options';
@@ -10,7 +12,7 @@ export async function getSession() {
 }
 
 export function isAdminOrStaff(role?: string | null): boolean {
-  return role === 'ADMIN' || role === 'STAFF';
+	return role === UserRole.ADMIN || role === UserRole.STAFF;
 }
 
 export async function requireAuthenticatedSession(redirectTo?: string) {

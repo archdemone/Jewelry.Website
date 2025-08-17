@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
+import { UserRole } from '@/types/enums';
 
 export async function middleware(request: NextRequest) {
   if (process.env.NEXT_PUBLIC_MAINTENANCE_MODE === 'true') {
@@ -46,8 +47,8 @@ export async function middleware(request: NextRequest) {
       url.searchParams.set('callbackUrl', '/admin');
       return NextResponse.redirect(url, { status: 302 });
     }
-    const role = token?.role;
-    if (role !== 'ADMIN' && role !== 'STAFF') {
+    	const role = token?.role;
+	if (role !== UserRole.ADMIN && role !== UserRole.STAFF) {
       const url = request.nextUrl.clone();
       url.pathname = '/auth/login';
       url.searchParams.set('callbackUrl', '/admin');

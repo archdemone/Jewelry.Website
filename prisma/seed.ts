@@ -1,4 +1,6 @@
 import { PrismaClient } from '@prisma/client';
+import { UserRole } from '../src/types/enums';
+import { stringifyImages } from '../src/lib/utils/json-helpers';
 
 const prisma = new PrismaClient();
 
@@ -96,10 +98,10 @@ async function main() {
         material: '18k Yellow Gold',
         gemstones: '1ct Diamond',
         size: '6.5',
-        images: [
+        images: stringifyImages([
           '/images/products/classic-solitaire-engagement-ring-1.jpg',
           '/images/products/classic-solitaire-engagement-ring-2.jpg',
-        ],
+        ]),
         featured: true,
         categoryId: categories[0].id, // engagement-rings
       },
@@ -122,10 +124,10 @@ async function main() {
         material: '18k White Gold',
         gemstones: '1.2ct Diamond + Halo',
         size: '7.0',
-        images: [
+        images: stringifyImages([
           '/images/products/vintage-halo-ring-1.jpg',
           '/images/products/vintage-halo-ring-2.jpg',
-        ],
+        ]),
         featured: true,
         categoryId: categories[0].id, // engagement-rings
       },
@@ -147,10 +149,10 @@ async function main() {
         material: 'Platinum',
         gemstones: 'Three Diamonds',
         size: '6.5',
-        images: [
+        images: stringifyImages([
           '/images/products/modern-three-stone-ring-1.jpg',
           '/images/products/modern-three-stone-ring-2.jpg',
-        ],
+        ]),
         featured: false,
         categoryId: categories[0].id, // engagement-rings
       },
@@ -174,10 +176,10 @@ async function main() {
         material: '14k White Gold',
         gemstones: 'None',
         size: '7.0',
-        images: [
+        images: stringifyImages([
           '/images/products/hammered-wedding-band-1.jpg',
           '/images/products/hammered-wedding-band-2.jpg',
-        ],
+        ]),
         featured: true,
         categoryId: categories[1].id, // wedding-bands
       },
@@ -199,10 +201,10 @@ async function main() {
         material: '18k Yellow Gold',
         gemstones: 'None',
         size: '7.0',
-        images: [
+        images: stringifyImages([
           '/images/products/classic-plain-wedding-band-1.jpg',
           '/images/products/classic-plain-wedding-band-2.jpg',
-        ],
+        ]),
         featured: false,
         categoryId: categories[1].id, // wedding-bands
       },
@@ -224,10 +226,10 @@ async function main() {
         material: '14k White Gold',
         gemstones: 'Pave Diamonds',
         size: '7.0',
-        images: [
+        images: stringifyImages([
           '/images/products/diamond-pave-wedding-band-1.jpg',
           '/images/products/diamond-pave-wedding-band-2.jpg',
-        ],
+        ]),
         featured: true,
         categoryId: categories[1].id, // wedding-bands
       },
@@ -250,10 +252,10 @@ async function main() {
         material: '18k White Gold',
         gemstones: 'Sapphires',
         size: '7.0',
-        images: [
+        images: stringifyImages([
           '/images/products/sapphire-eternity-ring-1.jpg',
           '/images/products/sapphire-eternity-ring-2.jpg',
-        ],
+        ]),
         featured: true,
         categoryId: categories[2].id, // eternity-rings
       },
@@ -275,10 +277,10 @@ async function main() {
         material: 'Platinum',
         gemstones: 'Diamonds',
         size: '7.0',
-        images: [
+        images: stringifyImages([
           '/images/products/diamond-eternity-ring-1.jpg',
           '/images/products/diamond-eternity-ring-2.jpg',
-        ],
+        ]),
         featured: false,
         categoryId: categories[2].id, // eternity-rings
       },
@@ -301,10 +303,10 @@ async function main() {
         material: '18k Yellow Gold',
         gemstones: 'None',
         size: '10.0',
-        images: [
+        images: stringifyImages([
           '/images/products/classic-signet-ring-1.jpg',
           '/images/products/classic-signet-ring-2.jpg',
-        ],
+        ]),
         featured: false,
         categoryId: categories[3].id, // signet-rings
       },
@@ -327,10 +329,10 @@ async function main() {
         material: '18k Yellow Gold',
         gemstones: 'Emerald + Diamonds',
         size: '7.0',
-        images: [
+        images: stringifyImages([
           '/images/products/emerald-statement-ring-1.jpg',
           '/images/products/emerald-statement-ring-2.jpg',
-        ],
+        ]),
         featured: true,
         categoryId: categories[4].id, // statement-rings
       },
@@ -352,10 +354,10 @@ async function main() {
         material: '18k White Gold',
         gemstones: 'Ruby + Diamonds',
         size: '7.0',
-        images: [
+        images: stringifyImages([
           '/images/products/ruby-cocktail-ring-1.jpg',
           '/images/products/ruby-cocktail-ring-2.jpg',
-        ],
+        ]),
         featured: false,
         categoryId: categories[4].id, // statement-rings
       },
@@ -378,10 +380,10 @@ async function main() {
         material: '18k Rose Gold',
         gemstones: 'None',
         size: '7.0',
-        images: [
+        images: stringifyImages([
           '/images/products/minimalist-gold-band-1.jpg',
           '/images/products/minimalist-gold-band-2.jpg',
-        ],
+        ]),
         featured: true,
         categoryId: categories[5].id, // stackable-rings
       },
@@ -403,10 +405,10 @@ async function main() {
         material: '14k White Gold',
         gemstones: 'Small Diamonds',
         size: '7.0',
-        images: [
+        images: stringifyImages([
           '/images/products/diamond-accent-band-1.jpg',
           '/images/products/diamond-accent-band-2.jpg',
-        ],
+        ]),
         featured: false,
         categoryId: categories[5].id, // stackable-rings
       },
@@ -423,7 +425,7 @@ async function main() {
       email: 'demo@example.com',
       name: 'Demo User',
       password: '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj4tbQJhqKre', // password: demo123
-      role: 'CUSTOMER',
+      		role: UserRole.CUSTOMER,
     },
   });
 
