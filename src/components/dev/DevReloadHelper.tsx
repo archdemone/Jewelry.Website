@@ -13,13 +13,14 @@ export function DevReloadHelper() {
       const forceReload = () => {
         // Add a timestamp to force reload
         const timestamp = Date.now();
-        const links = document.querySelectorAll('link[rel="stylesheet"]') as NodeListOf<HTMLLinkElement>;
+        const links = document.querySelectorAll('link[rel="stylesheet"]');
         
-        links.forEach((link) => {
-          if (link.href && link.href.includes('localhost')) {
-            const url = new URL(link.href);
+        links.forEach((link: Element) => {
+          const linkElement = link as HTMLLinkElement;
+          if (linkElement.href && linkElement.href.includes('localhost')) {
+            const url = new URL(linkElement.href);
             url.searchParams.set('v', timestamp.toString());
-            link.href = url.toString();
+            linkElement.href = url.toString();
           }
         });
       };
