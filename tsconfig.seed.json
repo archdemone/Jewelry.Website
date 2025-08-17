@@ -1,12 +1,10 @@
 {
-	"extends": "./tsconfig.json",
-	"compilerOptions": {
-		"module": "CommonJS",
-		"moduleResolution": "Node",
-		"noEmit": true,
-		"types": ["node"]
-	},
-	"include": ["prisma/seed.ts", "scripts/**/*"]
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "Node",
+    "noEmit": true,
+    "types": ["node"]
+  },
+  "include": ["prisma/seed.ts", "scripts/**/*"]
 }
-
-

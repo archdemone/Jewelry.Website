@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import { createElement, useState } from 'react'
 import { motion } from 'framer-motion'
 import SmartImage from '@/components/common/SmartImage'
 import Link from 'next/link'
@@ -163,9 +163,9 @@ export default function CraftingProcessPage() {
 														: 'bg-gray-50 border-2 border-gray-200 hover:border-gray-300'}
 													transition-all cursor-pointer
 												`}>
-																												<step.icon className={`w-12 h-12 ${
-																activeStep === step.number ? `text-${step.color}-600` : 'text-gray-400'
-															}`} />
+													<step.icon className={`w-12 h-12 ${
+														activeStep === step.number ? `text-${step.color}-600` : 'text-gray-400'
+													}`} />
 												</div>
 												<div className="mt-4">
 													<div className={`text-sm font-bold ${
@@ -203,9 +203,9 @@ export default function CraftingProcessPage() {
 												? `bg-${step.color}-100 border-2 border-${step.color}-400` 
 												: 'bg-white border-2 border-gray-200'}
 										`}>
-																										<step.icon className={`w-8 h-8 ${
-																activeStep === step.number ? `text-${step.color}-600` : 'text-gray-400'
-															}`} />
+											<step.icon className={`w-8 h-8 ${
+												activeStep === step.number ? `text-${step.color}-600` : 'text-gray-400'
+											}`} />
 										</div>
 										<div className="text-left">
 											<div className="font-semibold">Step {step.number}: {step.title}</div>
@@ -228,7 +228,7 @@ export default function CraftingProcessPage() {
 										w-20 h-20 rounded-xl flex items-center justify-center flex-shrink-0
 										bg-${processSteps[activeStep - 1].color}-100
 									`}>
-										{React.createElement(processSteps[activeStep - 1].icon, {
+										{createElement(processSteps[activeStep - 1].icon, {
 											className: `w-10 h-10 text-${processSteps[activeStep - 1].color}-600`
 										})}
 									</div>
@@ -353,16 +353,16 @@ export default function CraftingProcessPage() {
 														</div>
 													</div>
 												</div>
-																											<p className="text-sm text-blue-700 mt-4 italic">
-																"Multiple inspectors review each ring to ensure it meets our quality standards"
-															</p>
-														</div>
-													)}
-												</div>
+												<p className="text-sm text-blue-700 mt-4 italic">
+													"Multiple inspectors review each ring to ensure it meets our quality standards"
+												</p>
 											</div>
-										</motion.div>
+										)}
 									</div>
-								</section>
+								</div>
+							</motion.div>
+						</div>
+					</section>
 
 					{/* Visual Process Gallery */}
 					<section className="py-16 bg-gray-50">
@@ -384,15 +384,15 @@ export default function CraftingProcessPage() {
 									transition={{ delay: 0.1 }}
 									className="relative group overflow-hidden rounded-xl"
 								>
-																	<SmartImage
-									srcs={['/images/process/material-selection.jpg']}
-									alt="Selecting materials"
-									width={400}
-									height={300}
-									className="w-full object-cover group-hover:scale-110 transition-transform duration-300"
-									sizes="(max-width: 768px) 100vw, 400px"
-									quality={90}
-								/>
+									<SmartImage
+										srcs={['/images/process/material-selection.jpg']}
+										alt="Selecting materials"
+										width={400}
+										height={300}
+										className="w-full object-cover group-hover:scale-110 transition-transform duration-300"
+										sizes="(max-width: 768px) 100vw, 400px"
+										quality={90}
+									/>
 									<div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
 										<div className="text-white">
 											<h3 className="font-semibold text-lg">Material Selection</h3>
@@ -567,24 +567,24 @@ export default function CraftingProcessPage() {
 											whileHover={{ scale: 1.05 }}
 											whileTap={{ scale: 0.95 }}
 											className="px-8 py-4 bg-gold-500 text-white rounded-full font-medium 
-													   shadow-lg hover:bg-gold-600 transition-all inline-flex items-center gap-2"
+											   shadow-lg hover:bg-gold-600 transition-all inline-flex items-center gap-2"
 										>
 											<ShoppingCart className="w-5 h-5" />
 											Browse Collection
-										</motion.button>
-									</Link>
-									<Link href="/custom-design">
-										<motion.button
-											whileHover={{ scale: 1.05 }}
-											whileTap={{ scale: 0.95 }}
-											className="px-8 py-4 border-2 border-gold-500 text-gold-600 rounded-full 
-													   font-medium hover:bg-gold-50 transition-all inline-flex items-center gap-2"
-										>
+											</motion.button>
+										</Link>
+										<Link href="/custom-design">
+											<motion.button
+												whileHover={{ scale: 1.05 }}
+												whileTap={{ scale: 0.95 }}
+												className="px-8 py-4 border-2 border-gold-500 text-gold-600 rounded-full 
+												   font-medium hover:bg-gold-50 transition-all inline-flex items-center gap-2"
+											>
 											<Hammer className="w-5 h-5" />
 											Custom Design
-										</motion.button>
-									</Link>
-								</div>
+											</motion.button>
+										</Link>
+									</div>
 							</motion.div>
 						</div>
 					</section>

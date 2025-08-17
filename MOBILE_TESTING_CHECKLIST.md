@@ -1,6 +1,7 @@
 ## Mobile Testing Checklist
 
 ### iOS Safari (iPhone)
+
 - [ ] Homepage loads correctly
 - [ ] Navigation menu works
 - [ ] Product grid displays properly
@@ -11,12 +12,14 @@
 - [ ] Touch gestures work
 
 ### Android Chrome
+
 - [ ] All above tests
 - [ ] Back button behavior correct
 - [ ] No horizontal scroll
 - [ ] Forms auto-fill works
 
 ### Tablet (iPad/Android)
+
 - [ ] Responsive layout adjusts
 - [ ] Touch targets adequate size
 - [ ] Modals display correctly

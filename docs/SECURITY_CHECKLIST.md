@@ -1,6 +1,7 @@
 ## Security Checklist
 
 ### Authentication & Authorization
+
 - [ ] Passwords hashed with bcrypt
 - [ ] JWT tokens expire appropriately
 - [ ] Admin routes protected
@@ -8,6 +9,7 @@
 - [ ] Session management secure
 
 ### Data Protection
+
 - [ ] HTTPS enforced everywhere
 - [ ] Database credentials secure
 - [ ] API keys not exposed
@@ -15,6 +17,7 @@
 - [ ] Backups encrypted
 
 ### Input Validation
+
 - [ ] All forms validate input
 - [ ] SQL injection prevented
 - [ ] XSS protection enabled
@@ -22,6 +25,7 @@
 - [ ] Rate limiting implemented
 
 ### Infrastructure
+
 - [ ] Firewall configured
 - [ ] Unnecessary ports closed
 - [ ] Security headers set
@@ -29,6 +33,7 @@
 - [ ] CDN security enabled
 
 ### Monitoring
+
 - [ ] Error logging enabled
 - [ ] Suspicious activity alerts
 - [ ] Failed login monitoring
@@ -36,6 +41,7 @@
 - [ ] Uptime monitoring
 
 ### Compliance
+
 - [ ] GDPR compliant
 - [ ] PCI DSS compliant (via Stripe)
 - [ ] Cookie consent implemented

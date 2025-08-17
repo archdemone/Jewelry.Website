@@ -1,11 +1,11 @@
-"use client"
+'use client';
 
-import CheckoutForm from '@/components/checkout/CheckoutForm'
+import CheckoutForm from '@/components/checkout/CheckoutForm';
 
 export default function CheckoutPage() {
-	return (
-		<div className="container max-w-7xl">
-			<CheckoutForm />
-		</div>
-	)
+  return (
+    <div className="container max-w-7xl">
+      <CheckoutForm />
+    </div>
+  );
 }

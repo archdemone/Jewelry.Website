@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ '**' ]
+    branches: ['**']
   pull_request:
-    branches: [ '**' ]
+    branches: ['**']
 
 jobs:
   build-and-test:
@@ -72,5 +72,3 @@ jobs:
           path: |
             tools/**
             .next/**
-
-
