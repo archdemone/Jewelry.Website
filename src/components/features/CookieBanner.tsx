@@ -4,12 +4,12 @@ import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 
 export type CookiePreferences = {
-  nessary: boolean;
+  necessary: boolean;
   analytics: boolean;
   marketing: boolean;
 };
 
-const defaultPrefs: CookiePreferences = { nessary: true, analytics: false, marketing: false };
+const defaultPrefs: CookiePreferences = { necessary: true, analytics: false, marketing: false };
 
 export default function CookieBanner() {
   const [visible, setVisible] = useState(false);
@@ -52,7 +52,7 @@ export default function CookieBanner() {
           <Button
             variant="outline"
             onClick={() => {
-              setPrefs({ nessary: true, analytics: false, marketing: false });
+              setPrefs({ necessary: true, analytics: false, marketing: false });
               remember({ type: 'reject_all' });
             }}
           >

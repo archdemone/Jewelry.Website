@@ -71,8 +71,8 @@ export async function middleware(request: NextRequest) {
 
   const res = NextResponse.next();
 
-  // Security headers
-  if (process.env.CSP_DISABLE !== 'true') {
+  // Security headers (only enforce in production to avoid breaking Next.js dev tooling)
+  if (process.env.NODE_ENV === 'production' && process.env.CSP_DISABLE !== 'true') {
     const csp =
       "default-src 'self'; img-src 'self' data: blob:; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'self';";
     const reportOnly = process.env.CSP_REPORT_ONLY === 'true';

@@ -14,7 +14,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { motion } from 'framer-motion';
 
 export function Header() {
   const count = useCartStore((s) => s.count);
@@ -79,24 +78,23 @@ export function Header() {
               Ring Collections
               <ChevronDown className="h-4 w-4" />
             </button>
-            {showRingCollections && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                className="absolute left-0 top-full mt-2 w-64 rounded-lg border bg-white py-2 shadow-lg"
-              >
-                {ringCollections.map((collection) => (
-                  <Link
-                    key={collection.name}
-                    href={collection.href}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gold-600"
-                  >
-                    {collection.name}
-                  </Link>
-                ))}
-              </motion.div>
-            )}
+            <div
+              className={
+                `absolute left-0 top-full mt-2 w-64 rounded-lg border bg-white py-2 shadow-lg
+                transition-all duration-200 ease-out transform
+                ${showRingCollections ? 'opacity-100 translate-y-0' : 'pointer-events-none opacity-0 translate-y-2'}`
+              }
+            >
+              {ringCollections.map((collection) => (
+                <Link
+                  key={collection.name}
+                  href={collection.href}
+                  className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gold-600"
+                >
+                  {collection.name}
+                </Link>
+              ))}
+            </div>
           </div>
 
           <Link href="/about-artisan" className="text-sm text-text hover:text-secondary">
