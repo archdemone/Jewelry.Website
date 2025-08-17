@@ -31,6 +31,12 @@ const AnalyticsProviders = dynamic(
   },
 );
 
+// Development helper (only in development)
+const DevReloadHelper = dynamic(() => import('@/components/dev/DevReloadHelper').then(mod => ({ default: mod.DevReloadHelper })), {
+  ssr: false,
+  loading: () => null,
+});
+
 // Only initialize Sentry in production and after page load
 if (process.env.NODE_ENV === 'production' && typeof window !== 'undefined') {
   import('@sentry/nextjs').then((Sentry) => {
@@ -118,6 +124,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable} scroll-smooth`}>
       <head>
+        {process.env.NODE_ENV === 'development' && (
+          <meta httpEquiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        )}
         {process.env.NODE_ENV === 'production' && (
           <meta
             httpEquiv="Content-Security-Policy"
@@ -134,6 +143,8 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <NewsletterPopup />
           <LiveChat />
           <AnalyticsProviders />
+          {/* Development helper - only in development */}
+          {process.env.NODE_ENV === 'development' && <DevReloadHelper />}
           {/* Optional: Google Analytics 4 - requires GA_MEASUREMENT_ID env */}
           {process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID && (
             <>

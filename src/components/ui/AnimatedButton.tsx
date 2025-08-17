@@ -6,46 +6,48 @@ import { ReactNode } from 'react';
 interface AnimatedButtonProps {
   children: ReactNode;
   variant?: 'primary' | 'secondary' | 'outline';
+  size?: 'sm' | 'md' | 'lg';
   className?: string;
   onClick?: () => void;
-  type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
+  type?: 'button' | 'submit' | 'reset';
 }
 
-export const AnimatedButton = ({
+const AnimatedButton = ({
   children,
   variant = 'primary',
+  size = 'md',
   className = '',
   onClick,
-  type = 'button',
   disabled = false,
+  type = 'button',
 }: AnimatedButtonProps) => {
-  const variants = {
-    primary: 'bg-gold-500 text-white hover:bg-gold-600',
-    secondary: 'bg-white text-black border-2 border-gray-200 hover:border-gold-500',
-    outline: 'border-2 border-gold-500 text-gold-500 hover:bg-gold-500 hover:text-white',
+  const baseClasses = 'inline-flex items-center justify-center font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed';
+
+  const sizeClasses = {
+    sm: 'px-4 py-2 text-sm',
+    md: 'px-6 py-3 text-base',
+    lg: 'px-8 py-4 text-lg',
+  };
+
+  const variantClasses = {
+    primary: 'bg-gradient-to-r from-orange-500 to-amber-500 text-white hover:from-orange-600 hover:to-amber-600 focus:ring-orange-500',
+    secondary: 'bg-white text-black border-2 border-gray-200 hover:border-orange-500 focus:ring-orange-500',
+    outline: 'border-2 border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white focus:ring-orange-500',
   };
 
   return (
     <motion.button
-      whileHover={{
-        scale: disabled ? 1 : 1.05,
-        boxShadow: disabled ? 'none' : '0 10px 30px rgba(212, 175, 55, 0.3)',
-      }}
-      whileTap={{ scale: disabled ? 1 : 0.95 }}
-      transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-      className={`rounded-full px-6 py-3 font-medium transition-all duration-300 ${variants[variant]} ${className} ${disabled ? 'cursor-not-allowed opacity-50' : ''}`}
-      onClick={onClick}
       type={type}
+      onClick={onClick}
       disabled={disabled}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      className={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`}
     >
-      <motion.span
-        initial={{ display: 'inline-block' }}
-        whileHover={{ y: disabled ? 0 : -2 }}
-        transition={{ type: 'spring', stiffness: 400 }}
-      >
-        {children}
-      </motion.span>
+      {children}
     </motion.button>
   );
 };
+
+export default AnimatedButton;

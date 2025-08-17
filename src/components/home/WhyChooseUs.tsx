@@ -71,32 +71,29 @@ const WhyChooseUs = () => {
               className="rounded-xl bg-gray-50 p-6 text-center transition-all duration-300 hover:bg-white hover:shadow-lg"
             >
               <motion.div
-                whileHover={{ scale: 1.1, rotate: 5 }}
-                className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gold-500"
+                whileHover={{ scale: 1.05 }}
+                className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-orange-500 to-amber-500"
               >
                 <reason.icon className="h-8 w-8 text-white" />
               </motion.div>
-              <h3 className="mb-3 text-xl font-semibold">{reason.title}</h3>
+              <h3 className="mb-2 text-xl font-semibold">{reason.title}</h3>
               <p className="text-gray-600">{reason.description}</p>
             </motion.div>
           ))}
         </div>
 
+        {/* Trust Badge */}
         <motion.div
-          initial={false}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mt-16 text-center"
+          transition={{ delay: 0.4 }}
+          className="mx-auto max-w-4xl rounded-2xl bg-orange-50 p-8"
         >
-          <div className="mx-auto max-w-4xl rounded-2xl bg-gold-50 p-8">
-            <h3 className="mb-4 font-serif text-2xl">The Artisan's Promise</h3>
-            <p className="mb-6 text-lg text-gray-700">
-              "I personally guarantee that every ring I create will be crafted with the same care
-              and attention I would give to a piece for my own family. When you wear one of my
-              rings, you're carrying a piece of my heart and my commitment to excellence."
-            </p>
-            <p className="font-medium text-gold-600">
-              - Master Artisan, Third Generation Ring Maker
+          <div className="text-center">
+            <h3 className="mb-2 text-2xl font-semibold">Trusted by Hundreds of Couples</h3>
+            <p className="font-medium text-orange-600">
+              Every ring tells a story. Let us help you create yours.
             </p>
           </div>
         </motion.div>

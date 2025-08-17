@@ -5,7 +5,7 @@ import { Mail, Sparkles } from 'lucide-react';
 
 const NewsletterSection = () => {
   return (
-    <section className="bg-gold-50 py-20">
+    <section className="bg-orange-50 py-20">
       <div className="container">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -16,7 +16,7 @@ const NewsletterSection = () => {
           <motion.div
             whileHover={{ rotate: 360 }}
             transition={{ duration: 0.6 }}
-            className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gold-500"
+            className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-orange-500 to-amber-500"
           >
             <Mail className="h-8 w-8 text-white" />
           </motion.div>
@@ -42,13 +42,13 @@ const NewsletterSection = () => {
               id="homepage-newsletter"
               name="email"
               placeholder="Enter your email address"
-              className="flex-1 rounded-full border border-gray-300 px-6 py-4 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-gold-500"
+              className="flex-1 rounded-full border border-gray-300 px-6 py-4 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-orange-500"
               autoComplete="email"
             />
             <motion.button
-              whileHover={{ scale: 1.05, backgroundColor: '#B8961F' }}
+              whileHover={{ scale: 1.05, backgroundColor: '#EA580C' }}
               whileTap={{ scale: 0.95 }}
-              className="flex items-center justify-center gap-2 rounded-full bg-gold-500 px-8 py-4 font-medium text-white shadow-lg transition-all duration-300 hover:shadow-xl"
+              className="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 px-8 py-4 font-medium text-white shadow-lg transition-all duration-300 hover:shadow-xl"
             >
               <Sparkles className="h-5 w-5" />
               Subscribe
@@ -67,15 +67,15 @@ const NewsletterSection = () => {
             className="mt-8 grid grid-cols-1 gap-6 text-sm md:grid-cols-3"
           >
             <div className="flex items-center justify-center gap-2">
-              <Sparkles className="h-4 w-4 text-gold-500" />
+              <Sparkles className="h-4 w-4 text-orange-500" />
               <span>Early access to new designs</span>
             </div>
             <div className="flex items-center justify-center gap-2">
-              <Sparkles className="h-4 w-4 text-gold-500" />
+              <Sparkles className="h-4 w-4 text-orange-500" />
               <span>Artisan workshop stories</span>
             </div>
             <div className="flex items-center justify-center gap-2">
-              <Sparkles className="h-4 w-4 text-gold-500" />
+              <Sparkles className="h-4 w-4 text-orange-500" />
               <span>Exclusive member discounts</span>
             </div>
           </motion.div>

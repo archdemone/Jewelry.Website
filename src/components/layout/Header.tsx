@@ -90,7 +90,7 @@ export function Header() {
                   <Link
                     key={collection.name}
                     href={collection.href}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-gold-600"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-orange-600"
                   >
                     {collection.name}
                   </Link>

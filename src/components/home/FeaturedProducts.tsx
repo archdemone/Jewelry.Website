@@ -126,21 +126,26 @@ const FeaturedProducts = () => {
 
                 {/* Product Info */}
                 <div className="p-4">
-                  <h3 className="text-lg font-medium">{ring.name}</h3>
-                  <p className="mt-1 text-sm text-gray-600">
-                    {ring.material} • {ring.gemstone}
-                  </p>
-                  <p className="mt-1 text-xs text-gold-500">Craft time: {ring.craftTime}</p>
-                  <div className="mt-3 flex items-center justify-between">
-                    <span className="text-xl font-semibold">${ring.price.toLocaleString()}</span>
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      className="text-gold-500 hover:text-gold-600"
+                  <h3 className="font-semibold text-gray-900">{ring.name}</h3>
+                  <p className="mt-1 text-sm text-gray-600">{ring.description}</p>
+                  <div className="mt-2 flex items-center justify-between">
+                    <span className="text-lg font-bold text-gray-900">${ring.price}</span>
+                    <Link
+                      href={`/products/${ring.slug}`}
+                      className="text-orange-500 hover:text-orange-600"
                     >
-                      <ShoppingBag className="h-5 w-5" />
-                    </motion.button>
+                      View Details →
+                    </Link>
                   </div>
+                </div>
+
+                <div className="p-4 pt-0">
+                  <Link
+                    href={`/products/${ring.slug}`}
+                    className="inline-block rounded-full bg-gradient-to-r from-orange-500 to-amber-500 px-8 py-4 font-medium text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                  >
+                    View Ring
+                  </Link>
                 </div>
               </div>
             </motion.div>
