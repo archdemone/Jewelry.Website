@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "prebuild": "node scripts/validate-images.js validate || true",
+    "dev:lan": "powershell -Command \"$ip = (Get-NetIPAddress -AddressFamily IPv4 -InterfaceAlias 'Wi-Fi').IPAddress; Write-Host 'LAN URL: http://'$ip':3000'; npm run dev -- -H 0.0.0.0 -p 3000\"",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",

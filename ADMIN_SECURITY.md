@@ -3,6 +3,7 @@
 This document summarizes the admin hardening and how to verify locally.
 
 ## What was added
+
 - RBAC: `User.role` enforced; ADMIN/STAFF only.
 - Admin gating: `/admin` guarded server-side and via middleware. Non-admin → 302 to `/auth/login`.
 - Robots noindex: `/admin` and children are noindex via page metadata; `robots.ts` also disallows `/admin/`.
@@ -17,7 +18,9 @@ This document summarizes the admin hardening and how to verify locally.
 - CI: adds admin smoke check, npm audit, build/start/smoke, artifacts on failure.
 
 ## Environment
+
 Copy `.env.example` to `.env.local` and set secrets:
+
 - `NEXTAUTH_SECRET` – random string
 - `ADMIN_MFA_REQUIRED=true`
 - Optional Turnstile CAPTCHA:
@@ -25,20 +28,27 @@ Copy `.env.example` to `.env.local` and set secrets:
   - `TURNSTILE_SECRET_KEY`
 
 ## Database
+
 Run migrations (sqlite):
+
 ```
 npx prisma migrate dev
 ```
+
 Seed (optional):
+
 ```
 npm run seed
 ```
+
 Create an admin user manually if needed:
+
 ```
 # Use Prisma Studio or a script; set user.role = 'ADMIN'
 ```
 
 ## Verifications
+
 - Non-admin to /admin:
   - Visit `/admin` while signed out → 302 to `/auth/login`.
   - Sign in as non-admin → `/admin` redirects to `/auth/login`.
@@ -61,6 +71,7 @@ Create an admin user manually if needed:
   - `tools/smoke.mjs` checks `/api/healthz` and `/admin` redirect; CI runs `npm audit --production` and builds/starts/smokes.
 
 ## Notes
+
 - If deploying behind a proxy/CDN, ensure `x-forwarded-for` and `x-forwarded-proto` are set.
 - For persistent rate limiting and failed login tracking, use Redis or similar in production.
 - For S3 uploads, set `UPLOADS_DEST=s3` and wire storage (scaffold left local by default).

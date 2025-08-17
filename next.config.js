@@ -26,38 +26,36 @@ const nextConfig = {
 	swcMinify: true,
 	compress: true,
 	poweredByHeader: false,
-experimental: {
-  instrumentationHook: true,
-  webVitalsAttribution: ['CLS', 'LCP'],
-  // optimizeCss: true, // disabled to avoid critters dependency issues
-  optimizePackageImports: ['lucide-react', '@headlessui/react'],
-  // Performance optimizations
-  optimizeServerReact: true,
-  turbo: {
-    rules: {
-      '*.svg': {
-        loaders: ['@svgr/webpack'],
-        as: '*.js',
-      },
-    },
-  },
-},
-async headers() {
-  const headers = [];
-  if (securityHeaders.length > 0) {
-    headers.push({ source: '/:path*', headers: securityHeaders });
-  }
-  headers.push({
-    source: '/_next/static/:path*',
-    headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
-  });
-  headers.push({
-    source: '/images/:path*',
-    headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
-  });
-  return headers;
-},
-
+	experimental: {
+		instrumentationHook: true,
+		webVitalsAttribution: ['CLS', 'LCP'],
+		// optimizeCss: true, // disabled to avoid critters dependency issues
+		optimizePackageImports: ['lucide-react', '@headlessui/react'],
+		// Performance optimizations
+		optimizeServerReact: true,
+		turbo: {
+			rules: {
+				'*.svg': {
+					loaders: ['@svgr/webpack'],
+					as: '*.js',
+				},
+			},
+		},
+	},
+	async headers() {
+		const headers = [];
+		if (securityHeaders.length > 0) {
+			headers.push({ source: '/:path*', headers: securityHeaders });
+		}
+		headers.push({
+			source: '/_next/static/:path*',
+			headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+		});
+		headers.push({
+			source: '/images/:path*',
+			headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+		});
+		return headers;
 	},
 	webpack: (config, { dev, isServer }) => {
 		// Silence large bundle warnings in dev hot-reload; keep defaults in prod
@@ -82,7 +80,7 @@ async headers() {
 			// Provide global fallbacks for server-side rendering
 			config.plugins.push(
 				new webpack.DefinePlugin({
-					'self': 'globalThis',
+					self: 'globalThis',
 				})
 			);
 		}
@@ -94,20 +92,20 @@ async headers() {
 				cacheGroups: {
 					default: false,
 					vendors: false,
-					vendor: { 
-						name: 'vendor', 
-						chunks: 'all', 
-						test: /node_modules/, 
+					vendor: {
+						name: 'vendor',
+						chunks: 'all',
+						test: /node_modules/,
 						priority: 20,
 						enforce: true
 					},
-					common: { 
-						name: 'common', 
-						minChunks: 2, 
-						chunks: 'all', 
-						priority: 10, 
-						reuseExistingChunk: true, 
-						enforce: true 
+					common: {
+						name: 'common',
+						minChunks: 2,
+						chunks: 'all',
+						priority: 10,
+						reuseExistingChunk: true,
+						enforce: true
 					},
 					// Separate large libraries
 					framer: {

@@ -86,7 +86,7 @@ export function getRingImages(ringSlug: string): string[] {
   if (images && images.length > 0) {
     return images;
   }
-  
+
   // Fallback to default placeholder
   return [DEFAULT_PLACEHOLDER];
 }
@@ -94,14 +94,16 @@ export function getRingImages(ringSlug: string): string[] {
 // Get category placeholder
 export function getCategoryPlaceholder(categorySlug?: string): string {
   if (!categorySlug) return DEFAULT_PLACEHOLDER;
-  return CATEGORY_PLACEHOLDERS[categorySlug as keyof typeof CATEGORY_PLACEHOLDERS] || DEFAULT_PLACEHOLDER;
+  return (
+    CATEGORY_PLACEHOLDERS[categorySlug as keyof typeof CATEGORY_PLACEHOLDERS] || DEFAULT_PLACEHOLDER
+  );
 }
 
 // Get product image fallback with category context (updated for rings)
-export function getProductImageFallback(opts: { 
-  productSlug?: string; 
-  categorySlug?: string; 
-  name?: string 
+export function getProductImageFallback(opts: {
+  productSlug?: string;
+  categorySlug?: string;
+  name?: string;
 }): string[] {
   // First try to get specific ring images
   if (opts.productSlug) {
@@ -110,7 +112,7 @@ export function getProductImageFallback(opts: {
       return ringImages;
     }
   }
-  
+
   // Fallback to category placeholder
   const categoryPlaceholder = getCategoryPlaceholder(opts.categorySlug);
   return [categoryPlaceholder];
@@ -125,5 +127,3 @@ export function getCategoryImage(slug?: string): string[] {
   const placeholder = getCategoryPlaceholder(slug);
   return [placeholder];
 }
-
-

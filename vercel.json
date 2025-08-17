@@ -27,9 +27,7 @@
   "redirects": [
     {
       "source": "/admin",
-      "has": [
-        { "type": "host", "value": "www.yourjewelrystore.com" }
-      ],
+      "has": [{ "type": "host", "value": "www.yourjewelrystore.com" }],
       "destination": "https://yourjewelrystore.com/admin",
       "permanent": false
     }
