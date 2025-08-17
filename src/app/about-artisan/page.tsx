@@ -2,7 +2,7 @@
 
 /* eslint-disable react/no-unescaped-entities */
 import { motion } from 'framer-motion';
-import SmartImage from '@/components/common/SmartImage';
+// import SmartImage from '@/components/common/SmartImage'; // Temporarily disabled
 import Link from 'next/link';
 import { Heart, Home, Users, Award } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
@@ -16,14 +16,10 @@ export default function ArtisanPage() {
         {/* Hero Section - Personal Introduction */}
         <section className="relative h-[55vh] min-h-[480px] overflow-hidden bg-gradient-to-br from-stone-100 to-stone-200">
           <div className="absolute inset-0">
-            <SmartImage
-              srcs={['/images/artisan/bedroom-workshop-hero.jpg']}
+            <img
+              src="/images/artisan/bedroom-workshop-hero.jpg"
               alt="Home workshop where each ring is crafted"
-              fill
-              className="object-cover opacity-70"
-              priority
-              sizes="100vw"
-              quality={90}
+              className="absolute inset-0 w-full h-full object-cover opacity-70"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
           </div>
@@ -113,15 +109,9 @@ export default function ArtisanPage() {
                     about how things are made slowly grew into a genuine passion for crafting.
                   </p>
                   <div className="mt-4">
-                    <SmartImage
-                      srcs={['/images/artisan/early-work-2015.jpg']}
-                      alt="Early jewelry experiments from 2015"
-                      width={300}
-                      height={200}
-                      className="rounded-lg"
-                      sizes="(max-width: 768px) 100vw, 300px"
-                      quality={90}
-                    />
+                    <div className="w-full h-48 bg-gradient-to-br from-amber-100 to-gold-200 rounded-lg flex items-center justify-center">
+                      <p className="text-gray-600 text-center">Early jewelry experiments from 2015</p>
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -143,15 +133,9 @@ export default function ArtisanPage() {
                     This was the moment I realized I could create something truly special.
                   </p>
                   <div className="mt-4">
-                    <SmartImage
-                      srcs={['/images/artisan/first-inlay-rings-2020.jpg']}
-                      alt="First gem inlay rings with carbon fiber"
-                      width={300}
-                      height={200}
-                      className="rounded-lg"
-                      sizes="(max-width: 768px) 100vw, 300px"
-                      quality={90}
-                    />
+                    <div className="w-full h-48 bg-gradient-to-br from-blue-100 to-indigo-200 rounded-lg flex items-center justify-center">
+                      <p className="text-gray-600 text-center">First gem inlay rings with carbon fiber</p>
+                    </div>
                   </div>
                 </div>
               </motion.div>
@@ -237,15 +221,9 @@ export default function ArtisanPage() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
               >
-                <SmartImage
-                  srcs={['/images/artisan/bedroom-workshop-1.jpg']}
-                  alt="My bedroom workshop setup"
-                  width={500}
-                  height={350}
-                  className="w-full rounded-lg shadow-lg"
-                  sizes="(max-width: 768px) 100vw, 500px"
-                  quality={90}
-                />
+                <div className="w-full h-64 bg-gradient-to-br from-stone-100 to-gray-200 rounded-lg shadow-lg flex items-center justify-center">
+                  <p className="text-gray-600 text-center">My bedroom workshop setup</p>
+                </div>
                 <p className="mt-2 text-center text-sm text-gray-500">
                   Where the magic happens - my bedroom workshop
                 </p>
@@ -256,15 +234,9 @@ export default function ArtisanPage() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
               >
-                <SmartImage
-                  srcs={['/images/artisan/workshop-tools.jpg']}
-                  alt="Ring making tools and materials"
-                  width={500}
-                  height={350}
-                  className="w-full rounded-lg shadow-lg"
-                  sizes="(max-width: 768px) 100vw, 500px"
-                  quality={90}
-                />
+                <div className="w-full h-64 bg-gradient-to-br from-amber-100 to-orange-200 rounded-lg shadow-lg flex items-center justify-center">
+                  <p className="text-gray-600 text-center">Ring making tools and materials</p>
+                </div>
                 <p className="mt-2 text-center text-sm text-gray-500">
                   Simple tools, endless possibilities
                 </p>

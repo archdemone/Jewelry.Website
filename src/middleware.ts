@@ -72,9 +72,10 @@ export async function middleware(request: NextRequest) {
   const res = NextResponse.next();
 
   // Security headers
-  if (process.env.CSP_DISABLE !== 'true') {
+  // Disable CSP in development to allow Next.js dev tooling (e.g., eval in HMR)
+  if (process.env.NODE_ENV === 'production' && process.env.CSP_DISABLE !== 'true') {
     const csp =
-      "default-src 'self'; img-src 'self' data: blob:; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'self';";
+      "default-src 'self'; img-src 'self' data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'self';";
     const reportOnly = process.env.CSP_REPORT_ONLY === 'true';
     const reportUri = process.env.CSP_REPORT_URI;
     const value = reportUri ? `${csp} report-uri ${reportUri};` : csp;

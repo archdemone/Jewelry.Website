@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import SmartImage from '@/components/common/SmartImage';
+// import SmartImage from '@/components/common/SmartImage'; // Temporarily disabled
 import { useEffect, useMemo, useState } from 'react';
 
 const HeroSection = () => {
@@ -31,15 +31,14 @@ const HeroSection = () => {
             exit={{ x: '-100%' }}
             transition={{ duration: 0.6, ease: 'easeInOut' }}
           >
-            <SmartImage
-              srcs={[images[index]]}
-              alt="Artisan Crafting Ring"
-              className="h-full w-full"
-              fill
-              priority
-              sizes="100vw"
-              quality={90}
-            />
+            <div className="relative h-full w-full">
+              <img
+                src={images[index]}
+                alt="Artisan Crafting Ring"
+                className="h-full w-full object-cover"
+                style={{ objectFit: 'cover' }}
+              />
+            </div>
           </motion.div>
         </AnimatePresence>
         {/* Gradient Overlay */}

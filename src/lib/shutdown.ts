@@ -4,7 +4,12 @@ import { getLogger } from '@/lib/logger';
 let configured = false;
 
 export function setupGracefulShutdown() {
-  if (configured) return;
+  // Only run on server-side (Node.js environment)
+  if (typeof window !== 'undefined' || configured) return;
+  
+  // Additional check for process object
+  if (typeof process === 'undefined' || !process.on) return;
+  
   configured = true;
   const logger = getLogger();
   async function shutdown(signal: string) {

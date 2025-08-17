@@ -4,8 +4,8 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useState } from 'react';
 import { Heart, ShoppingBag } from 'lucide-react';
-import SmartImage from '@/components/common/SmartImage';
-import { getRingImages } from '@/lib/assets/images';
+// import SmartImage from '@/components/common/SmartImage'; // Temporarily disabled
+// import { getRingImages } from '@/lib/assets/images'; // Temporarily disabled
 
 const FeaturedProducts = () => {
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
@@ -89,15 +89,11 @@ const FeaturedProducts = () => {
                     animate={{ scale: hoveredProduct === ring.id ? 1.1 : 1 }}
                     transition={{ duration: 0.6 }}
                   >
-                    <SmartImage
-                      srcs={getRingImages(ring.slug)}
+                    <img
+                      src={`/images/products/${ring.slug}-1.jpg`}
                       alt={ring.name}
-                      className="h-full w-full"
-                      width={600}
-                      height={480}
-                      sizes="(min-width:1024px) 25vw, (min-width:768px) 50vw, 100vw"
-                      quality={90}
-                      priority={index < 2}
+                      className="h-full w-full object-cover"
+                      style={{ objectFit: 'cover' }}
                     />
                   </motion.div>
 
