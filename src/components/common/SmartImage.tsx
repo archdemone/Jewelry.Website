@@ -112,16 +112,35 @@ export default function SmartImage({
     );
   }
 
-  // Render raw <img> for SVGs to avoid Next Image SVG restriction
+  // Use Next Image for SVGs as well, unoptimized
   if (versionedSrc && versionedSrc.toLowerCase().includes('.svg')) {
+    if (fill) {
+      return (
+        <div className={`relative ${className ?? ''}`}>
+          <Image
+            src={versionedSrc}
+            alt={displayText}
+            fill
+            sizes={sizes || '100vw'}
+            className="object-cover"
+            unoptimized
+            onError={handleError}
+            priority={priority}
+          />
+        </div>
+      );
+    }
     return (
-      <img
+      <Image
         src={versionedSrc}
         alt={displayText}
         className={`object-cover ${className ?? ''}`}
         width={width || 800}
         height={height || 800}
-        onError={handleError as any}
+        sizes={sizes || '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'}
+        unoptimized
+        onError={handleError}
+        priority={priority}
       />
     );
   }

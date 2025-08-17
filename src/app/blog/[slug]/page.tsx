@@ -2,6 +2,7 @@ import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
 import { notFound } from 'next/navigation';
 import { ArticleJsonLd, BreadcrumbsJsonLd } from '@/components/seo/JsonLd';
+import Image from 'next/image';
 
 const posts = {
   'care-tips': {
@@ -47,11 +48,16 @@ export default function BlogPostPage({ params }: Params) {
         />
         <article className="mx-auto max-w-3xl">
           {post.image && (
-            <img
-              src={post.image}
-              alt={post.title}
-              className="h-64 w-full rounded-md object-cover"
-            />
+            <div className="relative h-64 w-full">
+              <Image
+                src={post.image}
+                alt={post.title}
+                fill
+                className="rounded-md object-cover"
+                sizes="100vw"
+                priority
+              />
+            </div>
           )}
           <h1 className="mt-4 text-3xl font-[var(--font-serif)] font-semibold text-secondary">
             {post.title}

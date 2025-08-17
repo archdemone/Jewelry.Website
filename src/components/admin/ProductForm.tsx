@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import Image from 'next/image';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -199,7 +200,9 @@ export default function ProductForm({
           <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
             {images.map((img, idx) => (
               <div key={img.id} className="relative rounded border p-2">
-                <img src={img.url} alt={img.alt} className="h-32 w-full rounded object-cover" />
+                <div className="relative h-32 w-full">
+                  <Image src={img.url} alt={img.alt} fill className="rounded object-cover" sizes="(max-width: 768px) 50vw, 25vw" unoptimized />
+                </div>
                 {img.progress && img.progress < 100 && (
                   <div className="absolute inset-0 flex items-end bg-white/60">
                     <div className="h-1 w-full bg-gray-200">
