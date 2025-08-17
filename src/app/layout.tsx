@@ -44,11 +44,6 @@ const LiveChat = dynamic(() => import('@/components/features/LiveChat'), {
   loading: () => null,
 });
 
-const AnalyticsProviders = dynamic(
-  () => import('@/lib/performance/analytics').then((mod) => ({ default: mod.AnalyticsProviders })),
-  { ssr: false }
-);
-
 // Development helper - only load in development
 const DevReloadHelper = dynamic(() => import('@/components/dev/DevReloadHelper').then(mod => ({ default: mod.DevReloadHelper })), {
   ssr: false,
@@ -147,6 +142,20 @@ export default function RootLayout({
               height: 100%;
               overflow-x: hidden;
             }
+            
+            /* CRITICAL: Font display optimization */
+            .font-inter { font-family: var(--font-inter), system-ui, -apple-system, sans-serif; }
+            .font-playfair { font-family: var(--font-playfair), Georgia, serif; }
+            
+            /* CRITICAL: Prevent layout shifts */
+            .content-area {
+              min-height: 100vh;
+              width: 100vw;
+              position: relative;
+              overflow: hidden;
+              contain: layout style paint;
+              transform: translateZ(0);
+            }
           `
         }} />
         
@@ -160,12 +169,20 @@ export default function RootLayout({
         {/* DNS prefetch for external resources */}
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+        
+        {/* Resource hints for better performance */}
+        <link rel="dns-prefetch" href="//www.googletagmanager.com" />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        
+        {/* Preload critical fonts */}
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" />
+        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" as="style" />
       </head>
-      <body className={`${inter.className} antialiased`} style={{ height: '100%', width: '100%', margin: 0, padding: 0, overflowX: 'hidden' }}>
+      <body className={`${inter.className} antialiased font-inter`} style={{ height: '100%', width: '100%', margin: 0, padding: 0, overflowX: 'hidden' }}>
         <AuthSessionProvider>
           <div className="viewport-layout">
             <Header />
-            <main className="content-area" style={{ minHeight: '100vh', width: '100vw', position: 'relative', overflow: 'hidden', contain: 'layout style paint', transform: 'translateZ(0)' }}>{children}</main>
+            <main className="content-area">{children}</main>
             <Footer />
           </div>
           
@@ -174,7 +191,6 @@ export default function RootLayout({
           <NewsletterPopup />
           <CookieBanner />
           <LiveChat />
-          <AnalyticsProviders />
           
           {/* Development helper */}
           {process.env.NODE_ENV === 'development' && <DevReloadHelper />}
@@ -203,11 +219,32 @@ export default function RootLayout({
                     });
                   }
                   
+                  // Performance monitoring
+                  function monitorWebVitals() {
+                    if ('PerformanceObserver' in window) {
+                      const observer = new PerformanceObserver((list) => {
+                        for (const entry of list.getEntries()) {
+                          if (entry.entryType === 'largest-contentful-paint') {
+                            console.log('LCP:', entry.startTime);
+                          }
+                          if (entry.entryType === 'first-input') {
+                            console.log('FID:', entry.processingStart - entry.startTime);
+                          }
+                        }
+                      });
+                      observer.observe({ entryTypes: ['largest-contentful-paint', 'first-input'] });
+                    }
+                  }
+                  
                   // Initialize after DOM is ready
                   if (document.readyState === 'loading') {
-                    document.addEventListener('DOMContentLoaded', deferNonCritical);
+                    document.addEventListener('DOMContentLoaded', function() {
+                      deferNonCritical();
+                      monitorWebVitals();
+                    });
                   } else {
                     deferNonCritical();
+                    monitorWebVitals();
                   }
                 })();
               `,
