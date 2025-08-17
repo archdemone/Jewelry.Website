@@ -13,7 +13,7 @@ export function DevReloadHelper() {
       const forceReload = () => {
         // Add a timestamp to force reload
         const timestamp = Date.now();
-        const links = document.querySelectorAll('link[rel="stylesheet"]');
+        const links = document.querySelectorAll('link[rel="stylesheet"]') as NodeListOf<HTMLLinkElement>;
         
         links.forEach((link) => {
           if (link.href && link.href.includes('localhost')) {

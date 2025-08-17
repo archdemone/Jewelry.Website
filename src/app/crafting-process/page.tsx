@@ -24,6 +24,7 @@ import {
 } from 'lucide-react'
 import { Header } from '@/components/layout/Header'
 import { Footer } from '@/components/layout/Footer'
+import Image from 'next/image';
 
 export default function CraftingProcessPage() {
 	const [activeStep, setActiveStep] = useState(1)
@@ -87,31 +88,38 @@ export default function CraftingProcessPage() {
 			<main className="space-y-0">
 				<div className="min-h-screen bg-white">
 					{/* Hero Section */}
-					<section className="relative h-[50vh] min-h-[400px] bg-gradient-to-br from-amber-50 to-orange-100 overflow-hidden">
+					<section className="relative h-[60vh] min-h-[500px] overflow-hidden bg-gradient-to-br from-amber-50 to-orange-50">
 						<div className="absolute inset-0">
-							<img
-								src="/images/process/workshop-hero.jpg"
-								alt="Ring crafting process"
+							<Image
+								src="/images/process/crafting-hero.jpg"
+								alt="Artisan crafting a ring"
+								width={1200}
+								height={600}
 								className="absolute inset-0 w-full h-full object-cover opacity-60"
+								sizes="100vw"
 							/>
-							<div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+							<div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
 						</div>
 						
-						<div className="relative z-10 container h-full flex items-center">
-							<motion.div
-								initial={{ opacity: 0, y: 30 }}
-								animate={{ opacity: 1, y: 0 }}
-								transition={{ duration: 0.8 }}
-								className="max-w-3xl"
-							>
-								<h1 className="text-5xl md:text-6xl font-serif text-white mb-6">
-									From Order to Your Finger
-								</h1>
-								<p className="text-xl text-white/90 leading-relaxed">
-									A transparent look at how your ring is created, from the moment you order 
-									to the day it arrives at your door
-								</p>
-							</motion.div>
+						<div className="relative z-10 flex h-full items-center justify-center">
+							<div className="text-center text-white">
+								<motion.h1
+									initial={{ opacity: 0, y: 30 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ duration: 0.8 }}
+									className="mb-6 font-serif text-5xl font-bold md:text-6xl"
+								>
+									Our Crafting Process
+								</motion.h1>
+								<motion.p
+									initial={{ opacity: 0, y: 30 }}
+									animate={{ opacity: 1, y: 0 }}
+									transition={{ duration: 0.8, delay: 0.2 }}
+									className="mx-auto max-w-2xl text-xl text-gray-200"
+								>
+									Discover how each ring is carefully crafted from raw materials to finished masterpiece
+								</motion.p>
+							</div>
 						</div>
 					</section>
 
