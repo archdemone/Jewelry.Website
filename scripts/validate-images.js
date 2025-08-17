@@ -84,28 +84,28 @@ function getActualFiles() {
   if (!fs.existsSync(PRODUCTS_DIR)) {
     return [];
   }
-  
+
   const files = fs.readdirSync(PRODUCTS_DIR);
   return files
-    .filter(file => IMAGE_EXTENSIONS.some(ext => file.toLowerCase().endsWith(ext)))
-    .map(file => `/images/products/${file}`);
+    .filter((file) => IMAGE_EXTENSIONS.some((ext) => file.toLowerCase().endsWith(ext)))
+    .map((file) => `/images/products/${file}`);
 }
 
 function validateImagePaths() {
   console.log('🔍 Validating product image paths...\n');
-  
+
   const actualFiles = getActualFiles();
   const expectedFiles = new Set();
   const missingFiles = [];
   const unusedFiles = new Set(actualFiles);
   const duplicateEntries = new Map();
-  
+
   // Collect all expected files from PRODUCT_IMAGES
   Object.entries(PRODUCT_IMAGES).forEach(([productSlug, images]) => {
-    images.forEach(imagePath => {
+    images.forEach((imagePath) => {
       expectedFiles.add(imagePath);
       unusedFiles.delete(imagePath);
-      
+
       // Check for duplicates
       if (duplicateEntries.has(imagePath)) {
         duplicateEntries.get(imagePath).push(productSlug);
@@ -114,48 +114,52 @@ function validateImagePaths() {
       }
     });
   });
-  
+
   // Add placeholder files to expected
-  REQUIRED_PLACEHOLDERS.forEach(placeholder => {
+  REQUIRED_PLACEHOLDERS.forEach((placeholder) => {
     expectedFiles.add(placeholder);
     unusedFiles.delete(placeholder);
   });
-  
+
   // Find missing files
-  expectedFiles.forEach(expectedFile => {
+  expectedFiles.forEach((expectedFile) => {
     if (!actualFiles.includes(expectedFile)) {
       missingFiles.push(expectedFile);
     }
   });
-  
+
   // Report results
   console.log(`📊 Summary:`);
   console.log(`   Total expected files: ${expectedFiles.size}`);
   console.log(`   Total actual files: ${actualFiles.length}`);
   console.log(`   Missing files: ${missingFiles.length}`);
   console.log(`   Unused files: ${unusedFiles.size}`);
-  console.log(`   Duplicate entries: ${Array.from(duplicateEntries.values()).filter(products => products.length > 1).length}\n`);
-  
+  console.log(
+    `   Duplicate entries: ${Array.from(duplicateEntries.values()).filter((products) => products.length > 1).length}\n`,
+  );
+
   // Report missing files
   if (missingFiles.length > 0) {
     console.log('❌ Missing files:');
-    missingFiles.forEach(file => {
+    missingFiles.forEach((file) => {
       console.log(`   - ${file}`);
     });
     console.log('');
   }
-  
+
   // Report unused files
   if (unusedFiles.size > 0) {
     console.log('⚠️  Unused files:');
-    Array.from(unusedFiles).forEach(file => {
+    Array.from(unusedFiles).forEach((file) => {
       console.log(`   - ${file}`);
     });
     console.log('');
   }
-  
+
   // Report duplicate entries
-  const duplicates = Array.from(duplicateEntries.entries()).filter(([file, products]) => products.length > 1);
+  const duplicates = Array.from(duplicateEntries.entries()).filter(
+    ([file, products]) => products.length > 1,
+  );
   if (duplicates.length > 0) {
     console.log('🔄 Duplicate image assignments:');
     duplicates.forEach(([file, products]) => {
@@ -163,11 +167,11 @@ function validateImagePaths() {
     });
     console.log('');
   }
-  
+
   // Report validation status
   const hasErrors = missingFiles.length > 0 || duplicates.length > 0;
   const hasWarnings = unusedFiles.size > 0;
-  
+
   if (!hasErrors && !hasWarnings) {
     console.log('✅ All image paths are valid!');
     return true;
@@ -182,29 +186,32 @@ function validateImagePaths() {
 
 function generatePlaceholderImages() {
   console.log('🎨 Generating placeholder images...\n');
-  
+
   if (!fs.existsSync(PRODUCTS_DIR)) {
     fs.mkdirSync(PRODUCTS_DIR, { recursive: true });
   }
-  
+
   // Create a simple SVG placeholder for each required placeholder
-  REQUIRED_PLACEHOLDERS.forEach(placeholderPath => {
+  REQUIRED_PLACEHOLDERS.forEach((placeholderPath) => {
     const filename = path.basename(placeholderPath);
     const filepath = path.join(PRODUCTS_DIR, filename);
-    
+
     if (!fs.existsSync(filepath)) {
       const svgContent = generateSVGPlaceholder(filename);
       fs.writeFileSync(filepath.replace(/\.(jpg|jpeg|png|webp)$/, '.svg'), svgContent);
       console.log(`   Created: ${filename.replace(/\.(jpg|jpeg|png|webp)$/, '.svg')}`);
     }
   });
-  
+
   console.log('\n✅ Placeholder images generated!');
 }
 
 function generateSVGPlaceholder(filename) {
-  const name = filename.replace(/\.(jpg|jpeg|png|webp)$/, '').replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-  
+  const name = filename
+    .replace(/\.(jpg|jpeg|png|webp)$/, '')
+    .replace(/-/g, ' ')
+    .replace(/\b\w/g, (l) => l.toUpperCase());
+
   return `<svg width="400" height="400" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -224,7 +231,7 @@ function generateSVGPlaceholder(filename) {
 // Main execution
 if (require.main === module) {
   const command = process.argv[2];
-  
+
   switch (command) {
     case 'validate':
       validateImagePaths();

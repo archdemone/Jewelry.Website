@@ -23,7 +23,6 @@ GOOGLE_CLIENT_ID=your-google-client-id
 GOOGLE_CLIENT_SECRET=your-google-client-secret
 ```
 
-
 Tech stack: Next.js (App Router) + TypeScript + Tailwind CSS + ESLint + Prettier.
 
 ## Ops Notes
@@ -37,5 +36,3 @@ Tech stack: Next.js (App Router) + TypeScript + Tailwind CSS + ESLint + Prettier
   - Alert on error rate: 5xx > 2% over 5 minutes, latency p95 > 1s, rate limit spikes. If using a CDN or APM, configure based on `/api/metrics` or platform metrics.
 - Security:
   - Secrets are not committed. Copy `.env.example` to `.env.local` for development.
-
-

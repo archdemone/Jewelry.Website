@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ '**' ]
+    branches: ['**']
   pull_request:
-    branches: [ '**' ]
+    branches: ['**']
 
 jobs:
   build-and-test:
@@ -45,6 +45,9 @@ jobs:
         env:
           DATABASE_URL: file:./dev.db
 
+      - name: Prisma Generate
+        run: npx prisma generate
+
       - name: Unit tests
         run: npm run test:unit --if-present
 
@@ -72,5 +75,3 @@ jobs:
           path: |
             tools/**
             .next/**
-
-

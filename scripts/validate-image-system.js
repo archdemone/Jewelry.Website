@@ -13,10 +13,7 @@ const PRODUCT_IMAGES = {
     '/images/products/gold-wedding-band-1.jpg',
     '/images/products/gold-wedding-band-2.jpg',
   ],
-  'emerald-ring': [
-    '/images/products/emerald-ring-1.jpg',
-    '/images/products/emerald-ring-2.jpg',
-  ],
+  'emerald-ring': ['/images/products/emerald-ring-1.jpg', '/images/products/emerald-ring-2.jpg'],
 
   // Necklaces
   'diamond-pendant-necklace': [
@@ -105,59 +102,59 @@ const PRODUCTS_DIR = path.join(__dirname, '../public/images/products');
 // QA Validation Functions
 function checkImageFiles() {
   console.log('🔍 Checking image files...');
-  
+
   const allImagePaths = [];
-  
+
   // Collect all image paths from PRODUCT_IMAGES
-  Object.values(PRODUCT_IMAGES).forEach(images => {
+  Object.values(PRODUCT_IMAGES).forEach((images) => {
     allImagePaths.push(...images);
   });
-  
+
   // Add category images
-  Object.values(CATEGORY_PLACEHOLDERS).forEach(image => {
+  Object.values(CATEGORY_PLACEHOLDERS).forEach((image) => {
     allImagePaths.push(image);
   });
-  
+
   // Add default placeholder
   allImagePaths.push(DEFAULT_PLACEHOLDER);
-  
+
   const missingFiles = [];
   const existingFiles = [];
-  
-  allImagePaths.forEach(imagePath => {
+
+  allImagePaths.forEach((imagePath) => {
     // Convert web path to filesystem path - handle Windows paths correctly
     const relativePath = imagePath.replace(/^\//, ''); // Remove leading slash
     const fullPath = path.join(__dirname, '..', 'public', relativePath);
-    
+
     if (fs.existsSync(fullPath)) {
       existingFiles.push(imagePath);
     } else {
       missingFiles.push(imagePath);
     }
   });
-  
+
   console.log(`✓ Found ${existingFiles.length} existing image files`);
   if (missingFiles.length > 0) {
     console.log(`✗ Missing ${missingFiles.length} image files:`);
-    missingFiles.forEach(file => console.log(`  - ${file}`));
+    missingFiles.forEach((file) => console.log(`  - ${file}`));
   }
-  
+
   return { missingFiles, existingFiles };
 }
 
 function checkDuplicateImages() {
   console.log('\n🔍 Checking for duplicate images...');
-  
+
   const allImages = [];
   const duplicates = [];
-  
+
   // Collect all images from PRODUCT_IMAGES
   Object.entries(PRODUCT_IMAGES).forEach(([productSlug, images]) => {
-    images.forEach(image => {
+    images.forEach((image) => {
       allImages.push({ productSlug, image });
     });
   });
-  
+
   // Check for duplicates
   const imageCounts = {};
   allImages.forEach(({ productSlug, image }) => {
@@ -166,13 +163,13 @@ function checkDuplicateImages() {
     }
     imageCounts[image].push(productSlug);
   });
-  
+
   Object.entries(imageCounts).forEach(([image, products]) => {
     if (products.length > 1) {
       duplicates.push({ image, products });
     }
   });
-  
+
   if (duplicates.length > 0) {
     console.log(`✗ Found ${duplicates.length} duplicate images:`);
     duplicates.forEach(({ image, products }) => {
@@ -181,42 +178,42 @@ function checkDuplicateImages() {
   } else {
     console.log('✓ No duplicate images found');
   }
-  
+
   return duplicates;
 }
 
 function validateImageNaming() {
   console.log('\n🔍 Validating image naming conventions...');
-  
+
   const namingIssues = [];
-  
+
   Object.entries(PRODUCT_IMAGES).forEach(([productSlug, images]) => {
-    images.forEach(image => {
+    images.forEach((image) => {
       const filename = path.basename(image);
-      
+
       // Check if filename matches product slug (more flexible matching)
       const productName = productSlug.replace(/-/g, '');
       const fileNameWithoutExt = filename.replace(/\.(jpg|jpeg|png|gif)$/i, '').replace(/-/g, '');
-      
+
       if (!fileNameWithoutExt.includes(productName) && !productName.includes(fileNameWithoutExt)) {
         namingIssues.push({
           productSlug,
           image,
-          issue: 'Filename does not match product slug'
+          issue: 'Filename does not match product slug',
         });
       }
-      
+
       // Check for proper extension
       if (!filename.endsWith('.jpg')) {
         namingIssues.push({
           productSlug,
           image,
-          issue: 'File should have .jpg extension'
+          issue: 'File should have .jpg extension',
         });
       }
     });
   });
-  
+
   if (namingIssues.length > 0) {
     console.log(`✗ Found ${namingIssues.length} naming issues:`);
     namingIssues.forEach(({ productSlug, image, issue }) => {
@@ -225,28 +222,28 @@ function validateImageNaming() {
   } else {
     console.log('✓ All images follow naming conventions');
   }
-  
+
   return namingIssues;
 }
 
 function checkCategoryImageRelevance() {
   console.log('\n🔍 Checking category image relevance...');
-  
+
   const relevanceIssues = [];
-  
+
   Object.entries(CATEGORY_PLACEHOLDERS).forEach(([categorySlug, image]) => {
     const filename = path.basename(image);
-    
+
     // Check if category image filename contains category name
     if (!filename.includes(categorySlug)) {
       relevanceIssues.push({
         categorySlug,
         image,
-        issue: 'Category image filename does not match category name'
+        issue: 'Category image filename does not match category name',
       });
     }
   });
-  
+
   if (relevanceIssues.length > 0) {
     console.log(`✗ Found ${relevanceIssues.length} relevance issues:`);
     relevanceIssues.forEach(({ categorySlug, image, issue }) => {
@@ -255,18 +252,18 @@ function checkCategoryImageRelevance() {
   } else {
     console.log('✓ All category images are relevant');
   }
-  
+
   return relevanceIssues;
 }
 
 function generateReport() {
   console.log('📊 Generating QA Report...\n');
-  
+
   const fileCheck = checkImageFiles();
   const duplicateCheck = checkDuplicateImages();
   const namingCheck = validateImageNaming();
   const relevanceCheck = checkCategoryImageRelevance();
-  
+
   console.log('\n📋 QA Report Summary:');
   console.log('=====================');
   console.log(`📁 Total image files: ${fileCheck.existingFiles.length}`);
@@ -274,21 +271,25 @@ function generateReport() {
   console.log(`🔄 Duplicate images: ${duplicateCheck.length}`);
   console.log(`📝 Naming issues: ${namingCheck.length}`);
   console.log(`🎯 Relevance issues: ${relevanceCheck.length}`);
-  
-  const totalIssues = fileCheck.missingFiles.length + duplicateCheck.length + namingCheck.length + relevanceCheck.length;
-  
+
+  const totalIssues =
+    fileCheck.missingFiles.length +
+    duplicateCheck.length +
+    namingCheck.length +
+    relevanceCheck.length;
+
   if (totalIssues === 0) {
     console.log('\n🎉 All checks passed! Image system is ready.');
   } else {
     console.log(`\n⚠️  Found ${totalIssues} issues that need attention.`);
   }
-  
+
   return {
     fileCheck,
     duplicateCheck,
     namingCheck,
     relevanceCheck,
-    totalIssues
+    totalIssues,
   };
 }
 
@@ -302,5 +303,5 @@ module.exports = {
   checkDuplicateImages,
   validateImageNaming,
   checkCategoryImageRelevance,
-  generateReport
+  generateReport,
 };

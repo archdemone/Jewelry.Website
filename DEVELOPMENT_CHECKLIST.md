@@ -3,6 +3,7 @@
 Use this document as the single source of truth for planning and tracking. Mark tasks as completed by changing `[ ]` to `[x]`.
 
 ### Tech Stack Requirements
+
 - [x] Framework: Next.js 14+ with App Router
 - [x] Styling: Tailwind CSS
 - [ ] UI: shadcn/ui components
@@ -18,16 +19,17 @@ Use this document as the single source of truth for planning and tracking. Mark 
 - [x] Type Safety: TypeScript
 
 ### Design Guidelines
+
 - **Color Palette**
   ```css
   :root {
-    --primary: #D4AF37; /* Gold */
-    --secondary: #1A1A1A; /* Rich Black */
-    --accent: #F8F8F8; /* Off White */
+    --primary: #d4af37; /* Gold */
+    --secondary: #1a1a1a; /* Rich Black */
+    --accent: #f8f8f8; /* Off White */
     --text: #333333;
-    --border: #E5E5E5;
-    --success: #10B981;
-    --error: #EF4444;
+    --border: #e5e5e5;
+    --success: #10b981;
+    --error: #ef4444;
   }
   ```
 - **Typography**
@@ -43,6 +45,7 @@ Use this document as the single source of truth for planning and tracking. Mark 
   - Fast load times and smooth interactions
 
 ### Success Criteria
+
 - [ ] Website loads in under 3 seconds
 - [ ] All images optimized and lazy‑loaded
 - [ ] Mobile‑responsive on all devices
@@ -57,6 +60,7 @@ Use this document as the single source of truth for planning and tracking. Mark 
 ## Phases
 
 ### Phase 1: Project Setup & Configuration
+
 - [x] Initialize Next.js 14+ project with TypeScript
 - [x] Setup Tailwind CSS with custom jewelry‑themed colors
 - [x] Configure ESLint and Prettier
@@ -67,6 +71,7 @@ Use this document as the single source of truth for planning and tracking. Mark 
 - [x] Configure next.config.js for image domains
 
 ### Phase 2: Database Schema & Models
+
 - [x] Create Prisma schema: Product
 - [x] Create Prisma schema: Category
 - [x] Create Prisma schema: User (id, email, name, role, addresses[])
@@ -78,12 +83,14 @@ Use this document as the single source of truth for planning and tracking. Mark 
 - [x] Create database utilities and helpers
 
 ### Phase 3: Core Layout & Navigation
+
 - [ ] Responsive header with logo, navigation (Home, Collections, About, Contact), search bar, user icon, shopping cart with count
 - [ ] Footer with business info, quick links, socials, newsletter signup, payment method icons
 - [ ] Mobile‑responsive hamburger menu
 - [ ] Breadcrumb navigation
 
 ### Phase 4: Home Page
+
 - [ ] Hero section with banner/carousel, CTAs, featured collection
 - [ ] Featured products grid (3–4 products)
 - [ ] Category showcase with images
@@ -92,6 +99,7 @@ Use this document as the single source of truth for planning and tracking. Mark 
 - [ ] "Why Choose Us" section with icons
 
 ### Phase 5: Product Catalog
+
 - [ ] Product grid with responsive columns and hover effects
 - [ ] Quick view functionality
 - [ ] Add to cart button
@@ -101,6 +109,7 @@ Use this document as the single source of truth for planning and tracking. Mark 
 - [ ] Search with debouncing
 
 ### Phase 6: Product Detail Page
+
 - [ ] Image gallery (zoom on hover, thumbnails, lightbox)
 - [ ] Product info: name, price, SKU, description, materials/specs, size guide, care
 - [ ] Add to cart with quantity selector
@@ -110,6 +119,7 @@ Use this document as the single source of truth for planning and tracking. Mark 
 - [ ] Customer reviews section
 
 ### Phase 7: Shopping Cart
+
 - [ ] Cart page: list with images, quantity adjusters, remove, price calculations
 - [ ] Subtotal, tax, shipping estimate
 - [ ] Cart drawer/modal for quick access
@@ -118,6 +128,7 @@ Use this document as the single source of truth for planning and tracking. Mark 
 - [ ] Empty cart state with recommendations
 
 ### Phase 8: User Authentication
+
 - [ ] Setup NextAuth.js: email/password, optional Google OAuth
 - [ ] Registration with validation
 - [ ] Login with "Remember me"
@@ -125,6 +136,7 @@ Use this document as the single source of truth for planning and tracking. Mark 
 - [ ] User profile page: info, addresses, order history, wishlist
 
 ### Phase 9: Checkout Process
+
 - [ ] Multi‑step checkout: shipping, billing, payment, review
 - [ ] Guest checkout option
 - [ ] Stripe payment integration
@@ -132,6 +144,7 @@ Use this document as the single source of truth for planning and tracking. Mark 
 - [ ] Email confirmation setup
 
 ### Phase 10: Admin Dashboard — Scaffolded core layout, dashboard, and base pages/components (ongoing)
+
 - [ ] Protected admin routes with role checking
 - [ ] Dashboard: sales overview, recent orders, low stock alerts
 - [ ] Product management: add/edit/delete, image upload DnD, inventory tracking
@@ -139,6 +152,7 @@ Use this document as the single source of truth for planning and tracking. Mark 
 - [ ] Customer management
 
 ### Phase 11: Additional Features
+
 - [x] Contact page with form and map
 - [x] About Us page with brand story
 - [x] FAQ page
@@ -148,6 +162,7 @@ Use this document as the single source of truth for planning and tracking. Mark 
 - [x] Toast notifications for actions
 
 ### Phase 12: Performance & SEO
+
 - [ ] Meta tags for all pages
 - [ ] Open Graph tags
 - [ ] Generate sitemap.xml
@@ -158,6 +173,7 @@ Use this document as the single source of truth for planning and tracking. Mark 
 - [ ] Core Web Vitals compliance
 
 ### Phase 13: Testing & Quality Assurance
+
 - [x] Test all forms and validation
 - [x] Test cart persistence across sessions
 - [x] Test checkout flow end‑to‑end
@@ -168,6 +184,7 @@ Use this document as the single source of truth for planning and tracking. Mark 
 - [x] Error boundary implementation
 
 ### Phase 14: Production Preparation
+
 - [x] Environment variables for production
 - [x] Database migration to PostgreSQL
 - [x] Error logging (Sentry)
@@ -176,5 +193,3 @@ Use this document as the single source of truth for planning and tracking. Mark 
 - [x] Admin user seeder
 - [x] Performance optimization
 - [x] Deployment documentation
-
-

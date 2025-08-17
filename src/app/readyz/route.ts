@@ -1,1 +1,1 @@
-export { GET } from '@/app/api/readyz/route'
+export { GET } from '@/app/api/readyz/route';

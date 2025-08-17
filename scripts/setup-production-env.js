@@ -1,5 +1,5 @@
-const fs = require('fs')
-const path = require('path')
+const fs = require('fs');
+const path = require('path');
 
 const productionEnvContent = `# Database
 DATABASE_URL="postgresql://user:password@host:5432/jewelry_prod?schema=public"
@@ -55,17 +55,19 @@ ADMIN_PASSWORD="ChangeMe123!"
 # Site Configuration
 NEXT_PUBLIC_SITE_URL="https://yourjewelrystore.com"
 NEXT_PUBLIC_SITE_NAME="Your Jewelry Store"
-`
+`;
 
-const projectRoot = path.resolve(__dirname, '..')
-const envProductionPath = path.join(projectRoot, '.env.production')
+const projectRoot = path.resolve(__dirname, '..');
+const envProductionPath = path.join(projectRoot, '.env.production');
 
 try {
-  fs.writeFileSync(envProductionPath, productionEnvContent)
-  console.log('✅ Created .env.production template file')
-  console.log('📝 Please update the values in .env.production with your actual production credentials')
-  console.log('🔒 Remember: .env.production is git-ignored for security')
+  fs.writeFileSync(envProductionPath, productionEnvContent);
+  console.log('✅ Created .env.production template file');
+  console.log(
+    '📝 Please update the values in .env.production with your actual production credentials',
+  );
+  console.log('🔒 Remember: .env.production is git-ignored for security');
 } catch (error) {
-  console.error('❌ Failed to create .env.production:', error.message)
-  process.exit(1)
+  console.error('❌ Failed to create .env.production:', error.message);
+  process.exit(1);
 }
