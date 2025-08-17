@@ -6,6 +6,7 @@ const HeroSection = dynamic(() => import('@/components/home/HeroSection'), {
   loading: () => (
     <div className="aspect-[16/9] max-h-[600px] min-h-[400px] w-full animate-pulse overflow-hidden bg-gray-100 md:aspect-[21/9] md:max-h-[700px] lg:aspect-[24/9]" />
   ),
+  ssr: false,
 });
 
 const FeaturedProducts = dynamic(() => import('@/components/home/FeaturedProducts'), {
@@ -16,6 +17,7 @@ const FeaturedProducts = dynamic(() => import('@/components/home/FeaturedProduct
       </div>
     </div>
   ),
+  ssr: false,
 });
 
 const CategoryShowcase = dynamic(() => import('@/components/home/CategoryShowcase'), {
@@ -26,6 +28,7 @@ const CategoryShowcase = dynamic(() => import('@/components/home/CategoryShowcas
       </div>
     </div>
   ),
+  ssr: false,
 });
 
 const TestimonialsSection = dynamic(() => import('@/components/home/TestimonialsSection'), {
@@ -36,6 +39,7 @@ const TestimonialsSection = dynamic(() => import('@/components/home/Testimonials
       </div>
     </div>
   ),
+  ssr: false,
 });
 
 const NewsletterSection = dynamic(() => import('@/components/home/NewsletterSection'), {
@@ -46,6 +50,7 @@ const NewsletterSection = dynamic(() => import('@/components/home/NewsletterSect
       </div>
     </div>
   ),
+  ssr: false,
 });
 
 const WhyChooseUs = dynamic(() => import('@/components/home/WhyChooseUs'), {
@@ -56,6 +61,7 @@ const WhyChooseUs = dynamic(() => import('@/components/home/WhyChooseUs'), {
       </div>
     </div>
   ),
+  ssr: false,
 });
 
 const WorkshopSection = dynamic(() => import('@/components/home/WorkshopSection'), {
@@ -66,6 +72,7 @@ const WorkshopSection = dynamic(() => import('@/components/home/WorkshopSection'
       </div>
     </div>
   ),
+  ssr: false,
 });
 
 // Keep Header and Footer as regular imports since they're needed immediately

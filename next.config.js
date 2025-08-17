@@ -44,17 +44,30 @@ const nextConfig = {
 	},
 	async headers() {
 		const headers = [];
+		const isProd = process.env.NODE_ENV === 'production';
 		if (securityHeaders.length > 0) {
 			headers.push({ source: '/:path*', headers: securityHeaders });
 		}
-		headers.push({
-			source: '/_next/static/:path*',
-			headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
-		});
-		headers.push({
-			source: '/images/:path*',
-			headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
-		});
+		if (isProd) {
+			headers.push({
+				source: '/_next/static/:path*',
+				headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+			});
+			headers.push({
+				source: '/images/:path*',
+				headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+			});
+		} else {
+			// In development, prevent stale asset caching so changes don't require hard refresh
+			headers.push({
+				source: '/_next/static/:path*',
+				headers: [{ key: 'Cache-Control', value: 'no-store' }],
+			});
+			headers.push({
+				source: '/images/:path*',
+				headers: [{ key: 'Cache-Control', value: 'no-store' }],
+			});
+		}
 		return headers;
 	},
 	webpack: (config, { dev, isServer }) => {
@@ -85,8 +98,8 @@ const nextConfig = {
 			);
 		}
 		
-		// Optimize bundle splitting for client builds only
-		if (!isServer) {
+		// Optimize bundle splitting only in production client builds
+		if (!isServer && !dev) {
 			config.optimization.splitChunks = {
 				chunks: 'all',
 				cacheGroups: {
