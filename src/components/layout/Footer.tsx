@@ -27,8 +27,9 @@ export function Footer() {
 				<div>
 					<h4 className="text-sm font-semibold text-secondary">Newsletter</h4>
 					<p className="mt-3 text-sm text-gray-600">Join for exclusive offers.</p>
-					<form className="mt-3 flex gap-2">
-						<input type="email" required placeholder="you@example.com" className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" />
+					<form className="mt-3 flex gap-2" aria-label="Footer newsletter signup">
+						<label htmlFor="footer-newsletter" className="sr-only">Email address</label>
+						<input id="footer-newsletter" name="email" type="email" required placeholder="you@example.com" className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary" autoComplete="email" />
 						<button className="rounded-md bg-secondary px-4 py-2 text-sm text-white hover:opacity-90">Subscribe</button>
 					</form>
 				</div>

@@ -1,3 +1,4 @@
+import React from 'react'
 import type { Metadata } from 'next';
 import './globals.css';
 import '../styles/fonts.css';
@@ -5,8 +6,6 @@ import { AuthSessionProvider } from '@/lib/auth/session-provider';
 import { Toaster } from 'react-hot-toast';
 import dynamic from 'next/dynamic';
 import { Inter, Playfair_Display } from 'next/font/google'
-import * as Sentry from '@sentry/nextjs'
-
 // Lazy load non-critical components to reduce initial bundle size
 const NewsletterPopup = dynamic(() => import('@/components/features/NewsletterPopup'), {
 	ssr: false,
@@ -28,14 +27,16 @@ const AnalyticsProviders = dynamic(() => import('@/lib/performance/analytics').t
 	loading: () => null
 })
 
-if (process.env.NODE_ENV === 'production') {
-	Sentry.init({
-		dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
-		environment: process.env.NODE_ENV,
-		tracesSampleRate: 0.1,
-		// Use default integrations; advanced browser tracing may require extra setup per Sentry docs
-		replaysSessionSampleRate: 0.1,
-		replaysOnErrorSampleRate: 1.0,
+// Only initialize Sentry in production and after page load
+if (process.env.NODE_ENV === 'production' && typeof window !== 'undefined') {
+	import('@sentry/nextjs').then((Sentry) => {
+		Sentry.init({
+			dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+			environment: process.env.NODE_ENV,
+			tracesSampleRate: 0.1,
+			replaysSessionSampleRate: 0.1,
+			replaysOnErrorSampleRate: 1.0,
+		})
 	})
 }
 

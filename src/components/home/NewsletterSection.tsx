@@ -34,10 +34,14 @@ const NewsletterSection = () => {
 						transition={{ delay: 0.2 }}
 						className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto"
 					>
+						<label htmlFor="homepage-newsletter" className="sr-only">Email address</label>
 						<input
 							type="email"
+							id="homepage-newsletter"
+							name="email"
 							placeholder="Enter your email address"
 							className="flex-1 px-6 py-4 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+							autoComplete="email"
 						/>
 						<motion.button
 							whileHover={{ scale: 1.05, backgroundColor: '#B8961F' }}

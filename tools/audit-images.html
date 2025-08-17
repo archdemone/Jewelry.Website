@@ -1,0 +1,195 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Image Audit Report</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .critical { color: red; }
+    .warning { color: orange; }
+    .good { color: green; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+  </style>
+</head>
+<body>
+  <h1>Image Audit Report</h1>
+  <p>Total images: 23</p>
+  <p class="critical">Critical issues: 1</p>
+  
+  <h2>All Images</h2>
+  <table>
+    <tr>
+      <th>Page</th>
+      <th>URL</th>
+      <th>Rendered</th>
+      <th>Natural</th>
+      <th>Scale</th>
+      <th>Status</th>
+    </tr>
+    <tr class="good">
+        <td>http://127.0.0.1:3000/</td>
+        <td>http://127.0.0.1:3000/images/header/hero-1.jpg?v=1755386155395</td>
+        <td>1264x0</td>
+        <td>1600x1600</td>
+        <td>0.79</td>
+        <td>GOOD</td>
+      </tr><tr class="good">
+        <td>http://127.0.0.1:3000/</td>
+        <td>http://127.0.0.1:3000/images/products/classic-solitaire-engagement-ring-1.jpg?v=1755386155395</td>
+        <td>600x480</td>
+        <td>800x800</td>
+        <td>0.75</td>
+        <td>GOOD</td>
+      </tr><tr class="good">
+        <td>http://127.0.0.1:3000/</td>
+        <td>http://127.0.0.1:3000/images/products/hammered-wedding-band-1.jpg?v=1755386155395</td>
+        <td>600x480</td>
+        <td>800x800</td>
+        <td>0.75</td>
+        <td>GOOD</td>
+      </tr><tr class="good">
+        <td>http://127.0.0.1:3000/</td>
+        <td>http://127.0.0.1:3000/images/products/sapphire-eternity-ring-1.jpg?v=1755386155395</td>
+        <td>600x480</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://127.0.0.1:3000/</td>
+        <td>http://127.0.0.1:3000/images/products/classic-signet-ring-1.jpg?v=1755386155395</td>
+        <td>600x480</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="critical">
+        <td>http://127.0.0.1:3000/</td>
+        <td>http://127.0.0.1:3000/images/products/category-engagement-rings.jpg?v=1755386155395</td>
+        <td>1264x93</td>
+        <td>800x800</td>
+        <td>1.58</td>
+        <td>CRITICAL</td>
+      </tr><tr class="good">
+        <td>http://127.0.0.1:3000/</td>
+        <td>http://127.0.0.1:3000/images/products/category-wedding-bands.jpg?v=1755386155395</td>
+        <td>1264x93</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://127.0.0.1:3000/</td>
+        <td>http://127.0.0.1:3000/images/products/category-eternity-rings.jpg?v=1755386155395</td>
+        <td>1264x93</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://127.0.0.1:3000/</td>
+        <td>http://127.0.0.1:3000/images/products/category-signet-rings.jpg?v=1755386155395</td>
+        <td>1264x93</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://127.0.0.1:3000/</td>
+        <td>http://127.0.0.1:3000/images/products/category-statement-rings.jpg?v=1755386155395</td>
+        <td>1264x93</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://127.0.0.1:3000/</td>
+        <td>http://127.0.0.1:3000/images/products/category-stackable-rings.jpg?v=1755386155395</td>
+        <td>1264x93</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://127.0.0.1:3000/products</td>
+        <td>http://127.0.0.1:3000/images/products/sapphire-eternity-ring-1.jpg?v=1755386155395</td>
+        <td>800x800</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://127.0.0.1:3000/products</td>
+        <td>http://127.0.0.1:3000/images/products/classic-signet-ring-1.jpg?v=1755386155395</td>
+        <td>800x800</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://127.0.0.1:3000/products</td>
+        <td>http://127.0.0.1:3000/images/products/minimalist-gold-band-1.jpg?v=1755386155395</td>
+        <td>800x800</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://127.0.0.1:3000/products</td>
+        <td>http://127.0.0.1:3000/images/products/diamond-accent-band-1.jpg?v=1755386155395</td>
+        <td>800x800</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://127.0.0.1:3000/products</td>
+        <td>http://127.0.0.1:3000/images/products/emerald-statement-ring-1.jpg?v=1755386155395</td>
+        <td>800x800</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://127.0.0.1:3000/products</td>
+        <td>http://127.0.0.1:3000/images/products/ruby-cocktail-ring-1.jpg?v=1755386155395</td>
+        <td>800x800</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://127.0.0.1:3000/products</td>
+        <td>http://127.0.0.1:3000/images/products/classic-solitaire-engagement-ring-1.jpg?v=1755386155395</td>
+        <td>800x800</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://127.0.0.1:3000/products</td>
+        <td>http://127.0.0.1:3000/images/products/vintage-halo-ring-1.jpg?v=1755386155395</td>
+        <td>800x800</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://127.0.0.1:3000/products</td>
+        <td>http://127.0.0.1:3000/images/products/modern-three-stone-ring-1.jpg?v=1755386155395</td>
+        <td>800x800</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://127.0.0.1:3000/products</td>
+        <td>http://127.0.0.1:3000/images/products/diamond-eternity-ring-1.jpg?v=1755386155395</td>
+        <td>800x800</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://127.0.0.1:3000/products</td>
+        <td>http://127.0.0.1:3000/images/products/hammered-wedding-band-1.jpg?v=1755386155395</td>
+        <td>800x800</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr><tr class="good">
+        <td>http://127.0.0.1:3000/products</td>
+        <td>http://127.0.0.1:3000/images/products/diamond-pave-wedding-band-1.jpg?v=1755386155395</td>
+        <td>800x800</td>
+        <td>0x0</td>
+        <td>0</td>
+        <td>UNKNOWN</td>
+      </tr>
+  </table>
+</body>
+</html>

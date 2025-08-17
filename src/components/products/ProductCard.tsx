@@ -1,7 +1,7 @@
 "use client"
 
 import Link from 'next/link'
-// Use a plain <img> to avoid hydration edge cases in test runs
+import SmartImage from '@/components/common/SmartImage'
 import { AddToCartButton } from '@/components/products/AddToCartButton'
 import { getProductImageFallback } from '@/lib/assets/images'
 
@@ -24,7 +24,7 @@ export function ProductCard({ id, slug, name, price, images, categorySlug }: Pro
     <div className="rounded-lg border p-4 transition-shadow hover:shadow-sm" data-testid="product-card">
       <Link href={`/products/${slug}`} className="block" data-testid="product-link">
         <div className="relative aspect-square w-full overflow-hidden rounded-md bg-accent">
-          <img src={productImages[0] || '/images/products/placeholder.jpg'} alt={name} className="h-full w-full object-cover" width={300} height={300} />
+          <SmartImage srcs={[productImages[0] || '/images/products/placeholder.jpg']} alt={name} className="h-full w-full" width={600} height={600} sizes="(max-width:768px) 50vw, 25vw" quality={92} />
         </div>
         <div className="mt-3 text-sm font-medium">{name}</div>
         <div className="text-sm text-gray-600">${price.toFixed(2)}</div>
