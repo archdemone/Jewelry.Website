@@ -5,8 +5,9 @@ const path = require('path')
 const http = require('http')
 const { spawn } = require('child_process')
 const puppeteer = require('puppeteer')
+const { URL } = require('url')
 
-const BASE = process.env.AUDIT_BASE_URL || 'http://localhost:3000'
+const BASE = process.env.AUDIT_BASE_URL || 'http://127.0.0.1:3000'
 const PAGES = ['/', '/products'] // Reduced pages for speed
 
 const OUT_DIR = path.join(process.cwd(), 'tools')
@@ -31,6 +32,27 @@ async function fetchHead(url) {
     req.on('error', () => resolve({ status: 0, headers: {} }))
     req.end()
   })
+}
+
+function delay(ms) { return new Promise((r) => setTimeout(r, ms)) }
+
+async function waitForHttpReady(url, timeoutMs = 30000) {
+  const start = Date.now()
+  while (Date.now() - start < timeoutMs) {
+    const res = await fetchHead(url).catch(() => ({ status: 0 }))
+    if (res && res.status >= 200 && res.status < 500) return true
+    await delay(500)
+  }
+  return false
+}
+
+function startNextServer({ port, host }) {
+  const hasBuild = fs.existsSync(path.join(process.cwd(), '.next', 'BUILD_ID'))
+  const cmd = 'npx'
+  const args = ['--no-install', 'next', hasBuild ? 'start' : 'dev', '-p', String(port), '--hostname', host]
+  const env = { ...process.env, HOST: host, PORT: String(port), E2E_NO_DB: '1', CI: process.env.CI || 'true' }
+  const child = spawn(cmd, args, { cwd: process.cwd(), env, shell: true, stdio: 'ignore' })
+  return child
 }
 
 async function auditPage(page, url) {
@@ -70,7 +92,20 @@ async function auditPage(page, url) {
 
 async function main() {
   console.log('Starting fast image audit...')
-  
+  // Ensure server is available
+  const u = new URL(BASE)
+  const baseCheckUrl = `${u.origin}/`
+  let serverProcess = null
+  const ready = await waitForHttpReady(baseCheckUrl, 5000)
+  if (!ready) {
+    console.log('No server detected, starting Next server...')
+    serverProcess = startNextServer({ port: Number(u.port || 3000), host: u.hostname || '127.0.0.1' })
+    const ok = await waitForHttpReady(baseCheckUrl, 30000)
+    if (!ok) {
+      throw new Error(`Failed to start server at ${baseCheckUrl}`)
+    }
+  }
+
   const browser = await puppeteer.launch({
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage']
@@ -112,6 +147,11 @@ async function main() {
   }
   
   console.log('✅ Image audit passed - no critical issues found')
+
+  // Cleanup server we started
+  if (serverProcess) {
+    try { serverProcess.kill() } catch {}
+  }
 }
 
 function generateHtmlReport(results) {
