@@ -18,14 +18,17 @@ function env(key, fallback) {
 const base = `http://${env('HOST','127.0.0.1')}:${env('PORT','3000')}`
 
 async function main() {
+	const health = await request(`${base}/api/healthz`)
+	if (health.status !== 200) { console.error('Healthz failed', health.status); process.exit(1) }
 	const home = await request(`${base}/`)
 	if (home.status !== 200 || !/Handcrafted|Rings|Jewelry/i.test(home.body)) {
 		console.error('Homepage smoke failed', home.status)
 		process.exit(1)
 	}
-	const products = await request(`${base}/products`)
-	if (products.status !== 200 || !/Rings|Products|Search/i.test(products.body)) {
-		console.error('Products smoke failed', products.status)
+	// anonymous /admin should 302 to login
+	const admin = await request(`${base}/admin`)
+	if (admin.status !== 302) {
+		console.error('Admin anonymous redirect failed', admin.status)
 		process.exit(1)
 	}
 	console.log('Smoke OK')

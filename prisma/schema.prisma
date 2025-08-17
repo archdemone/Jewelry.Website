@@ -56,6 +56,11 @@ model User {
 	reviews       Review[]
 	cart          CartItem[]
 	wishlist      Wishlist[]
+	auditLogs     AuditLog[]
+	mfaEnabled    Boolean     @default(false)
+	mfaSecret     String?
+	mfaBackupCodes String?
+	tokenVersion  Int         @default(0)
 	createdAt     DateTime    @default(now())
 	updatedAt     DateTime    @updatedAt
 }
@@ -234,6 +239,20 @@ model Wishlist {
 	createdAt DateTime @default(now())
 
 	@@unique([userId, productId])
+}
+
+model AuditLog {
+	id        String   @id @default(cuid())
+	user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+	userId    String?
+	action    String
+	entity    String
+	entityId  String?
+	before    Json?
+	after     Json?
+	ip        String?
+	ua        String?
+	ts        DateTime @default(now())
 }
 
 enum Role {

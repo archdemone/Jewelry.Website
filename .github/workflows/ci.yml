@@ -32,6 +32,7 @@ jobs:
           echo "HOST=127.0.0.1" >> $GITHUB_ENV
           echo "PORT=3010" >> $GITHUB_ENV
           echo "READINESS_PROBE_SKIP_DB=true" >> $GITHUB_ENV
+          echo "ADMIN_MFA_REQUIRED=true" >> $GITHUB_ENV
 
       - name: Lint
         run: npm run lint --if-present

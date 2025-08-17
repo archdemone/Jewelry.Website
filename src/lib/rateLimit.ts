@@ -29,7 +29,10 @@ export async function rateLimitOrThrow(req: Request, path: string, options: Rate
 	}
 	bucket.count += 1
 	if (options.slowdownAfter && bucket.count > options.slowdownAfter) {
-		await new Promise((r) => setTimeout(r, options.slowdownMs || 250))
+		const over = bucket.count - options.slowdownAfter
+		const base = options.slowdownMs || 100
+		const delay = Math.min(3000, Math.pow(2, Math.min(8, over)) * base)
+		await new Promise((r) => setTimeout(r, delay))
 	}
 	if (bucket.count > options.max) {
 		const retryAfter = Math.max(0, Math.ceil((bucket.resetAt - nowMs) / 1000))

@@ -3,17 +3,18 @@ import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { AdminHeader } from "@/components/admin/AdminHeader";
 import { requireAdminAccess } from "@/lib/admin/admin-auth";
 
+export const metadata = {
+	robots: {
+		index: false,
+		follow: false,
+		googleBot: { index: false, follow: false },
+	},
+}
+
 export default async function AdminLayout({ children }: { children: ReactNode }) {
 	const { allowed } = await requireAdminAccess();
 	if (!allowed) {
-		return (
-			<div className="flex h-screen items-center justify-center">
-				<div className="text-center">
-					<div className="text-2xl font-bold mb-2">403 - Forbidden</div>
-					<div className="text-gray-600">You do not have access to this area.</div>
-				</div>
-			</div>
-		);
+		return null
 	}
 	return (
 		<div className="flex h-screen bg-gray-100">
