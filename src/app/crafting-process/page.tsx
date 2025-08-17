@@ -2,7 +2,7 @@
 
 import { createElement, useState } from 'react'
 import { motion } from 'framer-motion'
-import SmartImage from '@/components/common/SmartImage'
+// import SmartImage from '@/components/common/SmartImage' // Temporarily disabled
 import Link from 'next/link'
 import {
 	ShoppingCart,
@@ -89,14 +89,10 @@ export default function CraftingProcessPage() {
 					{/* Hero Section */}
 					<section className="relative h-[50vh] min-h-[400px] bg-gradient-to-br from-amber-50 to-orange-100 overflow-hidden">
 						<div className="absolute inset-0">
-							<SmartImage
-								srcs={['/images/process/workshop-hero.jpg']}
+							<img
+								src="/images/process/workshop-hero.jpg"
 								alt="Ring crafting process"
-								fill
-								className="object-cover opacity-60"
-								priority
-								sizes="100vw"
-								quality={90}
+								className="absolute inset-0 w-full h-full object-cover opacity-60"
 							/>
 							<div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
 						</div>
@@ -384,15 +380,9 @@ export default function CraftingProcessPage() {
 									transition={{ delay: 0.1 }}
 									className="relative group overflow-hidden rounded-xl"
 								>
-									<SmartImage
-										srcs={['/images/process/material-selection.jpg']}
-										alt="Selecting materials"
-										width={400}
-										height={300}
-										className="w-full object-cover group-hover:scale-110 transition-transform duration-300"
-										sizes="(max-width: 768px) 100vw, 400px"
-										quality={90}
-									/>
+									<div className="w-full h-64 bg-gradient-to-br from-blue-100 to-indigo-200 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+										<p className="text-gray-600 text-center">Selecting materials</p>
+									</div>
 									<div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
 										<div className="text-white">
 											<h3 className="font-semibold text-lg">Material Selection</h3>
@@ -408,15 +398,9 @@ export default function CraftingProcessPage() {
 									transition={{ delay: 0.2 }}
 									className="relative group overflow-hidden rounded-xl"
 								>
-									<SmartImage
-										srcs={['/images/process/crafting-action.jpg']}
-										alt="Crafting process"
-										width={400}
-										height={300}
-										className="w-full object-cover group-hover:scale-110 transition-transform duration-300"
-										sizes="(max-width: 768px) 100vw, 400px"
-										quality={90}
-									/>
+									<div className="w-full h-64 bg-gradient-to-br from-amber-100 to-orange-200 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+										<p className="text-gray-600 text-center">Crafting process</p>
+									</div>
 									<div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
 										<div className="text-white">
 											<h3 className="font-semibold text-lg">Precision Crafting</h3>
@@ -432,15 +416,9 @@ export default function CraftingProcessPage() {
 									transition={{ delay: 0.3 }}
 									className="relative group overflow-hidden rounded-xl"
 								>
-									<SmartImage
-										srcs={['/images/process/final-polish.jpg']}
-										alt="Final polishing"
-										width={400}
-										height={300}
-										className="w-full object-cover group-hover:scale-110 transition-transform duration-300"
-										sizes="(max-width: 768px) 100vw, 400px"
-										quality={90}
-									/>
+									<div className="w-full h-64 bg-gradient-to-br from-green-100 to-emerald-200 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+										<p className="text-gray-600 text-center">Final polishing</p>
+									</div>
 									<div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
 										<div className="text-white">
 											<h3 className="font-semibold text-lg">Perfect Finish</h3>

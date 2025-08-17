@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import SmartImage from '@/components/common/SmartImage';
+// import SmartImage from '@/components/common/SmartImage'; // Temporarily disabled
 
 const CategoryShowcase = () => {
   // Use representative product images for each category to avoid yellow placeholders
@@ -86,20 +86,12 @@ const CategoryShowcase = () => {
                       transition={{ duration: 0.6 }}
                       className="relative h-full w-full"
                     >
-                      <SmartImage
+                      <img
                         key={`cat-img-${category.id}`}
-                        srcs={[
-                          `/images/products/category-${category.id}.jpg`,
-                          `/images/categories/category-${category.id}.jpg`,
-                          category.image,
-                        ]}
+                        src={category.image}
                         alt={category.name}
-                        className="h-full w-full"
-                        fill
-                        sizes="(min-width:1024px) 33vw, (min-width:768px) 50vw, 100vw"
-                        quality={90}
-                        unoptimized={process.env.NODE_ENV !== 'production'}
-                        priority={index === 0}
+                        className="h-full w-full object-cover"
+                        style={{ objectFit: 'cover' }}
                       />
                     </motion.div>
 

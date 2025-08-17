@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
-import { Header } from '@/components/layout/Header';
-import { Footer } from '@/components/layout/Footer';
+// import { Header } from '@/components/layout/Header'; // Removed - using shop layout
+// import { Footer } from '@/components/layout/Footer'; // Removed - using shop layout
 import { Button } from '@/components/ui/button';
 import { getProductBySlug, getRelatedProducts } from '@/lib/queries';
 import { AddToCartSection } from '@/components/product-detail/AddToCartSection';
@@ -41,9 +41,7 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
   }));
 
   return (
-    <>
-      <Header />
-      <main className="container py-10">
+    <div className="container py-10">
         <ProductJsonLd
           product={{
             name: product.name,
@@ -80,8 +78,6 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
           </div>
         </div>
         <RelatedProducts products={related} />
-      </main>
-      <Footer />
-    </>
+    </div>
   );
 }

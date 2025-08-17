@@ -118,12 +118,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable} scroll-smooth`}>
       <head>
-        <meta
-          httpEquiv="Content-Security-Policy"
-          content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://va.vercel-scripts.com https://vitals.vercel-insights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://va.vercel-scripts.com https://vitals.vercel-insights.com; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';"
-        />
+        {process.env.NODE_ENV === 'production' && (
+          <meta
+            httpEquiv="Content-Security-Policy"
+            content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://va.vercel-scripts.com https://vitals.vercel-insights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https://va.vercel-scripts.com https://vitals.vercel-insights.com; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';"
+          />
+        )}
       </head>
-      <body className="min-h-screen bg-white font-[var(--font-sans)] text-text antialiased">
+      <body className={`min-h-screen bg-white text-text antialiased ${inter.className}`}>
         <AuthSessionProvider>
           {children}
           {/* Site-wide widgets */}
