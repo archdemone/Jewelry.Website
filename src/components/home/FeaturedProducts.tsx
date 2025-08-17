@@ -89,13 +89,16 @@ const FeaturedProducts = () => {
 										animate={{ scale: hoveredProduct === ring.id ? 1.1 : 1 }}
 										transition={{ duration: 0.6 }}
 									>
-										<SmartImage
-											srcs={getRingImages(ring.slug)}
-											alt={ring.name}
-											className="h-full w-full"
-											width={400}
-											height={320}
-										/>
+																						<SmartImage
+													srcs={getRingImages(ring.slug)}
+													alt={ring.name}
+													className="h-full w-full"
+													width={800}
+													height={640}
+													sizes="(min-width: 1280px) 400px, 50vw"
+													quality={90}
+													loading="lazy"
+												/>
 									</motion.div>
 
 									{/* Quick Actions */}
