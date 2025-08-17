@@ -1,0 +1,143 @@
+name: Performance & Bundle Analysis
+
+on:
+  pull_request:
+    branches: [main, develop]
+  push:
+    branches: [main]
+
+jobs:
+  bundle-analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Run bundle size analysis
+        run: npm run size-limit
+
+      - name: Upload bundle analysis
+        if: github.event_name == 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundle-analysis
+          path: .next/analyze/
+
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build application
+        run: npm run build
+
+      - name: Start application
+        run: npm start &
+        env:
+          PORT: 3000
+
+      - name: Wait for application
+        run: npx wait-on http://localhost:3000
+
+      - name: Run Lighthouse CI
+        run: |
+          npx lighthouse http://localhost:3000 \
+            --output=json \
+            --output-path=./lighthouse-report.json \
+            --only-categories=performance \
+            --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
+            --preset=perf
+
+      - name: Upload Lighthouse report
+        uses: actions/upload-artifact@v4
+        with:
+          name: lighthouse-report
+          path: lighthouse-report.json
+
+      - name: Check performance thresholds
+        run: |
+          # Extract performance scores from Lighthouse report
+          LCP=$(node -e "const report = require('./lighthouse-report.json'); console.log(report.audits['largest-contentful-paint'].numericValue / 1000);")
+          FCP=$(node -e "const report = require('./lighthouse-report.json'); console.log(report.audits['first-contentful-paint'].numericValue / 1000);")
+          CLS=$(node -e "const report = require('./lighthouse-report.json'); console.log(report.audits['cumulative-layout-shift'].numericValue);")
+          
+          echo "LCP: ${LCP}s (target: <2.5s)"
+          echo "FCP: ${FCP}s (target: <1.8s)"
+          echo "CLS: ${CLS} (target: <0.1)"
+          
+          # Fail if thresholds are exceeded
+          if (( $(echo "$LCP > 2.5" | bc -l) )); then
+            echo "❌ LCP exceeds 2.5s threshold"
+            exit 1
+          fi
+          
+          if (( $(echo "$FCP > 1.8" | bc -l) )); then
+            echo "❌ FCP exceeds 1.8s threshold"
+            exit 1
+          fi
+          
+          if (( $(echo "$CLS > 0.1" | bc -l) )); then
+            echo "❌ CLS exceeds 0.1 threshold"
+            exit 1
+          fi
+          
+          echo "✅ All performance thresholds met"
+
+  web-vitals:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npm run type-check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test Web Vitals implementation
+        run: |
+          # Check if reportWebVitals is properly exported
+          if ! grep -q "export.*reportWebVitals" src/app/layout.tsx; then
+            echo "❌ reportWebVitals not exported from layout.tsx"
+            exit 1
+          fi
+          
+          # Check if vitals API route exists
+          if [ ! -f "src/app/api/analytics/vitals/route.ts" ]; then
+            echo "❌ Web Vitals API route not found"
+            exit 1
+          fi
+          
+          echo "✅ Web Vitals implementation verified"

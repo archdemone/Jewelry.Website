@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { Heart, Home, Users, Award } from 'lucide-react';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import Image from 'next/image';
 
 export default function ArtisanContent() {
   // Avoid hydration mismatch by rendering only after mount
@@ -21,10 +22,13 @@ export default function ArtisanContent() {
         {/* Hero Section - Personal Introduction */}
         <section className="relative h-[55vh] min-h-[480px] overflow-hidden bg-gradient-to-br from-stone-100 to-stone-200">
           <div className="absolute inset-0">
-            <img
+            <Image
               src="/images/artisan/bedroom-workshop-hero.jpg"
               alt="Home workshop where each ring is crafted"
+              width={600}
+              height={400}
               className="absolute inset-0 w-full h-full object-cover opacity-70"
+              sizes="(max-width: 768px) 100vw, 50vw"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
           </div>

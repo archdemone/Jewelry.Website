@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState } from 'react';
 import { Heart, ShoppingBag } from 'lucide-react';
 // import SmartImage from '@/components/common/SmartImage'; // Temporarily disabled
@@ -80,72 +81,81 @@ const FeaturedProducts = () => {
               whileHover={{ y: -8 }}
               onHoverStart={() => setHoveredProduct(ring.id)}
               onHoverEnd={() => setHoveredProduct(null)}
-              className="group relative"
+              className="group relative h-full"
             >
-              <div className="relative overflow-hidden rounded-lg bg-white shadow-lg">
-                {/* Image Container */}
-                <div className="relative h-80 overflow-hidden">
+              <div className="relative h-full overflow-hidden rounded-lg bg-white shadow-lg">
+                {/* Image Container - Fixed aspect ratio to prevent layout shifts */}
+                <div className="relative aspect-[4/3] overflow-hidden rounded-t-lg">
                   <motion.div
                     animate={{ scale: hoveredProduct === ring.id ? 1.1 : 1 }}
                     transition={{ duration: 0.6 }}
+                    className="h-full w-full"
                   >
-                    <img
+                    <Image
                       src={`/images/products/${ring.slug}-1.jpg`}
                       alt={ring.name}
-                      className="h-full w-full object-cover"
-                      style={{ objectFit: 'cover' }}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      placeholder="blur"
+                      blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                     />
                   </motion.div>
 
-                  {/* Quick Actions */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{
-                      opacity: hoveredProduct === ring.id ? 1 : 0,
-                      y: hoveredProduct === ring.id ? 0 : 20,
-                    }}
-                    transition={{ duration: 0.3 }}
-                    className="absolute bottom-4 left-4 right-4 flex gap-2"
-                  >
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      className="flex-1 rounded-full bg-white/90 py-2 font-medium backdrop-blur"
+                  {/* Quick Actions - Fixed positioning to prevent layout shifts */}
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{
+                        opacity: hoveredProduct === ring.id ? 1 : 0,
+                        y: hoveredProduct === ring.id ? 0 : 20,
+                      }}
+                      transition={{ duration: 0.3 }}
+                      className="flex gap-2"
                     >
-                      <Link href={`/products/${ring.slug}`}>Quick View</Link>
-                    </motion.button>
-                    <motion.button
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 backdrop-blur"
-                    >
-                      <Heart className="h-5 w-5" />
-                    </motion.button>
-                  </motion.div>
-                </div>
-
-                {/* Product Info */}
-                <div className="p-4">
-                  <h3 className="font-semibold text-gray-900">{ring.name}</h3>
-                  <p className="mt-1 text-sm text-gray-600">{ring.description}</p>
-                  <div className="mt-2 flex items-center justify-between">
-                    <span className="text-lg font-bold text-gray-900">${ring.price}</span>
-                    <Link
-                      href={`/products/${ring.slug}`}
-                      className="text-orange-500 hover:text-orange-600"
-                    >
-                      View Details →
-                    </Link>
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="flex-1 rounded-full bg-white/90 py-2 font-medium backdrop-blur"
+                      >
+                        <Link href={`/products/${ring.slug}`}>Quick View</Link>
+                      </motion.button>
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="flex h-10 w-10 items-center justify-center rounded-full bg-white/90 backdrop-blur"
+                      >
+                        <Heart className="h-5 w-5" />
+                      </motion.button>
+                    </motion.div>
                   </div>
                 </div>
 
-                <div className="p-4 pt-0">
-                  <Link
-                    href={`/products/${ring.slug}`}
-                    className="inline-block rounded-full bg-gradient-to-r from-orange-500 to-amber-500 px-8 py-4 font-medium text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
-                  >
-                    View Ring
-                  </Link>
+                {/* Product Info - Fixed height container to prevent layout shifts */}
+                <div className="flex flex-col justify-between p-4">
+                  <div>
+                    <h3 className="font-semibold text-gray-900">{ring.name}</h3>
+                    <p className="mt-1 text-sm text-gray-600">{ring.material} • {ring.gemstone}</p>
+                    <div className="mt-2 flex items-center justify-between">
+                      <span className="text-lg font-bold text-gray-900">${ring.price}</span>
+                      <Link
+                        href={`/products/${ring.slug}`}
+                        className="text-orange-500 hover:text-orange-600"
+                      >
+                        View Details →
+                      </Link>
+                    </div>
+                  </div>
+                  
+                  {/* Fixed height for button container */}
+                  <div className="mt-4 h-[60px] flex items-end">
+                    <Link
+                      href={`/products/${ring.slug}`}
+                      className="inline-block w-full rounded-full bg-gradient-to-r from-orange-500 to-amber-500 px-8 py-4 text-center font-medium text-white shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
+                    >
+                      View Ring
+                    </Link>
+                  </div>
                 </div>
               </div>
             </motion.div>

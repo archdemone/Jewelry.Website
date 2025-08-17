@@ -1,50 +1,127 @@
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Development optimizations
-  ...(process.env.NODE_ENV === 'development' && {
-    // Disable caching in development
-    generateEtags: false,
-  }),
-
-  // Image optimization
+  experimental: {
+    optimizeCss: true,
+    optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react'],
+  },
   images: {
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 60,
+    dangerouslyAllowSVG: true,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
+    // Add domains for external images if needed
+    domains: [],
+    // Optimize image loading
+    unoptimized: false,
   },
-
-  // Experimental features
-  experimental: {
-    // Better development experience
-    optimizeCss: true,
-  },
-
-  // Webpack configuration for better hot reloading
+  compress: true,
+  poweredByHeader: false,
+  generateEtags: false,
+  swcMinify: true,
+  // Optimize for performance
+  reactStrictMode: true,
+  // Enable static optimization
+  trailingSlash: false,
+  // Optimize bundle splitting
   webpack: (config, { dev, isServer }) => {
-    if (dev && !isServer) {
-      // Ensure CSS changes trigger full reload
-      config.watchOptions = {
-        poll: 1000,
-        aggregateTimeout: 300,
+    // Optimize bundle size
+    if (!dev && !isServer) {
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+            priority: 10,
+          },
+          common: {
+            name: 'common',
+            minChunks: 2,
+            chunks: 'all',
+            enforce: true,
+            priority: 5,
+          },
+          // Separate React and Next.js chunks
+          react: {
+            test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+            name: 'react',
+            chunks: 'all',
+            priority: 20,
+          },
+          // Separate UI component libraries
+          ui: {
+            test: /[\\/]node_modules[\\/](@radix-ui|lucide-react)[\\/]/,
+            name: 'ui',
+            chunks: 'all',
+            priority: 15,
+          },
+        },
       };
-      
-      // Disable performance hints in development
-      config.performance = false;
     }
+
+    // Optimize images
+    config.module.rules.push({
+      test: /\.(png|jpe?g|gif|svg)$/i,
+      use: [
+        {
+          loader: 'image-webpack-loader',
+          options: {
+            mozjpeg: {
+              progressive: true,
+              quality: 65,
+            },
+            optipng: {
+              enabled: false,
+            },
+            pngquant: {
+              quality: [0.65, 0.90],
+              speed: 4,
+            },
+            gifsicle: {
+              interlaced: false,
+            },
+            webp: {
+              quality: 75,
+            },
+          },
+        },
+      ],
+    });
+
     return config;
   },
-
-  // Headers for development
   async headers() {
     return [
       {
         source: '/(.*)',
         headers: [
           {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-XSS-Protection',
+            value: '1; mode=block',
+          },
+        ],
+      },
+      {
+        source: '/images/(.*)',
+        headers: [
+          {
             key: 'Cache-Control',
-            value: process.env.NODE_ENV === 'development' 
-              ? 'no-cache, no-store, must-revalidate' 
-              : 'public, max-age=31536000, immutable',
+            value: 'public, max-age=31536000, immutable',
           },
         ],
       },
@@ -53,9 +130,16 @@ const nextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value: process.env.NODE_ENV === 'development' 
-              ? 'no-cache, no-store, must-revalidate' 
-              : 'public, max-age=31536000, immutable',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+      {
+        source: '/fonts/(.*)',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
           },
         ],
       },
@@ -63,5 +147,5 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+module.exports = withBundleAnalyzer(nextConfig);
 
