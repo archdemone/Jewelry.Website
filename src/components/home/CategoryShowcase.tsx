@@ -102,8 +102,21 @@ const CategoryShowcase = () => {
                     <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                       <h3 className="mb-2 text-xl font-semibold">{category.name}</h3>
                       <p className="mb-2 text-sm text-gray-200">{category.description}</p>
-                      <span className="text-xs text-gold-300">{category.count}</span>
+                      <div className="absolute top-2 right-2">
+                        <span className="text-xs text-orange-300">{category.count}</span>
+                      </div>
                     </div>
+                  </div>
+
+                  <div className="p-6">
+                    <h3 className="mb-2 text-xl font-semibold">{category.name}</h3>
+                    <p className="mb-4 text-gray-600">{category.description}</p>
+                    <Link
+                      href={`/products?category=${category.id}`}
+                      className="inline-block rounded-full border-2 border-orange-500 px-8 py-4 font-medium text-orange-500 transition-all duration-300 hover:scale-105 hover:bg-orange-500 hover:text-white"
+                    >
+                      Explore {category.name}
+                    </Link>
                   </div>
                 </div>
               </Link>

@@ -146,7 +146,7 @@ export default function ContactPage() {
                   transition={{ duration: 0.5 }}
                   className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-white shadow-lg"
                 >
-                  <MessageSquare className="h-10 w-10 text-gold-500" />
+                  <MessageSquare className="h-10 w-10 text-orange-500" />
                 </motion.div>
 
                 <h1 className="mb-6 bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text font-serif text-5xl text-transparent md:text-6xl">
@@ -167,7 +167,7 @@ export default function ContactPage() {
                     transition={{ delay: 0.2 }}
                     className="text-center"
                   >
-                    <div className="text-3xl font-bold text-gold-600">24hr</div>
+                    <div className="text-3xl font-bold text-orange-600">24hr</div>
                     <div className="text-sm text-gray-600">Response Time</div>
                   </motion.div>
                   <motion.div
@@ -176,7 +176,7 @@ export default function ContactPage() {
                     transition={{ delay: 0.3 }}
                     className="text-center"
                   >
-                    <div className="text-3xl font-bold text-gold-600">100%</div>
+                    <div className="text-3xl font-bold text-orange-600">100%</div>
                     <div className="text-sm text-gray-600">Satisfaction</div>
                   </motion.div>
                   <motion.div
@@ -185,7 +185,7 @@ export default function ContactPage() {
                     transition={{ delay: 0.4 }}
                     className="text-center"
                   >
-                    <div className="text-3xl font-bold text-gold-600">1-on-1</div>
+                    <div className="text-3xl font-bold text-orange-600">1-on-1</div>
                     <div className="text-sm text-gray-600">Personal Service</div>
                   </motion.div>
                 </div>
@@ -250,7 +250,7 @@ export default function ContactPage() {
                 >
                   <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-xl">
                     <div className="mb-6 flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-gold-400 to-amber-500">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-orange-400 to-amber-500">
                         <Send className="h-5 w-5 text-white" />
                       </div>
                       <h3 className="text-2xl font-semibold">Send a Message</h3>
@@ -394,7 +394,7 @@ export default function ContactPage() {
                           disabled={isSubmitting}
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
-                          className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-gold-500 to-amber-500 py-4 font-medium text-white shadow-lg transition-all hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50"
+                          className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 py-4 font-medium text-white shadow-lg transition-all hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50"
                         >
                           {isSubmitting ? (
                             <>
@@ -570,7 +570,7 @@ export default function ContactPage() {
           </section>
 
           {/* Final CTA */}
-          <section className="relative overflow-hidden bg-gradient-to-r from-gold-500 via-amber-500 to-orange-500 py-20">
+          <section className="relative overflow-hidden bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 py-20">
             <div className="absolute inset-0 bg-black/10" />
             <motion.div
               animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
@@ -595,7 +595,7 @@ export default function ContactPage() {
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 font-medium text-gold-600 shadow-xl transition-all hover:shadow-2xl"
+                  className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 font-medium text-orange-600 shadow-xl transition-all hover:shadow-2xl"
                 >
                   <Calendar className="h-5 w-5" />
                   Book a Consultation

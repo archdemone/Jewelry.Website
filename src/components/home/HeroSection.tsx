@@ -66,7 +66,7 @@ const HeroSection = () => {
           <div className="container">
             <div className="max-w-2xl">
               <div className="animate-fade-in">
-                <span className="text-sm font-medium uppercase tracking-wider text-gold-400">
+                <span className="text-sm font-medium uppercase tracking-wider text-orange-400">
                   Locally Crafted • Single Artisan • Lifetime Warranty
                 </span>
               </div>
@@ -74,7 +74,7 @@ const HeroSection = () => {
               <h1 className="mb-6 mt-4 font-serif text-5xl text-white md:text-7xl animate-fade-in-delay-1">
                 Rings Crafted
                 <br />
-                <span className="text-gold-400">With Passion</span>
+                <span className="text-orange-400">With Passion</span>
               </h1>
 
               <p className="mb-8 text-xl text-gray-200 animate-fade-in-delay-2">
@@ -84,7 +84,7 @@ const HeroSection = () => {
               </p>
 
               <div className="flex flex-wrap gap-4 animate-fade-in-delay-3">
-                <button className="rounded-full bg-gold-500 px-8 py-4 font-medium text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 hover:bg-gold-600 active:scale-95">
+                <button className="rounded-full bg-gradient-to-r from-orange-500 to-amber-500 px-8 py-4 font-medium text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 hover:from-orange-600 hover:to-amber-600 active:scale-95">
                   <Link href="/products">Explore Rings</Link>
                 </button>
 
@@ -93,13 +93,6 @@ const HeroSection = () => {
                 </button>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 transform animate-bounce z-10">
-          <div className="flex h-10 w-6 justify-center rounded-full border-2 border-white/50">
-            <div className="mt-2 h-3 w-1 rounded-full bg-white/50" />
           </div>
         </div>
       </div>

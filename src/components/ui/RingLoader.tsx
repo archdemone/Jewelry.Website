@@ -1,7 +1,5 @@
 'use client';
 
-import { motion } from 'framer-motion';
-
 interface RingLoaderProps {
   size?: 'sm' | 'md' | 'lg';
   className?: string;
@@ -15,24 +13,19 @@ const RingLoader = ({ size = 'md', className = '' }: RingLoaderProps) => {
   };
 
   return (
-    <motion.div
-      animate={{ rotate: 360 }}
-      transition={{ duration: 2, repeat: Infinity, ease: 'linear' }}
-      className={`${sizeClasses[size]} ${className}`}
-    >
+    <div className={`${sizeClasses[size]} ${className} animate-spin`}>
       <svg viewBox="0 0 50 50" className="h-full w-full">
         <circle
           cx="25"
           cy="25"
           r="20"
-          stroke="#D4AF37"
+          stroke="currentColor"
           strokeWidth="3"
           fill="none"
           strokeLinecap="round"
-          strokeDasharray="31.4 31.4"
         />
       </svg>
-    </motion.div>
+    </div>
   );
 };
 
