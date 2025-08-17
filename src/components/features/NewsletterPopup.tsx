@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState, type FormEvent } from 'react';
-import { Dialog, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -105,6 +105,10 @@ export default function NewsletterPopup({
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="max-w-md p-0 overflow-hidden border-0 shadow-2xl !bg-transparent">
+        <DialogHeader className="sr-only">
+          <DialogTitle>Join our newsletter</DialogTitle>
+          <DialogDescription>Get artisan updates and offers</DialogDescription>
+        </DialogHeader>
         <AnimatePresence mode="wait">
           {!isSuccess ? (
             <motion.div
