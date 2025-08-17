@@ -1,6 +1,7 @@
 # Deployment Guide
 
 ## Prerequisites
+
 - Node.js 18+
 - PostgreSQL 15+
 - Redis (optional but recommended)
@@ -20,6 +21,7 @@
 ## Database Setup
 
 1. Create production database:
+
    ```sql
    CREATE DATABASE jewelry_prod;
    CREATE USER jewelry_user WITH ENCRYPTED PASSWORD 'your-password';
@@ -27,6 +29,7 @@
    ```
 
 2. Run migrations:
+
    ```bash
    npx prisma migrate deploy
    ```
@@ -39,15 +42,18 @@
 ## Deployment Options
 
 ### Option 1: Vercel (Recommended)
+
 1. Connect GitHub repository to Vercel
 2. Configure environment variables in Vercel dashboard
 3. Deploy with: `vercel --prod`
 
 ### Option 2: Docker
+
 1. Build image: `docker build -t jewelry-store .`
 2. Run: `docker-compose up -d`
 
 ### Option 3: Traditional VPS
+
 1. Install Node.js and PM2
 2. Build: `npm run build`
 3. Start: `pm2 start npm --name "jewelry-store" -- start`
@@ -91,6 +97,7 @@
 ## Final Production Checklist
 
 ### Infrastructure
+
 - [ ] Production database configured
 - [ ] Redis cache set up
 - [ ] CDN configured
@@ -98,6 +105,7 @@
 - [ ] Domain DNS configured
 
 ### Security
+
 - [ ] All secrets in environment variables
 - [ ] Security headers configured
 - [ ] Rate limiting enabled
@@ -105,6 +113,7 @@
 - [ ] Admin access restricted
 
 ### Performance
+
 - [ ] Images optimized
 - [ ] Code minified
 - [ ] Caching configured
@@ -112,6 +121,7 @@
 - [ ] CDN enabled
 
 ### Monitoring
+
 - [ ] Error tracking (Sentry)
 - [ ] Analytics (Google Analytics)
 - [ ] Uptime monitoring
@@ -119,6 +129,7 @@
 - [ ] Log aggregation
 
 ### Business
+
 - [ ] Payment processing live
 - [ ] Email service configured
 - [ ] Backup system running
@@ -126,6 +137,7 @@
 - [ ] Legal pages updated
 
 ### SEO
+
 - [ ] Sitemap submitted
 - [ ] Robots.txt configured
 - [ ] Meta tags optimized
@@ -173,6 +185,7 @@ npm run health          # Check /api/health
 ```
 
 ### Vercel Configuration
+
 - `vercel.json` sets build, install, and headers
 - Configure `DATABASE_URL`, `NEXTAUTH_SECRET`, `STRIPE_SECRET_KEY` in Vercel project settings (Encrypted envs)
 
