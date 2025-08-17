@@ -19,10 +19,10 @@ export async function POST(req: Request) {
 	} catch (e) {
 		const err = e as Error & { status?: number; headers?: Record<string, string> }
 		const isRate = (err.status || 0) === 429
-		const message = err.message || 'Invalid input'
-		const status = isRate ? 429 : message.toLowerCase().includes('invalid') || message.toLowerCase().includes('required') ? 400 : 500
-		logger.warn({ status, error: message }, 'contact error')
+		const status = isRate ? 429 : 400
+		const headers = { 'Content-Type': 'application/json', ...(err.headers || {}) }
+		logger.warn({ status, error: isRate ? 'rate' : 'bad_request' }, 'contact error')
 		recordRequest('POST', '/api/contact', status, Date.now() - start)
-		return new Response(JSON.stringify({ ok: false, error: isRate ? 'Too many requests' : message }), { status, headers: { 'Content-Type': 'application/json', ...(err.headers || {}) } })
+		return new Response(JSON.stringify({ ok: false, error: isRate ? 'Too many requests' : 'Invalid input' }), { status, headers })
 	}
 }

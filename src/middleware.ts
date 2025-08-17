@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+import { getToken } from 'next-auth/jwt'
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
 	if (process.env.NEXT_PUBLIC_MAINTENANCE_MODE === 'true') {
 		const { pathname } = request.nextUrl
 		if (!pathname.startsWith('/maintenance') && !pathname.startsWith('/api')) {
@@ -24,12 +25,50 @@ export function middleware(request: NextRequest) {
 		}
 	}
 
+	const { pathname } = request.nextUrl
+	// Admin gating (skip MFA routes)
+	if (pathname.startsWith('/admin') && !pathname.startsWith('/admin/mfa')) {
+		const allowlist = (process.env.IP_ALLOWLIST || '').split(',').map(s => s.trim()).filter(Boolean)
+		const clientIp = request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || request.headers.get('x-real-ip') || ''
+		if (allowlist.length > 0 && clientIp && !allowlist.includes(clientIp)) {
+			return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+		}
+		const token = await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET }) as any
+		if (!token) {
+			const url = request.nextUrl.clone()
+			url.pathname = '/auth/login'
+			url.searchParams.set('callbackUrl', '/admin')
+			return NextResponse.redirect(url, { status: 302 })
+		}
+		const role = token?.role
+		if (role !== 'ADMIN' && role !== 'STAFF') {
+			const url = request.nextUrl.clone()
+			url.pathname = '/auth/login'
+			url.searchParams.set('callbackUrl', '/admin')
+			return NextResponse.redirect(url, { status: 302 })
+		}
+		if (process.env.ADMIN_MFA_REQUIRED === 'true') {
+			const mfaEnabled = !!token?.mfaEnabled
+			const mfaCookie = request.cookies.get('mfa_verified')?.value === 'true'
+			if (!mfaEnabled) {
+				const url = request.nextUrl.clone(); url.pathname = '/admin/mfa/enroll'; return NextResponse.redirect(url, { status: 302 })
+			}
+			if (mfaEnabled && !mfaCookie) {
+				const url = request.nextUrl.clone(); url.pathname = '/admin/mfa/verify'; return NextResponse.redirect(url, { status: 302 })
+			}
+		}
+	}
+
 	const res = NextResponse.next()
 
-	// Security headers (can be tuned or disabled via env)
+	// Security headers
 	if (process.env.CSP_DISABLE !== 'true') {
 		const csp = "default-src 'self'; img-src 'self' data: blob:; script-src 'self' 'unsafe-inline' https://www.googletagmanager.com; style-src 'self' 'unsafe-inline'; connect-src 'self'; frame-ancestors 'self';"
-		res.headers.set('Content-Security-Policy', csp)
+		const reportOnly = process.env.CSP_REPORT_ONLY === 'true'
+		const reportUri = process.env.CSP_REPORT_URI
+		const value = reportUri ? `${csp} report-uri ${reportUri};` : csp
+		if (reportOnly) res.headers.set('Content-Security-Policy-Report-Only', value)
+		else res.headers.set('Content-Security-Policy', value)
 	}
 	res.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin')
 	res.headers.set('X-Content-Type-Options', 'nosniff')
@@ -45,8 +84,7 @@ export function middleware(request: NextRequest) {
 	if (existingReqId) res.headers.set('x-request-id', existingReqId)
 
 	// Short TTL for HTML/API
-	const path = request.nextUrl.pathname
-	if (path.startsWith('/api') || path === '/' || path.endsWith('.html')) {
+	if (pathname.startsWith('/api') || pathname === '/' || pathname.endsWith('.html')) {
 		res.headers.set('Cache-Control', 'max-age=0, must-revalidate')
 	}
 
