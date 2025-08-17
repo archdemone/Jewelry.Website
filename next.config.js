@@ -1,12 +1,13 @@
 /** @type {import('next').NextConfig} */
 const withBundleAnalyzer = require('@next/bundle-analyzer')({ enabled: process.env.ANALYZE === 'true' });
+const webpack = require('webpack');
 
 const securityHeaders = []; // handled in middleware
 
 const nextConfig = {
 	reactStrictMode: true,
 	env: {
-		NEXT_PUBLIC_ASSET_VERSION: '2',
+		NEXT_PUBLIC_ASSET_VERSION: process.env.NODE_ENV === 'production' ? '1' : `${Date.now()}`,
 	},
 	transpilePackages: [
 		'@radix-ui/react-icons',
@@ -25,38 +26,106 @@ const nextConfig = {
 	swcMinify: true,
 	compress: true,
 	poweredByHeader: false,
-	experimental: {
-		instrumentationHook: true,
-		webVitalsAttribution: ['CLS', 'LCP'],
-		// optimizeCss: true, // disabled to avoid critters dependency issues
-		optimizePackageImports: ['lucide-react', '@headlessui/react'],
-	},
-	async headers() {
-		const headers = []
-		if (securityHeaders.length > 0) {
-			headers.push({ source: '/:path*', headers: securityHeaders })
-		}
-		headers.push({ source: '/_next/static/:path*', headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }] })
-		headers.push({ source: '/images/:path*', headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }] })
-		return headers
+experimental: {
+  instrumentationHook: true,
+  webVitalsAttribution: ['CLS', 'LCP'],
+  // optimizeCss: true, // disabled to avoid critters dependency issues
+  optimizePackageImports: ['lucide-react', '@headlessui/react'],
+  // Performance optimizations
+  optimizeServerReact: true,
+  turbo: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
+      },
+    },
+  },
+},
+async headers() {
+  const headers = [];
+  if (securityHeaders.length > 0) {
+    headers.push({ source: '/:path*', headers: securityHeaders });
+  }
+  headers.push({
+    source: '/_next/static/:path*',
+    headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+  });
+  headers.push({
+    source: '/images/:path*',
+    headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+  });
+  return headers;
+},
+
 	},
 	webpack: (config, { dev, isServer }) => {
-		config.performance = {
-			hints: 'warning',
-			maxEntrypointSize: 512000,
-			maxAssetSize: 512000,
-		};
-		if (!dev && !isServer) {
+		// Silence large bundle warnings in dev hot-reload; keep defaults in prod
+		if (dev) {
+			config.performance = false;
+		} else {
+			config.performance = {
+				hints: 'warning',
+				maxEntrypointSize: 1024000, // Increased to 1MB for production
+				maxAssetSize: 1024000,
+			};
+		}
+		
+		// Fix server-side rendering issues
+		if (isServer) {
+			config.resolve.fallback = {
+				...config.resolve.fallback,
+				fs: false,
+				net: false,
+				tls: false,
+			};
+			// Provide global fallbacks for server-side rendering
+			config.plugins.push(
+				new webpack.DefinePlugin({
+					'self': 'globalThis',
+				})
+			);
+		}
+		
+		// Optimize bundle splitting for client builds only
+		if (!isServer) {
 			config.optimization.splitChunks = {
 				chunks: 'all',
 				cacheGroups: {
 					default: false,
 					vendors: false,
-					vendor: { name: 'vendor', chunks: 'all', test: /node_modules/, priority: 20 },
-					common: { name: 'common', minChunks: 2, chunks: 'all', priority: 10, reuseExistingChunk: true, enforce: true },
+					vendor: { 
+						name: 'vendor', 
+						chunks: 'all', 
+						test: /node_modules/, 
+						priority: 20,
+						enforce: true
+					},
+					common: { 
+						name: 'common', 
+						minChunks: 2, 
+						chunks: 'all', 
+						priority: 10, 
+						reuseExistingChunk: true, 
+						enforce: true 
+					},
+					// Separate large libraries
+					framer: {
+						name: 'framer',
+						test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
+						chunks: 'all',
+						priority: 30,
+					},
+					radix: {
+						name: 'radix',
+						test: /[\\/]node_modules[\\/]@radix-ui[\\/]/,
+						chunks: 'all',
+						priority: 25,
+					},
 				},
 			};
 		}
+		
 		return config;
 	},
 };

@@ -12,16 +12,31 @@ type SmartImageProps = {
 	priority?: boolean
 	sizes?: string
 	quality?: number
-	loading?: 'lazy' | 'eager'
 	fill?: boolean
+	unoptimized?: boolean
 }
 
-export default function SmartImage({ srcs, alt, className, width, height, priority, sizes, quality, loading, fill }: SmartImageProps) {
+export default function SmartImage({ srcs, alt, className, width, height, priority, sizes, quality, fill, unoptimized }: SmartImageProps) {
 	const [currentSrcIndex, setCurrentSrcIndex] = React.useState(0)
 	const [useFallback, setUseFallback] = React.useState(false)
+	const [clientTs, setClientTs] = React.useState<string | null>(null)
+
+	// After mount, set a stable client-only timestamp to bust cache in dev without SSR/CSR mismatch
+	React.useEffect(() => {
+		if (process.env.NODE_ENV !== 'production') {
+			setClientTs(String(Date.now()))
+		}
+	}, [])
 
 	// Filter valid images (local paths starting with /)
 	const validImages = srcs.filter(src => src.startsWith('/'))
+
+	// If provided src candidates change, reset progression so we can retry primary
+	const srcKey = React.useMemo(() => validImages.join('|'), [validImages])
+	React.useEffect(() => {
+		setCurrentSrcIndex(0)
+		setUseFallback(false)
+	}, [srcKey])
 	const displayText = alt || 'Jewelry Item'
 
 	const handleError = () => {
@@ -34,10 +49,17 @@ export default function SmartImage({ srcs, alt, className, width, height, priori
 
 	const currentSrc = validImages[currentSrcIndex]
 
-	// Add a small cache-busting param for local images so updated assets show
-	const assetVersion = process.env.NEXT_PUBLIC_ASSET_VERSION || '1'
-	const versionedSrc = currentSrc
-		? (currentSrc.includes('?') ? currentSrc : `${currentSrc}?v=${assetVersion}`)
+	// Base version applied on both SSR and CSR so markup matches
+	const baseVersion = process.env.NEXT_PUBLIC_ASSET_VERSION || '1'
+	const baseSrc = currentSrc
+		? (currentSrc.includes('?') ? `${currentSrc}&v=${baseVersion}` : `${currentSrc}?v=${baseVersion}`)
+		: undefined
+
+	// In dev, append a client-only timestamp AFTER hydration to force-refresh edited assets
+	const versionedSrc = baseSrc
+		? (clientTs && process.env.NODE_ENV !== 'production'
+			? `${baseSrc}${baseSrc.includes('?') ? '&' : '?'}t=${clientTs}`
+			: baseSrc)
 		: undefined
 
 	// If we're using fallback or no valid images, show CSS gradient
@@ -88,21 +110,39 @@ export default function SmartImage({ srcs, alt, className, width, height, priori
 				width={width || 800}
 				height={height || 800}
 				onError={handleError as any}
-				loading={loading}
 			/>
 		)
 	}
 
 	// Try to load local non-SVG image via Next Image
+	if (fill) {
+		return (
+			<div className={`relative ${className ?? ''}`}>
+				<Image
+					src={versionedSrc as string}
+					alt={displayText}
+					fill
+					sizes={sizes || '100vw'}
+					quality={quality || 90}
+					className="object-cover"
+					unoptimized={process.env.NODE_ENV !== 'production'}
+					onError={handleError}
+					priority={priority}
+				/>
+			</div>
+		)
+	}
+
 	return (
 		<Image
 			src={versionedSrc as string}
 			alt={displayText}
-			className={`object-cover ${className}`}
-			{...(fill ? { fill: true } : { width: width || 800, height: height || 800 })}
-			sizes={sizes}
-			quality={quality}
-			loading={loading}
+			className={`object-cover ${className ?? ''}`}
+			width={width || 800}
+			height={height || 800}
+			sizes={sizes || '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'}
+			quality={quality || 90}
+			unoptimized={process.env.NODE_ENV !== 'production'}
 			onError={handleError}
 			priority={priority}
 		/>

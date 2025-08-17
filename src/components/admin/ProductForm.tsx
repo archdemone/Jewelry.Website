@@ -47,7 +47,7 @@ export default function ProductForm({ mode, initialData }: { mode: "create" | "e
 	useEffect(() => {
 		if (!initialData?.slug) setSlug(slugify(name));
 		if (!initialData?.urlSlug) setUrlSlug(slugify(name));
-	}, [name]);
+	}, [name, initialData?.slug, initialData?.urlSlug]);
 
 	function onDrop(acceptedFiles: File[]) {
 		const mapped: ImageItem[] = acceptedFiles.map((file) => ({ id: crypto.randomUUID(), file, url: URL.createObjectURL(file), alt: file.name }));

@@ -1,32 +1,48 @@
 "use client"
 
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
 import Link from 'next/link'
 import SmartImage from '@/components/common/SmartImage'
+import React from 'react'
 
 const HeroSection = () => {
+	const images = React.useMemo(() => [
+		'/images/header/hero-1.jpg',
+		'/images/header/hero-2.jpg',
+		'/images/header/hero-3.jpg',
+	], [])
+	const [index, setIndex] = React.useState(0)
+	React.useEffect(() => {
+		const id = setInterval(() => {
+			setIndex((i) => (i + 1) % images.length)
+		}, 5000)
+		return () => clearInterval(id)
+	}, [images.length])
+
 	return (
-		<section className="relative h-screen min-h-[600px] overflow-hidden">
+		<section className="relative w-full overflow-hidden aspect-[16/9] md:aspect-[21/9] lg:aspect-[24/9] min-h-[320px] max-h-[520px] md:max-h-[600px] lg:max-h-[640px]">
 			{/* Background Image */}
-			<div className="absolute inset-0">
-				<motion.div
-					initial={{ scale: 1.1 }}
-					animate={{ scale: 1 }}
-					transition={{ duration: 10, repeat: Infinity, repeatType: 'reverse' }}
-				>
-					<div className="absolute inset-0">
-													<SmartImage
-								srcs={["/images/artisan/bedroom-workshop-hero.jpg"]}
-								alt="Hero Ring Showcase"
-								className="object-cover"
-								fill
-								sizes="(min-width:1280px) 800px, 100vw"
-								priority
-								quality={90}
-							/>
-					</div>
-				</motion.div>
-				
+			<div className="absolute inset-0 bg-black">
+				<AnimatePresence>
+					<motion.div
+						key={index}
+						className="absolute inset-0"
+						initial={{ x: '100%' }}
+						animate={{ x: 0 }}
+						exit={{ x: '-100%' }}
+						transition={{ duration: 0.6, ease: 'easeInOut' }}
+					>
+						<SmartImage
+							srcs={[images[index]]}
+							alt="Artisan Crafting Ring"
+							className="h-full w-full"
+							fill
+							priority
+							sizes="100vw"
+							quality={90}
+						/>
+					</motion.div>
+				</AnimatePresence>
 				{/* Gradient Overlay */}
 				<div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
 			</div>

@@ -3,50 +3,50 @@
 import { motion } from 'framer-motion'
 import Link from 'next/link'
 import SmartImage from '@/components/common/SmartImage'
-import { getCategoryPlaceholder } from '@/lib/assets/images'
 
 const CategoryShowcase = () => {
+	// Use representative product images for each category to avoid yellow placeholders
 	const ringCategories = [
 		{
 			id: 'engagement-rings',
 			name: 'Engagement Rings',
 			description: 'Handcrafted engagement rings with ethically sourced diamonds',
-			image: getCategoryPlaceholder('rings'),
+			image: '/images/products/classic-solitaire-engagement-ring-1.jpg',
 			count: '12 designs'
 		},
 		{
 			id: 'wedding-bands',
 			name: 'Wedding Bands',
 			description: 'Matching wedding bands for your special day',
-			image: getCategoryPlaceholder('rings'),
+			image: '/images/products/hammered-wedding-band-1.jpg',
 			count: '8 designs'
 		},
 		{
 			id: 'eternity-rings',
 			name: 'Eternity Rings',
 			description: 'Celebrate eternal love with continuous stones',
-			image: getCategoryPlaceholder('rings'),
+			image: '/images/products/sapphire-eternity-ring-1.jpg',
 			count: '6 designs'
 		},
 		{
 			id: 'signet-rings',
 			name: 'Signet Rings',
 			description: 'Classic signet rings with custom engraving options',
-			image: getCategoryPlaceholder('rings'),
+			image: '/images/products/classic-signet-ring-1.jpg',
 			count: '4 designs'
 		},
 		{
 			id: 'statement-rings',
 			name: 'Statement Rings',
 			description: 'Bold designs that express your personality',
-			image: getCategoryPlaceholder('rings'),
+			image: '/images/products/emerald-statement-ring-1.jpg',
 			count: '10 designs'
 		},
 		{
 			id: 'stackable-rings',
 			name: 'Stackable Rings',
 			description: 'Delicate rings designed to be worn together',
-			image: getCategoryPlaceholder('rings'),
+			image: '/images/products/minimalist-gold-band-1.jpg',
 			count: '15 designs'
 		}
 	]
@@ -84,17 +84,23 @@ const CategoryShowcase = () => {
 										<motion.div
 											whileHover={{ scale: 1.1 }}
 											transition={{ duration: 0.6 }}
+											className="relative h-full w-full"
 										>
-																								<SmartImage 
-														srcs={[category.image]} 
-														alt={category.name} 
-														className="h-full w-full" 
-														width={800}
-														height={512}
-														sizes="(min-width: 1280px) 400px, 50vw"
-														quality={90}
-														loading="lazy"
-													/>
+											<SmartImage 
+												key={`cat-img-${category.id}`}
+												srcs={[
+													`/images/products/category-${category.id}.jpg`,
+													`/images/categories/category-${category.id}.jpg`,
+													category.image
+												]} 
+												alt={category.name} 
+												className="h-full w-full" 
+												fill
+												sizes="(min-width:1024px) 33vw, (min-width:768px) 50vw, 100vw"
+												quality={90}
+												unoptimized={process.env.NODE_ENV !== 'production'}
+												priority={index === 0}
+											/>
 										</motion.div>
 										
 										{/* Overlay */}

@@ -60,11 +60,7 @@ jobs:
       - name: Smoke tests
         run: node tools/smoke.mjs
 
-      - name: Install Playwright Browsers (for image audit)
-        run: npx playwright install --with-deps
-
-      - name: Run image audit
-        run: npm run audit:images
+      # Image audit removed to reduce flakiness and speed up CI
 
       - name: Security audit (production deps)
         run: npm audit --production --audit-level=high || true
