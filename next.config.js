@@ -34,12 +34,15 @@ const nextConfig = {
     if (!dev && !isServer) {
       config.optimization.splitChunks = {
         chunks: 'all',
+        maxInitialRequests: 25,
+        minSize: 20000,
         cacheGroups: {
           vendor: {
             test: /[\\/]node_modules[\\/]/,
             name: 'vendors',
             chunks: 'all',
             priority: 10,
+            reuseExistingChunk: true,
           },
           common: {
             name: 'common',
@@ -47,6 +50,7 @@ const nextConfig = {
             chunks: 'all',
             enforce: true,
             priority: 5,
+            reuseExistingChunk: true,
           },
           // Separate React and Next.js chunks
           react: {
@@ -54,6 +58,7 @@ const nextConfig = {
             name: 'react',
             chunks: 'all',
             priority: 20,
+            reuseExistingChunk: true,
           },
           // Separate UI component libraries
           ui: {
@@ -61,6 +66,23 @@ const nextConfig = {
             name: 'ui',
             chunks: 'all',
             priority: 15,
+            reuseExistingChunk: true,
+          },
+          // Separate animation libraries
+          animations: {
+            test: /[\\/]node_modules[\\/](framer-motion)[\\/]/,
+            name: 'animations',
+            chunks: 'async',
+            priority: 8,
+            reuseExistingChunk: true,
+          },
+          // Separate analytics and monitoring
+          analytics: {
+            test: /[\\/]node_modules[\\/](@sentry|analytics)[\\/]/,
+            name: 'analytics',
+            chunks: 'async',
+            priority: 5,
+            reuseExistingChunk: true,
           },
         },
       };

@@ -4,9 +4,6 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['@radix-ui/react-icons', 'lucide-react', 'framer-motion'],
   },
-  compiler: {
-    removeConsole: process.env.NODE_ENV === 'production',
-  },
   images: {
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1600, 2000, 2400, 3000],

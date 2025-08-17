@@ -28,7 +28,9 @@
     "lint:fix": "next lint --fix",
     "clean": "rm -rf .next out",
     "prebuild": "npm run type-check",
-    "postbuild": "npm run size-limit"
+    "postbuild": "npm run size-limit",
+    "web-vitals-check": "node scripts/web-vitals-guard.js",
+    "pre-commit": "npm run web-vitals-check && npm run lint && npm run type-check"
   },
   "size-limit": [
     {

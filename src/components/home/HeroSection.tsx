@@ -10,19 +10,16 @@ const HeroSection = () => {
       {/* Background Image - Fixed container to prevent layout shifts */}
       <div className="absolute inset-0 w-full h-full hero-image-container">
         <Image
-          src="/images/header/hero-1.jpg"
+          src="/images/header/hero-optimized.webp"
           alt="Handcrafted jewelry workshop"
-          fill
+          width={1200}
+          height={675}
           priority
           fetchPriority="high"
           className="object-cover hero-image"
-          sizes="100vw"
-          quality={75}
-          placeholder="blur"
-          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
           style={{
             objectPosition: 'center 30%',
-            willChange: 'transform',
           }}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent" />
