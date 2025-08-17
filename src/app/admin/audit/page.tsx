@@ -17,7 +17,7 @@ export default async function AuditPage({ searchParams }: { searchParams: { curs
     <div className="space-y-4">
       <h1 className="text-2xl font-semibold">Audit Logs</h1>
       <div className="divide-y rounded border bg-white">
-        {items.map((l) => (
+        {items.map((l: any) => (
           <div key={l.id} className="grid grid-cols-12 gap-2 p-3 text-sm">
             <div className="col-span-2 text-gray-500">{new Date(l.ts).toLocaleString()}</div>
             <div className="col-span-2 font-medium">{l.action}</div>

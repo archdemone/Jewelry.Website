@@ -1,4 +1,5 @@
 import { configureAxe, toHaveNoViolations } from 'jest-axe';
+import { expect } from '@jest/globals';
 import { render } from '@testing-library/react';
 
 expect.extend(toHaveNoViolations as any);
