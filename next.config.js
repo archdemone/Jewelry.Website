@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const withBundleAnalyzer = require('@next/bundle-analyzer')({ enabled: process.env.ANALYZE === 'true' });
-const webpack = require('webpack');
+const Webpack = require('webpack');
 
 const securityHeaders = []; // handled in middleware
 
@@ -79,7 +79,7 @@ const nextConfig = {
 			};
 			// Provide global fallbacks for server-side rendering
 			config.plugins.push(
-				new webpack.DefinePlugin({
+				new Webpack.DefinePlugin({
 					self: 'globalThis',
 				})
 			);

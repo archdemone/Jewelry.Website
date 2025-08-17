@@ -2,6 +2,7 @@ import { db } from '@/lib/db';
 import { requireAdmin } from '@/lib/admin/admin-auth';
 import { authenticator } from 'otplib';
 import QRCode from 'qrcode';
+import Image from 'next/image';
 
 export default async function EnrollMfaPage() {
   const session = await requireAdmin();
@@ -20,7 +21,7 @@ export default async function EnrollMfaPage() {
       <p className="mb-4 text-sm text-gray-600">
         Scan this QR with your authenticator app and enter the 6-digit code in the next step.
       </p>
-      <img src={qr} alt="MFA QR" className="rounded border" />
+      <Image src={qr} alt="MFA QR" width={256} height={256} className="rounded border" unoptimized />
       <div className="mt-4 text-sm text-gray-600">
         If you cannot scan, use secret: <code>{secret}</code>
       </div>
