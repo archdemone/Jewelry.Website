@@ -49,6 +49,58 @@ body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb)))
     rgb(var(--background-start-rgb));
+  /* Prevent layout shifts during font loading */
+  font-display: swap;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Prevent text bouncing and layout shifts */
+* {
+  box-sizing: border-box;
+}
+
+/* Reserve space for fonts to prevent layout shifts */
+.heading-primary,
+.heading-secondary,
+h1, h2, h3, h4, h5, h6 {
+  font-display: swap;
+  min-height: 1.2em;
+  line-height: 1.2;
+  font-family: 'Playfair Display', 'Georgia', serif;
+}
+
+.body-text,
+.body-text-medium,
+p, span, div {
+  font-display: swap;
+  min-height: 1.6em;
+  line-height: 1.6;
+  font-family: 'Inter', 'Arial', sans-serif;
+}
+
+/* Prevent text jumping during font loading */
+* {
+  font-display: swap;
+}
+
+/* Ensure stable layout during font loading */
+.admin-layout {
+  font-family: 'Inter', 'Arial', sans-serif;
+}
+
+/* Prevent layout shifts in admin interface */
+.admin-content {
+  contain: layout style paint;
+}
+
+/* Stable text rendering */
+.text-stable {
+  font-display: swap;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Luxury Typography System */

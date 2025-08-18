@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { motion } from 'framer-motion';
+
 
 const HeroCarousel = () => {
   return (
@@ -27,7 +27,7 @@ const HeroCarousel = () => {
         }}
       >
         <Image
-          src="/images/header/hero-optimized-768.webp"
+          src="/images/header/hero-1.jpg"
                           alt="J&M - Exquisite handcrafted engagement rings"
           width={1920}
           height={1080}
@@ -66,16 +66,8 @@ const HeroCarousel = () => {
           zIndex: 10,
         }}
       >
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="max-w-4xl space-y-8 px-4 text-center"
-        >
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+        <div className="max-w-4xl space-y-8 px-4 text-center">
+          <h1
             className="hero-title"
             style={{
               fontSize: '3rem',
@@ -89,11 +81,8 @@ const HeroCarousel = () => {
             }}
           >
                           J&M
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
+          </h1>
+          <p
             className="hero-subtitle"
             style={{
               fontSize: '1.25rem',
@@ -105,15 +94,10 @@ const HeroCarousel = () => {
             }}
           >
             Handcrafted rings with passion, designed for your forever moments
-          </motion.p>
+          </p>
 
           {/* CTA Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="mt-12 flex flex-col justify-center gap-6 sm:flex-row"
-          >
+          <div className="mt-12 flex flex-col justify-center gap-6 sm:flex-row">
             <Link
               href="/products"
               className="btn-stable transform bg-white text-gray-900 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-100 hover:shadow-xl"
@@ -126,8 +110,8 @@ const HeroCarousel = () => {
             >
               Meet the Artisan
             </Link>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
     </section>
   );

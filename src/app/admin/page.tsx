@@ -48,6 +48,18 @@ export default function AdminDashboardPage() {
         </Card>
       </div>
       <QuickActions />
+      
+      {/* Direct Access to AdminPanel */}
+      <div className="bg-white rounded-lg shadow-sm border p-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">Product Management</h2>
+        <p className="text-gray-600 mb-4">Access the full product management interface with advanced features.</p>
+        <a 
+          href="/admin/products/advanced" 
+          className="inline-flex items-center px-4 py-2 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition-colors"
+        >
+          Open Advanced Product Manager
+        </a>
+      </div>
     </div>
   );
 }

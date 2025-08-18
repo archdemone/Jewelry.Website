@@ -21,6 +21,7 @@ const inter = Inter({
   variable: '--font-inter',
   preload: true,
   fallback: ['system-ui', 'arial'],
+  adjustFontFallback: false,
 });
 
 const playfair = Playfair_Display({
@@ -29,6 +30,7 @@ const playfair = Playfair_Display({
   variable: '--font-playfair',
   preload: true,
   fallback: ['Georgia', 'serif'],
+  adjustFontFallback: false,
 });
 
 // Dynamic imports for non-critical components with defer loading
@@ -291,7 +293,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link
           rel="preload"
           as="image"
-          href="/images/header/hero-optimized-768.webp"
+          href="/images/header/hero-1.jpg"
           type="image/webp"
         />
 
@@ -310,8 +312,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
 
-        {/* Preload critical CSS */}
-        <link rel="preload" href="/globals.css" as="style" />
+        
       </head>
       <body className={`${inter.className} antialiased`}>
         {/* Skip Links for Accessibility */}
