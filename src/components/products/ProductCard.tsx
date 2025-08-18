@@ -29,13 +29,14 @@ export function ProductCard({ id, slug, name, price, images, categorySlug }: Pro
     <div
       className="rounded-lg border p-4 transition-shadow hover:shadow-sm"
       data-testid="product-card"
+      id={`product-${id}`}
     >
       <Link href={`/products/${slug}`} className="block" data-testid="product-link">
         <div className="relative aspect-square w-full overflow-hidden rounded-md bg-accent">
           <SmartImage
             srcs={[productImages[0] || '/images/MyImages/IMG-20250816-WA0000.jpg']}
-            alt={name}
-            className="h-full w-full"
+            alt={`${name} - Handcrafted Jewelry`}
+            className="h-full w-full object-cover"
             width={600}
             height={600}
             sizes="(max-width:768px) 50vw, 25vw"

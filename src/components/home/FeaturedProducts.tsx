@@ -100,8 +100,8 @@ const FeaturedProducts = () => {
     });
   };
 
-  // Only show first 2 products initially for better FCP
-  const initialProducts = featuredRings.slice(0, 2);
+  // Show 6 products for better engagement and variety
+  const initialProducts = featuredRings.slice(0, 6);
 
   return (
     <section className="py-16 bg-white">
@@ -111,7 +111,7 @@ const FeaturedProducts = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 font-serif"
+            className="text-4xl md:text-5xl heading-primary text-charcoal-900 mb-4"
           >
             Featured Rings
           </motion.h2>
@@ -119,20 +119,20 @@ const FeaturedProducts = () => {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-xl text-gray-600 max-w-2xl mx-auto"
+            className="text-xl body-text text-gray-600 max-w-2xl mx-auto"
           >
             Discover our most popular handcrafted pieces, each telling a unique story of craftsmanship and beauty.
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {initialProducts.map((ring, index) => (
             <motion.div
               key={ring.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group relative bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              className="group relative bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
               onMouseEnter={() => setHoveredProduct(ring.id)}
               onMouseLeave={() => setHoveredProduct(null)}
             >
@@ -218,7 +218,7 @@ const FeaturedProducts = () => {
                 </div>
                 <Link
                   href={`/products/${ring.slug}`}
-                  className="block w-full text-center bg-gray-900 text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-200"
+                  className="block w-full text-center bg-gold-600 text-white py-3 px-4 rounded-lg hover:bg-gold-700 transition-all duration-300 transform hover:scale-105 font-medium"
                 >
                   View Details
                 </Link>
@@ -230,7 +230,7 @@ const FeaturedProducts = () => {
         <div className="text-center mt-12">
           <Link
             href="/products"
-            className="inline-flex items-center px-8 py-3 bg-gold-500 text-gray-900 font-semibold rounded-lg hover:bg-gold-600 transition-colors duration-200"
+            className="inline-flex items-center px-8 py-4 bg-gold-600 text-white font-semibold rounded-lg hover:bg-gold-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
           >
             View All Products
           </Link>
