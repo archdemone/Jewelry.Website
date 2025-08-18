@@ -16,7 +16,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies
@@ -44,7 +44,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies
@@ -87,23 +87,35 @@ jobs:
           echo "FCP: ${FCP}s (target: <1.8s)"
           echo "CLS: ${CLS} (target: <0.1)"
           
-          # Fail if thresholds are exceeded
-          if (( $(echo "$LCP > 2.5" | bc -l) )); then
-            echo "❌ LCP exceeds 2.5s threshold"
-            exit 1
-          fi
-          
-          if (( $(echo "$FCP > 1.8" | bc -l) )); then
-            echo "❌ FCP exceeds 1.8s threshold"
-            exit 1
-          fi
-          
-          if (( $(echo "$CLS > 0.1" | bc -l) )); then
-            echo "❌ CLS exceeds 0.1 threshold"
-            exit 1
-          fi
-          
-          echo "✅ All performance thresholds met"
+          # Check thresholds using Node.js
+          node -e "
+            const lcp = parseFloat('$LCP');
+            const fcp = parseFloat('$FCP');
+            const cls = parseFloat('$CLS');
+            
+            let failed = false;
+            
+            if (lcp > 2.5) {
+              console.log('❌ LCP exceeds 2.5s threshold');
+              failed = true;
+            }
+            
+            if (fcp > 1.8) {
+              console.log('❌ FCP exceeds 1.8s threshold');
+              failed = true;
+            }
+            
+            if (cls > 0.1) {
+              console.log('❌ CLS exceeds 0.1 threshold');
+              failed = true;
+            }
+            
+            if (!failed) {
+              console.log('✅ All performance thresholds met');
+            }
+            
+            process.exit(failed ? 1 : 0);
+          "
 
   web-vitals:
     runs-on: ubuntu-latest
@@ -114,7 +126,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies

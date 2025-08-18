@@ -7,7 +7,7 @@ export interface FeaturedProduct {
   slug: string;
   name: string;
   price: number;
-  originalPrice?: number;
+  originalPrice?: number | null;
   material: string;
   gemColor: string;
   gemDensity: string;

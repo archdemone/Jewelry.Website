@@ -364,7 +364,7 @@ export default function ProfilePage() {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Account Type</label>
               <Badge className="bg-blue-100 text-blue-800">
-                {session?.user?.role === 'ADMIN' ? 'Administrator' : 'Customer'}
+                {(session?.user as any)?.role === 'ADMIN' ? 'Administrator' : 'Customer'}
               </Badge>
             </div>
             <div>

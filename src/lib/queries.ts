@@ -12,8 +12,33 @@ const ringCategorySlugs = [
 ] as const;
 
 function buildFallbackCatalog(total: number = 48) {
-  // Return empty array - no more placeholder products
-  return [];
+  // Return fallback data for CI/e2e testing
+  const fallbackProducts = [
+    {
+      id: 'fallback-1',
+      name: 'Fallback Product 1',
+      description: 'A fallback product for testing',
+      price: 100,
+      slug: 'fallback-product-1',
+      featured: true,
+      category: { slug: 'engagement-rings' },
+      createdAt: new Date(),
+      categoryId: 'fallback-category',
+    },
+    {
+      id: 'fallback-2',
+      name: 'Fallback Product 2',
+      description: 'Another fallback product for testing',
+      price: 200,
+      slug: 'fallback-product-2',
+      featured: true,
+      category: { slug: 'wedding-bands' },
+      createdAt: new Date(),
+      categoryId: 'fallback-category',
+    }
+  ];
+  
+  return fallbackProducts.slice(0, total);
 }
 
 const preferFallback = process.env.E2E_NO_DB === '1' || process.env.CI === 'true';

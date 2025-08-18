@@ -11,6 +11,6 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Echo deploy step
         run: echo "Deploy step placeholder. Integrate with your hosting provider (e.g., Vercel)."
