@@ -9,15 +9,23 @@ const OUT_DIR = SRC_DIR; // write optimized formats next to originals
 const targets = [
   { width: 1920, quality: 70, suffix: '1920' },
   { width: 1280, quality: 70, suffix: '1280' },
-  { width: 768, quality: 70, suffix: '768' }
+  { width: 768, quality: 70, suffix: '768' },
 ];
 
 const isHero = (name) =>
   /hero|banner|slide/i.test(name) || name.startsWith('hero') || name.startsWith('banner');
 
-const files = fs.readdirSync(SRC_DIR).filter(f =>
-  /\.(jpe?g|png|webp|avif)$/i.test(f) && isHero(f) && !f.includes('-1920') && !f.includes('-1280') && !f.includes('-768') && !f.includes('-blur')
-);
+const files = fs
+  .readdirSync(SRC_DIR)
+  .filter(
+    (f) =>
+      /\.(jpe?g|png|webp|avif)$/i.test(f) &&
+      isHero(f) &&
+      !f.includes('-1920') &&
+      !f.includes('-1280') &&
+      !f.includes('-768') &&
+      !f.includes('-blur'),
+  );
 
 if (!files.length) {
   console.log('No hero images found in public/images/header');
@@ -25,7 +33,7 @@ if (!files.length) {
 }
 
 console.log(`Found ${files.length} hero images to optimize:`);
-files.forEach(f => console.log(`  - ${f}`));
+files.forEach((f) => console.log(`  - ${f}`));
 
 async function optimize(file) {
   const inFile = path.join(SRC_DIR, file);
@@ -41,7 +49,7 @@ async function optimize(file) {
       .resize({ width, withoutEnlargement: true })
       .webp({ quality, effort: 6 })
       .toFile(webpOut);
-    
+
     const webpStats = fs.statSync(webpOut);
     console.log(`  ✓ ${suffix}.webp: ${(webpStats.size / 1024).toFixed(1)}KB`);
 
@@ -51,7 +59,7 @@ async function optimize(file) {
       .resize({ width, withoutEnlargement: true })
       .avif({ quality, effort: 6 })
       .toFile(avifOut);
-    
+
     const avifStats = fs.statSync(avifOut);
     console.log(`  ✓ ${suffix}.avif: ${(avifStats.size / 1024).toFixed(1)}KB`);
   }
@@ -59,11 +67,8 @@ async function optimize(file) {
   // Generate tiny blur placeholder for first image only
   if (base === 'hero-1') {
     const blurOut = path.join(OUT_DIR, `${base}-blur.webp`);
-    await sharp(buf)
-      .resize(24, 24, { fit: 'cover' })
-      .webp({ quality: 30 })
-      .toFile(blurOut);
-    
+    await sharp(buf).resize(24, 24, { fit: 'cover' }).webp({ quality: 30 }).toFile(blurOut);
+
     const blurStats = fs.statSync(blurOut);
     console.log(`  ✓ blur.webp: ${(blurStats.size / 1024).toFixed(1)}KB`);
   }
@@ -79,7 +84,7 @@ Promise.all(files.map(optimize))
     console.log('- hero-1-blur.webp (placeholder)');
     console.log('- AVIF versions for modern browsers');
   })
-  .catch(err => { 
-    console.error('❌ Error optimizing images:', err); 
-    process.exit(1); 
+  .catch((err) => {
+    console.error('❌ Error optimizing images:', err);
+    process.exit(1);
   });

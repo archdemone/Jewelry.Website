@@ -17,8 +17,8 @@ export default function OrderReview({
   if (!isHydrated) {
     return (
       <div className="space-y-6">
-        <div className="text-center py-8">
-          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mx-auto"></div>
+        <div className="py-8 text-center">
+          <div className="mx-auto h-6 w-6 animate-spin rounded-full border-b-2 border-primary"></div>
           <p className="mt-2 text-sm text-gray-600">Loading order review...</p>
         </div>
       </div>

@@ -47,23 +47,19 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
+  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb)))
     rgb(var(--background-start-rgb));
 }
 
 /* Custom utility classes */
 .btn-stable {
-  @apply inline-flex items-center justify-center px-6 py-3 rounded-lg font-semibold transition-all duration-200 transform;
+  @apply inline-flex transform items-center justify-center rounded-lg px-6 py-3 font-semibold transition-all duration-200;
   min-width: 150px;
   min-height: 48px;
 }
 
 .button-container {
-  @apply flex gap-4 flex-wrap;
+  @apply flex flex-wrap gap-4;
 }
 
 /* Performance optimizations */
@@ -146,7 +142,12 @@ section {
 }
 
 /* Reduce excessive margins */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin-bottom: 1rem;
 }
 

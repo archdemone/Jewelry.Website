@@ -51,46 +51,47 @@ const ExitIntentPopup = () => {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.8, opacity: 0 }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
-            className="bg-white rounded-lg shadow-2xl max-w-md w-full mx-4 relative overflow-hidden"
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            className="relative mx-4 w-full max-w-md overflow-hidden rounded-lg bg-white shadow-2xl"
           >
             {/* Close Button */}
             <button
               onClick={handleClose}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors z-10"
+              className="absolute right-4 top-4 z-10 text-gray-400 transition-colors hover:text-gray-600"
             >
-              <X className="w-6 h-6" />
+              <X className="h-6 w-6" />
             </button>
 
             {/* Content */}
             <div className="p-8 text-center">
               {/* Icon */}
-              <div className="w-16 h-16 bg-gold-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                <Gift className="w-8 h-8 text-gold-600" />
+              <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-gold-100">
+                <Gift className="h-8 w-8 text-gold-600" />
               </div>
 
               {/* Title */}
-              <h3 className="text-2xl heading-primary text-charcoal-900 mb-4">
+              <h3 className="heading-primary mb-4 text-2xl text-charcoal-900">
                 Wait! Don't Miss Out
               </h3>
 
               {/* Message */}
-              <p className="body-text text-gray-600 mb-6">
-                Get <strong>10% off</strong> your first order when you sign up for our newsletter. Plus, receive exclusive access to limited edition pieces.
+              <p className="body-text mb-6 text-gray-600">
+                Get <strong>10% off</strong> your first order when you sign up for our newsletter.
+                Plus, receive exclusive access to limited edition pieces.
               </p>
 
               {/* Benefits */}
-              <div className="space-y-2 mb-6">
+              <div className="mb-6 space-y-2">
                 <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
-                  <Star className="w-4 h-4 text-gold-500 fill-current" />
+                  <Star className="h-4 w-4 fill-current text-gold-500" />
                   <span>Exclusive early access to new collections</span>
                 </div>
                 <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
-                  <Star className="w-4 h-4 text-gold-500 fill-current" />
+                  <Star className="h-4 w-4 fill-current text-gold-500" />
                   <span>Behind-the-scenes artisan stories</span>
                 </div>
                 <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
-                  <Star className="w-4 h-4 text-gold-500 fill-current" />
+                  <Star className="h-4 w-4 fill-current text-gold-500" />
                   <span>Special offers and limited editions</span>
                 </div>
               </div>
@@ -100,13 +101,13 @@ const ExitIntentPopup = () => {
                 <Link
                   href="/products"
                   onClick={handleClose}
-                  className="block w-full bg-gold-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-gold-700 transition-colors duration-200"
+                  className="block w-full rounded-lg bg-gold-600 px-6 py-3 font-semibold text-white transition-colors duration-200 hover:bg-gold-700"
                 >
                   Shop Now & Save 10%
                 </Link>
                 <button
                   onClick={handleClose}
-                  className="block w-full text-gray-500 py-2 px-6 rounded-lg hover:text-gray-700 transition-colors duration-200"
+                  className="block w-full rounded-lg px-6 py-2 text-gray-500 transition-colors duration-200 hover:text-gray-700"
                 >
                   Maybe Later
                 </button>

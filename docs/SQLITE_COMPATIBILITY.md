@@ -7,10 +7,12 @@ This document explains the changes made to ensure Prisma schema compatibility wi
 ## Problem
 
 The original Prisma schema used:
+
 - `Json` data types (not supported in SQLite)
 - `enum` types (not supported in SQLite)
 
 This caused the following error in CI:
+
 ```
 Error: Prisma schema validation - (get-dmmf wasm)
 Error code: P1012
@@ -22,6 +24,7 @@ error: Error validating field `images` in model `Product`: Field `images` in mod
 ### 1. Replaced Json Types with String
 
 **Before:**
+
 ```prisma
 model Product {
   images   Json
@@ -36,6 +39,7 @@ model Order {
 ```
 
 **After:**
+
 ```prisma
 model Product {
   images   String       // JSON stored as text
@@ -52,6 +56,7 @@ model Order {
 ### 2. Replaced Enums with String Fields
 
 **Before:**
+
 ```prisma
 enum Role {
   CUSTOMER
@@ -78,6 +83,7 @@ model Order {
 ```
 
 **After:**
+
 ```prisma
 model User {
   role String @default("CUSTOMER")
@@ -93,6 +99,7 @@ model Order {
 To maintain type safety, we created string-based enum constants:
 
 ### `src/types/enums.ts`
+
 ```typescript
 export const UserRole = {
   CUSTOMER: 'CUSTOMER',
@@ -120,11 +127,12 @@ export function isValidUserRole(role: string): role is UserRoleType {
 For fields that store JSON data as strings, we created helper functions:
 
 ### `src/lib/utils/json-helpers.ts`
+
 ```typescript
 // Parse JSON string safely
 export function parseJsonString<T = any>(jsonString: string | null | undefined): T | null {
   if (!jsonString) return null;
-  
+
   try {
     return JSON.parse(jsonString) as T;
   } catch (error) {
@@ -136,7 +144,7 @@ export function parseJsonString<T = any>(jsonString: string | null | undefined):
 // Stringify object to JSON string
 export function stringifyJson<T = any>(obj: T | null | undefined): string | null {
   if (obj === null || obj === undefined) return null;
-  
+
   try {
     return JSON.stringify(obj);
   } catch (error) {
@@ -158,11 +166,13 @@ export function stringifyImages(images: string[] | null | undefined): string | n
 ## Migration
 
 The database was migrated using:
+
 ```bash
 npx prisma migrate dev --name fix-sqlite-compatibility
 ```
 
 This created a new migration that:
+
 1. Changed all `Json` fields to `String`
 2. Changed all enum fields to `String`
 3. Removed enum definitions
@@ -171,6 +181,7 @@ This created a new migration that:
 ## Usage Examples
 
 ### Working with Images
+
 ```typescript
 import { parseImages, stringifyImages } from '@/lib/utils/json-helpers';
 
@@ -182,11 +193,12 @@ const images = parseImages(product.images); // string[] or []
 const imagesArray = ['/image1.jpg', '/image2.jpg'];
 await prisma.product.update({
   where: { id },
-  data: { images: stringifyImages(imagesArray) }
+  data: { images: stringifyImages(imagesArray) },
 });
 ```
 
 ### Working with Enums
+
 ```typescript
 import { UserRole, isValidUserRole } from '@/types/enums';
 
@@ -194,8 +206,8 @@ import { UserRole, isValidUserRole } from '@/types/enums';
 const user = await prisma.user.create({
   data: {
     email: 'admin@example.com',
-    role: UserRole.ADMIN // Type-safe
-  }
+    role: UserRole.ADMIN, // Type-safe
+  },
 });
 
 // Validation
@@ -228,6 +240,7 @@ Updated CI workflow to properly handle SQLite:
 If you need to switch to PostgreSQL or MySQL in production:
 
 1. Update the datasource in `prisma/schema.prisma`:
+
    ```prisma
    datasource db {
      provider = "postgresql" // or "mysql"

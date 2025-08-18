@@ -47,8 +47,8 @@ export async function middleware(request: NextRequest) {
       url.searchParams.set('callbackUrl', '/admin');
       return NextResponse.redirect(url, { status: 302 });
     }
-    	const role = token?.role;
-	if (role !== UserRole.ADMIN && role !== UserRole.STAFF) {
+    const role = token?.role;
+    if (role !== UserRole.ADMIN && role !== UserRole.STAFF) {
       const url = request.nextUrl.clone();
       url.pathname = '/auth/login';
       url.searchParams.set('callbackUrl', '/admin');

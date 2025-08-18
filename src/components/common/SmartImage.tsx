@@ -174,7 +174,7 @@ export default function SmartImage({
       width={width || 800}
       height={height || 800}
       sizes={sizes || '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'}
-                          quality={quality || 50}
+      quality={quality || 50}
       unoptimized={process.env.NODE_ENV !== 'production'}
       onError={handleError}
       priority={priority}

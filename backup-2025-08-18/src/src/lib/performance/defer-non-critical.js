@@ -17,7 +17,7 @@ export function deferNonCritical() {
   defer(() => {
     // Load interactive components
     const interactiveElements = document.querySelectorAll('[data-defer-interaction]');
-    interactiveElements.forEach(el => {
+    interactiveElements.forEach((el) => {
       el.style.pointerEvents = 'auto';
     });
   });
@@ -33,7 +33,7 @@ export function optimizeScroll() {
   if (typeof window === 'undefined') return;
 
   let ticking = false;
-  
+
   function updateScroll() {
     // Handle scroll-based animations
     ticking = false;

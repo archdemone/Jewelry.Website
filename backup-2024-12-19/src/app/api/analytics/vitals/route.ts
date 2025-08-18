@@ -3,15 +3,12 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    
+
     // Validate the metric data
     const { name, value, id, label, rating, timestamp, userAgent } = body;
-    
+
     if (!name || typeof value !== 'number' || !id) {
-      return NextResponse.json(
-        { error: 'Invalid metric data' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Invalid metric data' }, { status: 400 });
     }
 
     // Log the metric (in production, you'd send this to your analytics service)
@@ -28,7 +25,7 @@ export async function POST(request: NextRequest) {
     // 1. Send to Google Analytics 4
     // 2. Send to your own analytics database
     // 3. Send to monitoring services like DataDog, New Relic, etc.
-    
+
     // Example: Send to Google Analytics 4
     if (process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID) {
       // You could implement GA4 custom events here
@@ -43,9 +40,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error processing web vitals:', error);
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

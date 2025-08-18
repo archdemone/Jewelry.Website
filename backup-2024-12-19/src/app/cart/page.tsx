@@ -15,13 +15,13 @@ export default function CartPage() {
     <main className="min-h-screen bg-white">
       {/* Cart Content */}
       <section className="py-8">
-        <div className="container max-w-7xl mx-auto px-4">
+        <div className="container mx-auto max-w-7xl px-4">
           <div className="grid gap-8 lg:grid-cols-3">
             {/* Left Column - Cart Items */}
             <div className="lg:col-span-2">
               {!isHydrated ? (
-                <div className="text-center py-12">
-                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gold-500 mx-auto mb-4"></div>
+                <div className="py-12 text-center">
+                  <div className="mx-auto mb-4 h-12 w-12 animate-spin rounded-full border-b-2 border-gold-500"></div>
                   <p className="text-gray-600">Loading your cart...</p>
                 </div>
               ) : items.length === 0 ? (
@@ -32,16 +32,18 @@ export default function CartPage() {
                   <div className="flex items-center justify-between border-b border-gray-200 pb-4">
                     <div className="flex items-center gap-4">
                       <h1 className="text-2xl font-bold text-gray-900">My Cart ({itemCount})</h1>
-                      <span className="text-sm text-gray-600">Estimated delivery time: 27-28 Aug. (by DPD)</span>
+                      <span className="text-sm text-gray-600">
+                        Estimated delivery time: 27-28 Aug. (by DPD)
+                      </span>
                     </div>
-                    <Link 
-                      href="/products" 
-                      className="text-blue-600 hover:text-blue-700 font-medium text-sm"
+                    <Link
+                      href="/products"
+                      className="text-sm font-medium text-blue-600 hover:text-blue-700"
                     >
                       Continue Shopping
                     </Link>
                   </div>
-                  
+
                   {/* Cart Items */}
                   <div className="space-y-6">
                     {items.map((i) => (
@@ -64,7 +66,7 @@ export default function CartPage() {
                 </div>
               )}
             </div>
-            
+
             {/* Right Column - Order Summary */}
             <div className="lg:col-span-1">
               <CartSummary />

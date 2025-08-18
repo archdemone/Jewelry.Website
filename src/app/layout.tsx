@@ -52,10 +52,14 @@ const ExitIntentPopup = dynamic(() => import('@/components/features/ExitIntentPo
 });
 
 // Development helper - only load in development
-const DevReloadHelper = dynamic(() => import('@/components/dev/DevReloadHelper').then(mod => ({ default: mod.DevReloadHelper })), {
-  ssr: false,
-  loading: () => null,
-});
+const DevReloadHelper = dynamic(
+  () =>
+    import('@/components/dev/DevReloadHelper').then((mod) => ({ default: mod.DevReloadHelper })),
+  {
+    ssr: false,
+    loading: () => null,
+  },
+);
 
 // Defer non-critical components until after page load
 const DeferredComponents = dynamic(() => import('@/components/DeferredComponents'), {
@@ -66,10 +70,17 @@ const DeferredComponents = dynamic(() => import('@/components/DeferredComponents
 export const metadata: Metadata = {
   title: {
     default: 'J&M Jewelry | Handcrafted Rings & Artisan Jewelry',
-    template: '%s | J&M Jewelry'
+    template: '%s | J&M Jewelry',
   },
-  description: 'Each ring is personally crafted by a master artisan, ensuring unique beauty and exceptional quality for your most precious moments.',
-  keywords: ['handcrafted rings', 'artisan jewelry', 'engagement rings', 'wedding bands', 'custom rings'],
+  description:
+    'Each ring is personally crafted by a master artisan, ensuring unique beauty and exceptional quality for your most precious moments.',
+  keywords: [
+    'handcrafted rings',
+    'artisan jewelry',
+    'engagement rings',
+    'wedding bands',
+    'custom rings',
+  ],
   authors: [{ name: 'Artisan Ring Crafters' }],
   creator: 'Artisan Ring Crafters',
   publisher: 'Artisan Ring Crafters',
@@ -87,7 +98,8 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://handcrafted-rings.com',
     title: 'J&M Jewelry | Handcrafted Rings & Artisan Jewelry',
-    description: 'Each ring is personally crafted by a master artisan, ensuring unique beauty and exceptional quality.',
+    description:
+      'Each ring is personally crafted by a master artisan, ensuring unique beauty and exceptional quality.',
     siteName: 'J&M Jewelry',
     images: [
       {
@@ -101,7 +113,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'J&M Jewelry | Handcrafted Rings & Artisan Jewelry',
-    description: 'Each ring is personally crafted by a master artisan, ensuring unique beauty and exceptional quality.',
+    description:
+      'Each ring is personally crafted by a master artisan, ensuring unique beauty and exceptional quality.',
     images: ['/images/og-image.jpg'],
   },
   robots: {
@@ -120,17 +133,14 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
-             <head>
-         {/* Critical CSS Inline */}
-         <style dangerouslySetInnerHTML={{
-           __html: `
+      <head>
+        {/* Critical CSS Inline */}
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
              /* Critical above-the-fold styles */
              .hero-section {
                position: relative;
@@ -263,84 +273,74 @@ export default function RootLayout({
                .hero-title { font-size: 2rem; }
                .hero-subtitle { font-size: 1rem; }
              }
-           `
-         }} />
-         
-         {/* Google Fonts - Load asynchronously */}
-         <link
-           rel="preconnect"
-           href="https://fonts.googleapis.com"
-         />
-         <link
-           rel="preconnect"
-           href="https://fonts.gstatic.com"
-           crossOrigin="anonymous"
-         />
-         <link
-           href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
-           rel="stylesheet"
-           media="print"
-         />
-         
-         {/* Preload critical images */}
-         <link
-           rel="preload"
-           as="image"
-           href="/images/header/hero-optimized-768.webp"
-           type="image/webp"
-         />
-         
-         {/* Preload critical fonts */}
-         <link
-           rel="preload"
-           href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
-           as="style"
-         />
-         
-         {/* DNS prefetch for external domains */}
-         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
-         
-         {/* Resource hints for performance */}
-         <link rel="preconnect" href="https://fonts.googleapis.com" />
-         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-         
-         {/* Preload critical CSS */}
-         <link
-           rel="preload"
-           href="/globals.css"
-           as="style"
-         />
-       </head>
-             <body className={`${inter.className} antialiased`}>
-         {/* Skip Links for Accessibility */}
-         <a 
-           href="#main-content" 
-           className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-black text-white px-4 py-2 rounded z-50"
-         >
-           Skip to main content
-         </a>
-         <a 
-           href="#footer" 
-           className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-20 bg-black text-white px-4 py-2 rounded z-50"
-         >
-           Skip to footer
-         </a>
-         <ErrorBoundary>
+           `,
+          }}
+        />
+
+        {/* Google Fonts - Load asynchronously */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+          rel="stylesheet"
+          media="print"
+        />
+
+        {/* Preload critical images */}
+        <link
+          rel="preload"
+          as="image"
+          href="/images/header/hero-optimized-768.webp"
+          type="image/webp"
+        />
+
+        {/* Preload critical fonts */}
+        <link
+          rel="preload"
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+          as="style"
+        />
+
+        {/* DNS prefetch for external domains */}
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+
+        {/* Resource hints for performance */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+
+        {/* Preload critical CSS */}
+        <link rel="preload" href="/globals.css" as="style" />
+      </head>
+      <body className={`${inter.className} antialiased`}>
+        {/* Skip Links for Accessibility */}
+        <a
+          href="#main-content"
+          className="sr-only z-50 rounded bg-black px-4 py-2 text-white focus:not-sr-only focus:absolute focus:left-4 focus:top-4"
+        >
+          Skip to main content
+        </a>
+        <a
+          href="#footer"
+          className="sr-only z-50 rounded bg-black px-4 py-2 text-white focus:not-sr-only focus:absolute focus:left-20 focus:top-4"
+        >
+          Skip to footer
+        </a>
+        <ErrorBoundary>
           <AuthSessionProvider>
             <CartProvider>
-              <div className="flex flex-col min-h-screen">
+              <div className="flex min-h-screen flex-col">
                 <Header />
-                                 <main id="main-content" className="flex-grow">
-                   {children}
-                 </main>
+                <main id="main-content" className="flex-grow">
+                  {children}
+                </main>
                 <Footer />
               </div>
-              
-                             {/* Non-critical components - loaded after page load */}
-               <DeferredComponents />
-               {process.env.NODE_ENV === 'development' && <DevReloadHelper />}
-              
+
+              {/* Non-critical components - loaded after page load */}
+              <DeferredComponents />
+              {process.env.NODE_ENV === 'development' && <DevReloadHelper />}
+
               <Toaster
                 position="bottom-right"
                 toastOptions={{

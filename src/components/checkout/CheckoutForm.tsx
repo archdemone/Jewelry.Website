@@ -73,8 +73,8 @@ export default function CheckoutForm() {
   if (!isHydrated) {
     return (
       <div className="space-y-6">
-        <div className="text-center py-8">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+        <div className="py-8 text-center">
+          <div className="mx-auto h-8 w-8 animate-spin rounded-full border-b-2 border-primary"></div>
           <p className="mt-2 text-gray-600">Loading checkout...</p>
         </div>
       </div>

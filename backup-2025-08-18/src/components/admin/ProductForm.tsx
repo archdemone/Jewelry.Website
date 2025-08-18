@@ -201,7 +201,14 @@ export default function ProductForm({
             {images.map((img, idx) => (
               <div key={img.id} className="relative rounded border p-2">
                 <div className="relative h-32 w-full">
-                  <Image src={img.url} alt={img.alt} fill className="rounded object-cover" sizes="(max-width: 768px) 50vw, 25vw" unoptimized />
+                  <Image
+                    src={img.url}
+                    alt={img.alt}
+                    fill
+                    className="rounded object-cover"
+                    sizes="(max-width: 768px) 50vw, 25vw"
+                    unoptimized
+                  />
                 </div>
                 {img.progress && img.progress < 100 && (
                   <div className="absolute inset-0 flex items-end bg-white/60">

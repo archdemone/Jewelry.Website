@@ -1,4 +1,5 @@
 # ACTIONABLE CHECKLIST
+
 ## J&M Jewelry - UI/UX Implementation Guide
 
 **Generated:** December 19, 2024  
@@ -10,24 +11,28 @@
 ## ✅ GOOD (Keep/Leverage)
 
 ### Design System
+
 - [x] **Tailwind Configuration** - Excellent color palette and design tokens
 - [x] **Typography System** - Playfair Display + Inter combination
 - [x] **Component Library** - Consistent button styles and form components
 - [x] **Color Scheme** - Sophisticated gold (#D4AF37) creates premium feel
 
 ### Performance
+
 - [x] **Bundle Size** - 1.24 MB total (within limits)
 - [x] **Build Time** - ~3 seconds (excellent)
 - [x] **Static Generation** - 75 pages (100% success rate)
 - [x] **Image Optimization** - Next.js Image component used
 
 ### Trust & Conversion
+
 - [x] **Trust Signals Bar** - 6 comprehensive trust indicators
 - [x] **Social Proof** - Customer testimonials and ratings
 - [x] **Exit Intent Popup** - 10% discount offer
 - [x] **Brand Identity** - J&M Jewelry with elegant typography
 
 ### Technical Excellence
+
 - [x] **TypeScript Implementation** - Strong type safety
 - [x] **Code Quality** - ESLint warnings minimal
 - [x] **SEO Foundation** - Meta tags and structured data
@@ -38,6 +43,7 @@
 ## 🔴 CRITICAL (Fix Next Sprint)
 
 ### 1. Product Images (404 Errors)
+
 **Impact:** Broken product display, poor UX  
 **Effort:** 2-3 hours  
 **Priority:** CRITICAL
@@ -48,18 +54,20 @@
   src={product.image || '/images/placeholder.jpg'}
   alt={product.name}
   onError={(e) => {
-    e.currentTarget.src = '/images/placeholder.jpg'
+    e.currentTarget.src = '/images/placeholder.jpg';
   }}
-  className="w-full h-64 object-cover rounded-lg"
+  className="h-64 w-full rounded-lg object-cover"
 />
 ```
 
 **Files to update:**
+
 - `src/components/products/ProductCard.tsx`
 - `src/components/home/FeaturedProducts.tsx`
 - `src/app/(shop)/products/page.tsx`
 
 ### 2. Mobile Navigation
+
 **Impact:** Poor mobile UX  
 **Effort:** 4-6 hours  
 **Priority:** CRITICAL
@@ -84,10 +92,10 @@ export function MobileMenu() {
       >
         {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
       </button>
-      
+
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 bg-white border-t shadow-lg z-50">
-          <nav className="p-4 space-y-4">
+        <div className="absolute left-0 right-0 top-full z-50 border-t bg-white shadow-lg">
+          <nav className="space-y-4 p-4">
             <Link href="/" className="block py-2 text-gray-700 hover:text-primary">
               Home
             </Link>
@@ -109,17 +117,19 @@ export function MobileMenu() {
 ```
 
 **Files to update:**
+
 - `src/components/layout/Header.tsx` - Add MobileMenu component
 
 ### 3. Accessibility Improvements
+
 **Impact:** WCAG compliance, legal requirements  
 **Effort:** 3-4 hours  
 **Priority:** CRITICAL
 
 ```jsx
 // Add ARIA labels to interactive elements
-<button 
-  aria-label="Add to cart" 
+<button
+  aria-label="Add to cart"
   aria-describedby="product-name"
   className="btn-stable bg-gold-600 text-white"
 >
@@ -133,11 +143,13 @@ export function MobileMenu() {
 ```
 
 **Files to update:**
+
 - `src/components/products/AddToCartButton.tsx`
 - `src/components/layout/Header.tsx`
 - `src/app/layout.tsx` - Add skip links
 
 ### 4. React Import Fixes
+
 **Impact:** Console warnings, code quality  
 **Effort:** 15 minutes  
 **Priority:** CRITICAL
@@ -148,6 +160,7 @@ import React from 'react';
 ```
 
 **Files to update:**
+
 - `src/app/account/profile/page.tsx`
 - `src/app/admin/products/new/page.tsx`
 - `src/components/auth/LoginForm.tsx`
@@ -157,6 +170,7 @@ import React from 'react';
 ## 🟡 HIGH PRIORITY (Fix This Week)
 
 ### 5. Product Search Enhancement
+
 **Impact:** User experience, conversion  
 **Effort:** 6-8 hours  
 **Priority:** HIGH
@@ -214,9 +228,11 @@ export function SearchSuggestions({ query, onSelect }: SearchSuggestionsProps) {
 ```
 
 **Files to update:**
+
 - `src/components/layout/Header.tsx` - Integrate search suggestions
 
 ### 6. Product Gallery Enhancement
+
 **Impact:** Product visualization  
 **Effort:** 8-10 hours  
 **Priority:** HIGH
@@ -283,9 +299,11 @@ export function ImageZoom({ src, alt, className }: ImageZoomProps) {
 ```
 
 **Files to update:**
+
 - `src/components/product-detail/ProductImageGallery.tsx` - Add zoom functionality
 
 ### 7. Checkout Optimization
+
 **Impact:** Conversion rate  
 **Effort:** 6-8 hours  
 **Priority:** HIGH
@@ -327,6 +345,7 @@ export function ExpressCheckout({ onApplePay, onGooglePay }: ExpressCheckoutProp
 ```
 
 **Files to update:**
+
 - `src/components/checkout/CheckoutForm.tsx` - Add express checkout
 
 ---
@@ -334,26 +353,31 @@ export function ExpressCheckout({ onApplePay, onGooglePay }: ExpressCheckoutProp
 ## 🟢 OPTIONAL (Nice-to-Have)
 
 ### 8. Product Reviews System
+
 **Impact:** Trust, conversion  
 **Effort:** 12-16 hours  
 **Priority:** MEDIUM
 
 ### 9. Wishlist Functionality
+
 **Impact:** User engagement  
 **Effort:** 8-10 hours  
 **Priority:** MEDIUM
 
 ### 10. Advanced Filtering
+
 **Impact:** Product discovery  
 **Effort:** 10-12 hours  
 **Priority:** MEDIUM
 
 ### 11. Personalization Features
+
 **Impact:** User experience  
 **Effort:** 16-20 hours  
 **Priority:** LOW
 
 ### 12. Analytics Implementation
+
 **Impact:** Data insights  
 **Effort:** 8-10 hours  
 **Priority:** LOW
@@ -363,22 +387,26 @@ export function ExpressCheckout({ onApplePay, onGooglePay }: ExpressCheckoutProp
 ## IMPLEMENTATION TIMELINE
 
 ### Week 1: Critical Fixes
+
 - [ ] Fix product image 404 errors (2-3 hours)
 - [ ] Add React imports (15 minutes)
 - [ ] Implement mobile navigation (4-6 hours)
 - [ ] Add accessibility improvements (3-4 hours)
 
 ### Week 2: High Priority
+
 - [ ] Enhance product search (6-8 hours)
 - [ ] Add image zoom functionality (8-10 hours)
 - [ ] Implement express checkout (6-8 hours)
 
 ### Week 3-4: Medium Priority
+
 - [ ] Product reviews system (12-16 hours)
 - [ ] Wishlist functionality (8-10 hours)
 - [ ] Advanced filtering (10-12 hours)
 
 ### Month 2: Optional Features
+
 - [ ] Personalization features (16-20 hours)
 - [ ] Analytics implementation (8-10 hours)
 - [ ] Performance optimization (4-6 hours)
@@ -388,12 +416,14 @@ export function ExpressCheckout({ onApplePay, onGooglePay }: ExpressCheckoutProp
 ## SUCCESS METRICS
 
 ### Technical Metrics
+
 - [ ] Zero 404 errors
 - [ ] WCAG 2.2 AA compliance
 - [ ] Mobile navigation working
 - [ ] All React imports resolved
 
 ### Business Metrics
+
 - [ ] Conversion rate improvement (2.8% → 3.8%)
 - [ ] Bounce rate reduction (35% → 25%)
 - [ ] Mobile conversion increase (1.5% → 2.5%)

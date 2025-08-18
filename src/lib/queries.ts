@@ -35,9 +35,9 @@ function buildFallbackCatalog(total: number = 48) {
       category: { slug: 'wedding-bands' },
       createdAt: new Date(),
       categoryId: 'fallback-category',
-    }
+    },
   ];
-  
+
   return fallbackProducts.slice(0, total);
 }
 

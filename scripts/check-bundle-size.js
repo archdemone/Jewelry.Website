@@ -5,8 +5,8 @@ const path = require('path');
 const LIMITS = {
   'First Load JS': 2000 * 1024, // 2MB (realistic for e-commerce with auth, cart, etc.)
   'Vendor Bundle': 1500 * 1024, // 1.5MB
-  'React Bundle': 500 * 1024,   // 500KB (includes React DOM)
-  'Common Bundle': 300 * 1024,  // 300KB
+  'React Bundle': 500 * 1024, // 500KB (includes React DOM)
+  'Common Bundle': 300 * 1024, // 300KB
 };
 
 function getFileSize(filePath) {
@@ -28,7 +28,7 @@ function formatBytes(bytes) {
 
 function checkBundleSizes() {
   const chunksDir = path.join(process.cwd(), '.next', 'static', 'chunks');
-  
+
   if (!fs.existsSync(chunksDir)) {
     console.error('❌ .next/static/chunks directory not found. Run "npm run build" first.');
     process.exit(1);
@@ -47,20 +47,20 @@ function checkBundleSizes() {
     { pattern: /common-.*\.js$/, name: 'Common Bundle' },
   ];
 
-  bundleChecks.forEach(check => {
-    const matchingFiles = files.filter(file => check.pattern.test(file));
-    matchingFiles.forEach(file => {
+  bundleChecks.forEach((check) => {
+    const matchingFiles = files.filter((file) => check.pattern.test(file));
+    matchingFiles.forEach((file) => {
       const filePath = path.join(chunksDir, file);
       const size = getFileSize(filePath);
       const limit = LIMITS[check.name];
       const isOverLimit = size > limit;
-      
+
       console.log(`${check.name}:`);
       console.log(`  File: ${file}`);
       console.log(`  Size: ${formatBytes(size)}`);
       console.log(`  Limit: ${formatBytes(limit)}`);
       console.log(`  Status: ${isOverLimit ? '❌ OVER LIMIT' : '✅ OK'}\n`);
-      
+
       if (isOverLimit) {
         hasErrors = true;
       }

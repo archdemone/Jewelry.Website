@@ -21,7 +21,14 @@ export default async function EnrollMfaPage() {
       <p className="mb-4 text-sm text-gray-600">
         Scan this QR with your authenticator app and enter the 6-digit code in the next step.
       </p>
-      <Image src={qr} alt="MFA QR" width={256} height={256} className="rounded border" unoptimized />
+      <Image
+        src={qr}
+        alt="MFA QR"
+        width={256}
+        height={256}
+        className="rounded border"
+        unoptimized
+      />
       <div className="mt-4 text-sm text-gray-600">
         If you cannot scan, use secret: <code>{secret}</code>
       </div>

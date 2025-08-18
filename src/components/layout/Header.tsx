@@ -51,7 +51,11 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-white/70 backdrop-blur">
       <div className="container flex h-16 items-center justify-between">
-        <Link href="/" className="text-2xl font-bold text-black tracking-wider" style={{ fontFamily: 'Playfair Display, serif', letterSpacing: '0.1em' }}>
+        <Link
+          href="/"
+          className="text-2xl font-bold tracking-wider text-black"
+          style={{ fontFamily: 'Playfair Display, serif', letterSpacing: '0.1em' }}
+        >
           J&M Jewelry
         </Link>
         <nav className="hidden items-center gap-6 md:flex">

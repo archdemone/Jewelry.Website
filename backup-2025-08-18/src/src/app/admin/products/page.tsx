@@ -7,17 +7,17 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import BulkActions from '@/components/admin/BulkActions';
 import { Badge } from '@/components/ui/badge';
-import { 
-  Plus, 
-  Search, 
-  Filter, 
-  Edit, 
-  Trash2, 
-  Copy, 
+import {
+  Plus,
+  Search,
+  Filter,
+  Edit,
+  Trash2,
+  Copy,
   Eye,
   Package,
   Settings,
-  Star
+  Star,
 } from 'lucide-react';
 
 interface RingProduct {
@@ -75,7 +75,7 @@ export default function AdminProductsPage() {
       reviews: 24,
       status: 'active',
       images: ['/images/MyImages/IMG-20250816-WA0000.jpg'],
-      description: 'Beautiful handcrafted silver ring with dark red gem inlay.'
+      description: 'Beautiful handcrafted silver ring with dark red gem inlay.',
     },
     {
       id: 'p2',
@@ -96,11 +96,11 @@ export default function AdminProductsPage() {
       reviews: 18,
       status: 'active',
       images: ['/images/MyImages/IMG-20250816-WA0001.jpg'],
-      description: 'Stunning Damascus steel wedding ring with bright blue gem inlay.'
+      description: 'Stunning Damascus steel wedding ring with bright blue gem inlay.',
     },
     {
       id: 'p3',
-      name: "Unisex Carbon Inlay Ring - Mixed Green",
+      name: 'Unisex Carbon Inlay Ring - Mixed Green',
       sku: 'RNG-U-CAR-GRN-001',
       category: 'Unisex',
       subCategory: 'Inlay Ring',
@@ -118,28 +118,51 @@ export default function AdminProductsPage() {
       reviews: 31,
       status: 'draft',
       images: ['/images/MyImages/IMG-20250816-WA0002.jpg'],
-      description: 'Lightweight carbon ring with mixed green and blue gem inlay.'
-    }
+      description: 'Lightweight carbon ring with mixed green and blue gem inlay.',
+    },
   ];
 
-  const categories = ['Wedding', 'Inlay Ring', 'Couple Ring Set', 'Mens', 'Womens', 'Unisex', 'Single Inlay', 'Double Inlay'];
-  const materials = ['Silver', 'Damascus', 'Ceramic(white)', 'Ceramic(black)', 'Carbon', 'Tungsten', 'Titanium', 'Stainless Steel', 'Gold'];
+  const categories = [
+    'Wedding',
+    'Inlay Ring',
+    'Couple Ring Set',
+    'Mens',
+    'Womens',
+    'Unisex',
+    'Single Inlay',
+    'Double Inlay',
+  ];
+  const materials = [
+    'Silver',
+    'Damascus',
+    'Ceramic(white)',
+    'Ceramic(black)',
+    'Carbon',
+    'Tungsten',
+    'Titanium',
+    'Stainless Steel',
+    'Gold',
+  ];
   const gemColors = ['Red', 'Green', 'Blue', 'Purple', 'Yellow', 'Custom'];
 
   // Filter products based on search and filters
-  const filteredProducts = products.filter(product => {
-    const matchesQuery = query === '' || 
+  const filteredProducts = products.filter((product) => {
+    const matchesQuery =
+      query === '' ||
       product.name.toLowerCase().includes(query.toLowerCase()) ||
       product.sku.toLowerCase().includes(query.toLowerCase());
-    
+
     const matchesStatus = status === 'all' || product.status === status;
     const matchesCategory = category === 'all' || product.category === category;
     const matchesMaterial = material === 'all' || product.material === material;
-    const matchesReadyToShip = readyToShip === 'all' || 
+    const matchesReadyToShip =
+      readyToShip === 'all' ||
       (readyToShip === 'ready' && product.isReadyToShip) ||
       (readyToShip === 'custom' && !product.isReadyToShip);
 
-    return matchesQuery && matchesStatus && matchesCategory && matchesMaterial && matchesReadyToShip;
+    return (
+      matchesQuery && matchesStatus && matchesCategory && matchesMaterial && matchesReadyToShip
+    );
   });
 
   return (
@@ -148,11 +171,11 @@ export default function AdminProductsPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold text-gray-900">Ring Products</h1>
-          <p className="text-gray-600 mt-1">Manage your handcrafted ring collection</p>
+          <p className="mt-1 text-gray-600">Manage your handcrafted ring collection</p>
         </div>
         <Link href="/admin/products/new">
           <Button className="bg-gold-500 hover:bg-gold-600">
-            <Plus className="w-4 h-4 mr-2" />
+            <Plus className="mr-2 h-4 w-4" />
             Add New Ring
           </Button>
         </Link>
@@ -161,8 +184,8 @@ export default function AdminProductsPage() {
       {/* Filters */}
       <Card className="p-6">
         <div className="flex flex-wrap items-center gap-4">
-          <div className="relative flex-1 min-w-[300px]">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+          <div className="relative min-w-[300px] flex-1">
+            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
             <Input
               placeholder="Search rings by name or SKU..."
               value={query}
@@ -170,31 +193,35 @@ export default function AdminProductsPage() {
               className="pl-10"
             />
           </div>
-          
+
           <select
-            className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+            className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-gold-500"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           >
             <option value="all">All Categories</option>
-            {categories.map(cat => (
-              <option key={cat} value={cat}>{cat}</option>
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
             ))}
           </select>
 
           <select
-            className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+            className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-gold-500"
             value={material}
             onChange={(e) => setMaterial(e.target.value)}
           >
             <option value="all">All Materials</option>
-            {materials.map(mat => (
-              <option key={mat} value={mat}>{mat}</option>
+            {materials.map((mat) => (
+              <option key={mat} value={mat}>
+                {mat}
+              </option>
             ))}
           </select>
 
           <select
-            className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+            className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-gold-500"
             value={readyToShip}
             onChange={(e) => setReadyToShip(e.target.value)}
           >
@@ -204,7 +231,7 @@ export default function AdminProductsPage() {
           </select>
 
           <select
-            className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+            className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-gold-500"
             value={status}
             onChange={(e) => setStatus(e.target.value)}
           >
@@ -220,46 +247,46 @@ export default function AdminProductsPage() {
       <Card className="overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
-            <thead className="bg-gray-50 border-b">
+            <thead className="border-b bg-gray-50">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   Product
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   SKU
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   Category
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   Material
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   Gem Details
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   Price
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   Availability
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   Status
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   Actions
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
+            <tbody className="divide-y divide-gray-200 bg-white">
               {filteredProducts.map((product) => (
                 <tr key={product.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4">
                     <div className="flex items-center">
-                      <div className="h-12 w-12 rounded-lg bg-gray-200 flex-shrink-0 overflow-hidden">
+                      <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg bg-gray-200">
                         {product.images[0] && (
-                          <img 
-                            src={product.images[0]} 
+                          <img
+                            src={product.images[0]}
                             alt={product.name}
                             className="h-full w-full object-cover"
                           />
@@ -269,9 +296,9 @@ export default function AdminProductsPage() {
                         <div className="text-sm font-medium text-gray-900">{product.name}</div>
                         <div className="text-sm text-gray-500">{product.subCategory}</div>
                         {product.rating && (
-                          <div className="flex items-center mt-1">
-                            <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                            <span className="text-xs text-gray-500 ml-1">
+                          <div className="mt-1 flex items-center">
+                            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                            <span className="ml-1 text-xs text-gray-500">
                               {product.rating} ({product.reviews})
                             </span>
                           </div>
@@ -279,9 +306,7 @@ export default function AdminProductsPage() {
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 text-sm text-gray-900 font-mono">
-                    {product.sku}
-                  </td>
+                  <td className="px-6 py-4 font-mono text-sm text-gray-900">{product.sku}</td>
                   <td className="px-6 py-4">
                     <div className="text-sm text-gray-900">{product.category}</div>
                     {product.subCategory && (
@@ -304,7 +329,7 @@ export default function AdminProductsPage() {
                         </span>
                       </div>
                       {product.mixColors.length > 0 && (
-                        <div className="text-xs text-gray-500 mt-1">
+                        <div className="mt-1 text-xs text-gray-500">
                           Mix: {product.mixColors.join(', ')}
                         </div>
                       )}
@@ -335,30 +360,34 @@ export default function AdminProductsPage() {
                     {product.status === 'active' ? (
                       <Badge className="bg-green-100 text-green-800">Active</Badge>
                     ) : product.status === 'draft' ? (
-                      <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">Draft</Badge>
+                      <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
+                        Draft
+                      </Badge>
                     ) : (
-                      <Badge variant="outline" className="text-gray-500">Archived</Badge>
+                      <Badge variant="outline" className="text-gray-500">
+                        Archived
+                      </Badge>
                     )}
                   </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
-                      <Link 
+                      <Link
                         href={`/admin/products/${product.id}`}
-                        className="text-gold-600 hover:text-gold-700 p-1"
+                        className="p-1 text-gold-600 hover:text-gold-700"
                       >
-                        <Edit className="w-4 h-4" />
+                        <Edit className="h-4 w-4" />
                       </Link>
-                      <Link 
+                      <Link
                         href={`/products/${product.id}`}
-                        className="text-gray-600 hover:text-gray-700 p-1"
+                        className="p-1 text-gray-600 hover:text-gray-700"
                       >
-                        <Eye className="w-4 h-4" />
+                        <Eye className="h-4 w-4" />
                       </Link>
-                      <button className="text-gray-600 hover:text-gray-700 p-1">
-                        <Copy className="w-4 h-4" />
+                      <button className="p-1 text-gray-600 hover:text-gray-700">
+                        <Copy className="h-4 w-4" />
                       </button>
-                      <button className="text-red-600 hover:text-red-700 p-1">
-                        <Trash2 className="w-4 h-4" />
+                      <button className="p-1 text-red-600 hover:text-red-700">
+                        <Trash2 className="h-4 w-4" />
                       </button>
                     </div>
                   </td>
@@ -369,13 +398,13 @@ export default function AdminProductsPage() {
         </div>
 
         {filteredProducts.length === 0 && (
-          <div className="text-center py-12">
-            <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No rings found</h3>
-            <p className="text-gray-600 mb-4">Try adjusting your search or filters</p>
+          <div className="py-12 text-center">
+            <Package className="mx-auto mb-4 h-12 w-12 text-gray-400" />
+            <h3 className="mb-2 text-lg font-medium text-gray-900">No rings found</h3>
+            <p className="mb-4 text-gray-600">Try adjusting your search or filters</p>
             <Link href="/admin/products/new">
               <Button className="bg-gold-500 hover:bg-gold-600">
-                <Plus className="w-4 h-4 mr-2" />
+                <Plus className="mr-2 h-4 w-4" />
                 Add Your First Ring
               </Button>
             </Link>
@@ -384,11 +413,11 @@ export default function AdminProductsPage() {
       </Card>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
         <Card className="p-4">
           <div className="flex items-center">
-            <div className="p-2 bg-green-100 rounded-lg">
-              <Package className="w-6 h-6 text-green-600" />
+            <div className="rounded-lg bg-green-100 p-2">
+              <Package className="h-6 w-6 text-green-600" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Total Rings</p>
@@ -398,34 +427,34 @@ export default function AdminProductsPage() {
         </Card>
         <Card className="p-4">
           <div className="flex items-center">
-            <div className="p-2 bg-blue-100 rounded-lg">
-              <Settings className="w-6 h-6 text-blue-600" />
+            <div className="rounded-lg bg-blue-100 p-2">
+              <Settings className="h-6 w-6 text-blue-600" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Ready to Ship</p>
               <p className="text-2xl font-bold text-gray-900">
-                {products.filter(p => p.isReadyToShip).length}
+                {products.filter((p) => p.isReadyToShip).length}
               </p>
             </div>
           </div>
         </Card>
         <Card className="p-4">
           <div className="flex items-center">
-            <div className="p-2 bg-yellow-100 rounded-lg">
-              <Star className="w-6 h-6 text-yellow-600" />
+            <div className="rounded-lg bg-yellow-100 p-2">
+              <Star className="h-6 w-6 text-yellow-600" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Active</p>
               <p className="text-2xl font-bold text-gray-900">
-                {products.filter(p => p.status === 'active').length}
+                {products.filter((p) => p.status === 'active').length}
               </p>
             </div>
           </div>
         </Card>
         <Card className="p-4">
           <div className="flex items-center">
-            <div className="p-2 bg-purple-100 rounded-lg">
-              <Filter className="w-6 h-6 text-purple-600" />
+            <div className="rounded-lg bg-purple-100 p-2">
+              <Filter className="h-6 w-6 text-purple-600" />
             </div>
             <div className="ml-4">
               <p className="text-sm font-medium text-gray-600">Categories</p>

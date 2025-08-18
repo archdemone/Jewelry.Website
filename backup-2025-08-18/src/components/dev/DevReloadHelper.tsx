@@ -14,7 +14,7 @@ export function DevReloadHelper() {
         // Add a timestamp to force reload
         const timestamp = Date.now();
         const links = document.querySelectorAll('link[rel="stylesheet"]');
-        
+
         links.forEach((link: Element) => {
           const linkElement = link as HTMLLinkElement;
           if (linkElement.href && linkElement.href.includes('localhost')) {
@@ -29,7 +29,7 @@ export function DevReloadHelper() {
       if (typeof window !== 'undefined' && 'WebSocket' in window) {
         const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
         const ws = new WebSocket(`${protocol}//${window.location.host}/_next/webpack-hmr`);
-        
+
         ws.onmessage = (event) => {
           try {
             const data = JSON.parse(event.data);

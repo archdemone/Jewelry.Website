@@ -12,7 +12,7 @@ export async function getSession() {
 }
 
 export function isAdminOrStaff(role?: string | null): boolean {
-	return role === UserRole.ADMIN || role === UserRole.STAFF;
+  return role === UserRole.ADMIN || role === UserRole.STAFF;
 }
 
 export async function requireAuthenticatedSession(redirectTo?: string) {

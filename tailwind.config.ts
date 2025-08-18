@@ -33,9 +33,9 @@ const config: Config = {
         'px-4',
         'py-2',
         'rounded',
-        'z-50'
-      ]
-    }
+        'z-50',
+      ],
+    },
   },
   safelist: [
     'bg-blue-100',
