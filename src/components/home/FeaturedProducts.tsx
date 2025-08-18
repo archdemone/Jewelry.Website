@@ -100,6 +100,9 @@ const FeaturedProducts = () => {
     });
   };
 
+  // Only show first 2 products initially for better FCP
+  const initialProducts = featuredRings.slice(0, 2);
+
   return (
     <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
@@ -122,8 +125,8 @@ const FeaturedProducts = () => {
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {featuredRings.map((ring, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {initialProducts.map((ring, index) => (
             <motion.div
               key={ring.id}
               initial={{ opacity: 0, y: 20 }}
@@ -139,10 +142,10 @@ const FeaturedProducts = () => {
                   src={ring.image}
                   alt={ring.name}
                   fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover group-hover:scale-105 transition-transform duration-300"
                   loading="lazy"
-                  quality={60}
+                  quality={50}
                   placeholder="blur"
                   blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                 />
