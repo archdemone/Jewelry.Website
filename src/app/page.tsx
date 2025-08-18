@@ -7,7 +7,7 @@ const HeroCarousel = dynamic(() => import('@/components/home/HeroCarousel'), {
       Loading...
     </div>
   ),
-  ssr: true, // Keep SSR for hero as it's above the fold
+  ssr: false, // Disable SSR to prevent context issues
 });
 
 const TrustSignals = dynamic(() => import('@/components/home/TrustSignals'), {
@@ -31,10 +31,7 @@ const SocialProof = dynamic(() => import('@/components/home/SocialProof'), {
   ssr: false,
 });
 
-const CategoryShowcase = dynamic(() => import('@/components/home/CategoryShowcase'), {
-  loading: () => <div className="flex h-96 items-center justify-center">Loading categories...</div>,
-  ssr: false,
-});
+
 
 // Static generation for better performance
 export const revalidate = 3600; // Revalidate every hour
@@ -58,7 +55,6 @@ export default function Home() {
       <TrustSignals />
       <FeaturedProducts />
       <SocialProof />
-      <CategoryShowcase />
     </>
   );
 }

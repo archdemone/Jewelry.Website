@@ -104,12 +104,12 @@ export default function NewsletterPopup({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="newsletter-popup bg-white sm:max-w-md dark:bg-gray-900">
+      <DialogContent className="newsletter-popup bg-gradient-to-br from-gray-100 via-gray-50 to-gray-200 sm:max-w-md border-2 border-black">
         <DialogHeader>
-          <DialogTitle className="text-center text-2xl font-bold text-gray-900 dark:text-white">
+          <DialogTitle className="text-center text-2xl font-bold text-orange-400">
             Join Our Artisan Community
           </DialogTitle>
-          <DialogDescription className="text-center text-gray-600 dark:text-gray-300">
+          <DialogDescription className="text-center text-gray-600">
             Be the first to see new designs and get 10% off your first purchase.
           </DialogDescription>
         </DialogHeader>
@@ -120,7 +120,7 @@ export default function NewsletterPopup({
               <div className="space-y-2">
                 <label
                   htmlFor="newsletter-email"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                  className="block text-sm font-medium text-gray-700"
                 >
                   Email
                 </label>
@@ -164,7 +164,7 @@ export default function NewsletterPopup({
                 </Button>
               </div>
 
-              <div className="flex items-center justify-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+              <div className="flex items-center justify-center gap-4 text-sm text-gray-500">
                 <div className="flex items-center gap-1">
                   <Gift className="h-4 w-4 text-primary" />
                   <span>10% off first purchase</span>
@@ -180,10 +180,10 @@ export default function NewsletterPopup({
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
                 <CheckCircle className="h-8 w-8 text-green-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <h3 className="text-xl font-semibold text-gray-900">
                 Welcome to Our Community!
               </h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              <p className="text-gray-600">
                 Check your email for your exclusive 10% discount code.
               </p>
             </div>
