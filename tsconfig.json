@@ -32,6 +32,8 @@
     "**/*.cy.ts",
     "**/*.cy.tsx",
     "playwright.config.ts",
-    "**/playwright/**"
+    "**/playwright/**",
+    "backup-*",
+    "**/backup-*/**"
   ]
 }
