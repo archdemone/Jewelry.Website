@@ -1,12 +1,11 @@
 'use client';
 
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import BulkActions from '@/components/admin/BulkActions';
 import { Badge } from '@/components/ui/badge';
+
 import {
   Plus,
   Search,
@@ -20,9 +19,11 @@ import {
   Star,
   X,
   Save,
+  Grid,
+  List,
+  RotateCcw,
+  Check,
 } from 'lucide-react';
-import { motion } from 'framer-motion';
-import { ColorChip } from '@/components/admin/ColorChip';
 
 interface RingProduct {
   id: string;
@@ -34,6 +35,7 @@ interface RingProduct {
   originalPrice?: number;
   material: string;
   gemColor: string;
+  gemColor2?: string;
   gemDensity: string;
   gemVariation: string;
   mixColors: string[];
@@ -48,16 +50,63 @@ interface RingProduct {
   status: 'active' | 'draft' | 'archived';
   images: string[];
   description?: string;
+  isFeatured?: boolean;
+  featuredOrder?: number | null;
 }
 
-export default function AdminProductsPage() {
+interface ImageFile {
+  name: string;
+  url: string;
+  size: number;
+}
+
+export default function UnifiedAdminProductsPage() {
+  const [activeTab, setActiveTab] = useState('all-products');
   const [query, setQuery] = useState('');
   const [status, setStatus] = useState('all');
   const [category, setCategory] = useState('all');
   const [material, setMaterial] = useState('all');
   const [readyToShip, setReadyToShip] = useState('all');
+  const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [editingProduct, setEditingProduct] = useState<RingProduct | null>(null);
   const [isAddingProduct, setIsAddingProduct] = useState(false);
+  const [availableImages, setAvailableImages] = useState<ImageFile[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [hoveredGemColor, setHoveredGemColor] = useState<string | null>(null);
+  const [hoveredGemColor2, setHoveredGemColor2] = useState<string | null>(null);
+  const [hoveredMixColor, setHoveredMixColor] = useState<string | null>(null);
+
+  // Categories and options
+  const categories = ['Womens', 'Mens', 'Couple Ring Set', 'Double Inlay'];
+  const materials = ['Silver', 'Damascus', 'Ceramic(white)', 'Ceramic(black)', 'Carbon', 'Tungsten', 'Titanium', 'Stainless Steel', 'Gold'];
+  const gemColors = ['Red', 'Green', 'Blue', 'Purple', 'Yellow', 'Custom'];
+  const gemDensities = ['small', 'medium', 'large'];
+  const gemVariations = ['Dark', 'Mixed', 'Bright'];
+
+  // Helper functions for gem colors
+  const getGemColorHex = (color: string): string => {
+    const colorMap: Record<string, string> = {
+      'Red': '#dc2626',
+      'Green': '#16a34a',
+      'Blue': '#2563eb',
+      'Purple': '#9333ea',
+      'Yellow': '#ca8a04',
+      'Custom': '#6b7280',
+    };
+    return colorMap[color] || '#6b7280';
+  };
+
+  const getGemColorImage = (color: string): string => {
+    const imageMap: Record<string, string> = {
+      'Red': '/images/gems/colour/red.jpg',
+      'Green': '/images/gems/colour/green.jpg',
+      'Blue': '/images/gems/colour/blue.jpg',
+      'Purple': '/images/gems/colour/purple.jpg',
+      'Yellow': '/images/gems/colour/yellow.jpg',
+      'Custom': '/images/gems/colour/custom.jpg',
+    };
+    return imageMap[color] || '/images/gems/colour/custom.jpg';
+  };
 
   // Default seed data
   const defaultProducts: RingProduct[] = [
@@ -82,6 +131,8 @@ export default function AdminProductsPage() {
       status: 'active',
       images: ['/images/MyImages/IMG-20250816-WA0000.jpg'],
       description: 'Beautiful handcrafted silver ring with dark red gem inlay.',
+      isFeatured: true,
+      featuredOrder: 1,
     },
     {
       id: 'p2',
@@ -102,106 +153,48 @@ export default function AdminProductsPage() {
       reviews: 18,
       status: 'active',
       images: ['/images/MyImages/IMG-20250816-WA0001.jpg'],
-      description: 'Stunning Damascus steel wedding ring with bright blue gem inlay.',
-    },
-    {
-      id: 'p3',
-      name: 'Unisex Carbon Inlay Ring - Mixed Green',
-      sku: 'RNG-U-CAR-GRN-001',
-      category: 'Unisex',
-      subCategory: 'Inlay Ring',
-      price: 199,
-      originalPrice: 249,
-      material: 'Carbon',
-      gemColor: 'Green',
-      gemDensity: 'small',
-      gemVariation: 'Mixed',
-      mixColors: ['Green', 'Blue'],
-      ringSizes: { us: [6, 7, 8, 9, 10], eu: [52, 54, 57, 59, 61] },
-      ringWidth: [4, 6],
-      isReadyToShip: false,
-      rating: 4.7,
-      reviews: 31,
-      status: 'draft',
-      images: ['/images/MyImages/IMG-20250816-WA0002.jpg'],
-      description: 'Lightweight carbon ring with mixed green and blue gem inlay.',
+      description: 'Stunning damascus steel wedding ring with bright blue gem.',
+      isFeatured: true,
+      featuredOrder: 2,
     },
   ];
 
   const [products, setProducts] = useState<RingProduct[]>(defaultProducts);
 
-  // Load admin-created products from localStorage and merge
   useEffect(() => {
-    try {
-      const raw = typeof window !== 'undefined' ? localStorage.getItem('admin_products') : null;
-      if (raw) {
-        const created: RingProduct[] = JSON.parse(raw);
-        // Deduplicate by id if overlaps
-        const map = new Map<string, RingProduct>();
-        [...created, ...defaultProducts].forEach((p) => map.set(p.id, p));
-        setProducts(Array.from(map.values()));
-      } else {
-        setProducts(defaultProducts);
-      }
-    } catch {
-      setProducts(defaultProducts);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    loadProducts();
+    loadImages();
   }, []);
 
-  const categories = [
-    'Wedding',
-    'Inlay Ring',
-    'Couple Ring Set',
-    'Mens',
-    'Womens',
-    'Unisex',
-    'Single Inlay',
-    'Double Inlay',
-  ];
-  const materials = [
-    'Silver',
-    'Damascus',
-    'Ceramic(white)',
-    'Ceramic(black)',
-    'Carbon',
-    'Tungsten',
-    'Titanium',
-    'Stainless Steel',
-    'Gold',
-  ];
-  const gemColors = ['Red', 'Green', 'Blue', 'Purple', 'Yellow', 'Custom'];
-  const gemDensities = ['small', 'medium', 'large'];
-  const gemVariations = ['Dark', 'Mixed', 'Bright'];
+  const loadProducts = async () => {
+    try {
+      const response = await fetch('/api/admin/products');
+      if (response.ok) {
+        const data = await response.json();
+        setProducts(data);
+      }
+    } catch (error) {
+      console.error('Error loading products:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-  // Filter products based on search and filters
-  const filteredProducts = products.filter((product) => {
-    const matchesQuery =
-      query === '' ||
-      product.name.toLowerCase().includes(query.toLowerCase()) ||
-      product.sku.toLowerCase().includes(query.toLowerCase());
-
-    const matchesStatus = status === 'all' || product.status === status;
-    const matchesCategory = category === 'all' || product.category === category;
-    const matchesMaterial = material === 'all' || product.material === material;
-    const matchesReadyToShip =
-      readyToShip === 'all' ||
-      (readyToShip === 'ready' && product.isReadyToShip) ||
-      (readyToShip === 'custom' && !product.isReadyToShip);
-
-    return (
-      matchesQuery && matchesStatus && matchesCategory && matchesMaterial && matchesReadyToShip
-    );
-  });
-
-  const handleEditProduct = (product: RingProduct) => {
-    setEditingProduct({ ...product });
-    setIsAddingProduct(false);
+  const loadImages = async () => {
+    try {
+      const response = await fetch('/api/admin/images');
+      if (response.ok) {
+        const data = await response.json();
+        setAvailableImages(data);
+      }
+    } catch (error) {
+      console.error('Error loading images:', error);
+    }
   };
 
   const handleAddProduct = () => {
-    const newProduct: RingProduct = {
-      id: Date.now().toString(),
+    setEditingProduct({
+      id: '',
       name: '',
       sku: '',
       category: 'Womens',
@@ -211,389 +204,568 @@ export default function AdminProductsPage() {
       gemDensity: 'medium',
       gemVariation: 'Dark',
       mixColors: [],
-      ringSizes: { us: [], eu: [] },
-      ringWidth: [],
-      isReadyToShip: true,
+      ringSizes: { us: [6, 7, 8, 9], eu: [52, 54, 57, 59] },
+      ringWidth: [4, 6, 8],
+      isReadyToShip: false,
       status: 'draft',
       images: [],
-      description: '',
-    };
-    setEditingProduct(newProduct);
+      isFeatured: false,
+    });
     setIsAddingProduct(true);
+  };
+
+  const handleEditProduct = (product: RingProduct) => {
+    setEditingProduct({ ...product });
+    setIsAddingProduct(false);
   };
 
   const handleSaveProduct = async () => {
     if (!editingProduct) return;
 
     try {
-      if (isAddingProduct) {
-        // Add new product
-        const newProduct = { ...editingProduct, id: Date.now().toString() };
-        setProducts([...products, newProduct]);
-        
-        // Save to localStorage
-        const existing = localStorage.getItem('admin_products');
-        const existingProducts = existing ? JSON.parse(existing) : [];
-        localStorage.setItem('admin_products', JSON.stringify([...existingProducts, newProduct]));
-      } else {
-        // Update existing product
-        setProducts(products.map(p => p.id === editingProduct.id ? editingProduct : p));
-        
-        // Update localStorage
-        const existing = localStorage.getItem('admin_products');
-        const existingProducts = existing ? JSON.parse(existing) : [];
-        const updatedProducts = existingProducts.map((p: RingProduct) => 
-          p.id === editingProduct.id ? editingProduct : p
-        );
-        localStorage.setItem('admin_products', JSON.stringify(updatedProducts));
+      const method = isAddingProduct ? 'POST' : 'PUT';
+      const url = isAddingProduct ? '/api/admin/products' : `/api/admin/products/${editingProduct.id}`;
+      
+      const response = await fetch(url, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editingProduct),
+      });
+
+      if (response.ok) {
+        setEditingProduct(null);
+        setIsAddingProduct(false);
+        loadProducts();
       }
-      
-      setEditingProduct(null);
-      setIsAddingProduct(false);
-      
-      // Show success message
-      alert(isAddingProduct ? 'Product added successfully!' : 'Product updated successfully!');
     } catch (error) {
       console.error('Error saving product:', error);
-      alert('Error saving product. Please try again.');
     }
   };
 
-  const handleCancelEdit = () => {
-    setEditingProduct(null);
-    setIsAddingProduct(false);
-  };
+  const handleDeleteProduct = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this product?')) return;
 
-  const handleDeleteProduct = async (productId: string) => {
-    if (confirm('Are you sure you want to delete this product?')) {
-      try {
-        setProducts(products.filter(p => p.id !== productId));
-        
-        // Update localStorage
-        const existing = localStorage.getItem('admin_products');
-        const existingProducts = existing ? JSON.parse(existing) : [];
-        const updatedProducts = existingProducts.filter((p: RingProduct) => p.id !== productId);
-        localStorage.setItem('admin_products', JSON.stringify(updatedProducts));
-      } catch (error) {
-        console.error('Error deleting product:', error);
+    try {
+      const response = await fetch(`/api/admin/products/${id}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        loadProducts();
       }
+    } catch (error) {
+      console.error('Error deleting product:', error);
     }
   };
+
+  const toggleFeatured = async (product: RingProduct) => {
+    const updatedProduct = {
+      ...product,
+      isFeatured: !product.isFeatured,
+      featuredOrder: !product.isFeatured ? Date.now() : undefined,
+    };
+
+    try {
+      const response = await fetch(`/api/admin/products/${product.id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedProduct),
+      });
+
+      if (response.ok) {
+        loadProducts();
+      }
+    } catch (error) {
+      console.error('Error updating featured status:', error);
+    }
+  };
+
+  const filteredProducts = products.filter((product) => {
+    const matchesQuery = query === '' || 
+      product.name.toLowerCase().includes(query.toLowerCase()) ||
+      product.sku.toLowerCase().includes(query.toLowerCase());
+    
+    const matchesStatus = status === 'all' || product.status === status;
+    const matchesCategory = category === 'all' || product.category === category;
+    const matchesMaterial = material === 'all' || product.material === material;
+    const matchesReadyToShip = readyToShip === 'all' || 
+      (readyToShip === 'ready' && product.isReadyToShip) ||
+      (readyToShip === 'not-ready' && !product.isReadyToShip);
+
+    const matchesTab = activeTab === 'all-products' || 
+      (activeTab === 'featured' && product.isFeatured);
+
+    return matchesQuery && matchesStatus && matchesCategory && matchesMaterial && matchesReadyToShip && matchesTab;
+  });
+
+  const getStatusBadge = (status: string) => {
+    const statusConfig = {
+      active: { color: 'bg-green-100 text-green-800', label: 'Active' },
+      draft: { color: 'bg-yellow-100 text-yellow-800', label: 'Draft' },
+      archived: { color: 'bg-gray-100 text-gray-800', label: 'Archived' },
+    };
+    const config = statusConfig[status as keyof typeof statusConfig] || statusConfig.draft;
+    return <Badge className={config.color}>{config.label}</Badge>;
+  };
+
+  const getFeaturedBadge = (isFeatured: boolean) => {
+    return isFeatured ? (
+      <Badge className="bg-gold-100 text-gold-800 flex items-center gap-1">
+        <Star className="w-3 h-3" />
+        Featured
+      </Badge>
+    ) : null;
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gold-500"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Ring Products</h1>
-          <p className="mt-1 text-gray-600">Manage your handcrafted ring collection</p>
+          <h1 className="text-2xl font-bold text-gray-900">Product Management</h1>
+          <p className="text-gray-600">Manage all your jewelry products with advanced features</p>
         </div>
-                 <Button onClick={handleAddProduct} className="bg-gold-500 hover:bg-gold-600">
-           <Plus className="mr-2 h-4 w-4" />
-           Add New Ring
-         </Button>
+        <Button onClick={handleAddProduct} className="bg-gold-500 hover:bg-gold-600">
+          <Plus className="w-4 h-4 mr-2" />
+          Add Product
+        </Button>
       </div>
 
-      {/* Filters */}
-      <Card className="p-4">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-3">
-          <div className="lg:col-span-2 relative">
-            <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
-            <Input
-              placeholder="Search rings by name or SKU..."
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              className="pl-10"
-            />
+             {/* Tabs */}
+       <div className="w-full">
+         <div className="inline-flex h-10 items-center justify-center rounded-md bg-gray-100 p-1 w-full">
+           <button
+             onClick={() => setActiveTab('all-products')}
+             className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all ${
+               activeTab === 'all-products' 
+                 ? 'bg-white text-gray-900 shadow-sm' 
+                 : 'text-gray-600 hover:text-gray-900'
+             }`}
+           >
+             <Package className="w-4 h-4 mr-2" />
+             All Products ({products.length})
+           </button>
+           <button
+             onClick={() => setActiveTab('featured')}
+             className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all ${
+               activeTab === 'featured' 
+                 ? 'bg-white text-gray-900 shadow-sm' 
+                 : 'text-gray-600 hover:text-gray-900'
+             }`}
+           >
+             <Star className="w-4 h-4 mr-2" />
+             Featured ({products.filter(p => p.isFeatured).length})
+           </button>
+         </div>
+
+                 {activeTab === 'all-products' && (
+           <div className="space-y-4 mt-4">
+          {/* Filters */}
+          <Card className="p-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Search</label>
+                <Input
+                  placeholder="Search products..."
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  className="w-full"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                <select
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                >
+                  <option value="all">All Status</option>
+                  <option value="active">Active</option>
+                  <option value="draft">Draft</option>
+                  <option value="archived">Archived</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                >
+                  <option value="all">All Categories</option>
+                  {categories.map((cat) => (
+                    <option key={cat} value={cat}>{cat}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Material</label>
+                <select
+                  value={material}
+                  onChange={(e) => setMaterial(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                >
+                  <option value="all">All Materials</option>
+                  {materials.map((mat) => (
+                    <option key={mat} value={mat}>{mat}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Ready to Ship</label>
+                <select
+                  value={readyToShip}
+                  onChange={(e) => setReadyToShip(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                >
+                  <option value="all">All</option>
+                  <option value="ready">Ready</option>
+                  <option value="not-ready">Not Ready</option>
+                </select>
+              </div>
+              <div className="flex items-end">
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    setQuery('');
+                    setStatus('all');
+                    setCategory('all');
+                    setMaterial('all');
+                    setReadyToShip('all');
+                  }}
+                  className="w-full"
+                >
+                  <RotateCcw className="w-4 h-4 mr-2" />
+                  Reset
+                </Button>
+              </div>
+            </div>
+          </Card>
+
+          {/* View Mode Toggle */}
+          <div className="flex justify-between items-center">
+            <div className="text-sm text-gray-600">
+              {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''} found
+            </div>
+            <div className="flex items-center gap-2">
+              <Button
+                variant={viewMode === 'grid' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setViewMode('grid')}
+              >
+                <Grid className="w-4 h-4" />
+              </Button>
+              <Button
+                variant={viewMode === 'list' ? 'default' : 'outline'}
+                size="sm"
+                onClick={() => setViewMode('list')}
+              >
+                <List className="w-4 h-4" />
+              </Button>
+            </div>
           </div>
 
-          <select
-            className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-gold-500"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-          >
-            <option value="all">All Categories</option>
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
-
-          <select
-            className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-gold-500"
-            value={material}
-            onChange={(e) => setMaterial(e.target.value)}
-          >
-            <option value="all">All Materials</option>
-            {materials.map((mat) => (
-              <option key={mat} value={mat}>
-                {mat}
-              </option>
-            ))}
-          </select>
-
-          <select
-            className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-gold-500"
-            value={readyToShip}
-            onChange={(e) => setReadyToShip(e.target.value)}
-          >
-            <option value="all">All Availability</option>
-            <option value="ready">Ready to Ship</option>
-            <option value="custom">Custom Orders</option>
-          </select>
-
-          <select
-            className="rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-transparent focus:ring-2 focus:ring-gold-500"
-            value={status}
-            onChange={(e) => setStatus(e.target.value)}
-          >
-            <option value="all">All Status</option>
-            <option value="active">Active</option>
-            <option value="draft">Draft</option>
-            <option value="archived">Archived</option>
-          </select>
-        </div>
-      </Card>
-
-      {/* Products Table */}
-      <Card className="overflow-hidden">
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[800px]">
-            <thead className="border-b bg-gray-50">
-              <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                  Product
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                  Details
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                  Price & Status
-                </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200 bg-white">
+          {/* Products Grid/List */}
+          {viewMode === 'grid' ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredProducts.map((product) => (
-                <tr key={product.id} className="hover:bg-gray-50">
-                  <td className="px-4 py-3">
-                    <div className="flex items-center">
-                      <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg bg-gray-200">
-                        {product.images[0] && (
-                          <img
-                            src={product.images[0]}
-                            alt={product.name}
-                            className="h-full w-full object-cover"
-                          />
-                        )}
+                <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow">
+                  <div className="aspect-square bg-gray-100 relative">
+                    {product.images && product.images[0] ? (
+                      <img
+                        src={product.images[0]}
+                        alt={product.name}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full">
+                        <Package className="w-12 h-12 text-gray-400" />
                       </div>
-                      <div className="ml-3 min-w-0 flex-1">
-                        <div className="text-sm font-medium text-gray-900 truncate">{product.name}</div>
-                        <div className="text-xs text-gray-500 truncate">{product.sku}</div>
-                        {product.rating && (
-                          <div className="mt-1 flex items-center">
-                            <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                            <span className="ml-1 text-xs text-gray-500">
-                              {product.rating} ({product.reviews})
-                            </span>
-                          </div>
-                        )}
-                      </div>
+                    )}
+                    <div className="absolute top-2 left-2 flex flex-col gap-1">
+                      {getStatusBadge(product.status)}
+                      {getFeaturedBadge(product.isFeatured || false)}
                     </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <Badge variant="outline" className="text-xs">
-                          {product.category}
-                        </Badge>
-                        <Badge variant="outline" className="text-xs">
-                          {product.material}
-                        </Badge>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <ColorChip gemName={product.gemColor} />
-                        <span className="text-xs text-gray-600">
-                          {product.gemDensity} • {product.gemVariation}
-                        </span>
-                      </div>
-                      {product.mixColors.length > 0 && (
-                        <div className="flex flex-wrap gap-1">
-                          {product.mixColors.slice(0, 2).map((c) => (
-                            <ColorChip key={c} gemName={c} />
-                          ))}
-                          {product.mixColors.length > 2 && (
-                            <span className="text-xs text-gray-500">+{product.mixColors.length - 2}</span>
-                          )}
+                    <div className="absolute top-2 right-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => toggleFeatured(product)}
+                        className="bg-white/90 hover:bg-white"
+                      >
+                        <Star className={`w-4 h-4 ${product.isFeatured ? 'fill-yellow-400 text-yellow-600' : 'text-gray-400'}`} />
+                      </Button>
+                    </div>
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-semibold text-gray-900 truncate">{product.name}</h3>
+                    <p className="text-sm text-gray-600 mb-2">{product.sku}</p>
+                    <div className="flex items-center justify-between mb-2">
+                      <span className="font-bold text-gold-600">£{product.price}</span>
+                      {product.rating && (
+                        <div className="flex items-center gap-1">
+                          <Star className="w-4 h-4 fill-yellow-400 text-yellow-600" />
+                          <span className="text-sm">{product.rating}</span>
                         </div>
                       )}
                     </div>
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="space-y-1">
-                      <div className="text-sm">
-                        <div className="font-medium text-gray-900">£{product.price}</div>
-                        {product.originalPrice && (
-                          <div className="text-xs text-gray-500 line-through">
-                            £{product.originalPrice}
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex flex-wrap gap-1">
-                        {product.isReadyToShip ? (
-                          <Badge className="bg-green-100 text-green-800 hover:bg-green-100 text-xs">
-                            ✓ Ready
-                          </Badge>
-                        ) : (
-                          <Badge variant="secondary" className="bg-blue-100 text-blue-800 text-xs">
-                            Custom
-                          </Badge>
-                        )}
-                        {product.status === 'active' ? (
-                          <Badge className="bg-green-100 text-green-800 text-xs">Active</Badge>
-                        ) : product.status === 'draft' ? (
-                          <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 text-xs">
-                            Draft
-                          </Badge>
-                        ) : (
-                          <Badge variant="outline" className="text-gray-500 text-xs">
-                            Archived
-                          </Badge>
-                        )}
-                      </div>
+                    <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
+                      <span>{product.material}</span>
+                      <span>•</span>
+                      <span>{product.gemColor}</span>
                     </div>
-                  </td>
-                  <td className="px-4 py-3">
-                                         <div className="flex items-center gap-1">
-                       <button
-                         onClick={() => handleEditProduct(product)}
-                         className="p-1.5 text-gold-600 hover:text-gold-700 hover:bg-gold-50 rounded"
-                         title="Edit"
-                       >
-                         <Edit className="h-4 w-4" />
-                       </button>
-                       <Link
-                         href={`/products/${product.id}`}
-                         className="p-1.5 text-gray-600 hover:text-gray-700 hover:bg-gray-50 rounded"
-                         title="View"
-                       >
-                         <Eye className="h-4 w-4" />
-                       </Link>
-                       <button 
-                         className="p-1.5 text-gray-600 hover:text-gray-700 hover:bg-gray-50 rounded"
-                         title="Duplicate"
-                       >
-                         <Copy className="h-4 w-4" />
-                       </button>
-                       <button 
-                         onClick={() => handleDeleteProduct(product.id)}
-                         className="p-1.5 text-red-600 hover:text-red-700 hover:bg-red-50 rounded"
-                         title="Delete"
-                       >
-                         <Trash2 className="h-4 w-4" />
-                       </button>
-                     </div>
-                  </td>
-                </tr>
+                    <div className="flex gap-2">
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleEditProduct(product)}
+                        className="flex-1"
+                      >
+                        <Edit className="w-4 h-4 mr-1" />
+                        Edit
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        onClick={() => handleDeleteProduct(product.id)}
+                        className="text-red-600 hover:text-red-700"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
               ))}
-            </tbody>
-          </table>
-        </div>
+            </div>
+          ) : (
+            <Card>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SKU</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Featured</th>
+                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {filteredProducts.map((product) => (
+                      <tr key={product.id} className="hover:bg-gray-50">
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <div className="flex items-center">
+                            <div className="flex-shrink-0 h-10 w-10">
+                              {product.images && product.images[0] ? (
+                                <img
+                                  className="h-10 w-10 rounded-full object-cover"
+                                  src={product.images[0]}
+                                  alt={product.name}
+                                />
+                              ) : (
+                                <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
+                                  <Package className="w-5 h-5 text-gray-400" />
+                                </div>
+                              )}
+                            </div>
+                            <div className="ml-4">
+                              <div className="text-sm font-medium text-gray-900">{product.name}</div>
+                              <div className="text-sm text-gray-500">{product.material} • {product.gemColor}</div>
+                            </div>
+                          </div>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{product.sku}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{product.category}</td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gold-600">£{product.price}</td>
+                        <td className="px-6 py-4 whitespace-nowrap">{getStatusBadge(product.status)}</td>
+                        <td className="px-6 py-4 whitespace-nowrap">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            onClick={() => toggleFeatured(product)}
+                          >
+                            <Star className={`w-4 h-4 ${product.isFeatured ? 'fill-yellow-400 text-yellow-600' : 'text-gray-400'}`} />
+                          </Button>
+                        </td>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                          <div className="flex gap-2">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleEditProduct(product)}
+                            >
+                              <Edit className="w-4 h-4 mr-1" />
+                              Edit
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleDeleteProduct(product.id)}
+                              className="text-red-600 hover:text-red-700"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </Card>
+                     )}
+           </div>
+         )}
+ 
+         {activeTab === 'featured' && (
+           <div className="space-y-4 mt-4">
+          <Card className="p-4">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold">Featured Products</h3>
+              <p className="text-sm text-gray-600">Manage products that appear on the homepage</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {filteredProducts.map((product) => (
+                <Card key={product.id} className="p-4">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex-1">
+                      <h4 className="font-medium text-gray-900">{product.name}</h4>
+                      <p className="text-sm text-gray-600">{product.sku}</p>
+                    </div>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={() => toggleFeatured(product)}
+                    >
+                      <Star className={`w-4 h-4 ${product.isFeatured ? 'fill-yellow-400 text-yellow-600' : 'text-gray-400'}`} />
+                    </Button>
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="font-medium text-gold-600">£{product.price}</span>
+                    <span className="text-gray-500">Order: {product.featuredOrder || 'N/A'}</span>
+                  </div>
+                </Card>
+              ))}
+                         </div>
+           </Card>
+         </div>
+       )}
+       </div>
 
-        {filteredProducts.length === 0 && (
-          <div className="py-12 text-center">
-            <Package className="mx-auto mb-4 h-12 w-12 text-gray-400" />
-            <h3 className="mb-2 text-lg font-medium text-gray-900">No rings found</h3>
-            <p className="mb-4 text-gray-600">Try adjusting your search or filters</p>
-                         <Button onClick={handleAddProduct} className="bg-gold-500 hover:bg-gold-600">
-               <Plus className="mr-2 h-4 w-4" />
-               Add Your First Ring
-             </Button>
-          </div>
-        )}
-      </Card>
-
-      {/* Stats */}
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-4">
-        <Card className="p-4">
-          <div className="flex items-center">
-            <div className="rounded-lg bg-green-100 p-2">
-              <Package className="h-6 w-6 text-green-600" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Total Rings</p>
-              <p className="text-2xl font-bold text-gray-900">{products.length}</p>
-            </div>
-          </div>
-        </Card>
-        <Card className="p-4">
-          <div className="flex items-center">
-            <div className="rounded-lg bg-blue-100 p-2">
-              <Settings className="h-6 w-6 text-blue-600" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Ready to Ship</p>
-              <p className="text-2xl font-bold text-gray-900">
-                {products.filter((p) => p.isReadyToShip).length}
-              </p>
-            </div>
-          </div>
-        </Card>
-        <Card className="p-4">
-          <div className="flex items-center">
-            <div className="rounded-lg bg-yellow-100 p-2">
-              <Star className="h-6 w-6 text-yellow-600" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Active</p>
-              <p className="text-2xl font-bold text-gray-900">
-                {products.filter((p) => p.status === 'active').length}
-              </p>
-            </div>
-          </div>
-        </Card>
-        <Card className="p-4">
-          <div className="flex items-center">
-            <div className="rounded-lg bg-purple-100 p-2">
-              <Filter className="h-6 w-6 text-purple-600" />
-            </div>
-            <div className="ml-4">
-              <p className="text-sm font-medium text-gray-600">Categories</p>
-              <p className="text-2xl font-bold text-gray-900">{categories.length}</p>
-            </div>
-          </div>
-        </Card>
-      </div>
-
-             <BulkActions />
-
-       {/* Edit/Add Product Modal */}
+             {/* Advanced Edit Modal */}
        {editingProduct && (
-         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-           <motion.div
-             initial={{ opacity: 0, scale: 0.9 }}
-             animate={{ opacity: 1, scale: 1 }}
-             className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
-           >
-             <div className="p-6">
-               <div className="flex items-center justify-between mb-6">
-                 <h2 className="text-2xl font-bold text-gray-900">
-                   {isAddingProduct ? 'Add New Product' : 'Edit Product'}
-                 </h2>
-                 <button
-                   onClick={handleCancelEdit}
-                   className="p-2 hover:bg-gray-100 rounded-lg"
-                 >
-                   <X className="w-5 h-5" />
-                 </button>
+         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+           <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+             {/* Header */}
+             <div className="flex items-center justify-between p-6 border-b">
+               <h2 className="text-2xl font-bold text-gray-900">
+                 {isAddingProduct ? 'Add New Product' : 'Edit Product'}
+               </h2>
+               <button
+                 onClick={() => {
+                   setEditingProduct(null);
+                   setIsAddingProduct(false);
+                 }}
+                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+               >
+                 <X className="w-5 h-5" />
+               </button>
+             </div>
+
+             {/* Content */}
+             <div className="flex h-[calc(90vh-140px)] overflow-hidden">
+               {/* Left Column - Product Images */}
+               <div className="w-1/3 p-6 border-r bg-gray-50 overflow-y-auto">
+                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Product Images</h3>
+                 
+                 {/* Main Image Preview */}
+                 <div className="mb-6">
+                   <div className="relative aspect-square bg-white rounded-lg border-2 border-dashed border-gray-300 overflow-hidden">
+                     {editingProduct.images && editingProduct.images[0] ? (
+                       <img
+                         src={editingProduct.images[0]}
+                         alt={editingProduct.name}
+                         className="w-full h-full object-cover"
+                       />
+                     ) : (
+                       <div className="flex items-center justify-center h-full">
+                         <div className="text-center">
+                           <Package className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+                           <p className="text-sm text-gray-500">No image selected</p>
+                         </div>
+                       </div>
+                     )}
+                     {editingProduct.isReadyToShip && (
+                       <div className="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+                         Ready to Ship
+                       </div>
+                     )}
+                     {editingProduct.status && (
+                       <div className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium ${
+                         editingProduct.status === 'active' ? 'bg-green-100 text-green-800' :
+                         editingProduct.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
+                         editingProduct.status === 'archived' ? 'bg-gray-100 text-gray-800' :
+                         'bg-red-100 text-red-800'
+                       }`}>
+                         {editingProduct.status === 'active' ? 'Active' :
+                          editingProduct.status === 'draft' ? 'Draft' :
+                          editingProduct.status === 'archived' ? 'Archived' :
+                          'Out of Stock'}
+                       </div>
+                     )}
+                   </div>
+                 </div>
+
+                 {/* Selected Images Grid */}
+                 <div>
+                   <label className="block text-sm font-medium text-gray-700 mb-2">Available Images</label>
+                   <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto">
+                     {availableImages.map((image) => (
+                       <button
+                         key={image.name}
+                         onClick={() => {
+                           const newImages = editingProduct.images.includes(image.url)
+                             ? editingProduct.images.filter(img => img !== image.url)
+                             : [...editingProduct.images, image.url];
+                           setEditingProduct({ ...editingProduct, images: newImages });
+                         }}
+                         className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-colors ${
+                           editingProduct.images.includes(image.url)
+                             ? 'border-gold-500 ring-2 ring-gold-200'
+                             : 'border-gray-200 hover:border-gray-300'
+                         }`}
+                       >
+                         <img
+                           src={image.url}
+                           alt={image.name}
+                           className="w-full h-full object-cover"
+                         />
+                         {editingProduct.images.includes(image.url) && (
+                           <div className="absolute top-1 right-1 w-5 h-5 bg-gold-500 rounded-full flex items-center justify-center">
+                             <span className="text-white text-xs">✓</span>
+                           </div>
+                         )}
+                       </button>
+                     ))}
+                   </div>
+                 </div>
                </div>
 
-               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                 {/* Basic Information */}
-                 <div className="space-y-4">
+               {/* Right Column - Product Details */}
+               <div className="w-2/3 p-6 overflow-y-auto">
+                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Product Details</h3>
+                 
+                 <div className="grid grid-cols-2 gap-4">
                    <div>
                      <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
                      <input
@@ -615,40 +787,15 @@ export default function AdminProductsPage() {
                    </div>
 
                    <div>
-                     <label className="block text-sm font-medium text-gray-700 mb-1">Price (£)</label>
-                     <input
-                       type="number"
-                       value={editingProduct.price}
-                       onChange={(e) => setEditingProduct({ ...editingProduct, price: Number(e.target.value) })}
-                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                     />
-                   </div>
-
-                   <div>
-                     <label className="block text-sm font-medium text-gray-700 mb-1">Original Price (£)</label>
-                     <input
-                       type="number"
-                       value={editingProduct.originalPrice || ''}
-                       onChange={(e) => setEditingProduct({ ...editingProduct, originalPrice: Number(e.target.value) || null })}
-                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                     />
-                   </div>
-
-                   <div>
                      <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
                      <select
                        value={editingProduct.category}
                        onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value })}
                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                      >
-                       <option value="Wedding">Wedding Rings</option>
-                       <option value="Inlay Ring">Inlay Rings</option>
-                       <option value="Couple Ring Set">Couple Ring Set</option>
-                       <option value="Mens">Men's Rings</option>
-                       <option value="Womens">Women's Rings</option>
-                       <option value="Unisex">Unisex Rings</option>
-                       <option value="Single Inlay">Single Inlay</option>
-                       <option value="Double Inlay">Double Inlay</option>
+                       {categories.map((cat) => (
+                         <option key={cat} value={cat}>{cat}</option>
+                       ))}
                      </select>
                    </div>
 
@@ -662,10 +809,7 @@ export default function AdminProductsPage() {
                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                      />
                    </div>
-                 </div>
 
-                 {/* Product Specifications */}
-                 <div className="space-y-4">
                    <div>
                      <label className="block text-sm font-medium text-gray-700 mb-1">Material</label>
                      <select
@@ -681,38 +825,88 @@ export default function AdminProductsPage() {
 
                    <div>
                      <label className="block text-sm font-medium text-gray-700 mb-1">Primary Gem Color</label>
-                     <select
-                       value={editingProduct.gemColor}
-                       onChange={(e) => setEditingProduct({ ...editingProduct, gemColor: e.target.value })}
-                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                     >
+                     <div className="grid grid-cols-3 gap-2">
                        {gemColors.map((color) => (
-                         <option key={color} value={color}>{color}</option>
-                       ))}
-                     </select>
-                   </div>
+                         <button
+                           key={color}
+                           type="button"
+                           onClick={() => setEditingProduct({ ...editingProduct, gemColor: color })}
+                           onMouseEnter={() => setHoveredGemColor(color)}
+                           onMouseLeave={() => setHoveredGemColor(null)}
+                           className={`relative rounded-lg border-2 p-3 transition-all ${
+                             editingProduct.gemColor === color
+                               ? 'border-gold-500 bg-gold-50'
+                               : 'border-gray-300 hover:border-gray-400'
+                           }`}
+                         >
+                           <div className="flex flex-col items-center gap-2">
+                             <div
+                               className="h-8 w-8 rounded-full border-2 border-gray-200"
+                               style={{ backgroundColor: getGemColorHex(color) }}
+                             />
+                             <span className="text-sm font-medium">{color}</span>
+                           </div>
 
-                   <div>
-                     <label className="block text-sm font-medium text-gray-700 mb-1">Mix Colors (for Custom option)</label>
-                     <div className="flex flex-wrap gap-2">
-                       {['Red', 'Green', 'Blue', 'Purple', 'Yellow', 'Black', 'White', 'Pink', 'Orange', 'Turquoise'].map((color) => (
-                         <label key={color} className="flex items-center">
-                           <input
-                             type="checkbox"
-                             checked={editingProduct.mixColors?.includes(color) || false}
-                             onChange={(e) => {
-                               const newMixColors = e.target.checked
-                                 ? [...(editingProduct.mixColors || []), color]
-                                 : (editingProduct.mixColors || []).filter(c => c !== color);
-                               setEditingProduct({ ...editingProduct, mixColors: newMixColors });
-                             }}
-                             className="mr-1"
-                           />
-                           <span className="text-sm">{color}</span>
-                         </label>
+                           {/* Gem Color Popup */}
+                           {hoveredGemColor === color && (
+                             <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
+                               <div className="rounded-lg border bg-white p-2 shadow-lg">
+                                 <img
+                                   src={getGemColorImage(color)}
+                                   alt={`${color} gem`}
+                                   className="h-32 w-32 rounded object-cover"
+                                 />
+                               </div>
+                             </div>
+                           )}
+                         </button>
                        ))}
                      </div>
                    </div>
+
+                   {/* Second Gem Color for Couple Rings */}
+                   {editingProduct.category === 'Couple Ring Set' && (
+                     <div>
+                       <label className="block text-sm font-medium text-gray-700 mb-1">Second Gem Color (Ring 2)</label>
+                       <div className="grid grid-cols-3 gap-2">
+                         {gemColors.map((color) => (
+                           <button
+                             key={color}
+                             type="button"
+                             onClick={() => setEditingProduct({ ...editingProduct, gemColor2: color })}
+                             onMouseEnter={() => setHoveredGemColor2(color)}
+                             onMouseLeave={() => setHoveredGemColor2(null)}
+                             className={`relative rounded-lg border-2 p-3 transition-all ${
+                               editingProduct.gemColor2 === color
+                                 ? 'border-gold-500 bg-gold-50'
+                                 : 'border-gray-300 hover:border-gray-400'
+                             }`}
+                           >
+                             <div className="flex flex-col items-center gap-2">
+                               <div
+                                 className="h-8 w-8 rounded-full border-2 border-gray-200"
+                                 style={{ backgroundColor: getGemColorHex(color) }}
+                               />
+                               <span className="text-sm font-medium">{color}</span>
+                             </div>
+
+                             {/* Gem Color Popup */}
+                             {hoveredGemColor2 === color && (
+                               <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
+                                 <div className="rounded-lg border bg-white p-2 shadow-lg">
+                                   <img
+                                     src={getGemColorImage(color)}
+                                     alt={`${color} gem`}
+                                     className="h-32 w-32 rounded object-cover"
+                                   />
+                                 </div>
+                               </div>
+                             )}
+                           </button>
+                         ))}
+                       </div>
+                     </div>
+                   )}
 
                    <div>
                      <label className="block text-sm font-medium text-gray-700 mb-1">Gem Density</label>
@@ -740,63 +934,178 @@ export default function AdminProductsPage() {
                      </select>
                    </div>
 
-                   <div className="flex items-center gap-2">
+                   <div>
+                     <label className="block text-sm font-medium text-gray-700 mb-2">Mix Colors (for Custom option)</label>
+                     <div className="grid grid-cols-2 gap-2">
+                       {['Red', 'Green', 'Blue', 'Purple', 'Yellow', 'Black', 'White', 'Pink', 'Orange', 'Turquoise'].map((color) => (
+                         <label 
+                           key={color} 
+                           className="relative flex items-center p-2 rounded border hover:bg-gray-50 cursor-pointer"
+                           onMouseEnter={() => setHoveredMixColor(color)}
+                           onMouseLeave={() => setHoveredMixColor(null)}
+                         >
+                           <input
+                             type="checkbox"
+                             checked={editingProduct.mixColors.includes(color)}
+                             onChange={(e) => {
+                               const newMixColors = e.target.checked
+                                 ? [...editingProduct.mixColors, color]
+                                 : editingProduct.mixColors.filter(c => c !== color);
+                               setEditingProduct({ ...editingProduct, mixColors: newMixColors });
+                             }}
+                             className="mr-2"
+                           />
+                           <div className="flex items-center gap-2">
+                             <div
+                               className="h-4 w-4 rounded-full border border-gray-200"
+                               style={{ backgroundColor: getGemColorHex(color) }}
+                             />
+                             <span className="text-sm">{color}</span>
+                           </div>
+
+                           {/* Mix Color Popup */}
+                           {hoveredMixColor === color && (
+                             <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
+                               <div className="rounded-lg border bg-white p-2 shadow-lg">
+                                 <img
+                                   src={getGemColorImage(color)}
+                                   alt={`${color} gem`}
+                                   className="h-32 w-32 rounded object-cover"
+                                 />
+                               </div>
+                             </div>
+                           )}
+                         </label>
+                       ))}
+                     </div>
+                   </div>
+
+                   <div>
+                     <label className="block text-sm font-medium text-gray-700 mb-1">Price (£)</label>
                      <input
-                       type="checkbox"
-                       id="readyToShip"
-                       checked={editingProduct.isReadyToShip}
-                       onChange={(e) => setEditingProduct({ ...editingProduct, isReadyToShip: e.target.checked })}
-                       className="rounded"
+                       type="number"
+                       value={editingProduct.price}
+                       onChange={(e) => setEditingProduct({ ...editingProduct, price: parseFloat(e.target.value) || 0 })}
+                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                      />
-                     <label htmlFor="readyToShip" className="text-sm font-medium text-gray-700">Ready to Ship</label>
+                   </div>
+
+                   <div>
+                     <label className="block text-sm font-medium text-gray-700 mb-1">Original Price (£)</label>
+                     <input
+                       type="number"
+                       value={editingProduct.originalPrice || ''}
+                       onChange={(e) => setEditingProduct({ ...editingProduct, originalPrice: parseFloat(e.target.value) || null })}
+                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                     />
                    </div>
 
                    <div>
                      <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
                      <select
                        value={editingProduct.status}
-                       onChange={(e) => setEditingProduct({ ...editingProduct, status: e.target.value as 'active' | 'draft' | 'archived' })}
+                       onChange={(e) => setEditingProduct({ ...editingProduct, status: e.target.value as any })}
                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                      >
-                       <option value="active">Active</option>
                        <option value="draft">Draft</option>
+                       <option value="active">Active</option>
                        <option value="archived">Archived</option>
                      </select>
                    </div>
+
+                   <div className="col-span-2">
+                     <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                     <textarea
+                       value={editingProduct.description || ''}
+                       onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}
+                       rows={4}
+                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                     />
+                   </div>
+
+                   <div className="col-span-2">
+                     <div className="flex items-center gap-2">
+                       <input
+                         type="checkbox"
+                         id="readyToShip"
+                         checked={editingProduct.isReadyToShip}
+                         onChange={(e) => setEditingProduct({ ...editingProduct, isReadyToShip: e.target.checked })}
+                         className="rounded"
+                       />
+                       <label htmlFor="readyToShip" className="text-sm font-medium text-gray-700">Ready to Ship</label>
+                     </div>
+                   </div>
+
+                   <div className="col-span-2">
+                     <div className="flex items-center gap-2">
+                       <input
+                         type="checkbox"
+                         id="isFeatured"
+                         checked={editingProduct.isFeatured || false}
+                         onChange={(e) => setEditingProduct({ 
+                           ...editingProduct, 
+                           isFeatured: e.target.checked,
+                           featuredOrder: e.target.checked ? Date.now() : null
+                         })}
+                         className="rounded"
+                       />
+                       <label htmlFor="isFeatured" className="text-sm font-medium text-gray-700">Featured Product</label>
+                     </div>
+                   </div>
+
+                   {/* Status Badge Preview */}
+                   <div className="col-span-2 mt-6 p-4 bg-gray-50 rounded-lg">
+                     <h4 className="text-sm font-medium text-gray-700 mb-2">Status Preview</h4>
+                     <div className="flex items-center gap-2">
+                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                         editingProduct.status === 'active' ? 'bg-green-100 text-green-800' :
+                         editingProduct.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
+                         editingProduct.status === 'archived' ? 'bg-gray-100 text-gray-800' :
+                         'bg-red-100 text-red-800'
+                       }`}>
+                         {editingProduct.status === 'active' ? 'Active' :
+                          editingProduct.status === 'draft' ? 'Draft' :
+                          editingProduct.status === 'archived' ? 'Archived' :
+                          'Out of Stock'}
+                       </span>
+                       {editingProduct.isReadyToShip && (
+                         <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
+                           Ready to Ship
+                         </span>
+                       )}
+                       {editingProduct.isFeatured && (
+                         <span className="px-2 py-1 bg-gold-100 text-gold-800 rounded-full text-xs font-medium">
+                           Featured
+                         </span>
+                       )}
+                     </div>
+                   </div>
+                 </div>
+
+                 {/* Save/Cancel Buttons */}
+                 <div className="flex justify-end space-x-3 pt-6 mt-6 border-t">
+                   <button
+                     onClick={() => {
+                       setEditingProduct(null);
+                       setIsAddingProduct(false);
+                     }}
+                     className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                   >
+                     Cancel
+                   </button>
+                   <button
+                     onClick={handleSaveProduct}
+                     className="px-4 py-2 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition-colors flex items-center"
+                   >
+                     <Save className="w-4 h-4 mr-2" />
+                     {isAddingProduct ? 'Add Product' : 'Save Changes'}
+                   </button>
                  </div>
                </div>
-
-               {/* Description */}
-               <div className="mt-6">
-                 <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                 <textarea
-                   value={editingProduct.description || ''}
-                   onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}
-                   rows={3}
-                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                 />
-               </div>
-
-               {/* Action Buttons */}
-               <div className="flex justify-end space-x-3 mt-6 pt-6 border-t">
-                 <button
-                   onClick={handleCancelEdit}
-                   className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
-                 >
-                   Cancel
-                 </button>
-                 <button
-                   onClick={handleSaveProduct}
-                   className="px-4 py-2 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition-colors flex items-center"
-                 >
-                   <Save className="w-4 h-4 mr-2" />
-                   {isAddingProduct ? 'Add Product' : 'Save Changes'}
-                 </button>
-               </div>
              </div>
-           </motion.div>
+           </div>
          </div>
        )}
-     </div>
-   );
- }
+    </div>
+  );
+}
