@@ -32,7 +32,7 @@ export function ProductCard({ id, slug, name, price, images, categorySlug }: Pro
       id={`product-${id}`}
     >
       <Link href={`/products/${slug}`} className="block" data-testid="product-link">
-        <div className="relative aspect-square w-full overflow-hidden rounded-md bg-accent">
+        <div className="relative aspect-square w-full overflow-hidden rounded-md bg-accent border-2 border-black">
           <SmartImage
             srcs={[productImages[0] || '/images/MyImages/IMG-20250816-WA0000.jpg']}
             alt={`${name} - Handcrafted Jewelry`}

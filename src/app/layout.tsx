@@ -141,14 +141,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <style
           dangerouslySetInnerHTML={{
             __html: `
-             /* Critical above-the-fold styles */
-             .hero-section {
-               position: relative;
-               width: 100%;
-               height: 90vh;
-               min-height: 600px;
-               overflow: hidden;
-             }
+                           /* Critical above-the-fold styles */
+              .hero-section {
+                position: relative;
+                width: 100%;
+                height: 55vh;
+                min-height: 480px;
+                overflow: hidden;
+              }
              .hero-background {
                position: absolute;
                inset: 0;

@@ -53,10 +53,10 @@ export function Header() {
       <div className="container flex h-16 items-center justify-between">
         <Link
           href="/"
-          className="text-2xl font-bold tracking-wider text-black"
+          className="text-4xl font-bold tracking-wider text-black"
           style={{ fontFamily: 'Playfair Display, serif', letterSpacing: '0.1em' }}
         >
-          J&M Jewelry
+          J&M
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
           <Link href="/" className="text-sm text-text hover:text-secondary" data-testid="nav-home">
