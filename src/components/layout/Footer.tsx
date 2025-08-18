@@ -3,7 +3,7 @@ import Link from 'next/link';
 export function Footer() {
   return (
     <footer className="border-t bg-white">
-      <div className="container grid gap-8 py-10 md:grid-cols-4">
+      <div className="container grid gap-6 py-6 md:grid-cols-4">
         <div>
           <h3 className="text-lg font-[var(--font-serif)] font-semibold text-secondary">
             Aurora Jewelry
@@ -12,7 +12,7 @@ export function Footer() {
         </div>
         <div>
           <h4 className="text-sm font-semibold text-secondary">Quick Links</h4>
-          <ul className="mt-3 space-y-2 text-sm">
+          <ul className="mt-2 space-y-1 text-sm">
             <li>
               <Link href="/" className="hover:underline">
                 Home
@@ -37,7 +37,7 @@ export function Footer() {
         </div>
         <div>
           <h4 className="text-sm font-semibold text-secondary">Legal</h4>
-          <ul className="mt-3 space-y-2 text-sm">
+          <ul className="mt-2 space-y-1 text-sm">
             <li>
               <Link href="/terms" className="hover:underline">
                 Terms of Service
@@ -52,8 +52,8 @@ export function Footer() {
         </div>
         <div>
           <h4 className="text-sm font-semibold text-secondary">Newsletter</h4>
-          <p className="mt-3 text-sm text-gray-600">Join for exclusive offers.</p>
-          <form className="mt-3 flex gap-2" aria-label="Footer newsletter signup">
+          <p className="mt-2 text-sm text-gray-600">Join for exclusive offers.</p>
+          <form className="mt-2 flex gap-2" aria-label="Footer newsletter signup">
             <label htmlFor="footer-newsletter" className="sr-only">
               Email address
             </label>
@@ -72,7 +72,7 @@ export function Footer() {
           </form>
         </div>
       </div>
-      <div className="border-t py-4 text-center text-xs text-gray-600">
+      <div className="border-t py-3 text-center text-xs text-gray-600">
         © {new Date().getFullYear()} Aurora Jewelry. All rights reserved.
       </div>
     </footer>

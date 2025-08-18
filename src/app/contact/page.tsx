@@ -1,7 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { useState, type FormEvent, type ChangeEvent } from 'react';
+import { useState, type FormEvent, type ChangeEvent, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import {
   Mail,
   Phone,
@@ -19,6 +20,7 @@ import {
   Info,
   Image as ImageIcon,
   Heart,
+  Settings,
 } from 'lucide-react';
 
 
@@ -31,7 +33,22 @@ type ContactFormData = {
   file: File | null;
 };
 
+type CustomizationData = {
+  productName: string;
+  originalPrice: number;
+  customization: {
+    material: string;
+    gemColor: string;
+    gemDensity: string;
+    gemVariation: string;
+    ringSize: string;
+    ringWidth: string;
+    mixColors: string[];
+  };
+};
+
 export default function ContactPage() {
+  const searchParams = useSearchParams();
   const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
@@ -42,6 +59,43 @@ export default function ContactPage() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
+  const [customizationData, setCustomizationData] = useState<CustomizationData | null>(null);
+
+  // Handle customization data from URL parameters
+  useEffect(() => {
+    const customizationParam = searchParams?.get('customization');
+    if (customizationParam) {
+      try {
+        const decodedData = JSON.parse(decodeURIComponent(customizationParam));
+        setCustomizationData(decodedData);
+        
+        // Auto-populate form with customization details
+        const customizationMessage = `I'm interested in customizing the following ring:
+
+Product: ${decodedData.productName}
+Original Price: £${decodedData.originalPrice}
+
+My Customization Preferences:
+• Material: ${decodedData.customization.material}
+• Gem Color: ${decodedData.customization.gemColor}
+• Gem Density: ${decodedData.customization.gemDensity}
+• Gem Variation: ${decodedData.customization.gemVariation}
+• Ring Size: ${decodedData.customization.ringSize}
+• Ring Width: ${decodedData.customization.ringWidth}
+${decodedData.customization.mixColors.length > 0 ? `• Mix Colors: ${decodedData.customization.mixColors.join(', ')}` : ''}
+
+Please let me know if you can accommodate these customizations and what the estimated timeline and pricing would be. I'm also open to suggestions and recommendations based on your expertise.`;
+
+        setFormData(prev => ({
+          ...prev,
+          subject: 'custom',
+          message: customizationMessage
+        }));
+      } catch (error) {
+        console.error('Error parsing customization data:', error);
+      }
+    }
+  }, [searchParams]);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -146,7 +200,7 @@ export default function ContactPage() {
                   <MessageSquare className="h-10 w-10 text-primary" />
                 </motion.div>
 
-                <h1 className="mb-6 bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text font-serif text-5xl text-transparent md:text-6xl">
+                <h1 className="mb-6 bg-gradient-to-r from-gray-800 to-gray-600 bg-clip-text font-serif text-4xl text-transparent md:text-5xl">
                   Let's Create Something Special
                 </h1>
 
@@ -197,7 +251,7 @@ export default function ContactPage() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="mb-12 text-center font-serif text-3xl"
+                className="mb-12 text-center font-serif text-3xl text-orange-600"
               >
                 Choose Your Preferred Way to Connect
               </motion.h2>
@@ -222,9 +276,9 @@ export default function ContactPage() {
                       <method.icon className={`h-7 w-7 ${method.iconColor}`} />
                     </div>
 
-                    <h3 className="mb-1 text-lg font-semibold">{method.title}</h3>
-                    <p className="mb-2 font-medium text-gray-800">{method.value}</p>
-                    <p className="text-sm text-gray-600">{method.description}</p>
+                    <h3 className="mb-1 text-lg font-semibold text-gray-900">{method.title}</h3>
+                    <p className="mb-2 font-medium text-gray-900">{method.value}</p>
+                    <p className="text-sm text-gray-700">{method.description}</p>
 
                     <motion.div className="absolute bottom-3 right-3 opacity-0 transition-opacity group-hover:opacity-100">
                       <ArrowRight className="h-5 w-5 text-gray-400" />
@@ -248,10 +302,43 @@ export default function ContactPage() {
                   <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-xl">
                     <div className="mb-6 flex items-center gap-3">
                       <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary to-orange-500">
-                        <Send className="h-5 w-5 text-white" />
+                        <Send className="h-5 w-5 text-gray-900" />
                       </div>
-                      <h3 className="text-2xl font-semibold">Send a Message</h3>
+                      <h3 className="text-2xl font-semibold">
+                        {customizationData ? 'Custom Ring Inquiry' : 'Send a Message'}
+                      </h3>
                     </div>
+
+                    {/* Customization Summary */}
+                    {customizationData && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="mb-6 rounded-xl bg-gradient-to-r from-gold-50 to-amber-50 p-4 border border-gold-200"
+                      >
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gold-100">
+                            <Settings className="h-4 w-4 text-gold-600" />
+                          </div>
+                          <h4 className="font-semibold text-gold-800">Ring Customization Summary</h4>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2 text-sm">
+                          <div><span className="font-medium">Product:</span> {customizationData.productName}</div>
+                          <div><span className="font-medium">Base Price:</span> £{customizationData.originalPrice}</div>
+                          <div><span className="font-medium">Material:</span> {customizationData.customization.material}</div>
+                          <div><span className="font-medium">Gem Color:</span> {customizationData.customization.gemColor}</div>
+                          <div><span className="font-medium">Density:</span> {customizationData.customization.gemDensity}</div>
+                          <div><span className="font-medium">Variation:</span> {customizationData.customization.gemVariation}</div>
+                          <div><span className="font-medium">Size:</span> {customizationData.customization.ringSize}</div>
+                          <div><span className="font-medium">Width:</span> {customizationData.customization.ringWidth}</div>
+                          {customizationData.customization.mixColors.length > 0 && (
+                            <div className="col-span-2">
+                              <span className="font-medium">Mix Colors:</span> {customizationData.customization.mixColors.join(', ')}
+                            </div>
+                          )}
+                        </div>
+                      </motion.div>
+                    )}
 
                     {submitStatus === 'success' ? (
                       <motion.div
@@ -391,7 +478,7 @@ export default function ContactPage() {
                           disabled={isSubmitting}
                           whileHover={{ scale: 1.02 }}
                           whileTap={{ scale: 0.98 }}
-                          className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-orange-500 py-4 font-medium text-white shadow-lg transition-all hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50"
+                          className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-orange-500 py-4 font-medium text-gray-900 shadow-lg transition-all hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50"
                         >
                           {isSubmitting ? (
                             <>
@@ -425,7 +512,7 @@ export default function ContactPage() {
                         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-purple-100">
                           <MapPin className="h-5 w-5 text-purple-600" />
                         </div>
-                        <h3 className="text-lg font-semibold">Workshop Location</h3>
+                        <h3 className="text-lg font-semibold text-gray-900">Workshop Location</h3>
                       </div>
                       <p className="mb-2 text-gray-700">Based in Manchester, UK</p>
                       <p className="text-sm text-gray-600">
@@ -443,7 +530,7 @@ export default function ContactPage() {
                         <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-green-100">
                           <Clock className="h-5 w-5 text-green-600" />
                         </div>
-                        <h3 className="text-lg font-semibold">Business Hours</h3>
+                        <h3 className="text-lg font-semibold text-gray-900">Business Hours</h3>
                       </div>
                       <div className="space-y-2 text-sm">
                         <div className="flex justify-between">
@@ -473,7 +560,7 @@ export default function ContactPage() {
                                               <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-orange-100">
                         <Heart className="h-5 w-5 text-primary" />
                       </div>
-                        <h3 className="text-lg font-semibold">Follow the Journey</h3>
+                        <h3 className="text-lg font-semibold text-gray-900">Follow the Journey</h3>
                       </div>
                       <p className="mb-4 text-sm text-gray-600">
                         See work in progress, new designs, and behind-the-scenes content
@@ -508,14 +595,14 @@ export default function ContactPage() {
                   </div>
 
                   {/* Quick Tip */}
-                  <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-500 to-indigo-500 p-6 text-white">
+                  <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-500 to-indigo-500 p-6 text-gray-900">
                     <div className="absolute -right-5 -top-5 text-6xl opacity-10">💍</div>
                     <div className="relative">
                       <div className="mb-3 flex items-center gap-2">
                         <Info className="h-5 w-5" />
                         <h4 className="font-semibold">Pro Tip</h4>
                       </div>
-                      <p className="text-sm text-white/90">
+                      <p className="text-sm text-gray-700">
                         For custom designs, include as many details as possible - ring size,
                         preferred metals, stone preferences, and any inspiration images you have!
                       </p>
@@ -567,12 +654,12 @@ export default function ContactPage() {
           </section>
 
           {/* Final CTA */}
-          <section className="relative overflow-hidden bg-gradient-to-r from-primary via-orange-500 to-primary py-20">
-            <div className="absolute inset-0 bg-black/10" />
+          <section className="relative overflow-hidden bg-gradient-to-r from-amber-100 via-orange-100 to-yellow-100 py-20">
+            <div className="absolute inset-0 bg-black/5" />
             <motion.div
               animate={{ scale: [1, 1.2, 1], opacity: [0.3, 0.5, 0.3] }}
               transition={{ duration: 8, repeat: Infinity }}
-              className="absolute right-10 top-10 text-8xl text-white/20"
+              className="absolute right-10 top-10 text-8xl text-orange-200"
             >
               ✨
             </motion.div>
@@ -582,17 +669,17 @@ export default function ContactPage() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                className="text-center text-white"
+                className="text-center"
               >
-                <h2 className="mb-4 font-serif text-4xl">Let's Start Creating Your Perfect Ring</h2>
-                <p className="mx-auto mb-8 max-w-2xl text-xl text-white/90">
+                <h2 className="mb-4 font-serif text-4xl text-gray-900">Let's Start Creating Your Perfect Ring</h2>
+                <p className="mx-auto mb-8 max-w-2xl text-xl text-gray-700">
                   Every great ring begins with a conversation. I'm here to listen, advise, and bring
                   your vision to life.
                 </p>
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 font-medium text-primary shadow-xl transition-all hover:shadow-2xl"
+                  className="inline-flex items-center gap-2 rounded-full bg-orange-600 px-8 py-4 font-medium text-white shadow-xl transition-all hover:bg-orange-700 hover:shadow-2xl"
                 >
                   <Calendar className="h-5 w-5" />
                   Book a Consultation

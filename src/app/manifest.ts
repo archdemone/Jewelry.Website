@@ -22,13 +22,13 @@ export default function manifest(): MetadataRoute.Manifest {
         type: 'image/x-icon',
       },
       {
-        src: '/images/products/category-engagement-rings.jpg',
+        src: '/images/MyImages/category-engagement-rings.jpg',
         type: 'image/jpeg',
         sizes: '800x600',
         purpose: 'maskable',
       },
       {
-        src: '/images/products/placeholder.jpg',
+        src: '/images/MyImages/IMG-20250816-WA0000.jpg',
         type: 'image/jpeg',
         sizes: '600x600',
         purpose: 'any',
@@ -36,7 +36,7 @@ export default function manifest(): MetadataRoute.Manifest {
     ],
     screenshots: [
       {
-        src: '/images/products/category-engagement-rings.jpg',
+        src: '/images/MyImages/category-engagement-rings.jpg',
         sizes: '800x600',
         type: 'image/jpeg',
       },
@@ -48,14 +48,14 @@ export default function manifest(): MetadataRoute.Manifest {
         short_name: 'Engagement',
         description: 'Browse our handcrafted engagement rings',
         url: '/products?category=engagement-rings',
-        icons: [{ src: '/images/products/category-engagement-rings.jpg', sizes: '800x600' }],
+        icons: [{ src: '/images/MyImages/category-engagement-rings.jpg', sizes: '800x600' }],
       },
       {
         name: 'Wedding Bands',
         short_name: 'Wedding',
         description: 'Browse our handcrafted wedding bands',
         url: '/products?category=wedding-bands',
-        icons: [{ src: '/images/products/category-wedding-bands.jpg', sizes: '800x600' }],
+        icons: [{ src: '/images/MyImages/category-wedding-bands.jpg', sizes: '800x600' }],
       },
     ],
   };

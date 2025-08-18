@@ -14,6 +14,7 @@ import {
   LayoutGrid,
   Box,
   Shield,
+  Star,
 } from 'lucide-react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { buttonVariants } from '@/components/ui/button';
@@ -23,6 +24,7 @@ import clsx from 'clsx';
 const navItems = [
   { href: '/admin', label: 'Dashboard', icon: LayoutGrid },
   { href: '/admin/products', label: 'Products', icon: Package },
+  { href: '/admin/featured-products', label: 'Featured Products', icon: Star },
   { href: '/admin/orders', label: 'Orders', icon: ShoppingBag },
   { href: '/admin/customers', label: 'Customers', icon: Users },
   { href: '/admin/inventory', label: 'Inventory', icon: Box },

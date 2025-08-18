@@ -33,7 +33,7 @@ export function ProductCard({ id, slug, name, price, images, categorySlug }: Pro
       <Link href={`/products/${slug}`} className="block" data-testid="product-link">
         <div className="relative aspect-square w-full overflow-hidden rounded-md bg-accent">
           <SmartImage
-            srcs={[productImages[0] || '/images/products/placeholder.jpg']}
+            srcs={[productImages[0] || '/images/MyImages/IMG-20250816-WA0000.jpg']}
             alt={name}
             className="h-full w-full"
             width={600}
@@ -50,7 +50,7 @@ export function ProductCard({ id, slug, name, price, images, categorySlug }: Pro
           productId={id}
           name={name}
           price={price}
-          image={productImages[0] || '/images/products/placeholder.jpg'}
+          image={productImages[0] || '/images/MyImages/IMG-20250816-WA0000.jpg'}
         />
       </div>
     </div>

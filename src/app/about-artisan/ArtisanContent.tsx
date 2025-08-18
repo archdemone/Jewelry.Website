@@ -38,7 +38,7 @@ export default function ArtisanContent() {
               className="max-w-3xl"
             >
               <h1 className="mb-4 font-serif text-5xl text-white md:text-6xl">Meet the Artisan</h1>
-              <p className="text-xl leading-relaxed text-white/90">
+              <p className="text-xl leading-relaxed text-orange-400">
                 A journey from bedroom workshop to bringing affordable, handcrafted rings to
                 everyone
               </p>
@@ -92,7 +92,7 @@ export default function ArtisanContent() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="mb-10 text-center font-serif text-3xl"
+              className="mb-10 text-center font-serif text-3xl text-orange-600"
             >
               My Journey to Ring Making
             </motion.h2>
@@ -109,16 +109,23 @@ export default function ArtisanContent() {
                   <span className="text-2xl font-bold text-primary">2015</span>
                 </div>
                 <div className="flex-grow rounded-lg bg-white p-6 shadow-md">
-                  <h3 className="mb-2 text-xl font-semibold">The Spark Begins</h3>
+                  <h3 className="mb-2 text-xl font-semibold text-orange-600">The Spark Begins</h3>
                   <p className="text-gray-600">
                     Started experimenting with jewelry-making as a hobby. What began as curiosity
                     about how things are made slowly grew into a genuine passion for crafting.
                   </p>
-                  <div className="mt-4">
-                    <div className="w-full h-48 bg-gradient-to-br from-amber-100 to-gold-200 rounded-lg flex items-center justify-center">
-                      <p className="text-gray-600 text-center">Early jewelry experiments from 2015</p>
-                    </div>
-                  </div>
+                                     <div className="mt-4">
+                     <div className="relative w-full h-48 rounded-lg overflow-hidden">
+                       <Image
+                         src="/images/artisan/early-work-2015.jpg"
+                         alt="Early jewelry experiments from 2015"
+                         fill
+                         className="object-cover"
+                         sizes="(max-width: 768px) 100vw, 400px"
+                         priority={false}
+                       />
+                     </div>
+                   </div>
                 </div>
               </motion.div>
 
@@ -133,16 +140,23 @@ export default function ArtisanContent() {
                   <span className="text-2xl font-bold text-primary">2020</span>
                 </div>
                 <div className="flex-grow rounded-lg bg-white p-6 shadow-md">
-                  <h3 className="mb-2 text-xl font-semibold">First Real Achievement</h3>
+                  <h3 className="mb-2 text-xl font-semibold text-orange-600">First Real Achievement</h3>
                   <p className="text-gray-600">
                     Created my first set of gem-filled inlay rings combining metal and carbon fiber.
                     This was the moment I realized I could create something truly special.
                   </p>
-                  <div className="mt-4">
-                    <div className="w-full h-48 bg-gradient-to-br from-blue-100 to-indigo-200 rounded-lg flex items-center justify-center">
-                      <p className="text-gray-600 text-center">First gem inlay rings with carbon fiber</p>
-                    </div>
-                  </div>
+                                     <div className="mt-4">
+                     <div className="relative w-full h-48 rounded-lg overflow-hidden">
+                       <Image
+                         src="/images/artisan/first-inlay-rings-2020.jpg"
+                         alt="First gem inlay rings with carbon fiber"
+                         fill
+                         className="object-cover"
+                         sizes="(max-width: 768px) 100vw, 400px"
+                         priority={false}
+                       />
+                     </div>
+                   </div>
                 </div>
               </motion.div>
 
@@ -157,7 +171,7 @@ export default function ArtisanContent() {
                   <span className="text-2xl font-bold text-primary">2023-25</span>
                 </div>
                 <div className="flex-grow rounded-lg border-2 border-blue-200 bg-gradient-to-r from-blue-50 to-purple-50 p-6 shadow-md">
-                  <h3 className="mb-2 text-xl font-semibold">Finding Purpose Through Adversity</h3>
+                  <h3 className="mb-2 text-xl font-semibold text-orange-600">Finding Purpose Through Adversity</h3>
                   <p className="text-gray-700">
                     Life threw its biggest challenges yet. Health issues left me unable to work
                     traditionally, but in this difficulty, I found renewed purpose. Creating rings
@@ -185,7 +199,7 @@ export default function ArtisanContent() {
                   <span className="text-2xl font-bold text-primary">NOW</span>
                 </div>
                 <div className="flex-grow rounded-lg border-2 border-green-300 bg-gradient-to-r from-green-50 to-emerald-50 p-6 shadow-md">
-                  <h3 className="mb-2 text-xl font-semibold">A New Chapter Begins</h3>
+                  <h3 className="mb-2 text-xl font-semibold text-orange-600">A New Chapter Begins</h3>
                   <p className="text-gray-700">
                     With support from the local council district, this business is now official!
                     It's a dream becoming reality—turning my bedroom workshop into a real business
@@ -227,9 +241,16 @@ export default function ArtisanContent() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
               >
-                <div className="w-full h-64 bg-gradient-to-br from-stone-100 to-gray-200 rounded-lg shadow-lg flex items-center justify-center">
-                  <p className="text-gray-600 text-center">My bedroom workshop setup</p>
-                </div>
+                                 <div className="relative w-full h-64 rounded-lg shadow-lg overflow-hidden">
+                   <Image
+                     src="/images/artisan/bedroom-workshop-1.jpg"
+                     alt="My bedroom workshop setup"
+                     fill
+                     className="object-cover"
+                     sizes="(max-width: 768px) 100vw, 600px"
+                     priority={false}
+                   />
+                 </div>
                 <p className="mt-2 text-center text-sm text-gray-500">
                   Where the magic happens - my bedroom workshop
                 </p>
@@ -240,9 +261,16 @@ export default function ArtisanContent() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
               >
-                <div className="w-full h-64 bg-gradient-to-br from-amber-100 to-orange-200 rounded-lg shadow-lg flex items-center justify-center">
-                  <p className="text-gray-600 text-center">Ring making tools and materials</p>
-                </div>
+                                 <div className="relative w-full h-64 rounded-lg shadow-lg overflow-hidden">
+                   <Image
+                     src="/images/artisan/workshop-tools.jpg"
+                     alt="Ring making tools and materials"
+                     fill
+                     className="object-cover"
+                     sizes="(max-width: 768px) 100vw, 600px"
+                     priority={false}
+                   />
+                 </div>
                 <p className="mt-2 text-center text-sm text-gray-500">
                   Simple tools, endless possibilities
                 </p>
@@ -270,7 +298,7 @@ export default function ArtisanContent() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="mb-10 text-center font-serif text-3xl"
+              className="mb-10 text-center font-serif text-3xl text-orange-600"
             >
               My Commitments to You
             </motion.h2>
@@ -346,7 +374,7 @@ export default function ArtisanContent() {
               className="text-center"
             >
               <Users className="mx-auto mb-4 h-12 w-12 text-blue-600" />
-              <h2 className="mb-6 font-serif text-3xl">With Grateful Support</h2>
+              <h2 className="mb-6 font-serif text-3xl text-orange-600">With Grateful Support</h2>
 
               <div className="mx-auto max-w-2xl rounded-xl bg-white p-8 shadow-lg">
                 <div className="mb-4 flex items-center justify-center gap-4">
@@ -367,9 +395,9 @@ export default function ArtisanContent() {
 
                 <div className="mt-6 border-t border-gray-200 pt-6">
                   <p className="text-sm text-gray-500">
-                    Registration Number: [Council Registration Number]
+                    Registration Number: <span className="text-green-600 font-semibold">[Council Registration Number]</span>
                     <br />
-                    District: [Local District Name]
+                    District: <span className="text-green-600 font-semibold">[Ryedale District Council]</span>
                   </p>
                 </div>
               </div>
@@ -418,7 +446,7 @@ export default function ArtisanContent() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="mb-6 font-serif text-3xl">Ready to Start Your Ring Journey?</h2>
+              <h2 className="mb-6 font-serif text-3xl text-orange-600">Ready to Start Your Ring Journey?</h2>
               <p className="mb-8 text-lg text-gray-600">
                 Whether you're looking for something from my collection or dreaming of a custom
                 design, I'd be honored to create something special for you.

@@ -113,6 +113,25 @@ html {
   color: #1f2937; /* gray-800 */
 }
 
+/* Fix text contrast issues on light backgrounds */
+.bg-gradient-to-br.from-amber-50.via-orange-50.to-yellow-50 .text-white,
+.bg-gradient-to-r.from-amber-50.via-orange-50.to-yellow-50 .text-white {
+  color: #1f2937 !important; /* gray-800 */
+}
+
+/* Ensure proper contrast for buttons and text on light backgrounds */
+.bg-gradient-to-br.from-amber-50.via-orange-50.to-yellow-50 button,
+.bg-gradient-to-r.from-amber-50.via-orange-50.to-yellow-50 button {
+  color: #1f2937 !important; /* gray-800 */
+}
+
+/* Fix any other white text on light background issues */
+.bg-amber-50 .text-white,
+.bg-orange-50 .text-white,
+.bg-yellow-50 .text-white {
+  color: #1f2937 !important; /* gray-800 */
+}
+
 /* Tighter spacing throughout site */
 section {
   padding-top: 3rem;

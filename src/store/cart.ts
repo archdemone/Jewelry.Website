@@ -6,6 +6,12 @@ type CartItem = {
   price: number;
   image: string;
   quantity: number;
+  material?: string;
+  gemColor?: string;
+  gemDensity?: string;
+  gemVariation?: string;
+  ringSize?: string;
+  ringWidth?: string;
 };
 
 type CartState = {
