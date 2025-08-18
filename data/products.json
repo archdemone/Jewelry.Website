@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "name": "Women's Silver Inlay Ring - Dark Red",
+    "name": "Couple Set Silver Inlay Ring - Mixed Red Mixed Blue",
     "price": 65,
     "originalPrice": 75,
     "images": [
@@ -10,9 +10,13 @@
     "material": "Silver",
     "gemColor": "Red",
     "gemDensity": "medium",
-    "gemVariation": "Dark",
-    "mixColors": [],
-    "category": "Womens",
+    "gemVariation": "Mixed",
+    "mixColors": [
+      "Green",
+      "Blue",
+      "Yellow"
+    ],
+    "category": "Couple Ring Set",
     "subCategory": "Inlay Ring",
     "ringSizes": {
       "us": [
@@ -40,7 +44,7 @@
     "reviews": 24,
     "badge": "Ready to Ship",
     "slug": "womens-silver-inlay-ring-dark-red",
-    "description": "Beautiful handcrafted silver ring with dark red gem inlay. Perfect for everyday wear or special occasions."
+    "description": "Beautiful handcrafted silver set of rings with Mixed Red gem inlay and other with Mixed Blue . Perfect for couples in 'Opposites Attract' mind set."
   },
   {
     "id": 2,

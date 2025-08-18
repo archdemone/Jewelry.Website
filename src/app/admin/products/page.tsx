@@ -18,7 +18,10 @@ import {
   Package,
   Settings,
   Star,
+  X,
+  Save,
 } from 'lucide-react';
+import { motion } from 'framer-motion';
 import { ColorChip } from '@/components/admin/ColorChip';
 
 interface RingProduct {
@@ -53,6 +56,8 @@ export default function AdminProductsPage() {
   const [category, setCategory] = useState('all');
   const [material, setMaterial] = useState('all');
   const [readyToShip, setReadyToShip] = useState('all');
+  const [editingProduct, setEditingProduct] = useState<RingProduct | null>(null);
+  const [isAddingProduct, setIsAddingProduct] = useState(false);
 
   // Default seed data
   const defaultProducts: RingProduct[] = [
@@ -166,6 +171,8 @@ export default function AdminProductsPage() {
     'Gold',
   ];
   const gemColors = ['Red', 'Green', 'Blue', 'Purple', 'Yellow', 'Custom'];
+  const gemDensities = ['small', 'medium', 'large'];
+  const gemVariations = ['Dark', 'Mixed', 'Bright'];
 
   // Filter products based on search and filters
   const filteredProducts = products.filter((product) => {
@@ -187,6 +194,92 @@ export default function AdminProductsPage() {
     );
   });
 
+  const handleEditProduct = (product: RingProduct) => {
+    setEditingProduct({ ...product });
+    setIsAddingProduct(false);
+  };
+
+  const handleAddProduct = () => {
+    const newProduct: RingProduct = {
+      id: Date.now().toString(),
+      name: '',
+      sku: '',
+      category: 'Womens',
+      price: 0,
+      material: 'Silver',
+      gemColor: 'Red',
+      gemDensity: 'medium',
+      gemVariation: 'Dark',
+      mixColors: [],
+      ringSizes: { us: [], eu: [] },
+      ringWidth: [],
+      isReadyToShip: true,
+      status: 'draft',
+      images: [],
+      description: '',
+    };
+    setEditingProduct(newProduct);
+    setIsAddingProduct(true);
+  };
+
+  const handleSaveProduct = async () => {
+    if (!editingProduct) return;
+
+    try {
+      if (isAddingProduct) {
+        // Add new product
+        const newProduct = { ...editingProduct, id: Date.now().toString() };
+        setProducts([...products, newProduct]);
+        
+        // Save to localStorage
+        const existing = localStorage.getItem('admin_products');
+        const existingProducts = existing ? JSON.parse(existing) : [];
+        localStorage.setItem('admin_products', JSON.stringify([...existingProducts, newProduct]));
+      } else {
+        // Update existing product
+        setProducts(products.map(p => p.id === editingProduct.id ? editingProduct : p));
+        
+        // Update localStorage
+        const existing = localStorage.getItem('admin_products');
+        const existingProducts = existing ? JSON.parse(existing) : [];
+        const updatedProducts = existingProducts.map((p: RingProduct) => 
+          p.id === editingProduct.id ? editingProduct : p
+        );
+        localStorage.setItem('admin_products', JSON.stringify(updatedProducts));
+      }
+      
+      setEditingProduct(null);
+      setIsAddingProduct(false);
+      
+      // Show success message
+      alert(isAddingProduct ? 'Product added successfully!' : 'Product updated successfully!');
+    } catch (error) {
+      console.error('Error saving product:', error);
+      alert('Error saving product. Please try again.');
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditingProduct(null);
+    setIsAddingProduct(false);
+  };
+
+  const handleDeleteProduct = async (productId: string) => {
+    if (confirm('Are you sure you want to delete this product?')) {
+      try {
+        setProducts(products.filter(p => p.id !== productId));
+        
+        // Update localStorage
+        const existing = localStorage.getItem('admin_products');
+        const existingProducts = existing ? JSON.parse(existing) : [];
+        const updatedProducts = existingProducts.filter((p: RingProduct) => p.id !== productId);
+        localStorage.setItem('admin_products', JSON.stringify(updatedProducts));
+      } catch (error) {
+        console.error('Error deleting product:', error);
+      }
+    }
+  };
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -195,18 +288,16 @@ export default function AdminProductsPage() {
           <h1 className="text-3xl font-bold text-gray-900">Ring Products</h1>
           <p className="mt-1 text-gray-600">Manage your handcrafted ring collection</p>
         </div>
-        <Link href="/admin/products/new">
-          <Button className="bg-gold-500 hover:bg-gold-600">
-            <Plus className="mr-2 h-4 w-4" />
-            Add New Ring
-          </Button>
-        </Link>
+                 <Button onClick={handleAddProduct} className="bg-gold-500 hover:bg-gold-600">
+           <Plus className="mr-2 h-4 w-4" />
+           Add New Ring
+         </Button>
       </div>
 
       {/* Filters */}
-      <Card className="p-6">
-        <div className="flex flex-wrap items-center gap-4">
-          <div className="relative min-w-[300px] flex-1">
+      <Card className="p-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-3">
+          <div className="lg:col-span-2 relative">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
             <Input
               placeholder="Search rings by name or SKU..."
@@ -268,34 +359,19 @@ export default function AdminProductsPage() {
       {/* Products Table */}
       <Card className="overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full min-w-[800px]">
             <thead className="border-b bg-gray-50">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   Product
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                  SKU
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  Details
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                  Category
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                  Price & Status
                 </th>
-                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                  Material
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                  Gem Details
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                  Price
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                  Availability
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                  Status
-                </th>
-                <th className="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
                   Actions
                 </th>
               </tr>
@@ -303,9 +379,9 @@ export default function AdminProductsPage() {
             <tbody className="divide-y divide-gray-200 bg-white">
               {filteredProducts.map((product) => (
                 <tr key={product.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4">
+                  <td className="px-4 py-3">
                     <div className="flex items-center">
-                      <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg bg-gray-200">
+                      <div className="h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg bg-gray-200">
                         {product.images[0] && (
                           <img
                             src={product.images[0]}
@@ -314,9 +390,9 @@ export default function AdminProductsPage() {
                           />
                         )}
                       </div>
-                      <div className="ml-4">
-                        <div className="text-sm font-medium text-gray-900">{product.name}</div>
-                        <div className="text-sm text-gray-500">{product.subCategory}</div>
+                      <div className="ml-3 min-w-0 flex-1">
+                        <div className="text-sm font-medium text-gray-900 truncate">{product.name}</div>
+                        <div className="text-xs text-gray-500 truncate">{product.sku}</div>
                         {product.rating && (
                           <div className="mt-1 flex items-center">
                             <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
@@ -328,20 +404,16 @@ export default function AdminProductsPage() {
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 font-mono text-sm text-gray-900">{product.sku}</td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm text-gray-900">{product.category}</div>
-                    {product.subCategory && (
-                      <div className="text-xs text-gray-500">{product.subCategory}</div>
-                    )}
-                  </td>
-                  <td className="px-6 py-4">
-                    <Badge variant="outline" className="text-xs">
-                      {product.material}
-                    </Badge>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm">
+                  <td className="px-4 py-3">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <Badge variant="outline" className="text-xs">
+                          {product.category}
+                        </Badge>
+                        <Badge variant="outline" className="text-xs">
+                          {product.material}
+                        </Badge>
+                      </div>
                       <div className="flex items-center gap-2">
                         <ColorChip gemName={product.gemColor} />
                         <span className="text-xs text-gray-600">
@@ -349,69 +421,81 @@ export default function AdminProductsPage() {
                         </span>
                       </div>
                       {product.mixColors.length > 0 && (
-                        <div className="mt-1 flex flex-wrap gap-1 text-xs text-gray-600">
-                          {product.mixColors.map((c) => (
+                        <div className="flex flex-wrap gap-1">
+                          {product.mixColors.slice(0, 2).map((c) => (
                             <ColorChip key={c} gemName={c} />
                           ))}
+                          {product.mixColors.length > 2 && (
+                            <span className="text-xs text-gray-500">+{product.mixColors.length - 2}</span>
+                          )}
                         </div>
                       )}
                     </div>
                   </td>
-                  <td className="px-6 py-4">
-                    <div className="text-sm">
-                      <div className="font-medium text-gray-900">£{product.price}</div>
-                      {product.originalPrice && (
-                        <div className="text-xs text-gray-500 line-through">
-                          £{product.originalPrice}
-                        </div>
-                      )}
+                  <td className="px-4 py-3">
+                    <div className="space-y-1">
+                      <div className="text-sm">
+                        <div className="font-medium text-gray-900">£{product.price}</div>
+                        {product.originalPrice && (
+                          <div className="text-xs text-gray-500 line-through">
+                            £{product.originalPrice}
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex flex-wrap gap-1">
+                        {product.isReadyToShip ? (
+                          <Badge className="bg-green-100 text-green-800 hover:bg-green-100 text-xs">
+                            ✓ Ready
+                          </Badge>
+                        ) : (
+                          <Badge variant="secondary" className="bg-blue-100 text-blue-800 text-xs">
+                            Custom
+                          </Badge>
+                        )}
+                        {product.status === 'active' ? (
+                          <Badge className="bg-green-100 text-green-800 text-xs">Active</Badge>
+                        ) : product.status === 'draft' ? (
+                          <Badge variant="secondary" className="bg-yellow-100 text-yellow-800 text-xs">
+                            Draft
+                          </Badge>
+                        ) : (
+                          <Badge variant="outline" className="text-gray-500 text-xs">
+                            Archived
+                          </Badge>
+                        )}
+                      </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4">
-                    {product.isReadyToShip ? (
-                      <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
-                        ✓ Ready to Ship
-                      </Badge>
-                    ) : (
-                      <Badge variant="secondary" className="bg-blue-100 text-blue-800">
-                        Custom Order
-                      </Badge>
-                    )}
-                  </td>
-                  <td className="px-6 py-4">
-                    {product.status === 'active' ? (
-                      <Badge className="bg-green-100 text-green-800">Active</Badge>
-                    ) : product.status === 'draft' ? (
-                      <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">
-                        Draft
-                      </Badge>
-                    ) : (
-                      <Badge variant="outline" className="text-gray-500">
-                        Archived
-                      </Badge>
-                    )}
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <Link
-                        href={`/admin/products/${product.id}`}
-                        className="p-1 text-gold-600 hover:text-gold-700"
-                      >
-                        <Edit className="h-4 w-4" />
-                      </Link>
-                      <Link
-                        href={`/products/${product.id}`}
-                        className="p-1 text-gray-600 hover:text-gray-700"
-                      >
-                        <Eye className="h-4 w-4" />
-                      </Link>
-                      <button className="p-1 text-gray-600 hover:text-gray-700">
-                        <Copy className="h-4 w-4" />
-                      </button>
-                      <button className="p-1 text-red-600 hover:text-red-700">
-                        <Trash2 className="h-4 w-4" />
-                      </button>
-                    </div>
+                  <td className="px-4 py-3">
+                                         <div className="flex items-center gap-1">
+                       <button
+                         onClick={() => handleEditProduct(product)}
+                         className="p-1.5 text-gold-600 hover:text-gold-700 hover:bg-gold-50 rounded"
+                         title="Edit"
+                       >
+                         <Edit className="h-4 w-4" />
+                       </button>
+                       <Link
+                         href={`/products/${product.id}`}
+                         className="p-1.5 text-gray-600 hover:text-gray-700 hover:bg-gray-50 rounded"
+                         title="View"
+                       >
+                         <Eye className="h-4 w-4" />
+                       </Link>
+                       <button 
+                         className="p-1.5 text-gray-600 hover:text-gray-700 hover:bg-gray-50 rounded"
+                         title="Duplicate"
+                       >
+                         <Copy className="h-4 w-4" />
+                       </button>
+                       <button 
+                         onClick={() => handleDeleteProduct(product.id)}
+                         className="p-1.5 text-red-600 hover:text-red-700 hover:bg-red-50 rounded"
+                         title="Delete"
+                       >
+                         <Trash2 className="h-4 w-4" />
+                       </button>
+                     </div>
                   </td>
                 </tr>
               ))}
@@ -424,12 +508,10 @@ export default function AdminProductsPage() {
             <Package className="mx-auto mb-4 h-12 w-12 text-gray-400" />
             <h3 className="mb-2 text-lg font-medium text-gray-900">No rings found</h3>
             <p className="mb-4 text-gray-600">Try adjusting your search or filters</p>
-            <Link href="/admin/products/new">
-              <Button className="bg-gold-500 hover:bg-gold-600">
-                <Plus className="mr-2 h-4 w-4" />
-                Add Your First Ring
-              </Button>
-            </Link>
+                         <Button onClick={handleAddProduct} className="bg-gold-500 hover:bg-gold-600">
+               <Plus className="mr-2 h-4 w-4" />
+               Add Your First Ring
+             </Button>
           </div>
         )}
       </Card>
@@ -486,7 +568,235 @@ export default function AdminProductsPage() {
         </Card>
       </div>
 
-      <BulkActions />
-    </div>
-  );
-}
+             <BulkActions />
+
+       {/* Edit/Add Product Modal */}
+       {editingProduct && (
+         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+           <motion.div
+             initial={{ opacity: 0, scale: 0.9 }}
+             animate={{ opacity: 1, scale: 1 }}
+             className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+           >
+             <div className="p-6">
+               <div className="flex items-center justify-between mb-6">
+                 <h2 className="text-2xl font-bold text-gray-900">
+                   {isAddingProduct ? 'Add New Product' : 'Edit Product'}
+                 </h2>
+                 <button
+                   onClick={handleCancelEdit}
+                   className="p-2 hover:bg-gray-100 rounded-lg"
+                 >
+                   <X className="w-5 h-5" />
+                 </button>
+               </div>
+
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                 {/* Basic Information */}
+                 <div className="space-y-4">
+                   <div>
+                     <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
+                     <input
+                       type="text"
+                       value={editingProduct.name}
+                       onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
+                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                     />
+                   </div>
+
+                   <div>
+                     <label className="block text-sm font-medium text-gray-700 mb-1">SKU</label>
+                     <input
+                       type="text"
+                       value={editingProduct.sku}
+                       onChange={(e) => setEditingProduct({ ...editingProduct, sku: e.target.value })}
+                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                     />
+                   </div>
+
+                   <div>
+                     <label className="block text-sm font-medium text-gray-700 mb-1">Price (£)</label>
+                     <input
+                       type="number"
+                       value={editingProduct.price}
+                       onChange={(e) => setEditingProduct({ ...editingProduct, price: Number(e.target.value) })}
+                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                     />
+                   </div>
+
+                   <div>
+                     <label className="block text-sm font-medium text-gray-700 mb-1">Original Price (£)</label>
+                     <input
+                       type="number"
+                       value={editingProduct.originalPrice || ''}
+                       onChange={(e) => setEditingProduct({ ...editingProduct, originalPrice: Number(e.target.value) || null })}
+                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                     />
+                   </div>
+
+                   <div>
+                     <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                     <select
+                       value={editingProduct.category}
+                       onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value })}
+                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                     >
+                       <option value="Wedding">Wedding Rings</option>
+                       <option value="Inlay Ring">Inlay Rings</option>
+                       <option value="Couple Ring Set">Couple Ring Set</option>
+                       <option value="Mens">Men's Rings</option>
+                       <option value="Womens">Women's Rings</option>
+                       <option value="Unisex">Unisex Rings</option>
+                       <option value="Single Inlay">Single Inlay</option>
+                       <option value="Double Inlay">Double Inlay</option>
+                     </select>
+                   </div>
+
+                   <div>
+                     <label className="block text-sm font-medium text-gray-700 mb-1">Sub Category</label>
+                     <input
+                       type="text"
+                       value={editingProduct.subCategory || ''}
+                       onChange={(e) => setEditingProduct({ ...editingProduct, subCategory: e.target.value })}
+                       placeholder="e.g., Engagement, Anniversary"
+                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                     />
+                   </div>
+                 </div>
+
+                 {/* Product Specifications */}
+                 <div className="space-y-4">
+                   <div>
+                     <label className="block text-sm font-medium text-gray-700 mb-1">Material</label>
+                     <select
+                       value={editingProduct.material}
+                       onChange={(e) => setEditingProduct({ ...editingProduct, material: e.target.value })}
+                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                     >
+                       {materials.map((material) => (
+                         <option key={material} value={material}>{material}</option>
+                       ))}
+                     </select>
+                   </div>
+
+                   <div>
+                     <label className="block text-sm font-medium text-gray-700 mb-1">Primary Gem Color</label>
+                     <select
+                       value={editingProduct.gemColor}
+                       onChange={(e) => setEditingProduct({ ...editingProduct, gemColor: e.target.value })}
+                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                     >
+                       {gemColors.map((color) => (
+                         <option key={color} value={color}>{color}</option>
+                       ))}
+                     </select>
+                   </div>
+
+                   <div>
+                     <label className="block text-sm font-medium text-gray-700 mb-1">Mix Colors (for Custom option)</label>
+                     <div className="flex flex-wrap gap-2">
+                       {['Red', 'Green', 'Blue', 'Purple', 'Yellow', 'Black', 'White', 'Pink', 'Orange', 'Turquoise'].map((color) => (
+                         <label key={color} className="flex items-center">
+                           <input
+                             type="checkbox"
+                             checked={editingProduct.mixColors?.includes(color) || false}
+                             onChange={(e) => {
+                               const newMixColors = e.target.checked
+                                 ? [...(editingProduct.mixColors || []), color]
+                                 : (editingProduct.mixColors || []).filter(c => c !== color);
+                               setEditingProduct({ ...editingProduct, mixColors: newMixColors });
+                             }}
+                             className="mr-1"
+                           />
+                           <span className="text-sm">{color}</span>
+                         </label>
+                       ))}
+                     </div>
+                   </div>
+
+                   <div>
+                     <label className="block text-sm font-medium text-gray-700 mb-1">Gem Density</label>
+                     <select
+                       value={editingProduct.gemDensity}
+                       onChange={(e) => setEditingProduct({ ...editingProduct, gemDensity: e.target.value })}
+                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                     >
+                       {gemDensities.map((density) => (
+                         <option key={density} value={density}>{density}</option>
+                       ))}
+                     </select>
+                   </div>
+
+                   <div>
+                     <label className="block text-sm font-medium text-gray-700 mb-1">Gem Variation</label>
+                     <select
+                       value={editingProduct.gemVariation}
+                       onChange={(e) => setEditingProduct({ ...editingProduct, gemVariation: e.target.value })}
+                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                     >
+                       {gemVariations.map((variation) => (
+                         <option key={variation} value={variation}>{variation}</option>
+                       ))}
+                     </select>
+                   </div>
+
+                   <div className="flex items-center gap-2">
+                     <input
+                       type="checkbox"
+                       id="readyToShip"
+                       checked={editingProduct.isReadyToShip}
+                       onChange={(e) => setEditingProduct({ ...editingProduct, isReadyToShip: e.target.checked })}
+                       className="rounded"
+                     />
+                     <label htmlFor="readyToShip" className="text-sm font-medium text-gray-700">Ready to Ship</label>
+                   </div>
+
+                   <div>
+                     <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                     <select
+                       value={editingProduct.status}
+                       onChange={(e) => setEditingProduct({ ...editingProduct, status: e.target.value as 'active' | 'draft' | 'archived' })}
+                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                     >
+                       <option value="active">Active</option>
+                       <option value="draft">Draft</option>
+                       <option value="archived">Archived</option>
+                     </select>
+                   </div>
+                 </div>
+               </div>
+
+               {/* Description */}
+               <div className="mt-6">
+                 <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                 <textarea
+                   value={editingProduct.description || ''}
+                   onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}
+                   rows={3}
+                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                 />
+               </div>
+
+               {/* Action Buttons */}
+               <div className="flex justify-end space-x-3 mt-6 pt-6 border-t">
+                 <button
+                   onClick={handleCancelEdit}
+                   className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                 >
+                   Cancel
+                 </button>
+                 <button
+                   onClick={handleSaveProduct}
+                   className="px-4 py-2 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition-colors flex items-center"
+                 >
+                   <Save className="w-4 h-4 mr-2" />
+                   {isAddingProduct ? 'Add Product' : 'Save Changes'}
+                 </button>
+               </div>
+             </div>
+           </motion.div>
+         </div>
+       )}
+     </div>
+   );
+ }
