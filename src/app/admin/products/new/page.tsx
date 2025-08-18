@@ -126,6 +126,14 @@ export default function AddNewRingPage() {
       
       // if (!response.ok) throw new Error('Failed to save product');
       
+      // Persist to localStorage so it appears on the products list
+      try {
+        const raw = typeof window !== 'undefined' ? localStorage.getItem('admin_products') : null;
+        const existing = raw ? JSON.parse(raw) : [];
+        const updated = [newProduct, ...existing];
+        localStorage.setItem('admin_products', JSON.stringify(updated));
+      } catch {}
+
       // For now, we'll simulate success and redirect
       alert('Product saved successfully!');
       window.location.href = '/admin/products';

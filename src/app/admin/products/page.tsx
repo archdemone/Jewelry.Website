@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -19,6 +19,7 @@ import {
   Settings,
   Star,
 } from 'lucide-react';
+import { ColorChip } from '@/components/admin/ColorChip';
 
 interface RingProduct {
   id: string;
@@ -53,8 +54,8 @@ export default function AdminProductsPage() {
   const [material, setMaterial] = useState('all');
   const [readyToShip, setReadyToShip] = useState('all');
 
-  // Sample data with your ring specifications
-  const products: RingProduct[] = [
+  // Default seed data
+  const defaultProducts: RingProduct[] = [
     {
       id: 'p1',
       name: "Women's Silver Inlay Ring - Dark Red",
@@ -121,6 +122,27 @@ export default function AdminProductsPage() {
       description: 'Lightweight carbon ring with mixed green and blue gem inlay.',
     },
   ];
+
+  const [products, setProducts] = useState<RingProduct[]>(defaultProducts);
+
+  // Load admin-created products from localStorage and merge
+  useEffect(() => {
+    try {
+      const raw = typeof window !== 'undefined' ? localStorage.getItem('admin_products') : null;
+      if (raw) {
+        const created: RingProduct[] = JSON.parse(raw);
+        // Deduplicate by id if overlaps
+        const map = new Map<string, RingProduct>();
+        [...created, ...defaultProducts].forEach((p) => map.set(p.id, p));
+        setProducts(Array.from(map.values()));
+      } else {
+        setProducts(defaultProducts);
+      }
+    } catch {
+      setProducts(defaultProducts);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const categories = [
     'Wedding',
@@ -321,30 +343,16 @@ export default function AdminProductsPage() {
                   <td className="px-6 py-4">
                     <div className="text-sm">
                       <div className="flex items-center gap-2">
-                        <div className="flex items-center gap-1">
-                          <div
-                            className="h-3 w-3 rounded-full border border-gray-200"
-                            style={{
-                              backgroundColor: 
-                                product.gemColor === 'Red' ? '#dc2626' :
-                                product.gemColor === 'Green' ? '#16a34a' :
-                                product.gemColor === 'Blue' ? '#2563eb' :
-                                product.gemColor === 'Purple' ? '#9333ea' :
-                                product.gemColor === 'Yellow' ? '#ca8a04' :
-                                '#6b7280'
-                            }}
-                          />
-                          <Badge variant="secondary" className="text-xs">
-                            {product.gemColor}
-                          </Badge>
-                        </div>
-                        <span className="text-xs text-gray-500">
+                        <ColorChip gemName={product.gemColor} />
+                        <span className="text-xs text-gray-600">
                           {product.gemDensity} • {product.gemVariation}
                         </span>
                       </div>
                       {product.mixColors.length > 0 && (
-                        <div className="mt-1 text-xs text-gray-500">
-                          Mix: {product.mixColors.join(', ')}
+                        <div className="mt-1 flex flex-wrap gap-1 text-xs text-gray-600">
+                          {product.mixColors.map((c) => (
+                            <ColorChip key={c} gemName={c} />
+                          ))}
                         </div>
                       )}
                     </div>
