@@ -25,7 +25,7 @@ const nextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     domains: [],
     unoptimized: false,
-    quality: 75,
+    quality: 60, // Reduced default quality
   },
   compress: true,
   poweredByHeader: false,
@@ -60,6 +60,13 @@ const nextConfig = {
             priority: 20,
             reuseExistingChunk: true,
           },
+          framer: {
+            test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
+            name: 'framer',
+            chunks: 'all',
+            priority: 15,
+            reuseExistingChunk: true,
+          },
         },
       };
     }
@@ -73,20 +80,20 @@ const nextConfig = {
           options: {
             mozjpeg: {
               progressive: true,
-              quality: 65,
+              quality: 60, // Reduced quality
             },
             optipng: {
               enabled: false,
             },
             pngquant: {
-              quality: [0.65, 0.90],
+              quality: [0.60, 0.80], // Reduced quality range
               speed: 4,
             },
             gifsicle: {
               interlaced: false,
             },
             webp: {
-              quality: 75,
+              quality: 60, // Reduced quality
             },
           },
         },

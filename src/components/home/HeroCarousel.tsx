@@ -1,119 +1,54 @@
 'use client';
 
-import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const heroImages = [
-  {
-    src: '/images/header/hero-1-1920.webp',
-    alt: 'Elegant handcrafted jewelry',
-    title: 'Discover Timeless Jewelry',
-    subtitle: 'Handcrafted pieces for every occasion',
-    cta: 'Shop Collection',
-    ctaLink: '/products',
-    secondaryCta: 'Meet the Artisan',
-    secondaryCtaLink: '/about-artisan'
-  },
-  {
-    src: '/images/header/hero-2-1920.webp',
-    alt: 'Master craftsmanship in jewelry making',
-    title: 'Master Craftsmanship',
-    subtitle: 'Each piece tells a unique story',
-    cta: 'View Process',
-    ctaLink: '/crafting-process',
-    secondaryCta: 'Our Story',
-    secondaryCtaLink: '/about'
-  },
-  {
-    src: '/images/header/hero-3-1920.webp',
-    alt: 'Luxury engagement rings collection',
-    title: 'Luxury Engagement Rings',
-    subtitle: 'Perfect for your special moment',
-    cta: 'Shop Rings',
-    ctaLink: '/products?category=engagement-rings',
-    secondaryCta: 'Size Guide',
-    secondaryCtaLink: '/size-guide'
-  }
-];
-
 const HeroCarousel = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  // Auto-advance slides
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <section className="relative w-full h-[90vh] min-h-[600px] overflow-hidden bg-gradient-to-br from-amber-50 to-orange-50">
-      {/* Hero Images */}
-      {heroImages.map((image, index) => (
-        <div
-          key={index}
-          className={`absolute inset-0 transition-opacity duration-1000 ${
-            index === currentSlide ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <Image
-            src={image.src}
-            alt={image.alt}
-            priority={index === 0} // Only priority the first image (LCP target)
-            loading={index === 0 ? 'eager' : 'lazy'} // Eager for first, lazy for others
-            quality={60} // Reduced quality for better performance
-            fill
-            sizes="100vw"
-            style={{ objectFit: "cover" }}
-            fetchPriority={index === 0 ? "high" : "auto"}
-            placeholder="blur"
-            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=" // Minimal blur placeholder
-          />
-        </div>
-      ))}
+      {/* Static Hero Image for better LCP */}
+      <div className="absolute inset-0">
+        <Image
+          src="/images/header/hero-1-1920.webp"
+          alt="Elegant handcrafted jewelry"
+          priority={true}
+          loading="eager"
+          quality={50}
+          fill
+          sizes="100vw"
+          style={{ objectFit: "cover" }}
+          fetchPriority="high"
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+        />
+      </div>
       
       {/* Content Overlay */}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-white z-10">
         <div className="text-center space-y-6 px-4">
           <h1 className="text-5xl md:text-6xl font-bold drop-shadow-lg font-serif">
-            {heroImages[currentSlide].title}
+            Discover Timeless Jewelry
           </h1>
           <p className="mt-4 text-xl md:text-2xl drop-shadow max-w-2xl mx-auto text-orange-400">
-            {heroImages[currentSlide].subtitle}
+            Handcrafted pieces for every occasion
           </p>
           
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
             <Link 
-              href={heroImages[currentSlide].ctaLink}
+              href="/products"
               className="btn-stable bg-white text-gray-900 hover:bg-gray-100 transition-colors"
             >
-              {heroImages[currentSlide].cta}
+              Shop Collection
             </Link>
             <Link 
-              href={heroImages[currentSlide].secondaryCtaLink}
+              href="/about-artisan"
               className="btn-stable bg-transparent border-2 border-orange-400 text-orange-400 hover:bg-orange-400 hover:text-white transition-colors"
             >
-              {heroImages[currentSlide].secondaryCta}
+              Meet the Artisan
             </Link>
           </div>
         </div>
-      </div>
-
-      {/* Navigation Dots */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3 z-20">
-        {heroImages.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => setCurrentSlide(index)}
-            className={`w-3 h-3 rounded-full transition-colors ${
-              index === currentSlide ? 'bg-white' : 'bg-white/50'
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
-          />
-        ))}
       </div>
     </section>
   );

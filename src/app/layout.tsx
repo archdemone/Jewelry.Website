@@ -123,6 +123,7 @@ export default function RootLayout({
           href="/images/header/hero-1-1920.webp"
           as="image"
           type="image/webp"
+          fetchPriority="high"
         />
         <link
           rel="preload"
@@ -141,6 +142,9 @@ export default function RootLayout({
         {/* DNS prefetch for external domains */}
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+        {/* Preconnect to critical origins */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body className={`${inter.className} antialiased`}>
         <ErrorBoundary>
