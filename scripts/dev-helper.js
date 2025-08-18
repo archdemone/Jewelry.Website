@@ -30,14 +30,14 @@ console.log('🚀 Starting development server with hot reloading...');
 
 // Start the development server with specific flags
 const { spawn } = require('child_process');
-const child = spawn('npx', ['next', 'dev', '--turbo'], { 
+const child = spawn('npx', ['next', 'dev', '--turbo'], {
   stdio: 'inherit',
-  env: { 
-    ...process.env, 
+  env: {
+    ...process.env,
     NODE_ENV: 'development',
     NEXT_DISABLE_CACHE: 'true',
-    NEXT_FORCE_HMR: 'true'
-  }
+    NEXT_FORCE_HMR: 'true',
+  },
 });
 
 child.on('close', (code) => {

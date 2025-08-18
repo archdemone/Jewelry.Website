@@ -7,7 +7,7 @@ export const UserRole = {
   STAFF: 'STAFF',
 } as const;
 
-export type UserRoleType = typeof UserRole[keyof typeof UserRole];
+export type UserRoleType = (typeof UserRole)[keyof typeof UserRole];
 
 export const OrderStatus = {
   PENDING: 'PENDING',
@@ -18,7 +18,7 @@ export const OrderStatus = {
   REFUNDED: 'REFUNDED',
 } as const;
 
-export type OrderStatusType = typeof OrderStatus[keyof typeof OrderStatus];
+export type OrderStatusType = (typeof OrderStatus)[keyof typeof OrderStatus];
 
 export const PaymentStatus = {
   UNPAID: 'UNPAID',
@@ -28,14 +28,14 @@ export const PaymentStatus = {
   PARTIALLY_REFUNDED: 'PARTIALLY_REFUNDED',
 } as const;
 
-export type PaymentStatusType = typeof PaymentStatus[keyof typeof PaymentStatus];
+export type PaymentStatusType = (typeof PaymentStatus)[keyof typeof PaymentStatus];
 
 export const AddressType = {
   SHIPPING: 'SHIPPING',
   BILLING: 'BILLING',
 } as const;
 
-export type AddressTypeType = typeof AddressType[keyof typeof AddressType];
+export type AddressTypeType = (typeof AddressType)[keyof typeof AddressType];
 
 // Helper functions to validate enum values
 export function isValidUserRole(role: string): role is UserRoleType {

@@ -16,10 +16,7 @@ async function optimizeHeroImage() {
       .toFile(outputPath);
 
     // Create blur placeholder (small version)
-    await sharp(inputPath)
-      .resize(32, 32, { fit: 'cover' })
-      .webp({ quality: 20 })
-      .toFile(blurPath);
+    await sharp(inputPath).resize(32, 32, { fit: 'cover' }).webp({ quality: 20 }).toFile(blurPath);
 
     console.log('✅ Hero image optimized successfully!');
     console.log(`📁 Optimized: ${outputPath}`);
@@ -32,7 +29,6 @@ async function optimizeHeroImage() {
 
     console.log(`📊 Optimized size: ${(optimizedSize / 1024).toFixed(1)}KB`);
     console.log(`📊 Blur size: ${(blurSize / 1024).toFixed(1)}KB`);
-
   } catch (error) {
     console.error('❌ Error optimizing hero image:', error);
   }

@@ -41,7 +41,6 @@ async function main() {
     console.log('🆔 User ID:', adminUser.id);
     console.log('\n🔗 You can now login at: http://localhost:3000/auth/login');
     console.log('🔗 Admin panel: http://localhost:3000/admin');
-
   } catch (error) {
     console.error('❌ Error creating admin user:', error);
   }

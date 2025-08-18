@@ -46,11 +46,21 @@ for (const file of files) {
           // 2) Barrel/index imports (path ends with /index or /index.ext)
           const p = arg.slice(1, -1); // strip quotes
           if (/\/index(\.[a-zA-Z]+)?$/.test(p)) {
-            add(file, ln, 'Dynamic import targets a barrel (/index.*). Use the concrete file.', line.trim());
+            add(
+              file,
+              ln,
+              'Dynamic import targets a barrel (/index.*). Use the concrete file.',
+              line.trim(),
+            );
           }
           // 3) Directory-only target (ends with /)
           if (/\/$/.test(p)) {
-            add(file, ln, 'Dynamic import ends with "/". Use the concrete file, not a folder.', line.trim());
+            add(
+              file,
+              ln,
+              'Dynamic import ends with "/". Use the concrete file, not a folder.',
+              line.trim(),
+            );
           }
         }
       }

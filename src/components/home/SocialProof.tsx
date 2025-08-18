@@ -10,49 +10,49 @@ const SocialProof = () => {
       location: 'New York',
       rating: 5,
       text: 'The craftsmanship is absolutely stunning. My engagement ring is perfect in every detail.',
-      avatar: '/images/testimonials/sarah.jpg'
+      avatar: '/images/testimonials/sarah.jpg',
     },
     {
       name: 'Michael R.',
       location: 'Los Angeles',
       rating: 5,
       text: 'Exceptional quality and the artisan story makes it even more special. Highly recommend!',
-      avatar: '/images/testimonials/michael.jpg'
+      avatar: '/images/testimonials/michael.jpg',
     },
     {
       name: 'Emma L.',
       location: 'Chicago',
       rating: 5,
       text: 'Beautiful, unique pieces that tell a story. The attention to detail is remarkable.',
-      avatar: '/images/testimonials/emma.jpg'
-    }
+      avatar: '/images/testimonials/emma.jpg',
+    },
   ];
 
   const stats = [
     { number: '2,847', label: 'Happy Customers' },
     { number: '4.9', label: 'Average Rating' },
     { number: '15+', label: 'Years Experience' },
-    { number: '100%', label: 'Handcrafted' }
+    { number: '100%', label: 'Handcrafted' },
   ];
 
   return (
-    <section className="py-16 bg-cream-50">
+    <section className="bg-cream-50 py-16">
       <div className="container mx-auto px-4">
         {/* Stats Section */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="mb-16 text-center"
         >
-          <h2 className="text-3xl md:text-4xl heading-primary text-charcoal-900 mb-4">
+          <h2 className="heading-primary mb-4 text-3xl text-charcoal-900 md:text-4xl">
             Trusted by Thousands
           </h2>
-          <p className="text-lg body-text text-gray-600 mb-12 max-w-2xl mx-auto">
+          <p className="body-text mx-auto mb-12 max-w-2xl text-lg text-gray-600">
             Join thousands of satisfied customers who have chosen our handcrafted jewelry
           </p>
-          
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+
+          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
             {stats.map((stat, index) => (
               <motion.div
                 key={stat.label}
@@ -61,64 +61,56 @@ const SocialProof = () => {
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="text-center"
               >
-                <div className="text-3xl md:text-4xl font-bold text-gold-600 mb-2">
+                <div className="mb-2 text-3xl font-bold text-gold-600 md:text-4xl">
                   {stat.number}
                 </div>
-                <div className="text-sm text-gray-600 font-medium">
-                  {stat.label}
-                </div>
+                <div className="text-sm font-medium text-gray-600">{stat.label}</div>
               </motion.div>
             ))}
           </div>
         </motion.div>
 
         {/* Testimonials Section */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-center mb-12"
+          className="mb-12 text-center"
         >
-          <h3 className="text-2xl md:text-3xl heading-secondary text-charcoal-900 mb-4">
+          <h3 className="heading-secondary mb-4 text-2xl text-charcoal-900 md:text-3xl">
             What Our Customers Say
           </h3>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {testimonials.map((testimonial, index) => (
             <motion.div
               key={testimonial.name}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.2 }}
-              className="bg-white rounded-lg p-6 shadow-lg hover:shadow-xl transition-shadow duration-300"
+              className="rounded-lg bg-white p-6 shadow-lg transition-shadow duration-300 hover:shadow-xl"
             >
-              <div className="flex items-center mb-4">
-                <Quote className="w-8 h-8 text-gold-400 mr-3" />
+              <div className="mb-4 flex items-center">
+                <Quote className="mr-3 h-8 w-8 text-gold-400" />
                 <div className="flex">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
+                    <Star key={i} className="h-4 w-4 fill-current text-yellow-400" />
                   ))}
                 </div>
               </div>
-              
-              <p className="body-text text-gray-700 mb-4 italic">
-                "{testimonial.text}"
-              </p>
-              
+
+              <p className="body-text mb-4 italic text-gray-700">"{testimonial.text}"</p>
+
               <div className="flex items-center">
-                <div className="w-10 h-10 bg-gold-200 rounded-full flex items-center justify-center mr-3">
-                  <span className="text-gold-700 font-semibold text-sm">
+                <div className="mr-3 flex h-10 w-10 items-center justify-center rounded-full bg-gold-200">
+                  <span className="text-sm font-semibold text-gold-700">
                     {testimonial.name.charAt(0)}
                   </span>
                 </div>
                 <div>
-                  <div className="font-medium text-charcoal-900">
-                    {testimonial.name}
-                  </div>
-                  <div className="text-sm text-gray-500">
-                    {testimonial.location}
-                  </div>
+                  <div className="font-medium text-charcoal-900">{testimonial.name}</div>
+                  <div className="text-sm text-gray-500">{testimonial.location}</div>
                 </div>
               </div>
             </motion.div>

@@ -30,7 +30,7 @@ export default function LoginForm() {
     e.preventDefault();
     setError(null);
     setLoading(true);
-    
+
     try {
       const res = await signIn('credentials', {
         redirect: false,
@@ -38,12 +38,12 @@ export default function LoginForm() {
         password,
         turnstileToken: tsToken,
       });
-      
+
       if (res?.error) {
         setError('Invalid email or password.');
         return;
       }
-      
+
       // Successful login
       router.push('/account');
     } catch (err) {
@@ -70,11 +70,11 @@ export default function LoginForm() {
     <Card className="p-6 shadow-lg">
       <form onSubmit={onSubmit} className="space-y-4">
         <div>
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="email" className="mb-2 block text-sm font-medium text-gray-700">
             Email Address
           </label>
           <div className="relative">
-            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Mail className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
             <Input
               id="email"
               type="email"
@@ -88,16 +88,16 @@ export default function LoginForm() {
             />
           </div>
         </div>
-        
+
         <div>
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+          <label htmlFor="password" className="mb-2 block text-sm font-medium text-gray-700">
             Password
           </label>
           <div className="relative">
-            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
             <Input
               id="password"
-              type={showPassword ? "text" : "password"}
+              type={showPassword ? 'text' : 'password'}
               placeholder="Enter your password"
               className="pl-10 pr-10 text-gray-900"
               value={password}
@@ -109,21 +109,17 @@ export default function LoginForm() {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+              className="absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400 hover:text-gray-600"
               disabled={loading}
             >
-              {showPassword ? (
-                <EyeOff className="w-4 h-4" />
-              ) : (
-                <Eye className="w-4 h-4" />
-              )}
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
           </div>
         </div>
 
         {requireCaptcha && (
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="mb-2 block text-sm font-medium text-gray-700">
               Security Verification
             </label>
             <Input
@@ -137,19 +133,19 @@ export default function LoginForm() {
         )}
 
         {error && (
-          <div className="p-3 bg-red-50 border border-red-200 rounded-md">
+          <div className="rounded-md border border-red-200 bg-red-50 p-3">
             <p className="text-sm text-red-600">{error}</p>
           </div>
         )}
 
         <Button
           type="submit"
-          className="w-full bg-gold-500 hover:bg-gold-600 text-black font-medium"
+          className="w-full bg-gold-500 font-medium text-black hover:bg-gold-600"
           disabled={loading}
         >
           {loading ? (
             <>
-              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               Signing in...
             </>
           ) : (
@@ -173,7 +169,7 @@ export default function LoginForm() {
           onClick={() => signIn('google')}
           disabled={loading}
         >
-          <svg className="w-4 h-4 mr-2" viewBox="0 0 24 24">
+          <svg className="mr-2 h-4 w-4" viewBox="0 0 24 24">
             <path
               fill="currentColor"
               d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"

@@ -36,8 +36,8 @@ export default function OrderSummary({ selectedShippingId }: { selectedShippingI
       <aside className="space-y-4 lg:sticky lg:top-24">
         <div className="rounded-md border p-4">
           <h3 className="mb-3 text-lg font-semibold">Order Summary</h3>
-          <div className="text-center py-4">
-            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mx-auto"></div>
+          <div className="py-4 text-center">
+            <div className="mx-auto h-6 w-6 animate-spin rounded-full border-b-2 border-primary"></div>
             <p className="mt-2 text-sm text-gray-600">Loading...</p>
           </div>
         </div>

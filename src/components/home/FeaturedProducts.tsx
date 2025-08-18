@@ -18,23 +18,23 @@ const FeaturedProducts = () => {
   useEffect(() => {
     // Load featured products from the data store
     setFeaturedRings(getFeaturedProducts());
-    
+
     // Load wishlist from localStorage
     const savedWishlist = localStorage.getItem('wishlist');
     if (savedWishlist) {
       setWishlist(new Set(JSON.parse(savedWishlist)));
     }
-    
+
     // Listen for storage changes to refresh the data
     const handleStorageChange = () => {
       setFeaturedRings(getFeaturedProducts());
     };
-    
+
     window.addEventListener('storage', handleStorageChange);
-    
+
     // Also listen for custom events (for same-tab updates)
     window.addEventListener('featuredProductsUpdated', handleStorageChange);
-    
+
     return () => {
       window.removeEventListener('storage', handleStorageChange);
       window.removeEventListener('featuredProductsUpdated', handleStorageChange);
@@ -43,8 +43,8 @@ const FeaturedProducts = () => {
 
   const handleWishlistToggle = (productId: string) => {
     const newWishlist = new Set(wishlist);
-    const product = featuredRings.find(ring => ring.id === productId);
-    
+    const product = featuredRings.find((ring) => ring.id === productId);
+
     if (newWishlist.has(productId)) {
       newWishlist.delete(productId);
       toast.success(`${product?.name} removed from wishlist`, {
@@ -75,7 +75,7 @@ const FeaturedProducts = () => {
       toast.error('Cart is still loading, please try again');
       return;
     }
-    
+
     addItem({
       productId: ring.id,
       name: ring.name,
@@ -86,9 +86,9 @@ const FeaturedProducts = () => {
       gemDensity: ring.gemDensity,
       gemVariation: ring.gemVariation,
       ringSize: ring.ringSizes.us[0]?.toString() || '7',
-      ringWidth: ring.ringWidth[0]?.toString() || '6'
+      ringWidth: ring.ringWidth[0]?.toString() || '6',
     });
-    
+
     // Show success toast
     toast.success(`${ring.name} added to cart!`, {
       duration: 2000,
@@ -104,35 +104,36 @@ const FeaturedProducts = () => {
   const initialProducts = featuredRings.slice(0, 6);
 
   return (
-    <section className="py-16 bg-white">
+    <section className="bg-white py-16">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-12">
-          <motion.h2 
+        <div className="mb-12 text-center">
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="text-4xl md:text-5xl heading-primary text-charcoal-900 mb-4"
+            className="heading-primary mb-4 text-4xl text-charcoal-900 md:text-5xl"
           >
             Featured Rings
           </motion.h2>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-xl body-text text-gray-600 max-w-2xl mx-auto"
+            className="body-text mx-auto max-w-2xl text-xl text-gray-600"
           >
-            Discover our most popular handcrafted pieces, each telling a unique story of craftsmanship and beauty.
+            Discover our most popular handcrafted pieces, each telling a unique story of
+            craftsmanship and beauty.
           </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {initialProducts.map((ring, index) => (
             <motion.div
               key={ring.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group relative bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
+              className="group relative transform overflow-hidden rounded-lg bg-white shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-xl"
               onMouseEnter={() => setHoveredProduct(ring.id)}
               onMouseLeave={() => setHoveredProduct(null)}
             >
@@ -143,48 +144,46 @@ const FeaturedProducts = () => {
                   alt={ring.name}
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
                   loading="lazy"
                   quality={50}
                   placeholder="blur"
                   blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                 />
-                
+
                 {/* Wishlist Button */}
                 <button
                   onClick={() => handleWishlistToggle(ring.id)}
-                  className={`absolute top-3 right-3 p-2 rounded-full transition-all duration-200 ${
+                  className={`absolute right-3 top-3 rounded-full p-2 transition-all duration-200 ${
                     wishlist.has(ring.id)
                       ? 'bg-red-500 text-white'
                       : 'bg-white/80 text-gray-600 hover:bg-white'
                   }`}
                   aria-label={wishlist.has(ring.id) ? 'Remove from wishlist' : 'Add to wishlist'}
                 >
-                  <Heart className={`w-5 h-5 ${wishlist.has(ring.id) ? 'fill-current' : ''}`} />
+                  <Heart className={`h-5 w-5 ${wishlist.has(ring.id) ? 'fill-current' : ''}`} />
                 </button>
 
                 {/* Quick Add to Cart */}
                 <motion.button
                   initial={{ opacity: 0, y: 20 }}
-                  animate={{ 
+                  animate={{
                     opacity: hoveredProduct === ring.id ? 1 : 0,
-                    y: hoveredProduct === ring.id ? 0 : 20
+                    y: hoveredProduct === ring.id ? 0 : 20,
                   }}
                   transition={{ duration: 0.2 }}
                   onClick={() => handleAddToCart(ring)}
-                  className="absolute bottom-3 left-3 right-3 bg-white/90 backdrop-blur-sm text-gray-900 py-2 px-4 rounded-lg font-medium hover:bg-white transition-colors duration-200 flex items-center justify-center gap-2"
+                  className="absolute bottom-3 left-3 right-3 flex items-center justify-center gap-2 rounded-lg bg-white/90 px-4 py-2 font-medium text-gray-900 backdrop-blur-sm transition-colors duration-200 hover:bg-white"
                 >
-                  <ShoppingBag className="w-4 h-4" />
+                  <ShoppingBag className="h-4 w-4" />
                   Add to Cart
                 </motion.button>
               </div>
 
               {/* Product Info */}
               <div className="p-4">
-                <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
-                  {ring.name}
-                </h3>
-                <div className="flex items-center justify-between mb-2">
+                <h3 className="mb-2 line-clamp-2 font-semibold text-gray-900">{ring.name}</h3>
+                <div className="mb-2 flex items-center justify-between">
                   <span className="text-2xl font-bold text-gray-900">
                     ${ring.price.toLocaleString()}
                   </span>
@@ -194,12 +193,12 @@ const FeaturedProducts = () => {
                     </span>
                   )}
                 </div>
-                <div className="flex items-center gap-2 mb-3">
+                <div className="mb-3 flex items-center gap-2">
                   <div className="flex text-yellow-400">
                     {[...Array(5)].map((_, i) => (
                       <svg
                         key={i}
-                        className={`w-4 h-4 ${i < Math.floor(ring.rating) ? 'fill-current' : 'fill-gray-300'}`}
+                        className={`h-4 w-4 ${i < Math.floor(ring.rating) ? 'fill-current' : 'fill-gray-300'}`}
                         viewBox="0 0 20 20"
                       >
                         <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
@@ -208,17 +207,17 @@ const FeaturedProducts = () => {
                   </div>
                   <span className="text-sm text-gray-600">({ring.reviews})</span>
                 </div>
-                <div className="flex flex-wrap gap-1 mb-3">
-                  <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
+                <div className="mb-3 flex flex-wrap gap-1">
+                  <span className="rounded bg-gray-100 px-2 py-1 text-xs text-gray-700">
                     {ring.material}
                   </span>
-                  <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
+                  <span className="rounded bg-gray-100 px-2 py-1 text-xs text-gray-700">
                     {ring.gemColor}
                   </span>
                 </div>
                 <Link
                   href={`/products/${ring.slug}`}
-                  className="block w-full text-center bg-gold-600 text-white py-3 px-4 rounded-lg hover:bg-gold-700 transition-all duration-300 transform hover:scale-105 font-medium"
+                  className="block w-full transform rounded-lg bg-gold-600 px-4 py-3 text-center font-medium text-white transition-all duration-300 hover:scale-105 hover:bg-gold-700"
                 >
                   View Details
                 </Link>
@@ -227,10 +226,10 @@ const FeaturedProducts = () => {
           ))}
         </div>
 
-        <div className="text-center mt-12">
+        <div className="mt-12 text-center">
           <Link
             href="/products"
-            className="inline-flex items-center px-8 py-4 bg-gold-600 text-white font-semibold rounded-lg hover:bg-gold-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
+            className="inline-flex transform items-center rounded-lg bg-gold-600 px-8 py-4 font-semibold text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gold-700 hover:shadow-xl"
           >
             View All Products
           </Link>

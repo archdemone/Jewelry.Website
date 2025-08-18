@@ -82,11 +82,11 @@ jobs:
           LCP=$(node -e "const report = require('./lighthouse-report.json'); console.log(report.audits['largest-contentful-paint'].numericValue / 1000);")
           FCP=$(node -e "const report = require('./lighthouse-report.json'); console.log(report.audits['first-contentful-paint'].numericValue / 1000);")
           CLS=$(node -e "const report = require('./lighthouse-report.json'); console.log(report.audits['cumulative-layout-shift'].numericValue);")
-          
+
           echo "LCP: ${LCP}s (target: <3.5s)"
           echo "FCP: ${FCP}s (target: <2.5s)"
           echo "CLS: ${CLS} (target: <0.1)"
-          
+
           # Check thresholds using Node.js (temporarily more lenient)
           node -e "
             const lcp = parseFloat('$LCP');
@@ -145,11 +145,11 @@ jobs:
             echo "❌ reportWebVitals not exported from layout.tsx"
             exit 1
           fi
-          
+
           # Check if vitals API route exists
           if [ ! -f "src/app/api/analytics/vitals/route.ts" ]; then
             echo "❌ Web Vitals API route not found"
             exit 1
           fi
-          
+
           echo "✅ Web Vitals implementation verified"

@@ -10,7 +10,7 @@ const CategoryShowcase = () => {
       id: 'engagement-rings',
       name: 'Engagement Rings',
       description: 'Timeless symbols of love and commitment',
-              image: '/images/MyImages/category-engagement-rings.jpg',
+      image: '/images/MyImages/category-engagement-rings.jpg',
       href: '/products?category=engagement-rings',
       featured: true,
     },
@@ -18,7 +18,7 @@ const CategoryShowcase = () => {
       id: 'wedding-bands',
       name: 'Wedding Bands',
       description: 'Elegant bands for your special day',
-              image: '/images/MyImages/category-wedding-bands.jpg',
+      image: '/images/MyImages/category-wedding-bands.jpg',
       href: '/products?category=wedding-bands',
       featured: false,
     },
@@ -26,7 +26,7 @@ const CategoryShowcase = () => {
       id: 'eternity-rings',
       name: 'Eternity Rings',
       description: 'Celebrate your everlasting love',
-              image: '/images/MyImages/category-eternity-rings.jpg',
+      image: '/images/MyImages/category-eternity-rings.jpg',
       href: '/products?category=eternity-rings',
       featured: false,
     },
@@ -34,7 +34,7 @@ const CategoryShowcase = () => {
       id: 'signet-rings',
       name: 'Signet Rings',
       description: 'Personalized pieces with meaning',
-              image: '/images/MyImages/category-signet-rings.jpg',
+      image: '/images/MyImages/category-signet-rings.jpg',
       href: '/products?category=signet-rings',
       featured: false,
     },
@@ -78,7 +78,7 @@ const CategoryShowcase = () => {
                     blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                   />
                   {category.featured && (
-                    <div className="absolute top-4 left-4">
+                    <div className="absolute left-4 top-4">
                       <span className="rounded-full bg-primary px-3 py-1 text-sm font-medium text-white">
                         Featured
                       </span>
@@ -86,7 +86,7 @@ const CategoryShowcase = () => {
                   )}
                 </div>
                 {/* Fixed height container for content to prevent layout shifts */}
-                <div className="flex flex-col justify-between p-6 h-[120px]">
+                <div className="flex h-[120px] flex-col justify-between p-6">
                   <div>
                     <h3 className="mb-2 text-xl font-semibold text-gray-900">{category.name}</h3>
                     <p className="text-gray-600">{category.description}</p>

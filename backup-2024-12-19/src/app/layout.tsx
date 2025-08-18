@@ -47,18 +47,29 @@ const LiveChat = dynamic(() => import('@/components/features/LiveChat'), {
 });
 
 // Development helper - only load in development
-const DevReloadHelper = dynamic(() => import('@/components/dev/DevReloadHelper').then(mod => ({ default: mod.DevReloadHelper })), {
-  ssr: false,
-  loading: () => null,
-});
+const DevReloadHelper = dynamic(
+  () =>
+    import('@/components/dev/DevReloadHelper').then((mod) => ({ default: mod.DevReloadHelper })),
+  {
+    ssr: false,
+    loading: () => null,
+  },
+);
 
 export const metadata: Metadata = {
   title: {
     default: 'Handcrafted Rings | Artisan Jewelry',
-    template: '%s | Handcrafted Rings'
+    template: '%s | Handcrafted Rings',
   },
-  description: 'Each ring is personally crafted by a master artisan, ensuring unique beauty and exceptional quality for your most precious moments.',
-  keywords: ['handcrafted rings', 'artisan jewelry', 'engagement rings', 'wedding bands', 'custom rings'],
+  description:
+    'Each ring is personally crafted by a master artisan, ensuring unique beauty and exceptional quality for your most precious moments.',
+  keywords: [
+    'handcrafted rings',
+    'artisan jewelry',
+    'engagement rings',
+    'wedding bands',
+    'custom rings',
+  ],
   authors: [{ name: 'Artisan Ring Crafters' }],
   creator: 'Artisan Ring Crafters',
   publisher: 'Artisan Ring Crafters',
@@ -76,7 +87,8 @@ export const metadata: Metadata = {
     locale: 'en_US',
     url: 'https://handcrafted-rings.com',
     title: 'Handcrafted Rings | Artisan Jewelry',
-    description: 'Each ring is personally crafted by a master artisan, ensuring unique beauty and exceptional quality.',
+    description:
+      'Each ring is personally crafted by a master artisan, ensuring unique beauty and exceptional quality.',
     siteName: 'Handcrafted Rings',
     images: [
       {
@@ -90,7 +102,8 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Handcrafted Rings | Artisan Jewelry',
-    description: 'Each ring is personally crafted by a master artisan, ensuring unique beauty and exceptional quality.',
+    description:
+      'Each ring is personally crafted by a master artisan, ensuring unique beauty and exceptional quality.',
     images: ['/images/og-image.jpg'],
   },
   robots: {
@@ -109,13 +122,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`} style={{ height: '100%', width: '100%', overflowX: 'hidden' }}>
+    <html
+      lang="en"
+      className={`${inter.variable} ${playfair.variable}`}
+      style={{ height: '100%', width: '100%', overflowX: 'hidden' }}
+    >
       <head>
         {/* Ultra-minimal critical CSS for FCP optimization */}
         <style
@@ -141,56 +154,70 @@ export default function RootLayout({
               min-width: 150px;
               min-height: 48px;
             }
-          `
+          `,
           }}
         />
-        
+
         {/* Preload critical hero image */}
-        <link rel="preload" href="/images/header/hero-1-1920.webp" as="image" type="image/webp" fetchPriority="high" />
+        <link
+          rel="preload"
+          href="/images/header/hero-1-1920.webp"
+          as="image"
+          type="image/webp"
+          fetchPriority="high"
+        />
         {process.env.NODE_ENV === 'development' && (
           <meta name="dev-timestamp" content={Date.now().toString()} />
         )}
         <meta name="cache-control" content="no-cache, no-store, must-revalidate" />
         <meta name="pragma" content="no-cache" />
         <meta name="expires" content="0" />
-        
+
         {/* Preconnect to critical origins */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
+
         {/* DNS prefetch for external resources */}
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
-        
+
         {/* Resource hints for better performance */}
         <link rel="dns-prefetch" href="//www.googletagmanager.com" />
         <link rel="preconnect" href="https://www.googletagmanager.com" />
-        
+
         {/* Preload critical fonts */}
-        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" />
-        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" as="style" />
+        <link
+          rel="preload"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+          as="style"
+        />
+        <link
+          rel="preload"
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap"
+          as="style"
+        />
       </head>
-      <body className={`${inter.className} antialiased font-inter`}>
+      <body className={`${inter.className} font-inter antialiased`}>
         <AuthSessionProvider>
           <ErrorBoundary>
             <CartProvider>
-              <div className="min-h-screen flex flex-col">
+              <div className="flex min-h-screen flex-col">
                 <Header />
                 <main className="flex-1">{children}</main>
                 <Footer />
               </div>
-              
+
               {/* Site-wide widgets */}
               <Toaster position="top-right" toastOptions={{ duration: 3500 }} />
               <NewsletterPopup />
               <CookieBanner />
               <LiveChat />
-              
+
               {/* Development helper */}
               {process.env.NODE_ENV === 'development' && <DevReloadHelper />}
             </CartProvider>
           </ErrorBoundary>
-          
+
           {/* Performance optimizations */}
           <script
             dangerouslySetInnerHTML={{

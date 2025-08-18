@@ -73,11 +73,11 @@ export default function PaymentForm() {
   }, [subtotal, stripeEnabled]);
 
   const options = useMemo(() => ({ clientSecret: clientSecret ?? '' }), [clientSecret]);
-  
+
   if (!isHydrated) {
     return <p className="text-muted-foreground text-sm">Loading cart...</p>;
   }
-  
+
   if (disabled)
     return (
       <p className="text-muted-foreground text-sm">Payments are disabled in this environment.</p>

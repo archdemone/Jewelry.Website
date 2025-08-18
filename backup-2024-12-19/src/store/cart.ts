@@ -30,10 +30,10 @@ type CartState = {
 export const useCartStore = create<CartState>((set, get) => ({
   items: [],
   isHydrated: false,
-  
+
   hydrate: () => {
     if (typeof window === 'undefined') return;
-    
+
     try {
       const raw = localStorage.getItem('cart');
       const items = raw ? (JSON.parse(raw) as CartItem[]) : [];
@@ -59,7 +59,7 @@ export const useCartStore = create<CartState>((set, get) => ({
       if (typeof window !== 'undefined') localStorage.setItem('cart', JSON.stringify(next));
     } catch {}
   },
-  
+
   removeItem: (productId) => {
     const next = get().items.filter((i) => i.productId !== productId);
     set({ items: next });
@@ -67,7 +67,7 @@ export const useCartStore = create<CartState>((set, get) => ({
       if (typeof window !== 'undefined') localStorage.setItem('cart', JSON.stringify(next));
     } catch {}
   },
-  
+
   setQuantity: (productId, quantity) => {
     const next = get().items.map((i) => (i.productId === productId ? { ...i, quantity } : i));
     set({ items: next });
@@ -75,18 +75,18 @@ export const useCartStore = create<CartState>((set, get) => ({
       if (typeof window !== 'undefined') localStorage.setItem('cart', JSON.stringify(next));
     } catch {}
   },
-  
+
   clear: () => {
     set({ items: [] });
     try {
       if (typeof window !== 'undefined') localStorage.removeItem('cart');
     } catch {}
   },
-  
+
   get count() {
     return get().items.reduce((acc, i) => acc + i.quantity, 0);
   },
-  
+
   get subtotal() {
     return Number(
       get()

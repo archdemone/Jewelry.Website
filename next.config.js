@@ -69,7 +69,7 @@ const nextConfig = {
         },
       };
     }
-    
+
     // Optimize images
     config.module.rules.push({
       test: /\.(png|jpe?g|gif|svg)$/i,
@@ -85,7 +85,7 @@ const nextConfig = {
               enabled: false,
             },
             pngquant: {
-              quality: [0.50, 0.70], // Very low quality range
+              quality: [0.5, 0.7], // Very low quality range
               speed: 4,
             },
             gifsicle: {
@@ -98,7 +98,7 @@ const nextConfig = {
         },
       ],
     });
-    
+
     return config;
   },
   async headers() {
@@ -129,9 +129,10 @@ const nextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value: process.env.NODE_ENV === 'development' 
-              ? 'no-cache, no-store, must-revalidate' 
-              : 'public, max-age=31536000, immutable',
+            value:
+              process.env.NODE_ENV === 'development'
+                ? 'no-cache, no-store, must-revalidate'
+                : 'public, max-age=31536000, immutable',
           },
         ],
       },
@@ -140,9 +141,10 @@ const nextConfig = {
         headers: [
           {
             key: 'Cache-Control',
-            value: process.env.NODE_ENV === 'development' 
-              ? 'no-cache, no-store, must-revalidate' 
-              : 'public, max-age=31536000, immutable',
+            value:
+              process.env.NODE_ENV === 'development'
+                ? 'no-cache, no-store, must-revalidate'
+                : 'public, max-age=31536000, immutable',
           },
         ],
       },
@@ -160,4 +162,3 @@ const nextConfig = {
 };
 
 module.exports = withBundleAnalyzer(nextConfig);
-

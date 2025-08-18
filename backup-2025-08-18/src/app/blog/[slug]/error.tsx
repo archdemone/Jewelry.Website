@@ -18,29 +18,20 @@ export default function BlogError({
   return (
     <div className="container py-16">
       <div className="mx-auto max-w-2xl text-center">
-        <div className="text-6xl mb-4">📝</div>
-        <h1 className="text-2xl font-[var(--font-serif)] font-bold mb-4">
-          Blog Post Not Found
-        </h1>
-        <p className="text-gray-600 mb-6">
-          We couldn't load this blog post. It might have been removed or the link might be incorrect.
+        <div className="mb-4 text-6xl">📝</div>
+        <h1 className="mb-4 text-2xl font-[var(--font-serif)] font-bold">Blog Post Not Found</h1>
+        <p className="mb-6 text-gray-600">
+          We couldn't load this blog post. It might have been removed or the link might be
+          incorrect.
         </p>
-        
+
         <div className="space-y-3">
-          <Button
-            onClick={reset}
-            className="bg-primary hover:opacity-90"
-          >
+          <Button onClick={reset} className="bg-primary hover:opacity-90">
             Try again
           </Button>
-          
-          <Button
-            variant="outline"
-            asChild
-          >
-            <Link href="/blog">
-              Browse all posts
-            </Link>
+
+          <Button variant="outline" asChild>
+            <Link href="/blog">Browse all posts</Link>
           </Button>
         </div>
       </div>

@@ -1,7 +1,13 @@
 'use client';
 
 import { useEffect, useRef, useState, type FormEvent } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Mail, Gift, Sparkles, CheckCircle } from 'lucide-react';
@@ -31,9 +37,9 @@ export default function NewsletterPopup({
         const isSubscribed = localStorage.getItem('newsletter_subscribed');
         const lastShown = localStorage.getItem('newsletter_popup_last_shown');
         const now = Date.now();
-        
+
         // Only show if user hasn't subscribed AND (never shown before or it's been more than 1 hour)
-        if (!isSubscribed && (!lastShown || (now - parseInt(lastShown)) > 3600000)) {
+        if (!isSubscribed && (!lastShown || now - parseInt(lastShown) > 3600000)) {
           if (!hasShownRef.current) {
             setOpen(true);
             hasShownRef.current = true;
@@ -77,7 +83,7 @@ export default function NewsletterPopup({
     setIsSubmitting(true);
     try {
       // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       setIsSuccess(true);
       // Mark user as subscribed so popup won't show again
       localStorage.setItem('newsletter_subscribed', 'true');
@@ -98,7 +104,7 @@ export default function NewsletterPopup({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-md bg-white dark:bg-gray-900 newsletter-popup">
+      <DialogContent className="newsletter-popup bg-white sm:max-w-md dark:bg-gray-900">
         <DialogHeader>
           <DialogTitle className="text-center text-2xl font-bold text-gray-900 dark:text-white">
             Join Our Artisan Community
@@ -112,7 +118,10 @@ export default function NewsletterPopup({
           {!isSuccess ? (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <label htmlFor="newsletter-email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                <label
+                  htmlFor="newsletter-email"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
                   Email
                 </label>
                 <Input
@@ -130,7 +139,7 @@ export default function NewsletterPopup({
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-primary to-orange-500 hover:opacity-90 text-white"
+                  className="w-full bg-gradient-to-r from-primary to-orange-500 text-white hover:opacity-90"
                 >
                   {isSubmitting ? (
                     <div className="flex items-center gap-2">
@@ -149,7 +158,7 @@ export default function NewsletterPopup({
                   type="button"
                   variant="outline"
                   onClick={() => setOpen(false)}
-                  className="w-full bg-white text-gray-700 border-gray-300 hover:bg-gray-50"
+                  className="w-full border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
                 >
                   Maybe Later
                 </Button>
@@ -167,11 +176,13 @@ export default function NewsletterPopup({
               </div>
             </form>
           ) : (
-            <div className="text-center space-y-4">
+            <div className="space-y-4 text-center">
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
                 <CheckCircle className="h-8 w-8 text-green-600" />
               </div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">Welcome to Our Community!</h3>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+                Welcome to Our Community!
+              </h3>
               <p className="text-gray-600 dark:text-gray-300">
                 Check your email for your exclusive 10% discount code.
               </p>

@@ -5,7 +5,7 @@
  */
 export function parseJsonString<T = any>(jsonString: string | null | undefined): T | null {
   if (!jsonString) return null;
-  
+
   try {
     return JSON.parse(jsonString) as T;
   } catch (error) {
@@ -19,7 +19,7 @@ export function parseJsonString<T = any>(jsonString: string | null | undefined):
  */
 export function stringifyJson<T = any>(obj: T | null | undefined): string | null {
   if (obj === null || obj === undefined) return null;
-  
+
   try {
     return JSON.stringify(obj);
   } catch (error) {
@@ -31,10 +31,7 @@ export function stringifyJson<T = any>(obj: T | null | undefined): string | null
 /**
  * Type-safe JSON parsing with default value
  */
-export function parseJsonWithDefault<T>(
-  jsonString: string | null | undefined, 
-  defaultValue: T
-): T {
+export function parseJsonWithDefault<T>(jsonString: string | null | undefined, defaultValue: T): T {
   const parsed = parseJsonString<T>(jsonString);
   return parsed ?? defaultValue;
 }
@@ -57,7 +54,7 @@ export function stringifyImages(images: string[] | null | undefined): string {
  * Parse metadata object from JSON string
  */
 export function parseMetadata<T = Record<string, any>>(
-  jsonString: string | null | undefined
+  jsonString: string | null | undefined,
 ): T | null {
   return parseJsonString<T>(jsonString);
 }
@@ -66,7 +63,7 @@ export function parseMetadata<T = Record<string, any>>(
  * Stringify metadata object to JSON string
  */
 export function stringifyMetadata<T = Record<string, any>>(
-  metadata: T | null | undefined
+  metadata: T | null | undefined,
 ): string | null {
   return stringifyJson(metadata);
 }
@@ -92,17 +89,22 @@ export function parseAddress(jsonString: string | null | undefined): {
 /**
  * Stringify address object to JSON string
  */
-export function stringifyAddress(address: {
-  firstName: string;
-  lastName: string;
-  company?: string;
-  address1: string;
-  address2?: string;
-  city: string;
-  state: string;
-  postalCode: string;
-  country: string;
-  phone?: string;
-} | null | undefined): string | null {
+export function stringifyAddress(
+  address:
+    | {
+        firstName: string;
+        lastName: string;
+        company?: string;
+        address1: string;
+        address2?: string;
+        city: string;
+        state: string;
+        postalCode: string;
+        country: string;
+        phone?: string;
+      }
+    | null
+    | undefined,
+): string | null {
   return stringifyJson(address);
 }
