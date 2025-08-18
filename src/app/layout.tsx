@@ -132,16 +132,23 @@ export default function RootLayout({
            href="https://fonts.gstatic.com"
            crossOrigin="anonymous"
          />
-         <link
-           href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
-           rel="stylesheet"
-         />
-        {/* DNS prefetch for external domains */}
-        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
-        {/* Preconnect to critical origins */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+                              <link
+                       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+                       rel="stylesheet"
+                     />
+                     {/* Preload critical images */}
+                     <link
+                       rel="preload"
+                       as="image"
+                       href="/images/header/hero-optimized.webp"
+                       type="image/webp"
+                     />
+                  {/* DNS prefetch for external domains */}
+          <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+          <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+                    {/* Resource hints for performance */}
+          <link rel="preconnect" href="https://fonts.googleapis.com" />
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
              <body className={`${inter.className} antialiased`}>
          {/* Skip Links for Accessibility */}

@@ -9,15 +9,17 @@ const HeroCarousel = () => {
     <section className="relative w-full h-[90vh] min-h-[600px] overflow-hidden">
       {/* Hero Background Image */}
       <div className="absolute inset-0">
-        <Image
-          src="/images/header/hero-1.webp"
-          alt="J&M Jewelry - Exquisite handcrafted engagement rings"
-          fill
-          priority
-          className="object-cover"
-          sizes="100vw"
-          quality={90}
-        />
+                      <Image
+                src="/images/header/hero-optimized.webp"
+                alt="J&M Jewelry - Exquisite handcrafted engagement rings"
+                fill
+                priority
+                className="object-cover"
+                sizes="100vw"
+                quality={85}
+                placeholder="blur"
+                blurDataURL="/images/header/hero-blur.webp"
+              />
         <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/30 to-black/50"></div>
       </div>
       
