@@ -14,7 +14,7 @@ export function AdminHeader() {
         <div className="font-semibold">Admin Dashboard</div>
       </div>
       <div className="flex items-center gap-2">
-        <Link href="/admin/products/new" className={clsx(buttonVariants({ variant: 'default' }))}>
+        <Link href="/admin/products/new" className="flex items-center px-4 py-2 bg-orange-500 text-black rounded-lg hover:bg-orange-600 transition-colors">
           <Plus className="mr-1 h-4 w-4" /> Add Product
         </Link>
         <button className={clsx(buttonVariants({ variant: 'ghost' }))}>

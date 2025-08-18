@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import Link from 'next/link';
 import {
   Plus,
   Edit,
@@ -178,11 +179,16 @@ export default function AdminPanel() {
         
         setEditingProduct(null);
         setIsAddingProduct(false);
+        
+        // Show success message
+        alert(isAddingProduct ? 'Product added successfully!' : 'Product updated successfully!');
       } else {
         console.error('Failed to save product');
+        alert('Failed to save product. Please try again.');
       }
     } catch (error) {
       console.error('Error saving product:', error);
+      alert('Error saving product. Please try again.');
     }
   };
 
@@ -200,59 +206,95 @@ export default function AdminPanel() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900">Admin Panel</h1>
-              <p className="text-gray-600">Manage your jewelry products</p>
-            </div>
-            <div className="flex items-center space-x-4">
-              <button className="flex items-center px-4 py-2 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition-colors">
-                <BarChart3 className="w-4 h-4 mr-2" />
-                Analytics
-              </button>
-              <button className="flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
-                <Settings className="w-4 h-4 mr-2" />
-                Settings
-              </button>
-            </div>
+    <div className="space-y-6">
+      {/* Page Header */}
+      <div className="bg-white rounded-lg shadow-sm border p-6">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+            <p className="text-gray-600">Welcome to your jewelry store admin panel</p>
           </div>
+          
         </div>
-      </header>
+      </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Category Filter */}
-        <div className="mb-8">
+
+
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="bg-white rounded-lg shadow-sm border p-6">
           <div className="flex items-center justify-between">
-            <div className="flex space-x-2">
-              {categories.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => setSelectedCategory(cat.id)}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                    selectedCategory === cat.id
-                      ? 'bg-gold-500 text-white'
-                      : 'bg-white text-gray-700 hover:bg-gray-50'
-                  }`}
-                >
-                  {cat.name}
-                </button>
-              ))}
+            <div>
+              <p className="text-sm font-medium text-gray-600">Total Products</p>
+              <p className="text-2xl font-bold text-gray-900">{products.length}</p>
             </div>
-            <button
-              onClick={handleAddProduct}
-              className="flex items-center px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Add Product
-            </button>
+            <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
+              <Package className="h-6 w-6 text-blue-600" />
+            </div>
           </div>
         </div>
+        
+        <div className="bg-white rounded-lg shadow-sm border p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Active Products</p>
+              <p className="text-2xl font-bold text-gray-900">{products.filter(p => p.status === 'active').length}</p>
+            </div>
+            <div className="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center">
+              <Eye className="h-6 w-6 text-green-600" />
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-white rounded-lg shadow-sm border p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Ready to Ship</p>
+              <p className="text-2xl font-bold text-gray-900">{products.filter(p => p.isReadyToShip).length}</p>
+            </div>
+            <div className="h-12 w-12 bg-orange-100 rounded-lg flex items-center justify-center">
+              <ShoppingBag className="h-6 w-6 text-orange-600" />
+            </div>
+          </div>
+        </div>
+        
+        <div className="bg-white rounded-lg shadow-sm border p-6">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-medium text-gray-600">Categories</p>
+              <p className="text-2xl font-bold text-gray-900">{categories.length - 1}</p>
+            </div>
+            <div className="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center">
+              <Settings className="h-6 w-6 text-purple-600" />
+            </div>
+          </div>
+        </div>
+      </div>
 
-        {/* Products Grid */}
+      {/* Products Section */}
+      <div className="bg-white rounded-lg shadow-sm border p-6">
+                 <div className="mb-6">
+           <h2 className="text-xl font-semibold text-gray-900">Recent Products</h2>
+         </div>
+        
+        {/* Category Filter */}
+        <div className="flex space-x-2 mb-6">
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setSelectedCategory(cat.id)}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                selectedCategory === cat.id
+                  ? 'bg-gold-500 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+              }`}
+            >
+              {cat.name}
+            </button>
+          ))}
+        </div>
+
+              {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProducts.map((product) => (
             <motion.div
@@ -304,199 +346,199 @@ export default function AdminPanel() {
             </motion.div>
           ))}
         </div>
+      </div>
 
-        {/* Edit/Add Product Modal */}
-        {editingProduct && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
-            >
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-6">
-                  <h2 className="text-2xl font-bold text-gray-900">
-                    {isAddingProduct ? 'Add New Product' : 'Edit Product'}
-                  </h2>
-                  <button
-                    onClick={handleCancelEdit}
-                    className="p-2 hover:bg-gray-100 rounded-lg"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
+      {/* Edit/Add Product Modal */}
+      {editingProduct && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+          >
+            <div className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">
+                  {isAddingProduct ? 'Add New Product' : 'Edit Product'}
+                </h2>
+                <button
+                  onClick={handleCancelEdit}
+                  className="p-2 hover:bg-gray-100 rounded-lg"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {/* Basic Information */}
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
-                      <input
-                        type="text"
-                        value={editingProduct.name}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Price (£)</label>
-                      <input
-                        type="number"
-                        value={editingProduct.price}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, price: Number(e.target.value) })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Original Price (£)</label>
-                      <input
-                        type="number"
-                        value={editingProduct.originalPrice || ''}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, originalPrice: Number(e.target.value) || null })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                      <select
-                        value={editingProduct.category}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value as any })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                      >
-                        <option value="Womens">Women's Rings</option>
-                        <option value="Mens">Men's Rings</option>
-                        <option value="Unisex">Unisex Rings</option>
-                        <option value="Wedding">Wedding Rings</option>
-                        <option value="Inlay Ring">Inlay Rings</option>
-                      </select>
-                    </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Basic Information */}
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
+                    <input
+                      type="text"
+                      value={editingProduct.name}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                    />
                   </div>
 
-                  {/* Product Specifications */}
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Material</label>
-                      <select
-                        value={editingProduct.material}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, material: e.target.value as any })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                      >
-                        {materials.map((material) => (
-                          <option key={material} value={material}>{material}</option>
-                        ))}
-                      </select>
-                    </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Price (£)</label>
+                    <input
+                      type="number"
+                      value={editingProduct.price}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, price: Number(e.target.value) })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                    />
+                  </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Gem Color</label>
-                      <select
-                        value={editingProduct.gemColor}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, gemColor: e.target.value as any })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                      >
-                        {gemColors.map((color) => (
-                          <option key={color} value={color}>{color}</option>
-                        ))}
-                      </select>
-                    </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Original Price (£)</label>
+                    <input
+                      type="number"
+                      value={editingProduct.originalPrice || ''}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, originalPrice: Number(e.target.value) || null })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                    />
+                  </div>
 
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Gem Density</label>
-                      <select
-                        value={editingProduct.gemDensity}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, gemDensity: e.target.value as any })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                      >
-                        {gemDensities.map((density) => (
-                          <option key={density} value={density}>{density}</option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Gem Variation</label>
-                      <select
-                        value={editingProduct.gemVariation}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, gemVariation: e.target.value as any })}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                      >
-                        {gemVariations.map((variation) => (
-                          <option key={variation} value={variation}>{variation}</option>
-                        ))}
-                      </select>
-                    </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                    <select
+                      value={editingProduct.category}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value as any })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                    >
+                      <option value="Womens">Women's Rings</option>
+                      <option value="Mens">Men's Rings</option>
+                      <option value="Unisex">Unisex Rings</option>
+                      <option value="Wedding">Wedding Rings</option>
+                      <option value="Inlay Ring">Inlay Rings</option>
+                    </select>
                   </div>
                 </div>
 
-                {/* Description */}
-                <div className="mt-6">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                  <textarea
-                    value={editingProduct.description || ''}
-                    onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}
-                    rows={3}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                  />
-                </div>
-
-                {/* Image Selection */}
-                <div className="mt-6">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Product Images</label>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2 max-h-32 overflow-y-auto">
-                    {availableImages.map((image) => (
-                      <button
-                        key={image.path}
-                        onClick={() => {
-                          const newImages = editingProduct.images?.includes(image.path)
-                            ? editingProduct.images.filter(img => img !== image.path)
-                            : [...(editingProduct.images || []), image.path];
-                          setEditingProduct({ ...editingProduct, images: newImages });
-                        }}
-                        className={`relative p-2 border-2 rounded-lg transition-colors ${
-                          editingProduct.images?.includes(image.path)
-                            ? 'border-gold-500 bg-gold-50'
-                            : 'border-gray-200 hover:border-gray-300'
-                        }`}
-                      >
-                        <img
-                          src={image.url}
-                          alt={image.name}
-                          className="w-full h-16 object-cover rounded"
-                        />
-                        {editingProduct.images?.includes(image.path) && (
-                          <div className="absolute top-1 right-1 w-4 h-4 bg-gold-500 rounded-full flex items-center justify-center">
-                            <span className="text-white text-xs">✓</span>
-                          </div>
-                        )}
-                      </button>
-                    ))}
+                {/* Product Specifications */}
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Material</label>
+                    <select
+                      value={editingProduct.material}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, material: e.target.value as any })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                    >
+                      {materials.map((material) => (
+                        <option key={material} value={material}>{material}</option>
+                      ))}
+                    </select>
                   </div>
-                </div>
 
-                {/* Action Buttons */}
-                <div className="flex justify-end space-x-3 mt-6 pt-6 border-t">
-                  <button
-                    onClick={handleCancelEdit}
-                    className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={handleSaveProduct}
-                    className="px-4 py-2 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition-colors flex items-center"
-                  >
-                    <Save className="w-4 h-4 mr-2" />
-                    {isAddingProduct ? 'Add Product' : 'Save Changes'}
-                  </button>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Gem Color</label>
+                    <select
+                      value={editingProduct.gemColor}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, gemColor: e.target.value as any })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                    >
+                      {gemColors.map((color) => (
+                        <option key={color} value={color}>{color}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Gem Density</label>
+                    <select
+                      value={editingProduct.gemDensity}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, gemDensity: e.target.value as any })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                    >
+                      {gemDensities.map((density) => (
+                        <option key={density} value={density}>{density}</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Gem Variation</label>
+                    <select
+                      value={editingProduct.gemVariation}
+                      onChange={(e) => setEditingProduct({ ...editingProduct, gemVariation: e.target.value as any })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                    >
+                      {gemVariations.map((variation) => (
+                        <option key={variation} value={variation}>{variation}</option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
               </div>
-            </motion.div>
-          </div>
-        )}
-      </div>
+
+              {/* Description */}
+              <div className="mt-6">
+                <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                <textarea
+                  value={editingProduct.description || ''}
+                  onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}
+                  rows={3}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                />
+              </div>
+
+              {/* Image Selection */}
+              <div className="mt-6">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Product Images</label>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-2 max-h-32 overflow-y-auto">
+                  {availableImages.map((image) => (
+                    <button
+                      key={image.path}
+                      onClick={() => {
+                        const newImages = editingProduct.images?.includes(image.path)
+                          ? editingProduct.images.filter(img => img !== image.path)
+                          : [...(editingProduct.images || []), image.path];
+                        setEditingProduct({ ...editingProduct, images: newImages });
+                      }}
+                      className={`relative p-2 border-2 rounded-lg transition-colors ${
+                        editingProduct.images?.includes(image.path)
+                          ? 'border-gold-500 bg-gold-50'
+                          : 'border-gray-200 hover:border-gray-300'
+                      }`}
+                    >
+                      <img
+                        src={image.url}
+                        alt={image.name}
+                        className="w-full h-16 object-cover rounded"
+                      />
+                      {editingProduct.images?.includes(image.path) && (
+                        <div className="absolute top-1 right-1 w-4 h-4 bg-gold-500 rounded-full flex items-center justify-center">
+                          <span className="text-white text-xs">✓</span>
+                        </div>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex justify-end space-x-3 mt-6 pt-6 border-t">
+                <button
+                  onClick={handleCancelEdit}
+                  className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSaveProduct}
+                  className="px-4 py-2 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition-colors flex items-center"
+                >
+                  <Save className="w-4 h-4 mr-2" />
+                  {isAddingProduct ? 'Add Product' : 'Save Changes'}
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }

@@ -321,9 +321,23 @@ export default function AdminProductsPage() {
                   <td className="px-6 py-4">
                     <div className="text-sm">
                       <div className="flex items-center gap-2">
-                        <Badge variant="secondary" className="text-xs">
-                          {product.gemColor}
-                        </Badge>
+                        <div className="flex items-center gap-1">
+                          <div
+                            className="h-3 w-3 rounded-full border border-gray-200"
+                            style={{
+                              backgroundColor: 
+                                product.gemColor === 'Red' ? '#dc2626' :
+                                product.gemColor === 'Green' ? '#16a34a' :
+                                product.gemColor === 'Blue' ? '#2563eb' :
+                                product.gemColor === 'Purple' ? '#9333ea' :
+                                product.gemColor === 'Yellow' ? '#ca8a04' :
+                                '#6b7280'
+                            }}
+                          />
+                          <Badge variant="secondary" className="text-xs">
+                            {product.gemColor}
+                          </Badge>
+                        </div>
                         <span className="text-xs text-gray-500">
                           {product.gemDensity} • {product.gemVariation}
                         </span>
