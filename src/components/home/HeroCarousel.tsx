@@ -16,25 +16,28 @@ const HeroCarousel = () => {
         overflow: 'hidden'
       }}
     >
-      {/* Hero Background Image */}
-      <div 
-        className="hero-background"
-        style={{
-          position: 'absolute',
-          inset: '0'
-        }}
-      >
+             {/* Hero Background Image */}
+       <div 
+         className="hero-background bg-gradient-to-br from-amber-900 via-orange-800 to-red-900"
+         style={{
+           position: 'absolute',
+           inset: '0'
+         }}
+       >
                             <Image
                 src="/images/header/hero-optimized-768.webp"
                 alt="J&M Jewelry - Exquisite handcrafted engagement rings"
                 fill
                 priority
+                fetchPriority="high"
                 className="object-cover"
                 sizes="100vw"
-                quality={75}
+                quality={50}
                 placeholder="blur"
                 blurDataURL="/images/header/hero-blur.webp"
                 loading="eager"
+                width={1920}
+                height={1080}
               />
         <div 
           className="hero-overlay"

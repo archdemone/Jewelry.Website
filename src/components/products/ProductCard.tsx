@@ -40,7 +40,7 @@ export function ProductCard({ id, slug, name, price, images, categorySlug }: Pro
             width={600}
             height={600}
             sizes="(max-width:768px) 50vw, 25vw"
-            quality={85}
+            quality={50}
             priority={false}
           />
         </div>
