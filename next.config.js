@@ -25,7 +25,6 @@ const nextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     domains: [],
     unoptimized: false,
-    quality: 50, // Very low quality for maximum performance
   },
   compress: true,
   poweredByHeader: false,
