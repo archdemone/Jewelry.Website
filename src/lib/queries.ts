@@ -197,11 +197,74 @@ export async function getProductBySlug(slug: string) {
     return found as any;
   }
   try {
-    return await db.product.findUnique({
+    const dbProduct = await db.product.findUnique({
       where: { slug },
       include: { category: true, reviews: true },
     });
+    
+    if (dbProduct) {
+      return dbProduct;
+    }
+    
+    // If not found in DB, check featured products
+    const { getFeaturedProducts } = await import('./featured-products');
+    const featuredProducts = getFeaturedProducts();
+    const featuredProduct = featuredProducts.find(p => p.slug === slug);
+    
+    if (featuredProduct) {
+      // Transform featured product to match DB schema
+      return {
+        id: featuredProduct.id,
+        name: featuredProduct.name,
+        slug: featuredProduct.slug,
+        description: featuredProduct.description,
+        price: featuredProduct.price,
+        sku: featuredProduct.sku,
+        quantity: 10, // Default quantity
+        categoryId: featuredProduct.category,
+        category: {
+          id: featuredProduct.category,
+          name: featuredProduct.category,
+          slug: featuredProduct.category.toLowerCase(),
+        },
+        images: [featuredProduct.image],
+        featured: true,
+        reviews: [],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+    }
+    
+    return null;
   } catch {
+    // Fallback for featured products
+    const { getFeaturedProducts } = await import('./featured-products');
+    const featuredProducts = getFeaturedProducts();
+    const featuredProduct = featuredProducts.find(p => p.slug === slug);
+    
+    if (featuredProduct) {
+      return {
+        id: featuredProduct.id,
+        name: featuredProduct.name,
+        slug: featuredProduct.slug,
+        description: featuredProduct.description,
+        price: featuredProduct.price,
+        sku: featuredProduct.sku,
+        quantity: 10,
+        categoryId: featuredProduct.category,
+        category: {
+          id: featuredProduct.category,
+          name: featuredProduct.category,
+          slug: featuredProduct.category.toLowerCase(),
+        },
+        images: [featuredProduct.image],
+        featured: true,
+        reviews: [],
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+    }
+    
     const catalog = buildFallbackCatalog(48);
     const found = catalog.find((p) => p.slug === slug);
     return found as any;

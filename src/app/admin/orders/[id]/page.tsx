@@ -1,68 +1,78 @@
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+'use client';
 
-export default function OrderDetailsPage({ params }: { params: { id: string } }) {
+import { useParams } from 'next/navigation';
+import Link from 'next/link';
+import { ArrowLeft, Package, Truck, CreditCard, User } from 'lucide-react';
+
+export default function AdminOrderDetailPage() {
+  const params = useParams();
+  const orderId = params.id;
+
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <div className="text-2xl font-bold">Order #{params.id}</div>
-        <div className="flex gap-2">
-          <Button>Mark as fulfilled</Button>
-          <Button variant="outline">Send tracking</Button>
-          <Button variant="outline">Issue refund</Button>
-          <Button variant="ghost">Print packing slip</Button>
+    <div className="space-y-6">
+      <div className="flex items-center gap-4">
+        <Link
+          href="/admin/orders"
+          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+        >
+          <ArrowLeft className="h-5 w-5" />
+        </Link>
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Order #{orderId}</h1>
+          <p className="text-gray-600">Order details and management</p>
         </div>
       </div>
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-        <div className="space-y-4 lg:col-span-2">
-          <Card className="space-y-3 p-4">
-            <div className="font-semibold">Items</div>
-            <div className="space-y-2">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="h-12 w-12 rounded bg-gray-200" />
-                  <div>
-                    <div className="font-medium">Gold Ring</div>
-                    <div className="text-xs text-gray-500">RNG-001</div>
-                  </div>
-                </div>
-                <div className="text-sm">1 × £199.00</div>
-              </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="lg:col-span-2 space-y-6">
+          <div className="bg-white rounded-lg shadow-sm border p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <Package className="h-5 w-5 mr-2" />
+              Order Items
+            </h2>
+            <div className="text-center py-8">
+              <p className="text-gray-600">Order items will be displayed here</p>
             </div>
-          </Card>
-          <Card className="space-y-3 p-4">
-            <div className="font-semibold">Order Timeline</div>
-            <div className="text-sm text-gray-600">Created, Payment captured, ...</div>
-          </Card>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-sm border p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <Truck className="h-5 w-5 mr-2" />
+              Shipping Information
+            </h2>
+            <div className="text-center py-8">
+              <p className="text-gray-600">Shipping details will be displayed here</p>
+            </div>
+          </div>
         </div>
-        <div className="space-y-4">
-          <Card className="space-y-2 p-4">
-            <div className="font-semibold">Customer</div>
-            <div className="text-sm">Alice Johnson</div>
-            <div className="text-xs text-gray-500">alice@example.com</div>
-          </Card>
-          <Card className="space-y-2 p-4">
-            <div className="font-semibold">Shipping Address</div>
-            <div className="text-sm">123 Main St, New York, NY</div>
-          </Card>
-          <Card className="space-y-2 p-4">
-            <div className="font-semibold">Billing Address</div>
-            <div className="text-sm">123 Main St, New York, NY</div>
-          </Card>
-          <Card className="space-y-2 p-4">
-            <div className="font-semibold">Payment</div>
-            <div className="text-sm">Paid with card •••• 4242</div>
-          </Card>
-          <Card className="space-y-2 p-4">
-            <div className="font-semibold">Notes</div>
-            <textarea
-              className="w-full rounded border p-2 text-sm"
-              rows={3}
-              placeholder="Add internal note..."
-            />
-            <Button variant="outline">Add Note</Button>
-          </Card>
+
+        <div className="space-y-6">
+          <div className="bg-white rounded-lg shadow-sm border p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <User className="h-5 w-5 mr-2" />
+              Customer
+            </h2>
+            <div className="text-center py-8">
+              <p className="text-gray-600">Customer information will be displayed here</p>
+            </div>
+          </div>
+
+          <div className="bg-white rounded-lg shadow-sm border p-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
+              <CreditCard className="h-5 w-5 mr-2" />
+              Payment
+            </h2>
+            <div className="text-center py-8">
+              <p className="text-gray-600">Payment details will be displayed here</p>
+            </div>
+          </div>
         </div>
+      </div>
+
+      <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-center">
+        <p className="text-yellow-800">
+          This order detail page is under construction. Full order management functionality will be available soon.
+        </p>
       </div>
     </div>
   );
