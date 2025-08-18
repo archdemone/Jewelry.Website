@@ -37,33 +37,39 @@ const navItems = [
 function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
   return (
-    <div className="flex h-full flex-col">
-      <div className="flex h-16 items-center border-b px-4">
-        <Link href="/admin" className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded bg-amber-500" />
-          <span className="text-lg font-bold">Aurora Admin</span>
+    <div className="flex h-full flex-col w-full overflow-hidden">
+      <div className="flex h-16 items-center border-b px-4 min-w-0">
+        <Link href="/admin" className="flex items-center gap-2 min-w-0">
+          <div className="h-8 w-8 rounded bg-amber-500 flex-shrink-0" />
+          <span className="text-lg font-bold truncate">Aurora Admin</span>
         </Link>
       </div>
-      <nav className="flex-1 p-2">
-        {navItems.map((item) => {
-          const Icon = item.icon;
-          const active =
-            !!pathname && (pathname === item.href || pathname.startsWith(`${item.href}/`));
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={clsx(
-                'flex items-center gap-3 rounded-md px-3 py-2 text-sm',
-                active ? 'bg-amber-100 text-amber-900' : 'text-gray-700 hover:bg-gray-100',
-              )}
-              onClick={onNavigate}
-            >
-              <Icon className="h-4 w-4" />
-              <span>{item.label}</span>
-            </Link>
-          );
-        })}
+      <nav className="flex-1 p-2 overflow-hidden">
+        <div className="space-y-1">
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const active =
+              !!pathname && (
+                pathname === item.href || 
+                (item.href === '/admin' && pathname === '/admin') ||
+                (item.href !== '/admin' && pathname.startsWith(`${item.href}/`))
+              );
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={clsx(
+                  'flex items-center gap-3 rounded-md px-3 py-2 text-sm w-full max-w-full',
+                  active ? 'bg-amber-100 text-amber-900' : 'text-gray-700 hover:bg-gray-100',
+                )}
+                onClick={onNavigate}
+              >
+                <Icon className="h-4 w-4 flex-shrink-0" />
+                <span className="truncate min-w-0">{item.label}</span>
+              </Link>
+            );
+          })}
+        </div>
       </nav>
       <UserSection />
     </div>
@@ -112,7 +118,7 @@ function UserSection() {
 
 export function AdminSidebar() {
   return (
-    <aside className="hidden w-60 shrink-0 border-r bg-gray-50 md:flex">
+    <aside className="hidden w-64 shrink-0 border-r bg-gray-50 md:flex overflow-hidden" style={{ maxWidth: '16rem' }}>
       <SidebarContent />
     </aside>
   );
@@ -133,7 +139,7 @@ export function AdminMobileSidebarButton() {
             <Menu className="h-5 w-5" />
           </button>
         </SheetTrigger>
-        <SheetContent side="left" className="w-72 p-0">
+        <SheetContent side="left" className="w-80 p-0">
           <SidebarContent onNavigate={() => setOpen(false)} />
         </SheetContent>
       </Sheet>

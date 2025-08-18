@@ -6,6 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
+import { GemColorSelector } from '@/components/admin/GemColorSelector';
+import { ImageUpload } from '@/components/admin/ImageUpload';
 import {
   ArrowLeft,
   Save,
@@ -65,7 +67,6 @@ export default function AddNewRingPage() {
     description: '',
   });
 
-  const [showGemPopup, setShowGemPopup] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const categories = [
@@ -98,27 +99,42 @@ export default function AddNewRingPage() {
   };
   const allRingWidths = [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 16];
 
-  const gemColorImages = {
-    Red: '/images/MyImages/gem-red.jpg',
-    Green: '/images/MyImages/gem-green.jpg',
-    Blue: '/images/MyImages/gem-blue.jpg',
-    Purple: '/images/MyImages/gem-purple.jpg',
-    Yellow: '/images/MyImages/gem-yellow.jpg',
-    Custom: '/images/MyImages/gem-custom.jpg',
-  };
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    try {
+      // Generate a unique ID for the new product
+      const newProduct = {
+        ...formData,
+        id: `p${Date.now()}`,
+        sku: formData.sku || `RNG-${Date.now()}`,
+        rating: 0,
+        reviews: 0,
+      };
 
-    console.log('Form data:', formData);
-    setIsSubmitting(false);
-
-    // Redirect to products list
-    window.location.href = '/admin/products';
+      console.log('Saving product:', newProduct);
+      
+      // Here you would typically make an API call to save the product
+      // const response = await fetch('/api/admin/products', {
+      //   method: 'POST',
+      //   headers: { 'Content-Type': 'application/json' },
+      //   body: JSON.stringify(newProduct),
+      // });
+      
+      // if (!response.ok) throw new Error('Failed to save product');
+      
+      // For now, we'll simulate success and redirect
+      alert('Product saved successfully!');
+      window.location.href = '/admin/products';
+    } catch (error) {
+      console.error('Error saving product:', error);
+      alert('Failed to save product. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const toggleRingSize = (sizeType: 'us' | 'eu', size: number) => {
@@ -329,38 +345,10 @@ export default function AddNewRingPage() {
                   <label className="mb-2 block text-sm font-medium text-gray-700">
                     Gem Color *
                   </label>
-                  <div className="grid grid-cols-3 gap-2">
-                    {gemColors.map((color) => (
-                      <button
-                        key={color}
-                        type="button"
-                        onClick={() => setFormData((prev) => ({ ...prev, gemColor: color }))}
-                        onMouseEnter={() => setShowGemPopup(color)}
-                        onMouseLeave={() => setShowGemPopup(null)}
-                        className={`relative rounded-lg border-2 p-3 transition-all ${
-                          formData.gemColor === color
-                            ? 'border-gold-500 bg-gold-50'
-                            : 'border-gray-300 hover:border-gray-400'
-                        }`}
-                      >
-                        <span className="text-sm font-medium">{color}</span>
-
-                        {/* Gem Color Popup */}
-                        {showGemPopup === color &&
-                          gemColorImages[color as keyof typeof gemColorImages] && (
-                            <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
-                              <div className="rounded-lg border bg-white p-2 shadow-lg">
-                                <img
-                                  src={gemColorImages[color as keyof typeof gemColorImages]}
-                                  alt={`${color} gem`}
-                                  className="h-20 w-20 rounded object-cover"
-                                />
-                              </div>
-                            </div>
-                          )}
-                      </button>
-                    ))}
-                  </div>
+                  <GemColorSelector
+                    selectedColor={formData.gemColor}
+                    onColorChange={(color) => setFormData((prev) => ({ ...prev, gemColor: color }))}
+                  />
                 </div>
 
                 <div>
@@ -567,39 +555,10 @@ export default function AddNewRingPage() {
                 <h2 className="text-xl font-semibold">Images</h2>
               </div>
 
-              <div className="space-y-4">
-                <div className="rounded-lg border-2 border-dashed border-gray-300 p-6 text-center">
-                  <Upload className="mx-auto mb-2 h-8 w-8 text-gray-400" />
-                  <p className="text-sm text-gray-600">Upload ring images</p>
-                  <p className="text-xs text-gray-500">PNG, JPG up to 10MB</p>
-                </div>
-
-                {formData.images.length > 0 && (
-                  <div className="grid grid-cols-2 gap-2">
-                    {formData.images.map((image, index) => (
-                      <div key={index} className="relative">
-                        <img
-                          src={image}
-                          alt={`Ring ${index + 1}`}
-                          className="h-24 w-full rounded-lg object-cover"
-                        />
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setFormData((prev) => ({
-                              ...prev,
-                              images: prev.images.filter((_, i) => i !== index),
-                            }))
-                          }
-                          className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-white"
-                        >
-                          <X className="h-3 w-3" />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
-              </div>
+              <ImageUpload
+                images={formData.images}
+                onImagesChange={(images) => setFormData((prev) => ({ ...prev, images }))}
+              />
             </Card>
 
             {/* Preview */}
@@ -663,6 +622,35 @@ export default function AddNewRingPage() {
           </div>
         </div>
       </form>
+
+      {/* Bottom Save Button */}
+      <div className="sticky bottom-0 bg-white border-t p-4 mt-6">
+        <div className="flex justify-between items-center">
+          <Link href="/admin/products">
+            <Button variant="outline">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Cancel
+            </Button>
+          </Link>
+          <Button
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+            className="bg-gold-500 hover:bg-gold-600"
+          >
+            {isSubmitting ? (
+              <>
+                <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                Saving...
+              </>
+            ) : (
+              <>
+                <Save className="mr-2 h-4 w-4" />
+                Save Ring
+              </>
+            )}
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }

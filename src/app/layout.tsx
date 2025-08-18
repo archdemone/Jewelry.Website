@@ -3,12 +3,13 @@ import type { Metadata } from 'next';
 import { Inter, Playfair_Display } from 'next/font/google';
 import './globals.css';
 import { Header } from '@/components/layout/Header';
-import { Footer } from '@/components/layout/Footer';
+import { ConditionalFooter } from '@/components/layout/ConditionalFooter';
 import { AuthSessionProvider } from '@/lib/auth/session-provider';
 import { CartProvider } from '@/components/providers/CartProvider';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
 import { Toaster } from 'react-hot-toast';
 import dynamic from 'next/dynamic';
+
 
 // Export Web Vitals reporting function
 export { reportWebVitals } from './vitals';
@@ -334,7 +335,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <main id="main-content" className="flex-grow">
                   {children}
                 </main>
-                <Footer />
+                <ConditionalFooter />
               </div>
 
               {/* Non-critical components - loaded after page load */}

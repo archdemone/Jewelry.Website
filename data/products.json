@@ -2,9 +2,11 @@
   {
     "id": 1,
     "name": "Women's Silver Inlay Ring - Dark Red",
-    "price": 299,
-    "originalPrice": 349,
-    "images": ["/images/MyImages/IMG-20250816-WA0000.jpg"],
+    "price": 65,
+    "originalPrice": 75,
+    "images": [
+      "/images/MyImages/IMG-20250816-WA0000.jpg"
+    ],
     "material": "Silver",
     "gemColor": "Red",
     "gemDensity": "medium",
@@ -12,8 +14,27 @@
     "mixColors": [],
     "category": "Womens",
     "subCategory": "Inlay Ring",
-    "ringSizes": { "us": [5, 6, 7, 8, 9], "eu": [49, 52, 54, 57, 59] },
-    "ringWidth": [4, 6, 8],
+    "ringSizes": {
+      "us": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "eu": [
+        49,
+        52,
+        54,
+        57,
+        59
+      ]
+    },
+    "ringWidth": [
+      4,
+      6,
+      8
+    ],
     "isReadyToShip": true,
     "rating": 4.8,
     "reviews": 24,
@@ -24,9 +45,11 @@
   {
     "id": 2,
     "name": "Women's Gold Statement Ring - Bright Purple",
-    "price": 599,
-    "originalPrice": 699,
-    "images": ["/images/MyImages/IMG-20250816-WA0000.jpg"],
+    "price": 95,
+    "originalPrice": 110,
+    "images": [
+      "/images/MyImages/IMG-20250816-WA0000.jpg"
+    ],
     "material": "Gold",
     "gemColor": "Purple",
     "gemDensity": "large",
@@ -34,8 +57,27 @@
     "mixColors": [],
     "category": "Womens",
     "subCategory": "Statement Ring",
-    "ringSizes": { "us": [5, 6, 7, 8, 9], "eu": [49, 52, 54, 57, 59] },
-    "ringWidth": [6, 8, 10],
+    "ringSizes": {
+      "us": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "eu": [
+        49,
+        52,
+        54,
+        57,
+        59
+      ]
+    },
+    "ringWidth": [
+      6,
+      8,
+      10
+    ],
     "isReadyToShip": true,
     "rating": 4.9,
     "reviews": 15,
@@ -46,18 +88,42 @@
   {
     "id": 3,
     "name": "Women's Silver Stackable Ring - Mixed Blue",
-    "price": 199,
+    "price": 55,
     "originalPrice": null,
-    "images": ["/images/MyImages/IMG-20250816-WA0000.jpg"],
+    "images": [
+      "/images/MyImages/IMG-20250816-WA0000.jpg"
+    ],
     "material": "Silver",
     "gemColor": "Blue",
     "gemDensity": "small",
     "gemVariation": "Mixed",
-    "mixColors": ["Blue", "Green"],
+    "mixColors": [
+      "Blue",
+      "Green"
+    ],
     "category": "Womens",
     "subCategory": "Stackable Ring",
-    "ringSizes": { "us": [5, 6, 7, 8, 9], "eu": [49, 52, 54, 57, 59] },
-    "ringWidth": [2, 3, 4],
+    "ringSizes": {
+      "us": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "eu": [
+        49,
+        52,
+        54,
+        57,
+        59
+      ]
+    },
+    "ringWidth": [
+      2,
+      3,
+      4
+    ],
     "isReadyToShip": true,
     "rating": 4.6,
     "reviews": 28,
@@ -68,9 +134,11 @@
   {
     "id": 4,
     "name": "Women's Gold Wedding Band - Classic",
-    "price": 799,
+    "price": 85,
     "originalPrice": null,
-    "images": ["/images/MyImages/IMG-20250816-WA0001.jpg"],
+    "images": [
+      "/images/MyImages/IMG-20250816-WA0001.jpg"
+    ],
     "material": "Gold",
     "gemColor": "Custom",
     "gemDensity": "medium",
@@ -78,8 +146,27 @@
     "mixColors": [],
     "category": "Womens",
     "subCategory": "Wedding",
-    "ringSizes": { "us": [5, 6, 7, 8, 9], "eu": [49, 52, 54, 57, 59] },
-    "ringWidth": [4, 6, 8],
+    "ringSizes": {
+      "us": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "eu": [
+        49,
+        52,
+        54,
+        57,
+        59
+      ]
+    },
+    "ringWidth": [
+      4,
+      6,
+      8
+    ],
     "isReadyToShip": true,
     "rating": 4.9,
     "reviews": 42,
@@ -90,9 +177,11 @@
   {
     "id": 5,
     "name": "Men's Damascus Wedding Ring - Bright Blue",
-    "price": 449,
+    "price": 75,
     "originalPrice": null,
-    "images": ["/images/MyImages/IMG-20250816-WA0001.jpg"],
+    "images": [
+      "/images/MyImages/IMG-20250816-WA0001.jpg"
+    ],
     "material": "Damascus",
     "gemColor": "Blue",
     "gemDensity": "large",
@@ -100,8 +189,27 @@
     "mixColors": [],
     "category": "Mens",
     "subCategory": "Wedding",
-    "ringSizes": { "us": [8, 9, 10, 11, 12], "eu": [57, 59, 61, 63, 65] },
-    "ringWidth": [6, 8, 10],
+    "ringSizes": {
+      "us": [
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "eu": [
+        57,
+        59,
+        61,
+        63,
+        65
+      ]
+    },
+    "ringWidth": [
+      6,
+      8,
+      10
+    ],
     "isReadyToShip": true,
     "rating": 4.9,
     "reviews": 18,
@@ -112,9 +220,11 @@
   {
     "id": 6,
     "name": "Men's Titanium Signet Ring - Dark Green",
-    "price": 349,
-    "originalPrice": 399,
-    "images": ["/images/MyImages/IMG-20250816-WA0001.jpg"],
+    "price": 70,
+    "originalPrice": 80,
+    "images": [
+      "/images/MyImages/IMG-20250816-WA0001.jpg"
+    ],
     "material": "Titanium",
     "gemColor": "Green",
     "gemDensity": "medium",
@@ -122,8 +232,27 @@
     "mixColors": [],
     "category": "Mens",
     "subCategory": "Signet Ring",
-    "ringSizes": { "us": [8, 9, 10, 11, 12], "eu": [57, 59, 61, 63, 65] },
-    "ringWidth": [8, 10, 12],
+    "ringSizes": {
+      "us": [
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "eu": [
+        57,
+        59,
+        61,
+        63,
+        65
+      ]
+    },
+    "ringWidth": [
+      8,
+      10,
+      12
+    ],
     "isReadyToShip": true,
     "rating": 4.7,
     "reviews": 22,
@@ -134,18 +263,42 @@
   {
     "id": 7,
     "name": "Men's Carbon Statement Ring - Mixed Red",
-    "price": 299,
+    "price": 65,
     "originalPrice": null,
-    "images": ["/images/MyImages/IMG-20250816-WA0001.jpg"],
+    "images": [
+      "/images/MyImages/IMG-20250816-WA0001.jpg"
+    ],
     "material": "Carbon",
     "gemColor": "Red",
     "gemDensity": "large",
     "gemVariation": "Mixed",
-    "mixColors": ["Red", "Orange"],
+    "mixColors": [
+      "Red",
+      "Orange"
+    ],
     "category": "Mens",
     "subCategory": "Statement Ring",
-    "ringSizes": { "us": [8, 9, 10, 11, 12], "eu": [57, 59, 61, 63, 65] },
-    "ringWidth": [6, 8, 10],
+    "ringSizes": {
+      "us": [
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "eu": [
+        57,
+        59,
+        61,
+        63,
+        65
+      ]
+    },
+    "ringWidth": [
+      6,
+      8,
+      10
+    ],
     "isReadyToShip": true,
     "rating": 4.8,
     "reviews": 16,
@@ -156,9 +309,11 @@
   {
     "id": 8,
     "name": "Men's Platinum Wedding Ring - Modern",
-    "price": 899,
-    "originalPrice": 999,
-    "images": ["/images/MyImages/IMG-20250816-WA0001.jpg"],
+    "price": 105,
+    "originalPrice": 120,
+    "images": [
+      "/images/MyImages/IMG-20250816-WA0001.jpg"
+    ],
     "material": "Stainless Steel",
     "gemColor": "Custom",
     "gemDensity": "large",
@@ -166,8 +321,27 @@
     "mixColors": [],
     "category": "Mens",
     "subCategory": "Wedding",
-    "ringSizes": { "us": [8, 9, 10, 11, 12], "eu": [57, 59, 61, 63, 65] },
-    "ringWidth": [6, 8, 10],
+    "ringSizes": {
+      "us": [
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "eu": [
+        57,
+        59,
+        61,
+        63,
+        65
+      ]
+    },
+    "ringWidth": [
+      6,
+      8,
+      10
+    ],
     "isReadyToShip": true,
     "rating": 4.8,
     "reviews": 38,
@@ -178,18 +352,41 @@
   {
     "id": 9,
     "name": "Unisex Carbon Inlay Ring - Mixed Green",
-    "price": 199,
-    "originalPrice": 249,
-    "images": ["/images/MyImages/IMG-20250816-WA0002.jpg"],
+    "price": 60,
+    "originalPrice": 70,
+    "images": [
+      "/images/MyImages/IMG-20250816-WA0002.jpg"
+    ],
     "material": "Carbon",
     "gemColor": "Green",
     "gemDensity": "small",
     "gemVariation": "Mixed",
-    "mixColors": ["Green", "Blue"],
+    "mixColors": [
+      "Green",
+      "Blue"
+    ],
     "category": "Unisex",
     "subCategory": "Inlay Ring",
-    "ringSizes": { "us": [6, 7, 8, 9, 10], "eu": [52, 54, 57, 59, 61] },
-    "ringWidth": [4, 6],
+    "ringSizes": {
+      "us": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "eu": [
+        52,
+        54,
+        57,
+        59,
+        61
+      ]
+    },
+    "ringWidth": [
+      4,
+      6
+    ],
     "isReadyToShip": true,
     "rating": 4.7,
     "reviews": 31,
@@ -200,9 +397,11 @@
   {
     "id": 10,
     "name": "Unisex Ceramic Stackable Ring - Bright Yellow",
-    "price": 149,
-    "originalPrice": 179,
-    "images": ["/images/MyImages/IMG-20250816-WA0002.jpg"],
+    "price": 45,
+    "originalPrice": 55,
+    "images": [
+      "/images/MyImages/IMG-20250816-WA0002.jpg"
+    ],
     "material": "Ceramic(white)",
     "gemColor": "Yellow",
     "gemDensity": "small",
@@ -210,8 +409,27 @@
     "mixColors": [],
     "category": "Unisex",
     "subCategory": "Stackable Ring",
-    "ringSizes": { "us": [6, 7, 8, 9, 10], "eu": [52, 54, 57, 59, 61] },
-    "ringWidth": [2, 3, 4],
+    "ringSizes": {
+      "us": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "eu": [
+        52,
+        54,
+        57,
+        59,
+        61
+      ]
+    },
+    "ringWidth": [
+      2,
+      3,
+      4
+    ],
     "isReadyToShip": true,
     "rating": 4.5,
     "reviews": 19,
@@ -222,9 +440,11 @@
   {
     "id": 11,
     "name": "Unisex Tungsten Statement Ring - Dark Blue",
-    "price": 279,
+    "price": 70,
     "originalPrice": null,
-    "images": ["/images/MyImages/IMG-20250816-WA0002.jpg"],
+    "images": [
+      "/images/MyImages/IMG-20250816-WA0002.jpg"
+    ],
     "material": "Tungsten",
     "gemColor": "Blue",
     "gemDensity": "medium",
@@ -232,8 +452,27 @@
     "mixColors": [],
     "category": "Unisex",
     "subCategory": "Statement Ring",
-    "ringSizes": { "us": [6, 7, 8, 9, 10], "eu": [52, 54, 57, 59, 61] },
-    "ringWidth": [6, 8, 10],
+    "ringSizes": {
+      "us": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "eu": [
+        52,
+        54,
+        57,
+        59,
+        61
+      ]
+    },
+    "ringWidth": [
+      6,
+      8,
+      10
+    ],
     "isReadyToShip": true,
     "rating": 4.6,
     "reviews": 25,
@@ -244,9 +483,11 @@
   {
     "id": 12,
     "name": "Couple Ring Set - Matching Silver",
-    "price": 649,
-    "originalPrice": 749,
-    "images": ["/images/MyImages/IMG-20250816-WA0001.jpg"],
+    "price": 110,
+    "originalPrice": 125,
+    "images": [
+      "/images/MyImages/IMG-20250816-WA0001.jpg"
+    ],
     "material": "Silver",
     "gemColor": "Red",
     "gemDensity": "medium",
@@ -254,8 +495,27 @@
     "mixColors": [],
     "category": "Unisex",
     "subCategory": "Couple Ring Set",
-    "ringSizes": { "us": [6, 7, 8, 9, 10], "eu": [52, 54, 57, 59, 61] },
-    "ringWidth": [4, 6, 8],
+    "ringSizes": {
+      "us": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "eu": [
+        52,
+        54,
+        57,
+        59,
+        61
+      ]
+    },
+    "ringWidth": [
+      4,
+      6,
+      8
+    ],
     "isReadyToShip": true,
     "rating": 4.9,
     "reviews": 29,
@@ -266,9 +526,11 @@
   {
     "id": 13,
     "name": "Women's Ceramic Inlay Ring - Bright Purple",
-    "price": 179,
-    "originalPrice": 219,
-    "images": ["/images/MyImages/IMG-20250816-WA0000.jpg"],
+    "price": 50,
+    "originalPrice": 60,
+    "images": [
+      "/images/MyImages/IMG-20250816-WA0000.jpg"
+    ],
     "material": "Ceramic(white)",
     "gemColor": "Purple",
     "gemDensity": "medium",
@@ -276,8 +538,26 @@
     "mixColors": [],
     "category": "Womens",
     "subCategory": "Inlay Ring",
-    "ringSizes": { "us": [5, 6, 7, 8, 9], "eu": [49, 52, 54, 57, 59] },
-    "ringWidth": [4, 6],
+    "ringSizes": {
+      "us": [
+        5,
+        6,
+        7,
+        8,
+        9
+      ],
+      "eu": [
+        49,
+        52,
+        54,
+        57,
+        59
+      ]
+    },
+    "ringWidth": [
+      4,
+      6
+    ],
     "isReadyToShip": true,
     "rating": 4.4,
     "reviews": 12,
@@ -288,9 +568,11 @@
   {
     "id": 14,
     "name": "Men's Tungsten Wedding Ring - Classic",
-    "price": 399,
+    "price": 80,
     "originalPrice": null,
-    "images": ["/images/MyImages/IMG-20250816-WA0001.jpg"],
+    "images": [
+      "/images/MyImages/IMG-20250816-WA0001.jpg"
+    ],
     "material": "Tungsten",
     "gemColor": "Custom",
     "gemDensity": "large",
@@ -298,8 +580,27 @@
     "mixColors": [],
     "category": "Mens",
     "subCategory": "Wedding",
-    "ringSizes": { "us": [8, 9, 10, 11, 12], "eu": [57, 59, 61, 63, 65] },
-    "ringWidth": [6, 8, 10],
+    "ringSizes": {
+      "us": [
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "eu": [
+        57,
+        59,
+        61,
+        63,
+        65
+      ]
+    },
+    "ringWidth": [
+      6,
+      8,
+      10
+    ],
     "isReadyToShip": true,
     "rating": 4.7,
     "reviews": 35,
@@ -310,18 +611,42 @@
   {
     "id": 15,
     "name": "Unisex Damascus Inlay Ring - Mixed Red",
-    "price": 379,
-    "originalPrice": 429,
-    "images": ["/images/MyImages/IMG-20250816-WA0002.jpg"],
+    "price": 75,
+    "originalPrice": 85,
+    "images": [
+      "/images/MyImages/IMG-20250816-WA0002.jpg"
+    ],
     "material": "Damascus",
     "gemColor": "Red",
     "gemDensity": "large",
     "gemVariation": "Mixed",
-    "mixColors": ["Red", "Orange", "Yellow"],
+    "mixColors": [
+      "Red",
+      "Orange",
+      "Yellow"
+    ],
     "category": "Unisex",
     "subCategory": "Inlay Ring",
-    "ringSizes": { "us": [6, 7, 8, 9, 10], "eu": [52, 54, 57, 59, 61] },
-    "ringWidth": [6, 8],
+    "ringSizes": {
+      "us": [
+        6,
+        7,
+        8,
+        9,
+        10
+      ],
+      "eu": [
+        52,
+        54,
+        57,
+        59,
+        61
+      ]
+    },
+    "ringWidth": [
+      6,
+      8
+    ],
     "isReadyToShip": true,
     "rating": 4.8,
     "reviews": 21,
