@@ -21,16 +21,19 @@ const HeroCarousel = () => {
          className="hero-background bg-gradient-to-br from-amber-900 via-orange-800 to-red-900"
          style={{
            position: 'absolute',
-           inset: '0'
+           inset: '0',
+           width: '100%',
+           height: '100%'
          }}
        >
                             <Image
                 src="/images/header/hero-optimized-768.webp"
                 alt="J&M Jewelry - Exquisite handcrafted engagement rings"
-                fill
+                width={1920}
+                height={1080}
                 priority
                 fetchPriority="high"
-                className="object-cover"
+                className="object-cover w-full h-full"
                 sizes="100vw"
                 quality={50}
                 placeholder="blur"
