@@ -40,12 +40,12 @@ export function Header() {
   }, [q, router]);
 
   const ringCollections = [
-    { name: 'Engagement Rings', href: '/products?category=engagement-rings' },
-    { name: 'Wedding Bands', href: '/products?category=wedding-bands' },
-    { name: 'Eternity Rings', href: '/products?category=eternity-rings' },
-    { name: 'Signet Rings', href: '/products?category=signet-rings' },
-    { name: 'Statement Rings', href: '/products?category=statement-rings' },
-    { name: 'Stackable Rings', href: '/products?category=stackable-rings' },
+    { name: "Women's Rings", href: '/products/womens' },
+    { name: "Men's Rings", href: '/products/mens' },
+    { name: 'Unisex Rings', href: '/products/unisex' },
+    { name: 'Inlay Rings', href: '/products/inlay' },
+    { name: 'Wedding Rings', href: '/products/wedding' },
+    { name: 'All Rings', href: '/products' },
   ];
 
   return (
@@ -84,7 +84,6 @@ export function Header() {
             <button
               className="flex items-center gap-1 text-sm text-text hover:text-secondary"
               data-testid="nav-ring-collections"
-              onClick={() => router.push('/products')}
               type="button"
             >
               Ring Collections

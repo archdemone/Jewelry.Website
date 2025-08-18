@@ -2,7 +2,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import {
   Heart,
@@ -26,6 +26,7 @@ import {
 import { getAllCategories, getPaginatedProducts } from '@/lib/queries';
 import { getProductImageFallback } from '@/lib/assets/images';
 import { useCartStore } from '@/store/cart';
+import CategoryShowcase from '@/components/home/CategoryShowcase';
 
 interface Product {
   id: string | number;
@@ -89,6 +90,7 @@ interface CustomizationState {
 }
 
 export default function ProductsPage() {
+  const [mounted, setMounted] = useState(false);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [selectedFilters, setSelectedFilters] = useState<FilterState>({
     category: [],
@@ -127,8 +129,23 @@ export default function ProductsPage() {
     product: Product | null;
   }>({ action: 'added', product: null });
 
-  // Cart store
+  // Ensure component is mounted before using stores
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  // Cart store - always call the hook
   const addItem = useCartStore((state) => state.addItem);
+  
+  // Safely get cart store values - moved outside component to prevent recreation
+  const getCartStore = useCallback(() => {
+    try {
+      return useCartStore.getState();
+    } catch (error) {
+      console.warn('Cart store not available:', error);
+      return { addItem: () => {} };
+    }
+  }, []);
 
   // Load products and categories on mount
   useEffect(() => {
@@ -226,6 +243,24 @@ export default function ProductsPage() {
     loadData();
   }, []);
 
+  // Handle smooth scrolling to products section
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const hash = window.location.hash;
+      if (hash === '#products') {
+        const productsSection = document.getElementById('products-section');
+        if (productsSection) {
+          setTimeout(() => {
+            productsSection.scrollIntoView({ 
+              behavior: 'smooth',
+              block: 'start'
+            });
+          }, 100);
+        }
+      }
+    }
+  }, []);
+
   const toggleFilter = (type: 'category' | 'material' | 'gemstone', value: string) => {
     setSelectedFilters((prev) => ({
       ...prev,
@@ -320,34 +355,38 @@ export default function ProductsPage() {
   };
 
   const handleAddToCart = () => {
-    if (!quickViewProduct) return;
+    if (!quickViewProduct || !mounted) return;
 
-    // Add to cart logic for ready-to-ship items
-    console.log('Adding to cart:', quickViewProduct.name);
+    try {
+      // Add to cart logic for ready-to-ship items
+      console.log('Adding to cart:', quickViewProduct.name);
 
-    // Add item to cart store
-    addItem({
-      productId: quickViewProduct.id.toString(),
-      name: quickViewProduct.name,
-      price: quickViewProduct.price,
-      image: quickViewProduct.images?.[0] || '/images/MyImages/category-engagement-rings.jpg',
-      material: quickViewProduct.material,
-      gemColor: quickViewProduct.gemColor,
-      gemDensity: quickViewProduct.gemDensity,
-      gemVariation: quickViewProduct.gemVariation,
-      ringSize: customization.ringSize,
-      ringWidth: customization.ringWidth,
-    });
+      // Add item to cart store
+      addItem({
+        productId: quickViewProduct.id.toString(),
+        name: quickViewProduct.name,
+        price: quickViewProduct.price,
+        image: quickViewProduct.images?.[0] || '/images/MyImages/category-engagement-rings.jpg',
+        material: quickViewProduct.material,
+        gemColor: quickViewProduct.gemColor,
+        gemDensity: quickViewProduct.gemDensity,
+        gemVariation: quickViewProduct.gemVariation,
+        ringSize: customization.ringSize,
+        ringWidth: customization.ringWidth,
+      });
 
-    // Show success feedback
-    setAddedProduct(quickViewProduct);
-    setShowAddToCartToast(true);
+      // Show success feedback
+      setAddedProduct(quickViewProduct);
+      setShowAddToCartToast(true);
 
-    // Auto-hide after 3 seconds
-    setTimeout(() => {
-      setShowAddToCartToast(false);
-      setAddedProduct(null);
-    }, 3000);
+      // Auto-hide after 3 seconds
+      setTimeout(() => {
+        setShowAddToCartToast(false);
+        setAddedProduct(null);
+      }, 3000);
+    } catch (error) {
+      console.warn('Failed to add item to cart:', error);
+    }
   };
 
   const handleWishlistClick = () => {
@@ -403,7 +442,7 @@ export default function ProductsPage() {
   const availableGemDensities = ['small', 'medium', 'large'];
   const availableGemVariations = ['Dark', 'Mixed', 'Bright'];
 
-  if (loading) {
+  if (!mounted || loading || !products || !categories) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-white">
         <motion.div
@@ -460,8 +499,11 @@ export default function ProductsPage() {
         </div>
       </section>
 
+      {/* Category Showcase */}
+      <CategoryShowcase />
+
       {/* Main Content Area */}
-      <section className="py-12">
+      <section id="products-section" className="py-12">
         <div className="container">
           {/* Filter Bar */}
           <div className="sticky top-0 z-20 -mx-4 mb-8 border-b border-gray-100 bg-white/95 px-4 py-3 backdrop-blur-md">
@@ -475,14 +517,14 @@ export default function ProductsPage() {
                 >
                   <SlidersHorizontal className="h-4 w-4" />
                   <span className="font-medium text-orange-600">Filters</span>
-                  {selectedFilters.category.length +
-                    selectedFilters.material.length +
-                    selectedFilters.gemstone.length >
+                  {(selectedFilters?.category?.length || 0) +
+                    (selectedFilters?.material?.length || 0) +
+                    (selectedFilters?.gemstone?.length || 0) >
                     0 && (
                     <span className="rounded-full bg-gold-500 px-2 py-0.5 text-xs text-white">
-                      {selectedFilters.category.length +
-                        selectedFilters.material.length +
-                        selectedFilters.gemstone.length}
+                      {(selectedFilters?.category?.length || 0) +
+                        (selectedFilters?.material?.length || 0) +
+                        (selectedFilters?.gemstone?.length || 0)}
                     </span>
                   )}
                 </motion.button>
@@ -552,7 +594,7 @@ export default function ProductsPage() {
                         Ring Type
                       </h3>
                       <div className="space-y-2">
-                        {categories.map((cat) => (
+                        {(categories || []).map((cat) => (
                           <label
                             key={cat.id}
                             className="flex cursor-pointer items-center gap-3 rounded-lg p-2 hover:bg-gray-50"
@@ -560,7 +602,7 @@ export default function ProductsPage() {
                             <input
                               type="checkbox"
                               className="rounded border-gray-300 text-gold-500 focus:ring-gold-500"
-                              checked={selectedFilters.category.includes(cat.slug)}
+                              checked={selectedFilters?.category?.includes(cat.slug) || false}
                               onChange={() => toggleFilter('category', cat.slug)}
                             />
                             <span className="text-sm">{cat.name}</span>
@@ -583,7 +625,7 @@ export default function ProductsPage() {
                             <input
                               type="checkbox"
                               className="rounded border-gray-300 text-gold-500 focus:ring-gold-500"
-                              checked={selectedFilters.material.includes(material)}
+                              checked={selectedFilters?.material?.includes(material) || false}
                               onChange={() => toggleFilter('material', material)}
                             />
                             <span className="text-sm">{material}</span>
@@ -606,7 +648,7 @@ export default function ProductsPage() {
 
             {/* Products Grid */}
             <div className="flex-1">
-              {products.length === 0 ? (
+              {(!products || products.length === 0) ? (
                 <div className="py-12 text-center">
                   <Diamond className="mx-auto mb-4 h-16 w-16 text-gray-300" />
                   <h3 className="mb-2 text-xl font-semibold text-gray-900">No Products Found</h3>
@@ -626,7 +668,7 @@ export default function ProductsPage() {
                       : 'space-y-4'
                   }
                 >
-                  {products.map((product) => (
+                  {(products || []).map((product) => (
                     <motion.div
                       key={product.id}
                       initial={{ opacity: 0, y: 20 }}

@@ -13,32 +13,40 @@ const FeaturedProducts = () => {
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
   const [featuredRings, setFeaturedRings] = useState<FeaturedProduct[]>([]);
   const [wishlist, setWishlist] = useState<Set<string>>(new Set());
+  const [mounted, setMounted] = useState(false);
   const { addItem, items, isHydrated } = useCartStore();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     // Load featured products from the data store
     setFeaturedRings(getFeaturedProducts());
     
-    // Load wishlist from localStorage
-    const savedWishlist = localStorage.getItem('wishlist');
-    if (savedWishlist) {
-      setWishlist(new Set(JSON.parse(savedWishlist)));
+    // Only access localStorage in browser environment
+    if (typeof window !== 'undefined') {
+      // Load wishlist from localStorage
+      const savedWishlist = localStorage.getItem('wishlist');
+      if (savedWishlist) {
+        setWishlist(new Set(JSON.parse(savedWishlist)));
+      }
+      
+      // Listen for storage changes to refresh the data
+      const handleStorageChange = () => {
+        setFeaturedRings(getFeaturedProducts());
+      };
+      
+      window.addEventListener('storage', handleStorageChange);
+      
+      // Also listen for custom events (for same-tab updates)
+      window.addEventListener('featuredProductsUpdated', handleStorageChange);
+      
+      return () => {
+        window.removeEventListener('storage', handleStorageChange);
+        window.removeEventListener('featuredProductsUpdated', handleStorageChange);
+      };
     }
-    
-    // Listen for storage changes to refresh the data
-    const handleStorageChange = () => {
-      setFeaturedRings(getFeaturedProducts());
-    };
-    
-    window.addEventListener('storage', handleStorageChange);
-    
-    // Also listen for custom events (for same-tab updates)
-    window.addEventListener('featuredProductsUpdated', handleStorageChange);
-    
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('featuredProductsUpdated', handleStorageChange);
-    };
   }, []);
 
   const handleWishlistToggle = (productId: string) => {
@@ -67,7 +75,9 @@ const FeaturedProducts = () => {
       });
     }
     setWishlist(newWishlist);
-    localStorage.setItem('wishlist', JSON.stringify([...newWishlist]));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('wishlist', JSON.stringify([...newWishlist]));
+    }
   };
 
   const handleAddToCart = (ring: FeaturedProduct) => {
@@ -102,6 +112,36 @@ const FeaturedProducts = () => {
 
   // Show 6 products for better engagement and variety
   const initialProducts = featuredRings.slice(0, 6);
+
+  // Don't render until mounted to prevent SSR issues
+  if (!mounted) {
+    return (
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl heading-primary text-charcoal-900 mb-4">
+              Featured Rings
+            </h2>
+            <p className="text-xl body-text text-gray-600 max-w-2xl mx-auto">
+              Discover our most popular handcrafted pieces, each telling a unique story of craftsmanship and beauty.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div className="aspect-square bg-gray-200 animate-pulse"></div>
+                <div className="p-4">
+                  <div className="h-4 bg-gray-200 rounded animate-pulse mb-2"></div>
+                  <div className="h-6 bg-gray-200 rounded animate-pulse mb-2"></div>
+                  <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-16 bg-white">

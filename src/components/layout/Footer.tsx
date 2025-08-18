@@ -2,17 +2,17 @@ import Link from 'next/link';
 
 export function Footer() {
   return (
-    <footer id="footer" className="border-t bg-white">
-      <div className="container grid gap-6 py-6 md:grid-cols-4">
+    <footer id="footer" className="border-t bg-gray-200">
+      <div className="container grid gap-4 py-4 md:grid-cols-4">
         <div>
-          <h3 className="text-lg font-[var(--font-serif)] font-semibold text-secondary">
-            Aurora Jewelry
+          <h3 className="text-base font-[var(--font-serif)] font-semibold text-secondary">
+            J&M
           </h3>
-          <p className="mt-2 text-sm text-gray-600">Timeless pieces crafted with care.</p>
+          <p className="mt-1 text-xs text-gray-600">Timeless pieces crafted with care.</p>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-secondary">Quick Links</h4>
-          <ul className="mt-2 space-y-1 text-sm">
+          <h4 className="text-xs font-semibold text-secondary">Quick Links</h4>
+          <ul className="mt-1 space-y-0.5 text-xs">
             <li>
               <Link href="/" className="hover:underline">
                 Home
@@ -36,8 +36,8 @@ export function Footer() {
           </ul>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-secondary">Legal</h4>
-          <ul className="mt-2 space-y-1 text-sm">
+          <h4 className="text-xs font-semibold text-secondary">Legal</h4>
+          <ul className="mt-1 space-y-0.5 text-xs">
             <li>
               <Link href="/terms" className="hover:underline">
                 Terms of Service
@@ -51,9 +51,9 @@ export function Footer() {
           </ul>
         </div>
         <div>
-          <h4 className="text-sm font-semibold text-secondary">Newsletter</h4>
-          <p className="mt-2 text-sm text-gray-600">Join for exclusive offers.</p>
-          <form className="mt-2 flex gap-2" aria-label="Footer newsletter signup">
+          <h4 className="text-xs font-semibold text-secondary">Newsletter</h4>
+          <p className="mt-1 text-xs text-gray-600">Join for exclusive offers.</p>
+          <form className="mt-1 flex gap-1" aria-label="Footer newsletter signup">
             <label htmlFor="footer-newsletter" className="sr-only">
               Email address
             </label>
@@ -63,17 +63,17 @@ export function Footer() {
               type="email"
               required
               placeholder="you@example.com"
-              className="w-full rounded-md border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              className="w-full rounded-md border px-2 py-1 text-xs focus:outline-none focus:ring-2 focus:ring-primary"
               autoComplete="email"
             />
-            <button className="rounded-md bg-primary px-4 py-2 text-sm text-white hover:opacity-90">
+            <button className="rounded-md bg-primary px-3 py-1 text-xs text-white hover:opacity-90">
               Subscribe
             </button>
           </form>
         </div>
       </div>
-      <div className="border-t py-3 text-center text-xs text-gray-600">
-        © {new Date().getFullYear()} Aurora Jewelry. All rights reserved.
+      <div className="border-t py-2 text-center text-xs text-gray-600">
+        © {new Date().getFullYear()} J&M. All rights reserved.
       </div>
     </footer>
   );
