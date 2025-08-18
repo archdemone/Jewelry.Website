@@ -104,7 +104,7 @@ export default function CategoryPage({
 }: CategoryPageProps) {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [selectedFilters, setSelectedFilters] = useState<FilterState>({
-    category: [category],
+    category: [],
     material: [],
     priceRange: [0, 5000],
     gemstone: [],
@@ -147,312 +147,50 @@ export default function CategoryPage({
   useEffect(() => {
     const loadData = async () => {
       try {
-        // Extended sample products data with more items for each category
-        const sampleProducts: Product[] = [
-          // Women's Rings
-          {
-            id: 1,
-            name: "Women's Silver Inlay Ring - Dark Red",
-            price: 299,
-            originalPrice: 349,
-            images: ['/images/MyImages/IMG-20250816-WA0000.jpg'],
-            material: 'Silver',
-            gemColor: 'Red',
-            gemDensity: 'medium',
-            gemVariation: 'Dark',
-            mixColors: [],
-            category: 'Womens',
-            subCategory: 'Inlay Ring',
-            ringSizes: { us: [5, 6, 7, 8, 9], eu: [49, 52, 54, 57, 59] },
-            ringWidth: [4, 6, 8],
-            isReadyToShip: true,
-            rating: 4.8,
-            reviews: 24,
-            badge: 'Ready to Ship',
-            slug: 'womens-silver-inlay-ring-dark-red',
-            description:
-              'Beautiful handcrafted silver ring with dark red gem inlay. Perfect for everyday wear or special occasions.',
-          },
-          {
-            id: 2,
-            name: "Women's Gold Statement Ring - Bright Purple",
-            price: 599,
-            originalPrice: 699,
-            images: ['/images/MyImages/IMG-20250816-WA0000.jpg'],
-            material: 'Gold',
-            gemColor: 'Purple',
-            gemDensity: 'large',
-            gemVariation: 'Bright',
-            mixColors: [],
-            category: 'Womens',
-            subCategory: 'Statement Ring',
-            ringSizes: { us: [5, 6, 7, 8, 9], eu: [49, 52, 54, 57, 59] },
-            ringWidth: [6, 8, 10],
-            isReadyToShip: true,
-            rating: 4.9,
-            reviews: 15,
-            badge: 'Ready to Ship',
-            slug: 'womens-gold-statement-ring-bright-purple',
-            description:
-              'Elegant gold statement ring with bright purple gemstone. A stunning piece for special occasions.',
-          },
-          {
-            id: 3,
-            name: "Women's Silver Stackable Ring - Mixed Blue",
-            price: 199,
-            originalPrice: null,
-            images: ['/images/MyImages/IMG-20250816-WA0000.jpg'],
-            material: 'Silver',
-            gemColor: 'Blue',
-            gemDensity: 'small',
-            gemVariation: 'Mixed',
-            mixColors: ['Blue', 'Green'],
-            category: 'Womens',
-            subCategory: 'Stackable Ring',
-            ringSizes: { us: [5, 6, 7, 8, 9], eu: [49, 52, 54, 57, 59] },
-            ringWidth: [2, 3, 4],
-            isReadyToShip: true,
-            rating: 4.6,
-            reviews: 28,
-            badge: 'Ready to Ship',
-            slug: 'womens-silver-stackable-ring-mixed-blue',
-            description:
-              'Delicate silver stackable ring with mixed blue and green gems. Perfect for layering.',
-          },
-          // Men's Rings
-          {
-            id: 4,
-            name: "Men's Damascus Wedding Ring - Bright Blue",
-            price: 449,
-            originalPrice: null,
-            images: ['/images/MyImages/IMG-20250816-WA0001.jpg'],
-            material: 'Damascus',
-            gemColor: 'Blue',
-            gemDensity: 'large',
-            gemVariation: 'Bright',
-            mixColors: [],
-            category: 'Mens',
-            subCategory: 'Wedding',
-            ringSizes: { us: [8, 9, 10, 11, 12], eu: [57, 59, 61, 63, 65] },
-            ringWidth: [6, 8, 10],
-            isReadyToShip: true,
-            rating: 4.9,
-            reviews: 18,
-            badge: 'Ready to Ship',
-            slug: 'mens-damascus-wedding-ring-bright-blue',
-            description:
-              'Stunning Damascus steel wedding ring with bright blue gem inlay. A unique and durable choice for your special day.',
-          },
-          {
-            id: 5,
-            name: "Men's Titanium Signet Ring - Dark Green",
-            price: 349,
-            originalPrice: 399,
-            images: ['/images/MyImages/IMG-20250816-WA0001.jpg'],
-            material: 'Titanium',
-            gemColor: 'Green',
-            gemDensity: 'medium',
-            gemVariation: 'Dark',
-            mixColors: [],
-            category: 'Mens',
-            subCategory: 'Signet Ring',
-            ringSizes: { us: [8, 9, 10, 11, 12], eu: [57, 59, 61, 63, 65] },
-            ringWidth: [8, 10, 12],
-            isReadyToShip: true,
-            rating: 4.7,
-            reviews: 22,
-            badge: 'Ready to Ship',
-            slug: 'mens-titanium-signet-ring-dark-green',
-            description:
-              'Classic titanium signet ring with dark green gemstone. Perfect for the modern gentleman.',
-          },
-          {
-            id: 6,
-            name: "Men's Carbon Statement Ring - Mixed Red",
-            price: 299,
-            originalPrice: null,
-            images: ['/images/MyImages/IMG-20250816-WA0001.jpg'],
-            material: 'Carbon',
-            gemColor: 'Red',
-            gemDensity: 'large',
-            gemVariation: 'Mixed',
-            mixColors: ['Red', 'Orange'],
-            category: 'Mens',
-            subCategory: 'Statement Ring',
-            ringSizes: { us: [8, 9, 10, 11, 12], eu: [57, 59, 61, 63, 65] },
-            ringWidth: [6, 8, 10],
-            isReadyToShip: true,
-            rating: 4.8,
-            reviews: 16,
-            badge: 'Ready to Ship',
-            slug: 'mens-carbon-statement-ring-mixed-red',
-            description:
-              'Bold carbon statement ring with mixed red and orange gems. For the confident man.',
-          },
-          // Unisex Rings
-          {
-            id: 7,
-            name: 'Unisex Carbon Inlay Ring - Mixed Green',
-            price: 199,
-            originalPrice: 249,
-            images: ['/images/MyImages/IMG-20250816-WA0002.jpg'],
-            material: 'Carbon',
-            gemColor: 'Green',
-            gemDensity: 'small',
-            gemVariation: 'Mixed',
-            mixColors: ['Green', 'Blue'],
-            category: 'Unisex',
-            subCategory: 'Inlay Ring',
-            ringSizes: { us: [6, 7, 8, 9, 10], eu: [52, 54, 57, 59, 61] },
-            ringWidth: [4, 6],
-            isReadyToShip: true,
-            rating: 4.7,
-            reviews: 31,
-            badge: 'Ready to Ship',
-            slug: 'unisex-carbon-inlay-ring-mixed-green',
-            description:
-              'Lightweight carbon ring with mixed green and blue gem inlay. Perfect for active lifestyles.',
-          },
-          {
-            id: 8,
-            name: 'Unisex Ceramic Stackable Ring - Bright Yellow',
-            price: 149,
-            originalPrice: 179,
-            images: ['/images/MyImages/IMG-20250816-WA0002.jpg'],
-            material: 'Ceramic(white)',
-            gemColor: 'Yellow',
-            gemDensity: 'small',
-            gemVariation: 'Bright',
-            mixColors: [],
-            category: 'Unisex',
-            subCategory: 'Stackable Ring',
-            ringSizes: { us: [6, 7, 8, 9, 10], eu: [52, 54, 57, 59, 61] },
-            ringWidth: [2, 3, 4],
-            isReadyToShip: true,
-            rating: 4.5,
-            reviews: 19,
-            badge: 'Ready to Ship',
-            slug: 'unisex-ceramic-stackable-ring-bright-yellow',
-            description:
-              'Modern ceramic stackable ring with bright yellow accent. Versatile and stylish.',
-          },
-          {
-            id: 9,
-            name: 'Unisex Tungsten Statement Ring - Dark Blue',
-            price: 279,
-            originalPrice: null,
-            images: ['/images/MyImages/IMG-20250816-WA0002.jpg'],
-            material: 'Tungsten',
-            gemColor: 'Blue',
-            gemDensity: 'medium',
-            gemVariation: 'Dark',
-            mixColors: [],
-            category: 'Unisex',
-            subCategory: 'Statement Ring',
-            ringSizes: { us: [6, 7, 8, 9, 10], eu: [52, 54, 57, 59, 61] },
-            ringWidth: [6, 8, 10],
-            isReadyToShip: true,
-            rating: 4.6,
-            reviews: 25,
-            badge: 'Ready to Ship',
-            slug: 'unisex-tungsten-statement-ring-dark-blue',
-            description:
-              'Durable tungsten statement ring with dark blue gemstone. Perfect for any occasion.',
-          },
-          // Wedding Rings
-          {
-            id: 10,
-            name: "Women's Gold Wedding Band - Classic",
-            price: 799,
-            originalPrice: null,
-            images: ['/images/MyImages/IMG-20250816-WA0001.jpg'],
-            material: 'Gold',
-            gemColor: 'Custom',
-            gemDensity: 'medium',
-            gemVariation: 'Bright',
-            mixColors: [],
-            category: 'Womens',
-            subCategory: 'Wedding',
-            ringSizes: { us: [5, 6, 7, 8, 9], eu: [49, 52, 54, 57, 59] },
-            ringWidth: [4, 6, 8],
-            isReadyToShip: true,
-            rating: 4.9,
-            reviews: 42,
-            badge: 'Ready to Ship',
-            slug: 'womens-gold-wedding-band-classic',
-            description:
-              'Timeless gold wedding band with classic elegance. Perfect for your special day.',
-          },
-          {
-            id: 11,
-            name: "Men's Platinum Wedding Ring - Modern",
-            price: 899,
-            originalPrice: 999,
-            images: ['/images/MyImages/IMG-20250816-WA0001.jpg'],
-            material: 'Stainless Steel',
-            gemColor: 'Custom',
-            gemDensity: 'large',
-            gemVariation: 'Bright',
-            mixColors: [],
-            category: 'Mens',
-            subCategory: 'Wedding',
-            ringSizes: { us: [8, 9, 10, 11, 12], eu: [57, 59, 61, 63, 65] },
-            ringWidth: [6, 8, 10],
-            isReadyToShip: true,
-            rating: 4.8,
-            reviews: 38,
-            badge: 'Ready to Ship',
-            slug: 'mens-platinum-wedding-ring-modern',
-            description:
-              'Modern platinum wedding ring with contemporary design. A symbol of lasting love.',
-          },
-          {
-            id: 12,
-            name: 'Couple Ring Set - Matching Silver',
-            price: 649,
-            originalPrice: 749,
-            images: ['/images/MyImages/IMG-20250816-WA0001.jpg'],
-            material: 'Silver',
-            gemColor: 'Red',
-            gemDensity: 'medium',
-            gemVariation: 'Bright',
-            mixColors: [],
-            category: 'Unisex',
-            subCategory: 'Couple Ring Set',
-            ringSizes: { us: [6, 7, 8, 9, 10], eu: [52, 54, 57, 59, 61] },
-            ringWidth: [4, 6, 8],
-            isReadyToShip: true,
-            rating: 4.9,
-            reviews: 29,
-            badge: 'Ready to Ship',
-            slug: 'couple-ring-set-matching-silver',
-            description:
-              'Beautiful matching couple ring set in silver with red gemstone accents.',
-          },
-        ];
-
-        // Filter products by category and include featured ring in all categories
-        const filteredProducts = sampleProducts.filter(product => {
-          // Always include the featured ring (Women's Silver Inlay Ring - Dark Red)
-          if (product.name === "Women's Silver Inlay Ring - Dark Red") return true;
+        // Load all products from API
+        const response = await fetch('/api/admin/products');
+        if (response.ok) {
+          const allProducts = await response.json();
           
-          // Filter by category
-          if (category === 'womens') return product.category === 'Womens';
-          if (category === 'mens') return product.category === 'Mens';
-          if (category === 'unisex') return product.category === 'Unisex';
-          if (category === 'inlay') return product.subCategory === 'Inlay Ring';
-          if (category === 'wedding') return product.subCategory === 'Wedding';
-          return true; // For 'all' category
+          // Filter products by category and include featured ring in all categories
+          const filteredProducts = allProducts.filter((product: Product) => {
+            // Always include the featured ring (Women's Silver Inlay Ring - Dark Red)
+            if (product.name === "Women's Silver Inlay Ring - Dark Red") return true;
+            
+            // Filter by category
+            if (category === 'womens') return product.category === 'Womens';
+            if (category === 'mens') return product.category === 'Mens';
+            if (category === 'unisex') return product.category === 'Unisex';
+            if (category === 'inlay') return product.subCategory === 'Inlay Ring';
+            if (category === 'wedding') return product.subCategory === 'Wedding';
+            if (category === 'all') return true; // For 'all' category
+            return false; // Default case
+          });
+          
+          console.log('Category:', category);
+          console.log('All products:', allProducts.length);
+          console.log('Filtered products:', filteredProducts.length);
+          console.log('Filtered products:', filteredProducts);
+          setProducts(filteredProducts);
+                } else {
+          console.error('Failed to load products');
+          setProducts([]);
+        }
+        
+        // Set categories based on available products
+        const uniqueCategories = new Set();
+        allProducts.forEach(product => {
+          if (product.category) uniqueCategories.add(product.category);
+          if (product.subCategory) uniqueCategories.add(product.subCategory);
         });
-
-        setProducts(filteredProducts);
-        setCategories([
-          { id: 'womens', name: "Women's Rings", count: filteredProducts.filter(p => p.category === 'Womens').length },
-          { id: 'mens', name: "Men's Rings", count: filteredProducts.filter(p => p.category === 'Mens').length },
-          { id: 'unisex', name: 'Unisex Rings', count: filteredProducts.filter(p => p.category === 'Unisex').length },
-          { id: 'inlay', name: 'Inlay Rings', count: filteredProducts.filter(p => p.subCategory === 'Inlay Ring').length },
-          { id: 'wedding', name: 'Wedding Rings', count: filteredProducts.filter(p => p.subCategory === 'Wedding').length },
-        ]);
+        
+        const categoryList = Array.from(uniqueCategories).map((cat, index) => ({
+          id: index + 1,
+          name: cat as string,
+          slug: (cat as string).toLowerCase().replace(/\s+/g, '-'),
+        }));
+        
+        setCategories(categoryList);
         setLoading(false);
       } catch (error) {
         console.error('Error loading products:', error);
@@ -491,25 +229,13 @@ export default function CategoryPage({
     }
   }, []);
 
-  // Filter and sort products
+  // Filter and sort products - simplified for now
   const filteredProducts = products.filter((product) => {
+    // Only filter by search query for now
     const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          product.description?.toLowerCase().includes(searchQuery.toLowerCase());
     
-    const matchesCategory = selectedFilters.category.length === 0 || 
-                           selectedFilters.category.includes(product.category) ||
-                           selectedFilters.category.includes(product.subCategory || '');
-    
-    const matchesMaterial = selectedFilters.material.length === 0 || 
-                           selectedFilters.material.includes(product.material);
-    
-    const matchesPrice = product.price >= selectedFilters.priceRange[0] && 
-                        product.price <= selectedFilters.priceRange[1];
-    
-    const matchesGemstone = selectedFilters.gemstone.length === 0 || 
-                           selectedFilters.gemstone.includes(product.gemColor);
-
-    return matchesSearch && matchesCategory && matchesMaterial && matchesPrice && matchesGemstone;
+    return matchesSearch;
   });
 
   // Sort products
