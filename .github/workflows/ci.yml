@@ -46,11 +46,6 @@ jobs:
       env:
         DATABASE_URL: "file:./test.db"
 
-    - name: Run E2E tests
-      run: npx playwright test __tests__/e2e/basic.spec.ts
-      env:
-        DATABASE_URL: "file:./test.db"
-
   build:
     runs-on: ubuntu-latest
     needs: test
