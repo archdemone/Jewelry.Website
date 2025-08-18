@@ -151,88 +151,79 @@ export default function ProductsPage() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        // Sample products data
-        const sampleProducts: Product[] = [
-          {
-            id: 1,
-            name: "Women's Silver Inlay Ring - Dark Red",
-            price: 299,
-            originalPrice: 349,
-            images: ['/images/MyImages/IMG-20250816-WA0000.jpg'],
-            material: 'Silver',
-            gemColor: 'Red',
-            gemDensity: 'medium',
-            gemVariation: 'Dark',
-            mixColors: [],
-            category: 'Womens',
-            subCategory: 'Inlay Ring',
-            ringSizes: { us: [5, 6, 7, 8, 9], eu: [49, 52, 54, 57, 59] },
-            ringWidth: [4, 6, 8],
-            isReadyToShip: true,
-            rating: 4.8,
-            reviews: 24,
-            badge: 'Ready to Ship',
-            slug: 'womens-silver-inlay-ring-dark-red',
-            description:
-              'Beautiful handcrafted silver ring with dark red gem inlay. Perfect for everyday wear or special occasions.',
-          },
-          {
-            id: 2,
-            name: "Men's Damascus Wedding Ring - Bright Blue",
-            price: 449,
-            originalPrice: null,
-            images: ['/images/MyImages/IMG-20250816-WA0001.jpg'],
-            material: 'Damascus',
-            gemColor: 'Blue',
-            gemDensity: 'large',
-            gemVariation: 'Bright',
-            mixColors: [],
-            category: 'Mens',
-            subCategory: 'Wedding',
-            ringSizes: { us: [8, 9, 10, 11, 12], eu: [57, 59, 61, 63, 65] },
-            ringWidth: [6, 8, 10],
-            isReadyToShip: true,
-            rating: 4.9,
-            reviews: 18,
-            badge: 'Ready to Ship',
-            slug: 'mens-damascus-wedding-ring-bright-blue',
-            description:
-              'Stunning Damascus steel wedding ring with bright blue gem inlay. A unique and durable choice for your special day.',
-          },
-          {
-            id: 3,
-            name: 'Unisex Carbon Inlay Ring - Mixed Green',
-            price: 199,
-            originalPrice: 249,
-            images: ['/images/MyImages/IMG-20250816-WA0002.jpg'],
-            material: 'Carbon',
-            gemColor: 'Green',
-            gemDensity: 'small',
-            gemVariation: 'Mixed',
-            mixColors: ['Green', 'Blue'],
-            category: 'Unisex',
-            subCategory: 'Inlay Ring',
-            ringSizes: { us: [6, 7, 8, 9, 10], eu: [52, 54, 57, 59, 61] },
-            ringWidth: [4, 6],
-            isReadyToShip: true,
-            rating: 4.7,
-            reviews: 31,
-            badge: 'Ready to Ship',
-            slug: 'unisex-carbon-inlay-ring-mixed-green',
-            description:
-              'Lightweight carbon ring with mixed green and blue gem inlay. Perfect for active lifestyles.',
+        // Load all products from API
+        const response = await fetch('/api/admin/products');
+        if (response.ok) {
+          const allProducts = await response.json();
+          setProducts(allProducts);
+        } else {
+          console.error('Failed to load products');
+          // Fallback to sample data if API fails
+          const sampleProducts: Product[] = [
+            {
+              id: 1,
+              name: "Women's Silver Inlay Ring - Dark Red",
+              price: 299,
+              originalPrice: 349,
+              images: ['/images/MyImages/IMG-20250816-WA0000.jpg'],
+              material: 'Silver',
+              gemColor: 'Red',
+              gemDensity: 'medium',
+              gemVariation: 'Dark',
+              mixColors: [],
+              category: 'Womens',
+              subCategory: 'Inlay Ring',
+              ringSizes: { us: [5, 6, 7, 8, 9], eu: [49, 52, 54, 57, 59] },
+              ringWidth: [4, 6, 8],
+              isReadyToShip: true,
+              rating: 4.8,
+              reviews: 24,
+              badge: 'Ready to Ship',
+              slug: 'womens-silver-inlay-ring-dark-red',
+              description:
+                'Beautiful handcrafted silver ring with dark red gem inlay. Perfect for everyday wear or special occasions.',
+            },
+            {
+              id: 2,
+              name: "Men's Damascus Wedding Ring - Bright Blue",
+              price: 449,
+              originalPrice: null,
+              images: ['/images/MyImages/IMG-20250816-WA0001.jpg'],
+              material: 'Damascus',
+              gemColor: 'Blue',
+              gemDensity: 'large',
+              gemVariation: 'Bright',
+              mixColors: [],
+              category: 'Mens',
+              subCategory: 'Wedding',
+              ringSizes: { us: [8, 9, 10, 11, 12], eu: [57, 59, 61, 63, 65] },
+              ringWidth: [6, 8, 10],
+              isReadyToShip: true,
+              rating: 4.9,
+              reviews: 18,
+              badge: 'Ready to Ship',
+              slug: 'mens-damascus-wedding-ring-bright-blue',
+              description:
+                'Stunning Damascus steel wedding ring with bright blue gem inlay. A unique and durable choice for your special day.',
           },
         ];
-
         setProducts(sampleProducts);
-        setCategories([
-          { id: 1, name: 'Wedding', slug: 'wedding' },
-          { id: 2, name: 'Inlay Ring', slug: 'inlay-ring' },
-          { id: 3, name: 'Couple Ring Set', slug: 'couple-ring-set' },
-          { id: 4, name: 'Mens', slug: 'mens' },
-          { id: 5, name: 'Womens', slug: 'womens' },
-          { id: 6, name: 'Unisex', slug: 'unisex' },
-        ]);
+      }
+      
+      // Set categories based on available products
+      const uniqueCategories = new Set();
+      products.forEach(product => {
+        if (product.category) uniqueCategories.add(product.category);
+        if (product.subCategory) uniqueCategories.add(product.subCategory);
+      });
+      
+      const categoryList = Array.from(uniqueCategories).map((cat, index) => ({
+        id: index + 1,
+        name: cat as string,
+        slug: (cat as string).toLowerCase().replace(/\s+/g, '-'),
+      }));
+      
+      setCategories(categoryList);
       } catch (error) {
         console.error('Error loading products:', error);
         setProducts([]);

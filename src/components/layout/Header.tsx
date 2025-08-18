@@ -24,12 +24,22 @@ export function Header() {
   const [q, setQ] = useState('');
   const [mounted, setMounted] = useState(false);
   const [showRingCollections, setShowRingCollections] = useState(false);
+  const [dropdownTimeout, setDropdownTimeout] = useState<NodeJS.Timeout | null>(null);
   const router = useRouter();
   const { data: session } = useSession();
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (dropdownTimeout) {
+        clearTimeout(dropdownTimeout);
+      }
+    };
+  }, [dropdownTimeout]);
 
   useEffect(() => {
     if (!q) return;
@@ -78,8 +88,19 @@ export function Header() {
           {/* Ring Collections Dropdown */}
           <div
             className="relative"
-            onMouseEnter={() => setShowRingCollections(true)}
-            onMouseLeave={() => setShowRingCollections(false)}
+            onMouseEnter={() => {
+              if (dropdownTimeout) {
+                clearTimeout(dropdownTimeout);
+                setDropdownTimeout(null);
+              }
+              setShowRingCollections(true);
+            }}
+            onMouseLeave={() => {
+              const timeout = setTimeout(() => {
+                setShowRingCollections(false);
+              }, 150); // 150ms delay before hiding
+              setDropdownTimeout(timeout);
+            }}
           >
             <button
               className="flex items-center gap-1 text-sm text-text hover:text-secondary"
@@ -142,6 +163,17 @@ export function Header() {
           </Dialog>
           {session?.user ? (
             <div className="flex items-center gap-2">
+              <Link
+                href="/admin"
+                className="p-2 text-secondary hover:opacity-80"
+                aria-label="Admin Panel"
+                title="Admin Panel"
+              >
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </Link>
               <Link
                 href="/account"
                 className="p-2 text-secondary hover:opacity-80"
