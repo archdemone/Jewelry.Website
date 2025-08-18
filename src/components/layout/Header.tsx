@@ -54,7 +54,12 @@ export function Header() {
         <Link
           href="/"
           className="text-4xl font-bold tracking-wider text-black"
-          style={{ fontFamily: 'Playfair Display, serif', letterSpacing: '0.1em' }}
+          style={{ 
+            fontFamily: 'Playfair Display, serif', 
+            letterSpacing: '0.15em',
+            fontWeight: '600',
+            fontStyle: 'italic'
+          }}
         >
           J&M
         </Link>
