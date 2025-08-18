@@ -115,138 +115,64 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${playfair.variable}`} style={{ height: '100%', width: '100%', overflowX: 'hidden' }}>
+    <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <head>
-        {/* Ultra-minimal critical CSS for FCP optimization */}
-        <style
-          dangerouslySetInnerHTML={{
-            __html: `
-            /* CRITICAL: Basic layout stability */
-            html, body {
-              margin: 0;
-              padding: 0;
-              font-family: var(--font-inter);
-            }
-
-            /* CRITICAL: Button styles for above-the-fold */
-            .btn-stable {
-              display: inline-flex;
-              align-items: center;
-              justify-content: center;
-              padding: 0.75rem 1.5rem;
-              border-radius: 0.5rem;
-              font-weight: 600;
-              text-align: center;
-              text-decoration: none;
-              min-width: 150px;
-              min-height: 48px;
-            }
-          `
-          }}
+        {/* Preload critical resources */}
+        <link
+          rel="preload"
+          href="/images/header/hero-1-1920.webp"
+          as="image"
+          type="image/webp"
         />
-        
-        {/* Preload critical hero image */}
-        <link rel="preload" href="/images/header/hero-1-1920.webp" as="image" type="image/webp" fetchPriority="high" />
-        {process.env.NODE_ENV === 'development' && (
-          <meta name="dev-timestamp" content={Date.now().toString()} />
-        )}
-        <meta name="cache-control" content="no-cache, no-store, must-revalidate" />
-        <meta name="pragma" content="no-cache" />
-        <meta name="expires" content="0" />
-        
-        {/* Preconnect to critical origins */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
-        {/* DNS prefetch for external resources */}
+        <link
+          rel="preload"
+          href="/fonts/inter-var.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          href="/fonts/playfair-display-var.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        {/* DNS prefetch for external domains */}
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
-        
-        {/* Resource hints for better performance */}
-        <link rel="dns-prefetch" href="//www.googletagmanager.com" />
-        <link rel="preconnect" href="https://www.googletagmanager.com" />
-        
-        {/* Preload critical fonts */}
-        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" />
-        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&display=swap" as="style" />
       </head>
-      <body className={`${inter.className} antialiased font-inter`}>
-        <AuthSessionProvider>
-          <ErrorBoundary>
+      <body className={`${inter.className} antialiased`}>
+        <ErrorBoundary>
+          <AuthSessionProvider>
             <CartProvider>
-              <div className="min-h-screen flex flex-col">
+              <div className="flex flex-col min-h-screen">
                 <Header />
-                <main className="flex-1">{children}</main>
+                <main className="flex-grow">
+                  {children}
+                </main>
                 <Footer />
               </div>
               
-              {/* Site-wide widgets */}
-              <Toaster position="top-right" toastOptions={{ duration: 3500 }} />
+              {/* Non-critical components */}
               <NewsletterPopup />
               <CookieBanner />
               <LiveChat />
-              
-              {/* Development helper */}
               {process.env.NODE_ENV === 'development' && <DevReloadHelper />}
+              
+              <Toaster
+                position="bottom-right"
+                toastOptions={{
+                  duration: 4000,
+                  style: {
+                    background: '#363636',
+                    color: '#fff',
+                  },
+                }}
+              />
             </CartProvider>
-          </ErrorBoundary>
-          
-          {/* Performance optimizations */}
-          <script
-            dangerouslySetInnerHTML={{
-              __html: `
-                // Defer non-critical JavaScript
-                (function() {
-                  function deferNonCritical() {
-                    const defer = window.requestIdleCallback || function(fn) { setTimeout(fn, 1); };
-                    
-                    defer(function() {
-                      // Load analytics when idle
-                      if (typeof window !== 'undefined' && window.performance) {
-                        window.addEventListener('load', function() {
-                          setTimeout(function() {
-                            const perfData = performance.getEntriesByType('navigation')[0];
-                            if (perfData) {
-                              console.log('Page load time:', perfData.loadEventEnd - perfData.loadEventStart);
-                            }
-                          }, 0);
-                        });
-                      }
-                    });
-                  }
-                  
-                  // Performance monitoring
-                  function monitorWebVitals() {
-                    if ('PerformanceObserver' in window) {
-                      const observer = new PerformanceObserver((list) => {
-                        for (const entry of list.getEntries()) {
-                          if (entry.entryType === 'largest-contentful-paint') {
-                            console.log('LCP:', entry.startTime);
-                          }
-                          if (entry.entryType === 'first-input') {
-                            console.log('FID:', entry.processingStart - entry.startTime);
-                          }
-                        }
-                      });
-                      observer.observe({ entryTypes: ['largest-contentful-paint', 'first-input'] });
-                    }
-                  }
-                  
-                  // Initialize after DOM is ready
-                  if (document.readyState === 'loading') {
-                    document.addEventListener('DOMContentLoaded', function() {
-                      deferNonCritical();
-                      monitorWebVitals();
-                    });
-                  } else {
-                    deferNonCritical();
-                    monitorWebVitals();
-                  }
-                })();
-              `,
-            }}
-          />
-        </AuthSessionProvider>
+          </AuthSessionProvider>
+        </ErrorBoundary>
       </body>
     </html>
   );

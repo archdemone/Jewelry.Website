@@ -63,13 +63,13 @@ const HeroCarousel = () => {
             alt={image.alt}
             priority={index === 0} // Only priority the first image (LCP target)
             loading={index === 0 ? 'eager' : 'lazy'} // Eager for first, lazy for others
-            quality={70}
+            quality={60} // Reduced quality for better performance
             fill
             sizes="100vw"
             style={{ objectFit: "cover" }}
             fetchPriority={index === 0 ? "high" : "auto"}
-            placeholder={index === 0 ? "blur" : "empty"}
-            blurDataURL={index === 0 ? "/images/header/hero-1-blur.webp" : undefined}
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k=" // Minimal blur placeholder
           />
         </div>
       ))}
@@ -101,11 +101,8 @@ const HeroCarousel = () => {
           </div>
         </div>
       </div>
-      
-      {/* Subtle gradient overlay */}
-      <div className="absolute inset-0 bg-black bg-opacity-20"></div>
-      
-      {/* Slide Indicators */}
+
+      {/* Navigation Dots */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-3 z-20">
         {heroImages.map((_, index) => (
           <button
