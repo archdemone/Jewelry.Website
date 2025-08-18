@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import {
   Plus,
   Edit,
@@ -55,6 +54,10 @@ export default function AdminPanel() {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [availableImages, setAvailableImages] = useState<ImageFile[]>([]);
   const [loading, setLoading] = useState(true);
+  const [hoveredGemColor, setHoveredGemColor] = useState<string | null>(null);
+  const [hoveredGemColor2, setHoveredGemColor2] = useState<string | null>(null);
+  const [hoveredMixColor, setHoveredMixColor] = useState<string | null>(null);
+  const [hoveredMixColor2, setHoveredMixColor2] = useState<string | null>(null);
 
   const categories = [
     { id: 'all', name: 'All Products' },
@@ -69,6 +72,36 @@ export default function AdminPanel() {
   const gemColors = ['Red', 'Green', 'Blue', 'Purple', 'Yellow', 'Custom'];
   const gemDensities = ['small', 'medium', 'large'];
   const gemVariations = ['Dark', 'Mixed', 'Bright'];
+
+  // Helper functions for gem colors
+  const getGemColorHex = (color: string): string => {
+    const colorMap: Record<string, string> = {
+      'Red': '#dc2626',
+      'Green': '#16a34a',
+      'Blue': '#2563eb',
+      'Purple': '#9333ea',
+      'Yellow': '#ca8a04',
+      'Custom': '#6b7280',
+    };
+    return colorMap[color] || '#6b7280';
+  };
+
+  const getGemColorImage = (color: string): string => {
+    const imageMap: Record<string, string> = {
+      'Red': '/images/gems/colour/red.jpg',
+      'Green': '/images/gems/colour/green.jpg',
+      'Blue': '/images/gems/colour/blue.jpg',
+      'Purple': '/images/gems/colour/purple.jpg',
+      'Yellow': '/images/gems/colour/yellow.jpg',
+      'Custom': '/images/gems/colour/custom.jpg',
+      'Black': '/images/gems/colour/custom.jpg',
+      'White': '/images/gems/colour/custom.jpg',
+      'Pink': '/images/gems/colour/custom.jpg',
+      'Orange': '/images/gems/colour/custom.jpg',
+      'Turquoise': '/images/gems/colour/custom.jpg',
+    };
+    return imageMap[color] || '/images/gems/colour/custom.jpg';
+  };
 
   // Load products and images on mount
   useEffect(() => {
@@ -406,6 +439,24 @@ export default function AdminPanel() {
                         </div>
                       </div>
                     )}
+                    {editingProduct.isReadyToShip && (
+                      <div className="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
+                        Ready to Ship
+                      </div>
+                    )}
+                    {editingProduct.status && (
+                      <div className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium ${
+                        editingProduct.status === 'active' ? 'bg-green-100 text-green-800' :
+                        editingProduct.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
+                        editingProduct.status === 'archived' ? 'bg-gray-100 text-gray-800' :
+                        'bg-red-100 text-red-800'
+                      }`}>
+                        {editingProduct.status === 'active' ? 'Active' :
+                         editingProduct.status === 'draft' ? 'Draft' :
+                         editingProduct.status === 'archived' ? 'Archived' :
+                         'Out of Stock'}
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -513,17 +564,133 @@ export default function AdminPanel() {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Gem Color</label>
-                    <select
-                      value={editingProduct.gemColor}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, gemColor: e.target.value as any })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                    >
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Primary Gem Color</label>
+                    <div className="grid grid-cols-3 gap-2">
                       {gemColors.map((color) => (
-                        <option key={color} value={color}>{color}</option>
+                        <button
+                          key={color}
+                          type="button"
+                          onClick={() => setEditingProduct({ ...editingProduct, gemColor: color as any })}
+                          onMouseEnter={() => setHoveredGemColor(color)}
+                          onMouseLeave={() => setHoveredGemColor(null)}
+                          className={`relative rounded-lg border-2 p-3 transition-all ${
+                            editingProduct.gemColor === color
+                              ? 'border-gold-500 bg-gold-50'
+                              : 'border-gray-300 hover:border-gray-400'
+                          }`}
+                        >
+                          <div className="flex flex-col items-center gap-2">
+                            <div
+                              className="h-8 w-8 rounded-full border-2 border-gray-200"
+                              style={{ backgroundColor: getGemColorHex(color) }}
+                            />
+                            <span className="text-sm font-medium">{color}</span>
+                          </div>
+
+                          {/* Gem Color Popup */}
+                          {hoveredGemColor === color && (
+                            <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
+                              <div className="rounded-lg border bg-white p-2 shadow-lg">
+                                <img
+                                  src={getGemColorImage(color)}
+                                  alt={`${color} gem`}
+                                  className="h-32 w-32 rounded object-cover"
+                                />
+                              </div>
+                            </div>
+                          )}
+                        </button>
                       ))}
-                    </select>
+                    </div>
                   </div>
+
+                  {/* Second Gem Color for Couple Rings */}
+                  {editingProduct.category === 'Couple Ring Set' && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Second Gem Color (Ring 2)</label>
+                      <div className="grid grid-cols-3 gap-2">
+                        {gemColors.map((color) => (
+                          <button
+                            key={color}
+                            type="button"
+                            onClick={() => setEditingProduct({ ...editingProduct, gemColor2: color as any })}
+                            onMouseEnter={() => setHoveredGemColor2(color)}
+                            onMouseLeave={() => setHoveredGemColor2(null)}
+                            className={`relative rounded-lg border-2 p-3 transition-all ${
+                              editingProduct.gemColor2 === color
+                                ? 'border-gold-500 bg-gold-50'
+                                : 'border-gray-300 hover:border-gray-400'
+                            }`}
+                          >
+                            <div className="flex flex-col items-center gap-2">
+                              <div
+                                className="h-8 w-8 rounded-full border-2 border-gray-200"
+                                style={{ backgroundColor: getGemColorHex(color) }}
+                              />
+                              <span className="text-sm font-medium">{color}</span>
+                            </div>
+
+                            {/* Gem Color Popup */}
+                            {hoveredGemColor2 === color && (
+                              <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
+                                <div className="rounded-lg border bg-white p-2 shadow-lg">
+                                  <img
+                                    src={getGemColorImage(color)}
+                                    alt={`${color} gem`}
+                                    className="h-32 w-32 rounded object-cover"
+                                  />
+                                </div>
+                              </div>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Second Gem Color for Double Inlay */}
+                  {editingProduct.category === 'Double Inlay' && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">Second Gem Color (Inlay 2)</label>
+                      <div className="grid grid-cols-3 gap-2">
+                        {gemColors.map((color) => (
+                          <button
+                            key={color}
+                            type="button"
+                            onClick={() => setEditingProduct({ ...editingProduct, gemColor2: color as any })}
+                            onMouseEnter={() => setHoveredGemColor2(color)}
+                            onMouseLeave={() => setHoveredGemColor2(null)}
+                            className={`relative rounded-lg border-2 p-3 transition-all ${
+                              editingProduct.gemColor2 === color
+                                ? 'border-gold-500 bg-gold-50'
+                                : 'border-gray-300 hover:border-gray-400'
+                            }`}
+                          >
+                            <div className="flex flex-col items-center gap-2">
+                              <div
+                                className="h-8 w-8 rounded-full border-2 border-gray-200"
+                                style={{ backgroundColor: getGemColorHex(color) }}
+                              />
+                              <span className="text-sm font-medium">{color}</span>
+                            </div>
+
+                            {/* Gem Color Popup */}
+                            {hoveredGemColor2 === color && (
+                              <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
+                                <div className="rounded-lg border bg-white p-2 shadow-lg">
+                                  <img
+                                    src={getGemColorImage(color)}
+                                    alt={`${color} gem`}
+                                    className="h-32 w-32 rounded object-cover"
+                                  />
+                                </div>
+                              </div>
+                            )}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Gem Density</label>
@@ -550,6 +717,150 @@ export default function AdminPanel() {
                       ))}
                     </select>
                   </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Mix Colors (for Custom option)</label>
+                    <div className="grid grid-cols-2 gap-2">
+                      {['Red', 'Green', 'Blue', 'Purple', 'Yellow', 'Black', 'White', 'Pink', 'Orange', 'Turquoise'].map((color) => (
+                        <label 
+                          key={color} 
+                          className="relative flex items-center p-2 rounded border hover:bg-gray-50 cursor-pointer"
+                          onMouseEnter={() => setHoveredMixColor(color)}
+                          onMouseLeave={() => setHoveredMixColor(null)}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={editingProduct.mixColors?.includes(color) || false}
+                            onChange={(e) => {
+                              const newMixColors = e.target.checked
+                                ? [...(editingProduct.mixColors || []), color]
+                                : (editingProduct.mixColors || []).filter(c => c !== color);
+                              setEditingProduct({ ...editingProduct, mixColors: newMixColors });
+                            }}
+                            className="mr-2"
+                          />
+                          <div className="flex items-center gap-2">
+                            <div
+                              className="h-4 w-4 rounded-full border border-gray-200"
+                              style={{ backgroundColor: getGemColorHex(color) }}
+                            />
+                            <span className="text-sm">{color}</span>
+                          </div>
+
+                          {/* Mix Color Popup */}
+                          {hoveredMixColor === color && (
+                            <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
+                              <div className="rounded-lg border bg-white p-2 shadow-lg">
+                                <img
+                                  src={getGemColorImage(color)}
+                                  alt={`${color} gem`}
+                                  className="h-32 w-32 rounded object-cover"
+                                />
+                              </div>
+                            </div>
+                          )}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Second Mix Colors for Couple Rings */}
+                  {editingProduct.category === 'Couple Ring Set' && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Mix Colors for Ring 2 (Custom option)</label>
+                      <div className="grid grid-cols-2 gap-2">
+                        {['Red', 'Green', 'Blue', 'Purple', 'Yellow', 'Black', 'White', 'Pink', 'Orange', 'Turquoise'].map((color) => (
+                          <label 
+                            key={color} 
+                            className="relative flex items-center p-2 rounded border hover:bg-gray-50 cursor-pointer"
+                            onMouseEnter={() => setHoveredMixColor2(color)}
+                            onMouseLeave={() => setHoveredMixColor2(null)}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={editingProduct.mixColors2?.includes(color) || false}
+                              onChange={(e) => {
+                                const newMixColors2 = e.target.checked
+                                  ? [...(editingProduct.mixColors2 || []), color]
+                                  : (editingProduct.mixColors2 || []).filter(c => c !== color);
+                                setEditingProduct({ ...editingProduct, mixColors2: newMixColors2 });
+                              }}
+                              className="mr-2"
+                            />
+                            <div className="flex items-center gap-2">
+                              <div
+                                className="h-4 w-4 rounded-full border border-gray-200"
+                                style={{ backgroundColor: getGemColorHex(color) }}
+                              />
+                              <span className="text-sm">{color}</span>
+                            </div>
+
+                            {/* Mix Color Popup */}
+                            {hoveredMixColor2 === color && (
+                              <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
+                                <div className="rounded-lg border bg-white p-2 shadow-lg">
+                                  <img
+                                    src={getGemColorImage(color)}
+                                    alt={`${color} gem`}
+                                    className="h-32 w-32 rounded object-cover"
+                                  />
+                                </div>
+                              </div>
+                            )}
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Second Mix Colors for Double Inlay */}
+                  {editingProduct.category === 'Double Inlay' && (
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">Mix Colors for Inlay 2 (Custom option)</label>
+                      <div className="grid grid-cols-2 gap-2">
+                        {['Red', 'Green', 'Blue', 'Purple', 'Yellow', 'Black', 'White', 'Pink', 'Orange', 'Turquoise'].map((color) => (
+                          <label 
+                            key={color} 
+                            className="relative flex items-center p-2 rounded border hover:bg-gray-50 cursor-pointer"
+                            onMouseEnter={() => setHoveredMixColor2(color)}
+                            onMouseLeave={() => setHoveredMixColor2(null)}
+                          >
+                            <input
+                              type="checkbox"
+                              checked={editingProduct.mixColors2?.includes(color) || false}
+                              onChange={(e) => {
+                                const newMixColors2 = e.target.checked
+                                  ? [...(editingProduct.mixColors2 || []), color]
+                                  : (editingProduct.mixColors2 || []).filter(c => c !== color);
+                                setEditingProduct({ ...editingProduct, mixColors2: newMixColors2 });
+                              }}
+                              className="mr-2"
+                            />
+                            <div className="flex items-center gap-2">
+                              <div
+                                className="h-4 w-4 rounded-full border border-gray-200"
+                                style={{ backgroundColor: getGemColorHex(color) }}
+                              />
+                              <span className="text-sm">{color}</span>
+                            </div>
+
+                            {/* Mix Color Popup */}
+                            {hoveredMixColor2 === color && (
+                              <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
+                                <div className="rounded-lg border bg-white p-2 shadow-lg">
+                                  <img
+                                    src={getGemColorImage(color)}
+                                    alt={`${color} gem`}
+                                    className="h-32 w-32 rounded object-cover"
+                                  />
+                                </div>
+                              </div>
+                            )}
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+                  )}
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Price ({editingProduct.currency === 'USD' ? '$' : '£'})</label>
@@ -659,21 +970,44 @@ export default function AdminPanel() {
                     />
                   </div>
 
-                  <div className="col-span-2">
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        id="readyToShip"
-                        checked={editingProduct.isReadyToShip}
-                        onChange={(e) => setEditingProduct({ ...editingProduct, isReadyToShip: e.target.checked })}
-                        className="rounded"
-                      />
-                      <label htmlFor="readyToShip" className="text-sm font-medium text-gray-700">Ready to Ship</label>
-                    </div>
-                  </div>
-                </div>
+                                     <div className="col-span-2">
+                     <div className="flex items-center gap-2">
+                       <input
+                         type="checkbox"
+                         id="readyToShip"
+                         checked={editingProduct.isReadyToShip}
+                         onChange={(e) => setEditingProduct({ ...editingProduct, isReadyToShip: e.target.checked })}
+                         className="rounded"
+                       />
+                       <label htmlFor="readyToShip" className="text-sm font-medium text-gray-700">Ready to Ship</label>
+                     </div>
+                   </div>
 
-                {/* Save/Cancel Buttons */}
+                   {/* Status Badge Preview */}
+                   <div className="col-span-2 mt-6 p-4 bg-gray-50 rounded-lg">
+                     <h4 className="text-sm font-medium text-gray-700 mb-2">Status Preview</h4>
+                     <div className="flex items-center gap-2">
+                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                         editingProduct.status === 'active' ? 'bg-green-100 text-green-800' :
+                         editingProduct.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
+                         editingProduct.status === 'archived' ? 'bg-gray-100 text-gray-800' :
+                         'bg-red-100 text-red-800'
+                       }`}>
+                         {editingProduct.status === 'active' ? 'Active' :
+                          editingProduct.status === 'draft' ? 'Draft' :
+                          editingProduct.status === 'archived' ? 'Archived' :
+                          'Out of Stock'}
+                       </span>
+                       {editingProduct.isReadyToShip && (
+                         <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
+                           Ready to Ship
+                         </span>
+                       )}
+                     </div>
+                   </div>
+                 </div>
+
+                 {/* Save/Cancel Buttons */}
                 <div className="flex justify-end space-x-3 pt-6 mt-6 border-t">
                   <button
                     onClick={handleCancelEdit}
