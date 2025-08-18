@@ -28,7 +28,7 @@ const HeroCarousel = () => {
       >
         <Image
           src="/images/header/hero-optimized-768.webp"
-          alt="J&M Jewelry - Exquisite handcrafted engagement rings"
+                          alt="J&M - Exquisite handcrafted engagement rings"
           width={1920}
           height={1080}
           priority
@@ -79,14 +79,16 @@ const HeroCarousel = () => {
             className="hero-title"
             style={{
               fontSize: '3rem',
-              fontWeight: 300,
+              fontWeight: 600,
               textShadow: '0 2px 4px rgba(0,0,0,0.5)',
               fontFamily: "'Playfair Display', serif",
               lineHeight: 1.2,
               margin: 0,
+              letterSpacing: '0.15em',
+              fontStyle: 'italic'
             }}
           >
-            J&M Jewelry
+                          J&M
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}

@@ -40,11 +40,11 @@ const CategoryShowcase = dynamic(() => import('@/components/home/CategoryShowcas
 export const revalidate = 3600; // Revalidate every hour
 
 export const metadata = {
-  title: 'J&M Jewelry | Handcrafted Rings & Artisan Jewelry',
+      title: 'J&M | Handcrafted Rings & Artisan Jewelry',
   description:
     'Each ring is personally crafted by a master artisan, ensuring unique beauty and exceptional quality for your most precious moments.',
   openGraph: {
-    title: 'J&M Jewelry | Handcrafted Rings & Artisan Jewelry',
+    title: 'J&M | Handcrafted Rings & Artisan Jewelry',
     description:
       'Each ring is personally crafted by a master artisan, ensuring unique beauty and exceptional quality.',
     images: ['/images/og-image.jpg'],

@@ -69,8 +69,8 @@ const DeferredComponents = dynamic(() => import('@/components/DeferredComponents
 
 export const metadata: Metadata = {
   title: {
-    default: 'J&M Jewelry | Handcrafted Rings & Artisan Jewelry',
-    template: '%s | J&M Jewelry',
+            default: 'J&M | Handcrafted Rings & Artisan Jewelry',
+        template: '%s | J&M',
   },
   description:
     'Each ring is personally crafted by a master artisan, ensuring unique beauty and exceptional quality for your most precious moments.',
@@ -97,10 +97,10 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://handcrafted-rings.com',
-    title: 'J&M Jewelry | Handcrafted Rings & Artisan Jewelry',
+    title: 'J&M | Handcrafted Rings & Artisan Jewelry',
     description:
       'Each ring is personally crafted by a master artisan, ensuring unique beauty and exceptional quality.',
-    siteName: 'J&M Jewelry',
+    siteName: 'J&M',
     images: [
       {
         url: '/images/og-image.jpg',
@@ -112,7 +112,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'J&M Jewelry | Handcrafted Rings & Artisan Jewelry',
+    title: 'J&M | Handcrafted Rings & Artisan Jewelry',
     description:
       'Each ring is personally crafted by a master artisan, ensuring unique beauty and exceptional quality.',
     images: ['/images/og-image.jpg'],
