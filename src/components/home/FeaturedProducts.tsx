@@ -186,11 +186,11 @@ const FeaturedProducts = () => {
                 </h3>
                 <div className="flex items-center justify-between mb-2">
                   <span className="text-2xl font-bold text-gray-900">
-                    ${ring.price.toLocaleString()}
+                    £{ring.price.toLocaleString()}
                   </span>
                   {ring.originalPrice && ring.originalPrice > ring.price && (
                     <span className="text-sm text-gray-500 line-through">
-                      ${ring.originalPrice.toLocaleString()}
+                      £{ring.originalPrice.toLocaleString()}
                     </span>
                   )}
                 </div>

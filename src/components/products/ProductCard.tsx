@@ -45,7 +45,7 @@ export function ProductCard({ id, slug, name, price, images, categorySlug }: Pro
           />
         </div>
         <div className="mt-3 text-sm font-medium">{name}</div>
-        <div className="text-sm text-gray-600">${price.toFixed(2)}</div>
+        <div className="text-sm text-gray-600">£{price.toFixed(2)}</div>
       </Link>
       <div className="mt-3">
         <AddToCartButton

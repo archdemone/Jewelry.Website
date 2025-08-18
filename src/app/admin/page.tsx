@@ -12,7 +12,7 @@ export const metadata = {
 const stats = [
   {
     title: 'Total Revenue',
-    value: '$45,231.89',
+            value: '£45,231.89',
     change: '+20.1% from last month',
     icon: DollarSign,
   },

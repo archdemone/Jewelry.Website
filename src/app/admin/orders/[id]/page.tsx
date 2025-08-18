@@ -26,7 +26,7 @@ export default function OrderDetailsPage({ params }: { params: { id: string } })
                     <div className="text-xs text-gray-500">RNG-001</div>
                   </div>
                 </div>
-                <div className="text-sm">1 × $199.00</div>
+                <div className="text-sm">1 × £199.00</div>
               </div>
             </div>
           </Card>

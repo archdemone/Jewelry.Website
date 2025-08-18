@@ -66,7 +66,7 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
         <div>
           <h1 className="text-2xl font-semibold">{product.name}</h1>
           <p className="mt-2 text-gray-600">{product.description}</p>
-          <div className="mt-4 text-xl font-semibold">${product.price.toFixed(2)}</div>
+                          <div className="mt-4 text-xl font-semibold">£{product.price.toFixed(2)}</div>
           <div className="mt-6">
             <AddToCartButton
               productId={product.id}

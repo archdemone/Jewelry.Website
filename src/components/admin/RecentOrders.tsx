@@ -2,9 +2,9 @@ import { Card } from '@/components/ui/card';
 
 export function RecentOrders() {
   const rows = [
-    { id: '1001', customer: 'Alice Johnson', total: '$250.00', status: 'Paid' },
-    { id: '1002', customer: 'Bob Smith', total: '$120.00', status: 'Pending' },
-    { id: '1003', customer: 'Carol Lee', total: '$980.00', status: 'Refunded' },
+      { id: '1001', customer: 'Alice Johnson', total: '£250.00', status: 'Paid' },
+  { id: '1002', customer: 'Bob Smith', total: '£120.00', status: 'Pending' },
+  { id: '1003', customer: 'Carol Lee', total: '£980.00', status: 'Refunded' },
   ];
   return (
     <Card className="p-4">
