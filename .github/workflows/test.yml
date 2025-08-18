@@ -52,23 +52,23 @@ jobs:
         env:
           DATABASE_URL: postgresql://postgres:postgres@localhost:5432/testdb
 
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-
-      - name: Install Cypress binary
-        run: npx cypress install
-
       - name: Cache Playwright
         uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
 
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
       - name: Cache Cypress
         uses: actions/cache@v4
         with:
           path: ~/.cache/Cypress
           key: ${{ runner.os }}-cypress-${{ hashFiles('**/package-lock.json') }}
+
+      - name: Install Cypress binary
+        run: npx cypress install
 
       - name: Run unit tests
         run: npm run test:ci
@@ -79,7 +79,10 @@ jobs:
           npm run start &
           npx wait-on http://localhost:3000
 
-      - name: Run E2E tests
+      - name: Run Playwright E2E tests
+        run: npm run test:e2e
+
+      - name: Run Cypress E2E tests
         run: npm run cypress:run
 
       - name: Run Lighthouse
