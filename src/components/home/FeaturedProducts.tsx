@@ -98,97 +98,100 @@ const FeaturedProducts = () => {
         color: '#fff',
       },
     });
-    
-    // Debug log
-    console.log('Cart items after adding:', items);
   };
 
   return (
-    <section className="py-16 bg-gradient-to-b from-white to-gray-50">
+    <section className="py-16 bg-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 font-serif"
+          >
             Featured Rings
-          </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Discover our handcrafted collection of unique rings, each piece tells a story of craftsmanship and beauty
-          </p>
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-xl text-gray-600 max-w-2xl mx-auto"
+          >
+            Discover our most popular handcrafted pieces, each telling a unique story of craftsmanship and beauty.
+          </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {featuredRings.map((ring, index) => (
             <motion.div
               key={ring.id}
               initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              className="group relative bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300"
               onMouseEnter={() => setHoveredProduct(ring.id)}
               onMouseLeave={() => setHoveredProduct(null)}
             >
               {/* Product Image */}
-              <div className="relative h-64 overflow-hidden">
+              <div className="relative aspect-square overflow-hidden">
                 <Image
                   src={ring.image}
                   alt={ring.name}
                   fill
-                  className="object-cover transition-transform duration-300 hover:scale-110"
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                  className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                  quality={75}
+                  placeholder="blur"
+                  blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxAAPwCdABmX/9k="
                 />
                 
-                                 {/* Quick Actions Overlay */}
-                 <motion.div
-                   initial={{ opacity: 0 }}
-                   animate={{ opacity: hoveredProduct === ring.id ? 1 : 0 }}
-                   className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center gap-4"
-                 >
-                   <motion.button
-                     whileHover={{ scale: 1.1 }}
-                     whileTap={{ scale: 0.9 }}
-                     onClick={() => handleWishlistToggle(ring.id)}
-                     className={`p-3 rounded-full transition-colors ${
-                       wishlist.has(ring.id) 
-                         ? 'bg-red-500 text-white hover:bg-red-600' 
-                         : 'bg-white text-gray-900 hover:bg-gray-100'
-                     }`}
-                   >
-                     <Heart className={`w-5 h-5 ${wishlist.has(ring.id) ? 'fill-current' : ''}`} />
-                   </motion.button>
-                   <motion.button
-                     whileHover={{ scale: 1.1 }}
-                     whileTap={{ scale: 0.9 }}
-                     onClick={() => handleAddToCart(ring)}
-                     className="bg-orange-500 text-white p-3 rounded-full hover:bg-orange-600 transition-colors"
-                   >
-                     <ShoppingBag className="w-5 h-5" />
-                   </motion.button>
-                 </motion.div>
+                {/* Wishlist Button */}
+                <button
+                  onClick={() => handleWishlistToggle(ring.id)}
+                  className={`absolute top-3 right-3 p-2 rounded-full transition-all duration-200 ${
+                    wishlist.has(ring.id)
+                      ? 'bg-red-500 text-white'
+                      : 'bg-white/80 text-gray-600 hover:bg-white'
+                  }`}
+                  aria-label={wishlist.has(ring.id) ? 'Remove from wishlist' : 'Add to wishlist'}
+                >
+                  <Heart className={`w-5 h-5 ${wishlist.has(ring.id) ? 'fill-current' : ''}`} />
+                </button>
 
-                {/* Badge */}
-                {ring.originalPrice && (
-                  <div className="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-medium">
-                    {Math.round(((ring.originalPrice - ring.price) / ring.originalPrice) * 100)}% OFF
-                  </div>
-                )}
-                
-                {ring.isReadyToShip ? (
-                  <div className="absolute top-3 right-3 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
-                    Ready to Ship
-                  </div>
-                ) : (
-                  <div className="absolute top-3 right-3 bg-blue-500 text-white px-2 py-1 rounded-full text-xs font-medium">
-                    Custom Order
-                  </div>
-                )}
+                {/* Quick Add to Cart */}
+                <motion.button
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ 
+                    opacity: hoveredProduct === ring.id ? 1 : 0,
+                    y: hoveredProduct === ring.id ? 0 : 20
+                  }}
+                  transition={{ duration: 0.2 }}
+                  onClick={() => handleAddToCart(ring)}
+                  className="absolute bottom-3 left-3 right-3 bg-white/90 backdrop-blur-sm text-gray-900 py-2 px-4 rounded-lg font-medium hover:bg-white transition-colors duration-200 flex items-center justify-center gap-2"
+                >
+                  <ShoppingBag className="w-4 h-4" />
+                  Add to Cart
+                </motion.button>
               </div>
 
               {/* Product Info */}
               <div className="p-4">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+                <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
                   {ring.name}
                 </h3>
-                
-                <div className="flex items-center mb-2">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-2xl font-bold text-gray-900">
+                    ${ring.price.toLocaleString()}
+                  </span>
+                  {ring.originalPrice && ring.originalPrice > ring.price && (
+                    <span className="text-sm text-gray-500 line-through">
+                      ${ring.originalPrice.toLocaleString()}
+                    </span>
+                  )}
+                </div>
+                <div className="flex items-center gap-2 mb-3">
                   <div className="flex text-yellow-400">
                     {[...Array(5)].map((_, i) => (
                       <svg
@@ -200,73 +203,33 @@ const FeaturedProducts = () => {
                       </svg>
                     ))}
                   </div>
-                  <span className="text-sm text-gray-600 ml-2">
-                    ({ring.reviews} reviews)
+                  <span className="text-sm text-gray-600">({ring.reviews})</span>
+                </div>
+                <div className="flex flex-wrap gap-1 mb-3">
+                  <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
+                    {ring.material}
+                  </span>
+                  <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
+                    {ring.gemColor}
                   </span>
                 </div>
-
-                <div className="flex items-center justify-between mb-3">
-                  <div>
-                    <span className="text-xl font-bold text-gray-900">£{ring.price}</span>
-                    {ring.originalPrice && (
-                      <span className="text-sm text-gray-500 line-through ml-2">
-                        £{ring.originalPrice}
-                      </span>
-                    )}
-                  </div>
-                  <span className="text-sm text-gray-500">{ring.craftTime}</span>
-                </div>
-
-                {/* Product Details */}
-                <div className="space-y-1 mb-4">
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Material:</span>
-                    <span className="text-gray-900 font-medium">{ring.material}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Gem:</span>
-                    <span className="text-gray-900 font-medium">{ring.gemColor}</span>
-                  </div>
-                  <div className="flex justify-between text-sm">
-                    <span className="text-gray-600">Category:</span>
-                    <span className="text-gray-900 font-medium">{ring.category}</span>
-                  </div>
-                </div>
-
-                                 {/* Action Buttons */}
-                 <div className="flex gap-2">
-                   <Link
-                     href={`/products/${ring.slug}`}
-                     className="flex-1 bg-orange-500 text-white py-2 px-4 rounded-lg text-center font-medium hover:bg-orange-600 transition-colors"
-                   >
-                     View Details
-                   </Link>
-                   <button 
-                     onClick={() => handleWishlistToggle(ring.id)}
-                     className={`p-2 rounded-lg transition-colors ${
-                       wishlist.has(ring.id) 
-                         ? 'bg-red-100 text-red-600 hover:bg-red-200' 
-                         : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                     }`}
-                   >
-                     <Heart className={`w-4 h-4 ${wishlist.has(ring.id) ? 'fill-current' : ''}`} />
-                   </button>
-                 </div>
+                <Link
+                  href={`/products/${ring.slug}`}
+                  className="block w-full text-center bg-gray-900 text-white py-2 px-4 rounded-lg hover:bg-gray-800 transition-colors duration-200"
+                >
+                  View Details
+                </Link>
               </div>
             </motion.div>
           ))}
         </div>
 
-        {/* View All Button */}
         <div className="text-center mt-12">
           <Link
             href="/products"
-            className="inline-flex items-center bg-orange-500 text-white px-8 py-3 rounded-lg font-medium hover:bg-orange-600 transition-colors"
+            className="inline-flex items-center px-8 py-3 bg-gold-500 text-gray-900 font-semibold rounded-lg hover:bg-gold-600 transition-colors duration-200"
           >
-            View All Rings
-            <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
+            View All Products
           </Link>
         </div>
       </div>
