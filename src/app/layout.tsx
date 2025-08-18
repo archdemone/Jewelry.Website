@@ -147,6 +147,12 @@ export default function RootLayout({
         
         {/* Preload critical hero image */}
         <link rel="preload" href="/images/header/hero-1-1920.webp" as="image" type="image/webp" fetchPriority="high" />
+        {process.env.NODE_ENV === 'development' && (
+          <meta name="dev-timestamp" content={Date.now().toString()} />
+        )}
+        <meta name="cache-control" content="no-cache, no-store, must-revalidate" />
+        <meta name="pragma" content="no-cache" />
+        <meta name="expires" content="0" />
         
         {/* Preconnect to critical origins */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />

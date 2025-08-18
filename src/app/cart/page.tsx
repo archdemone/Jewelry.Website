@@ -4,7 +4,7 @@ import { useCartStore } from '@/store/cart';
 import CartItem from '@/components/cart/CartItem';
 import { CartSummary } from '@/components/cart/CartSummary';
 import { EmptyCart } from '@/components/cart/EmptyCart';
-
+import Link from 'next/link';
 
 export default function CartPage() {
   const items = useCartStore((s) => s.items);
@@ -12,36 +12,66 @@ export default function CartPage() {
   const isHydrated = useCartStore((s) => s.isHydrated);
 
   return (
-    <main className="container py-10">
-        <h1 className="text-2xl font-[var(--font-serif)] font-semibold text-secondary">
-          Shopping Cart ({isHydrated ? itemCount : 0})
-        </h1>
-        <div className="mt-8 grid gap-8 lg:grid-cols-3">
-          <div className="space-y-4 lg:col-span-2">
-            {!isHydrated ? (
-              <div className="text-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-                <p className="mt-2 text-gray-600">Loading cart...</p>
-              </div>
-            ) : items.length === 0 ? (
-              <EmptyCart />
-            ) : (
-              items.map((i) => (
-                <CartItem
-                  key={i.productId}
-                  id={i.productId}
-                  name={i.name}
-                  price={i.price}
-                  image={i.image}
-                  quantity={i.quantity}
-                />
-              ))
-            )}
-          </div>
-          <div>
-            <CartSummary />
+    <main className="min-h-screen bg-white">
+      {/* Cart Content */}
+      <section className="py-8">
+        <div className="container max-w-7xl mx-auto px-4">
+          <div className="grid gap-8 lg:grid-cols-3">
+            {/* Left Column - Cart Items */}
+            <div className="lg:col-span-2">
+              {!isHydrated ? (
+                <div className="text-center py-12">
+                  <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gold-500 mx-auto mb-4"></div>
+                  <p className="text-gray-600">Loading your cart...</p>
+                </div>
+              ) : items.length === 0 ? (
+                <EmptyCart />
+              ) : (
+                <div className="space-y-6">
+                  {/* Cart Header */}
+                  <div className="flex items-center justify-between border-b border-gray-200 pb-4">
+                    <div className="flex items-center gap-4">
+                      <h1 className="text-2xl font-bold text-gray-900">My Cart ({itemCount})</h1>
+                      <span className="text-sm text-gray-600">Estimated delivery time: 27-28 Aug. (by DPD)</span>
+                    </div>
+                    <Link 
+                      href="/products" 
+                      className="text-blue-600 hover:text-blue-700 font-medium text-sm"
+                    >
+                      Continue Shopping
+                    </Link>
+                  </div>
+                  
+                  {/* Cart Items */}
+                  <div className="space-y-6">
+                    {items.map((i) => (
+                      <CartItem
+                        key={i.productId}
+                        id={i.productId}
+                        name={i.name}
+                        price={i.price}
+                        image={i.image}
+                        quantity={i.quantity}
+                        material={i.material}
+                        gemColor={i.gemColor}
+                        gemDensity={i.gemDensity}
+                        gemVariation={i.gemVariation}
+                        ringSize={i.ringSize}
+                        ringWidth={i.ringWidth}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+            
+            {/* Right Column - Order Summary */}
+            <div className="lg:col-span-1">
+              <CartSummary />
+            </div>
           </div>
         </div>
-      </main>
+      </section>
+    </main>
   );
 }

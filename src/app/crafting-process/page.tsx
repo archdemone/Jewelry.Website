@@ -88,7 +88,7 @@ export default function CraftingProcessPage() {
 					<section className="relative h-[60vh] min-h-[500px] overflow-hidden bg-gradient-to-br from-amber-50 to-orange-50">
 						<div className="absolute inset-0">
 							<Image
-								src="/images/process/crafting-hero.jpg"
+								              src="/images/process/workshop-hero.jpg"
 								alt="Artisan crafting a ring"
 								width={1200}
 								height={600}
@@ -108,14 +108,14 @@ export default function CraftingProcessPage() {
 								>
 									Our Crafting Process
 								</motion.h1>
-								<motion.p
-									initial={{ opacity: 0, y: 30 }}
-									animate={{ opacity: 1, y: 0 }}
-									transition={{ duration: 0.8, delay: 0.2 }}
-									className="mx-auto max-w-2xl text-xl text-orange-100"
-								>
-									Discover how each ring is carefully crafted from raw materials to finished masterpiece
-								</motion.p>
+								                <motion.p
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.8, delay: 0.2 }}
+                  className="mx-auto max-w-2xl text-xl text-orange-400"
+                >
+                  Discover how each ring is carefully crafted from raw materials to finished masterpiece
+                </motion.p>
 							</div>
 						</div>
 					</section>
@@ -130,7 +130,7 @@ export default function CraftingProcessPage() {
 								className="text-center mb-12"
 							>
 								<h2 className="text-3xl font-serif mb-4">The Creation Journey</h2>
-								<p className="text-lg text-gray-600">
+								<p className="text-lg text-orange-600">
 									Click on each step to learn more about the process
 								</p>
 							</motion.div>
@@ -241,6 +241,8 @@ export default function CraftingProcessPage() {
 										<p className="text-gray-700 leading-relaxed mb-4">
 											{processSteps[activeStep - 1].details}
 										</p>
+										
+
 
 										{/* Step 2 Special Content - Material Availability */}
 										{activeStep === 2 && (
@@ -372,7 +374,7 @@ export default function CraftingProcessPage() {
 								initial={{ opacity: 0, y: 20 }}
 								whileInView={{ opacity: 1, y: 0 }}
 								viewport={{ once: true }}
-								className="text-3xl font-serif text-center mb-12"
+								className="text-3xl font-serif text-center mb-12 text-orange-600"
 							>
 								The Craft in Action
 							</motion.h2>
@@ -385,9 +387,14 @@ export default function CraftingProcessPage() {
 									transition={{ delay: 0.1 }}
 									className="relative group overflow-hidden rounded-xl"
 								>
-									<div className="w-full h-64 bg-gradient-to-br from-blue-100 to-indigo-200 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-										<p className="text-gray-600 text-center">Selecting materials</p>
-									</div>
+									<Image
+										src="/images/process/material-selection.jpg"
+										alt="Material Selection - Choosing the perfect materials for your ring"
+										width={400}
+										height={300}
+										className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
+										sizes="(max-width: 768px) 100vw, 400px"
+									/>
 									<div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
 										<div className="text-white">
 											<h3 className="font-semibold text-lg">Material Selection</h3>
@@ -403,9 +410,14 @@ export default function CraftingProcessPage() {
 									transition={{ delay: 0.2 }}
 									className="relative group overflow-hidden rounded-xl"
 								>
-									<div className="w-full h-64 bg-gradient-to-br from-amber-100 to-orange-200 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-										<p className="text-gray-600 text-center">Crafting process</p>
-									</div>
+									<Image
+										src="/images/process/crafting-action.jpg"
+										alt="Precision Crafting - Every detail carefully shaped by hand"
+										width={400}
+										height={300}
+										className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
+										sizes="(max-width: 768px) 100vw, 400px"
+									/>
 									<div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
 										<div className="text-white">
 											<h3 className="font-semibold text-lg">Precision Crafting</h3>
@@ -421,9 +433,14 @@ export default function CraftingProcessPage() {
 									transition={{ delay: 0.3 }}
 									className="relative group overflow-hidden rounded-xl"
 								>
-									<div className="w-full h-64 bg-gradient-to-br from-green-100 to-emerald-200 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-										<p className="text-gray-600 text-center">Final polishing</p>
-									</div>
+									<Image
+										src="/images/process/final-polish.jpg"
+										alt="Perfect Finish - The final polish that makes it shine"
+										width={400}
+										height={300}
+										className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-300"
+										sizes="(max-width: 768px) 100vw, 400px"
+									/>
 									<div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
 										<div className="text-white">
 											<h3 className="font-semibold text-lg">Perfect Finish</h3>
@@ -469,8 +486,8 @@ export default function CraftingProcessPage() {
 									viewport={{ once: true }}
 									className="bg-gray-50 p-6 rounded-xl"
 								>
-									<h3 className="font-semibold text-lg mb-2">
-										Can I make changes after ordering?
+									<h3 className="font-semibold text-lg mb-2 text-orange-600">
+										🔄 Can I make changes after ordering?
 									</h3>
 									<p className="text-gray-700">
 										You can make changes within 24 hours of ordering, before production begins. 
@@ -484,8 +501,8 @@ export default function CraftingProcessPage() {
 									viewport={{ once: true }}
 									className="bg-gray-50 p-6 rounded-xl"
 								>
-									<h3 className="font-semibold text-lg mb-2">
-										How will I know when my ring is ready?
+									<h3 className="font-semibold text-lg mb-2 text-orange-600">
+										📧 How will I know when my ring is ready?
 									</h3>
 									<p className="text-gray-700">
 										You'll receive email updates at each major milestone: order confirmation, 
@@ -520,7 +537,7 @@ export default function CraftingProcessPage() {
 									<div className="inline-flex items-center gap-3 bg-gradient-to-r from-green-50 to-emerald-50 px-6 py-3 rounded-full">
 										<Truck className="w-5 h-5 text-green-600" />
 										<span className="text-green-800 font-semibold">
-											Limited Offer • Only {100 - 23} spots remaining!
+											Limited Offer • Only 100 spots remaining!
 										</span>
 									</div>
 									<p className="text-sm text-gray-600 mt-4">
@@ -540,7 +557,7 @@ export default function CraftingProcessPage() {
 								whileInView={{ opacity: 1, y: 0 }}
 								viewport={{ once: true }}
 							>
-								<h2 className="text-3xl font-serif mb-6">Ready to Begin Your Ring Journey?</h2>
+								<h2 className="text-3xl font-serif mb-6 text-orange-600">Ready to Begin Your Ring Journey?</h2>
 								<p className="text-lg text-gray-600 mb-8">
 									Every ring starts with a conversation. Let's create something special together.
 								</p>

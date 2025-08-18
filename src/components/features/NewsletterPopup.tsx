@@ -25,14 +25,15 @@ export default function NewsletterPopup({
   const hasShownRef = useRef(false);
 
   useEffect(() => {
-    // Check if we should show the popup (every hour)
+    // Check if we should show the popup (every hour, but only if not subscribed)
     const checkAndShowPopup = () => {
       try {
+        const isSubscribed = localStorage.getItem('newsletter_subscribed');
         const lastShown = localStorage.getItem('newsletter_popup_last_shown');
         const now = Date.now();
         
-        // Show if never shown before or if it's been more than 1 hour (3600000ms)
-        if (!lastShown || (now - parseInt(lastShown)) > 3600000) {
+        // Only show if user hasn't subscribed AND (never shown before or it's been more than 1 hour)
+        if (!isSubscribed && (!lastShown || (now - parseInt(lastShown)) > 3600000)) {
           if (!hasShownRef.current) {
             setOpen(true);
             hasShownRef.current = true;
@@ -50,7 +51,8 @@ export default function NewsletterPopup({
     // Exit intent handler
     function onExit(e: MouseEvent) {
       if (!exitIntentEnabled) return;
-      if (e.clientY <= 0 && !hasShownRef.current) {
+      const isSubscribed = localStorage.getItem('newsletter_subscribed');
+      if (e.clientY <= 0 && !hasShownRef.current && !isSubscribed) {
         setOpen(true);
         hasShownRef.current = true;
         localStorage.setItem('newsletter_popup_last_shown', Date.now().toString());
@@ -77,6 +79,8 @@ export default function NewsletterPopup({
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 1000));
       setIsSuccess(true);
+      // Mark user as subscribed so popup won't show again
+      localStorage.setItem('newsletter_subscribed', 'true');
       toast.success('Welcome to our community!');
       setTimeout(() => {
         setOpen(false);

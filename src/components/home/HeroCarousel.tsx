@@ -80,7 +80,7 @@ const HeroCarousel = () => {
           <h1 className="text-5xl md:text-6xl font-bold drop-shadow-lg font-serif">
             {heroImages[currentSlide].title}
           </h1>
-          <p className="mt-4 text-xl md:text-2xl drop-shadow max-w-2xl mx-auto">
+          <p className="mt-4 text-xl md:text-2xl drop-shadow max-w-2xl mx-auto text-orange-400">
             {heroImages[currentSlide].subtitle}
           </p>
           
@@ -94,7 +94,7 @@ const HeroCarousel = () => {
             </Link>
             <Link 
               href={heroImages[currentSlide].secondaryCtaLink}
-              className="btn-stable bg-transparent border-2 border-white text-white hover:bg-white hover:text-gray-900 transition-colors"
+              className="btn-stable bg-transparent border-2 border-orange-400 text-orange-400 hover:bg-orange-400 hover:text-white transition-colors"
             >
               {heroImages[currentSlide].secondaryCta}
             </Link>

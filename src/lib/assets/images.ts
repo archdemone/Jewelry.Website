@@ -1,84 +1,84 @@
 // Ring image management system
-// Using local images stored in /public/images/products/
+// Using local images stored in /public/images/MyImages/
 
 export const RING_IMAGES: Record<string, string[]> = {
   // Engagement Rings
   'classic-solitaire-engagement-ring': [
-    '/images/products/classic-solitaire-engagement-ring-1.jpg',
-    '/images/products/classic-solitaire-engagement-ring-2.jpg',
+    '/images/MyImages/IMG-20250816-WA0000.jpg',
+    '/images/MyImages/IMG-20250816-WA0001.jpg',
   ],
   'vintage-inspired-halo-ring': [
-    '/images/products/vintage-halo-ring-1.jpg',
-    '/images/products/vintage-halo-ring-2.jpg',
+    '/images/MyImages/IMG-20250816-WA0002.jpg',
+    '/images/MyImages/IMG-20250816-WA0003.jpg',
   ],
   'modern-three-stone-ring': [
-    '/images/products/modern-three-stone-ring-1.jpg',
-    '/images/products/modern-three-stone-ring-2.jpg',
+    '/images/MyImages/IMG-20250816-WA0004.jpg',
+    '/images/MyImages/IMG-20250816-WA0005.jpg',
   ],
 
   // Wedding Bands
   'hammered-wedding-band': [
-    '/images/products/hammered-wedding-band-1.jpg',
-    '/images/products/hammered-wedding-band-2.jpg',
+    '/images/MyImages/IMG-20250816-WA0006.jpg',
+    '/images/MyImages/IMG-20250816-WA0007.jpg',
   ],
   'classic-plain-wedding-band': [
-    '/images/products/classic-plain-wedding-band-1.jpg',
-    '/images/products/classic-plain-wedding-band-2.jpg',
+    '/images/MyImages/IMG-20250816-WA0008.jpg',
+    '/images/MyImages/IMG-20250816-WA0009.jpg',
   ],
   'diamond-pave-wedding-band': [
-    '/images/products/diamond-pave-wedding-band-1.jpg',
-    '/images/products/diamond-pave-wedding-band-2.jpg',
+    '/images/MyImages/IMG-20250816-WA0010.jpg',
+    '/images/MyImages/IMG-20250816-WA0011.jpg',
   ],
 
   // Eternity Rings
   'sapphire-eternity-ring': [
-    '/images/products/sapphire-eternity-ring-1.jpg',
-    '/images/products/sapphire-eternity-ring-2.jpg',
+    '/images/MyImages/IMG-20250816-WA0012.jpg',
+    '/images/MyImages/IMG-20250816-WA0013.jpg',
   ],
   'diamond-eternity-ring': [
-    '/images/products/diamond-eternity-ring-1.jpg',
-    '/images/products/diamond-eternity-ring-2.jpg',
+    '/images/MyImages/IMG-20250816-WA0014.jpg',
+    '/images/MyImages/IMG-20250816-WA0015.jpg',
   ],
 
   // Signet Rings
   'classic-signet-ring': [
-    '/images/products/classic-signet-ring-1.jpg',
-    '/images/products/classic-signet-ring-2.jpg',
+    '/images/MyImages/IMG-20250816-WA0016.jpg',
+    '/images/MyImages/IMG-20250816-WA0017.jpg',
   ],
 
   // Statement Rings
   'emerald-statement-ring': [
-    '/images/products/emerald-statement-ring-1.jpg',
-    '/images/products/emerald-statement-ring-2.jpg',
+    '/images/MyImages/IMG-20250816-WA0018.jpg',
+    '/images/MyImages/IMG-20250816-WA0019.jpg',
   ],
   'ruby-cocktail-ring': [
-    '/images/products/ruby-cocktail-ring-1.jpg',
-    '/images/products/ruby-cocktail-ring-2.jpg',
+    '/images/MyImages/IMG-20250816-WA0020.jpg',
+    '/images/MyImages/IMG-20250816-WA0021.jpg',
   ],
 
   // Stackable Rings
   'minimalist-gold-band': [
-    '/images/products/minimalist-gold-band-1.jpg',
-    '/images/products/minimalist-gold-band-2.jpg',
+    '/images/MyImages/IMG-20250816-WA0022.jpg',
+    '/images/MyImages/IMG-20250816-WA0023.jpg',
   ],
   'diamond-accent-band': [
-    '/images/products/diamond-accent-band-1.jpg',
-    '/images/products/diamond-accent-band-2.jpg',
+    '/images/MyImages/IMG-20250816-WA0024.jpg',
+    '/images/MyImages/IMG-20250816-WA0025.jpg',
   ],
 };
 
 // Category-specific jewelry images - each category has its own unique, relevant image
 export const CATEGORY_PLACEHOLDERS = {
-  rings: '/images/products/placeholder-ring.svg',
-  necklaces: '/images/products/placeholder-necklace.svg',
-  bracelets: '/images/products/placeholder-bracelet.svg',
-  earrings: '/images/products/placeholder-earrings.svg',
-  watches: '/images/products/placeholder-watch.svg',
-  pendants: '/images/products/placeholder-pendant.svg',
+  rings: '/images/MyImages/IMG-20250816-WA0000.jpg',
+  necklaces: '/images/MyImages/IMG-20250816-WA0001.jpg',
+  bracelets: '/images/MyImages/IMG-20250816-WA0002.jpg',
+  earrings: '/images/MyImages/IMG-20250816-WA0003.jpg',
+  watches: '/images/MyImages/IMG-20250816-WA0004.jpg',
+  pendants: '/images/MyImages/IMG-20250816-WA0005.jpg',
 } as const;
 
 // Default placeholder for any missing images
-export const DEFAULT_PLACEHOLDER = '/images/products/placeholder.svg';
+export const DEFAULT_PLACEHOLDER = '/images/MyImages/IMG-20250816-WA0000.jpg';
 
 // Get ring images by slug
 export function getRingImages(ringSlug: string): string[] {

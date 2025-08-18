@@ -12,42 +12,8 @@ const ringCategorySlugs = [
 ] as const;
 
 function buildFallbackCatalog(total: number = 48) {
-  const items = Array.from({ length: total }).map((_, i) => {
-    const idx = i + 1;
-    const categorySlug = ringCategorySlugs[i % ringCategorySlugs.length];
-    const slug = `handcrafted-ring-${idx}`;
-    return {
-      id: `fallback_${idx}`,
-      name: `Handcrafted Ring ${idx}`,
-      slug,
-      description: 'Beautifully crafted ring with attention to detail.',
-      price: 99 + (idx % 10) * 10,
-      comparePrice: null,
-      cost: null,
-      sku: `SKU-FB-${idx}`,
-      trackQuantity: true,
-      quantity: 5 + (idx % 3),
-      images: [],
-      featured: idx % 7 === 0,
-      active: true,
-      category: {
-        id: `cat_${categorySlug}`,
-        slug: categorySlug,
-        name: categorySlug.replace(/-/g, ' '),
-      },
-      categoryId: `cat_${categorySlug}`,
-      collections: [],
-      orderItems: [],
-      cartItems: [],
-      reviews: [],
-      wishlist: [],
-      tags: null,
-      metadata: null,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-  });
-  return items;
+  // Return empty array - no more placeholder products
+  return [];
 }
 
 const preferFallback = process.env.E2E_NO_DB === '1' || process.env.CI === 'true';

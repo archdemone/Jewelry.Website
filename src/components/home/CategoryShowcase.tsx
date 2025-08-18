@@ -10,7 +10,7 @@ const CategoryShowcase = () => {
       id: 'engagement-rings',
       name: 'Engagement Rings',
       description: 'Timeless symbols of love and commitment',
-      image: '/images/products/category-engagement-rings.jpg',
+              image: '/images/MyImages/category-engagement-rings.jpg',
       href: '/products?category=engagement-rings',
       featured: true,
     },
@@ -18,7 +18,7 @@ const CategoryShowcase = () => {
       id: 'wedding-bands',
       name: 'Wedding Bands',
       description: 'Elegant bands for your special day',
-      image: '/images/products/category-wedding-bands.jpg',
+              image: '/images/MyImages/category-wedding-bands.jpg',
       href: '/products?category=wedding-bands',
       featured: false,
     },
@@ -26,7 +26,7 @@ const CategoryShowcase = () => {
       id: 'eternity-rings',
       name: 'Eternity Rings',
       description: 'Celebrate your everlasting love',
-      image: '/images/products/category-eternity-rings.jpg',
+              image: '/images/MyImages/category-eternity-rings.jpg',
       href: '/products?category=eternity-rings',
       featured: false,
     },
@@ -34,7 +34,7 @@ const CategoryShowcase = () => {
       id: 'signet-rings',
       name: 'Signet Rings',
       description: 'Personalized pieces with meaning',
-      image: '/images/products/category-signet-rings.jpg',
+              image: '/images/MyImages/category-signet-rings.jpg',
       href: '/products?category=signet-rings',
       featured: false,
     },
@@ -49,7 +49,7 @@ const CategoryShowcase = () => {
           viewport={{ once: true }}
           className="mb-12 text-center"
         >
-          <h2 className="mb-4 font-serif text-4xl">Explore Our Collections</h2>
+          <h2 className="mb-4 font-serif text-4xl text-orange-600">Explore Our Collections</h2>
           <p className="text-xl text-gray-600">
             Discover handcrafted rings for every occasion and style
           </p>
