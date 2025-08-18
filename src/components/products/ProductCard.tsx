@@ -39,9 +39,10 @@ export function ProductCard({ id, slug, name, price, images, categorySlug }: Pro
             className="h-full w-full object-cover"
             width={600}
             height={600}
-            sizes="(max-width:768px) 50vw, 25vw"
-            quality={50}
+            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            quality={75}
             priority={false}
+
           />
         </div>
         <div className="mt-3 text-sm font-medium">{name}</div>

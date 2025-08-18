@@ -30,7 +30,7 @@ const playfair = Playfair_Display({
   fallback: ['Georgia', 'serif'],
 });
 
-// Dynamic imports for non-critical components
+// Dynamic imports for non-critical components with defer loading
 const NewsletterPopup = dynamic(() => import('@/components/features/NewsletterPopup'), {
   ssr: false,
   loading: () => null,
@@ -53,6 +53,12 @@ const ExitIntentPopup = dynamic(() => import('@/components/features/ExitIntentPo
 
 // Development helper - only load in development
 const DevReloadHelper = dynamic(() => import('@/components/dev/DevReloadHelper').then(mod => ({ default: mod.DevReloadHelper })), {
+  ssr: false,
+  loading: () => null,
+});
+
+// Defer non-critical components until after page load
+const DeferredComponents = dynamic(() => import('@/components/DeferredComponents'), {
   ssr: false,
   loading: () => null,
 });
@@ -180,6 +186,83 @@ export default function RootLayout({
                font-family: 'Inter';
                font-display: swap;
              }
+             /* Critical layout styles */
+             body {
+               margin: 0;
+               font-family: 'Inter', system-ui, sans-serif;
+               line-height: 1.5;
+               color: #333;
+             }
+             /* Critical header styles */
+             header {
+               position: sticky;
+               top: 0;
+               z-index: 50;
+               background: white;
+               border-bottom: 1px solid #e5e5e5;
+             }
+             /* Critical navigation styles */
+             nav {
+               display: flex;
+               align-items: center;
+               justify-content: space-between;
+               padding: 1rem;
+               max-width: 1280px;
+               margin: 0 auto;
+             }
+             /* Critical button styles */
+             button {
+               cursor: pointer;
+               border: none;
+               background: none;
+               font-family: inherit;
+             }
+             /* Critical link styles */
+             a {
+               color: inherit;
+               text-decoration: none;
+             }
+             /* Critical container styles */
+             .container {
+               max-width: 1280px;
+               margin: 0 auto;
+               padding: 0 1rem;
+             }
+             /* Critical grid styles */
+             .grid {
+               display: grid;
+               gap: 1rem;
+             }
+             /* Critical flex styles */
+             .flex {
+               display: flex;
+             }
+             .flex-col {
+               flex-direction: column;
+             }
+             .items-center {
+               align-items: center;
+             }
+             .justify-center {
+               justify-content: center;
+             }
+             /* Critical spacing */
+             .p-4 { padding: 1rem; }
+             .m-0 { margin: 0; }
+             .mt-3 { margin-top: 0.75rem; }
+             .mb-4 { margin-bottom: 1rem; }
+             /* Critical colors */
+             .text-white { color: white; }
+             .bg-white { background-color: white; }
+             .text-gray-600 { color: #4b5563; }
+             /* Critical typography */
+             .text-sm { font-size: 0.875rem; }
+             .font-medium { font-weight: 500; }
+             /* Critical responsive */
+             @media (max-width: 768px) {
+               .hero-title { font-size: 2rem; }
+               .hero-subtitle { font-size: 1rem; }
+             }
            `
          }} />
          
@@ -197,7 +280,6 @@ export default function RootLayout({
            href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
            rel="stylesheet"
            media="print"
-           onLoad="this.media='all'"
          />
          
          {/* Preload critical images */}
@@ -208,6 +290,13 @@ export default function RootLayout({
            type="image/webp"
          />
          
+         {/* Preload critical fonts */}
+         <link
+           rel="preload"
+           href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+           as="style"
+         />
+         
          {/* DNS prefetch for external domains */}
          <link rel="dns-prefetch" href="//fonts.googleapis.com" />
          <link rel="dns-prefetch" href="//fonts.gstatic.com" />
@@ -215,6 +304,13 @@ export default function RootLayout({
          {/* Resource hints for performance */}
          <link rel="preconnect" href="https://fonts.googleapis.com" />
          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+         
+         {/* Preload critical CSS */}
+         <link
+           rel="preload"
+           href="/globals.css"
+           as="style"
+         />
        </head>
              <body className={`${inter.className} antialiased`}>
          {/* Skip Links for Accessibility */}
@@ -241,12 +337,9 @@ export default function RootLayout({
                 <Footer />
               </div>
               
-              {/* Non-critical components */}
-              <NewsletterPopup />
-              <CookieBanner />
-              <LiveChat />
-              <ExitIntentPopup />
-              {process.env.NODE_ENV === 'development' && <DevReloadHelper />}
+                             {/* Non-critical components - loaded after page load */}
+               <DeferredComponents />
+               {process.env.NODE_ENV === 'development' && <DevReloadHelper />}
               
               <Toaster
                 position="bottom-right"

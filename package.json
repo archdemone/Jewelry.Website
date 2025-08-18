@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "analyze": "ANALYZE=true npm run build",
+    "analyze": "set ANALYZE=true && npm run build",
     "size-limit": "node scripts/check-bundle-size.js",
     "test": "jest",
     "test:watch": "jest --watch",

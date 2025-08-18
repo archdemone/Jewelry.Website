@@ -34,11 +34,12 @@ const HeroCarousel = () => {
                 priority
                 fetchPriority="high"
                 className="object-cover w-full h-full"
-                sizes="100vw"
-                quality={50}
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
+                quality={75}
                 placeholder="blur"
                 blurDataURL="/images/header/hero-blur.webp"
                 loading="eager"
+                decoding="async"
               />
         <div 
           className="hero-overlay"
