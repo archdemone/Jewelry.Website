@@ -6,47 +6,98 @@ import { motion } from 'framer-motion';
 
 const HeroCarousel = () => {
   return (
-    <section className="relative w-full h-[90vh] min-h-[600px] overflow-hidden">
+    <section 
+      className="hero-section"
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: '90vh',
+        minHeight: '600px',
+        overflow: 'hidden'
+      }}
+    >
       {/* Hero Background Image */}
-      <div className="absolute inset-0">
-                      <Image
-                src="/images/header/hero-optimized.webp"
+      <div 
+        className="hero-background"
+        style={{
+          position: 'absolute',
+          inset: '0'
+        }}
+      >
+                            <Image
+                src="/images/header/hero-optimized-768.webp"
                 alt="J&M Jewelry - Exquisite handcrafted engagement rings"
                 fill
                 priority
                 className="object-cover"
                 sizes="100vw"
-                quality={85}
+                quality={75}
                 placeholder="blur"
                 blurDataURL="/images/header/hero-blur.webp"
+                loading="eager"
               />
-        <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/30 to-black/50"></div>
+        <div 
+          className="hero-overlay"
+          style={{
+            position: 'absolute',
+            inset: '0',
+            background: 'linear-gradient(to bottom right, rgba(0,0,0,0.4), rgba(0,0,0,0.3), rgba(0,0,0,0.5))'
+          }}
+        ></div>
       </div>
       
       {/* Content Overlay */}
-      <div className="absolute inset-0 flex flex-col items-center justify-center text-white z-10">
+      <div 
+        className="hero-content"
+        style={{
+          position: 'absolute',
+          inset: '0',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          color: 'white',
+          zIndex: 10
+        }}
+      >
         <motion.div 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           className="text-center space-y-8 px-4 max-w-4xl"
         >
-          <motion.h1 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="text-5xl md:text-7xl font-light drop-shadow-lg font-serif leading-tight"
-          >
-            J&M Jewelry
-          </motion.h1>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl md:text-2xl drop-shadow max-w-2xl mx-auto text-gray-100 font-light"
-          >
-            Handcrafted rings with passion, designed for your forever moments
-          </motion.p>
+                     <motion.h1 
+             initial={{ opacity: 0, y: 20 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ duration: 0.8, delay: 0.2 }}
+             className="hero-title"
+             style={{
+               fontSize: '3rem',
+               fontWeight: 300,
+               textShadow: '0 2px 4px rgba(0,0,0,0.5)',
+               fontFamily: "'Playfair Display', serif",
+               lineHeight: 1.2,
+               margin: 0
+             }}
+           >
+             J&M Jewelry
+           </motion.h1>
+           <motion.p 
+             initial={{ opacity: 0, y: 20 }}
+             animate={{ opacity: 1, y: 0 }}
+             transition={{ duration: 0.8, delay: 0.4 }}
+             className="hero-subtitle"
+             style={{
+               fontSize: '1.25rem',
+               textShadow: '0 1px 2px rgba(0,0,0,0.5)',
+               maxWidth: '32rem',
+               margin: '0 auto',
+               color: '#f3f4f6',
+               fontWeight: 300
+             }}
+           >
+             Handcrafted rings with passion, designed for your forever moments
+           </motion.p>
           
           {/* CTA Buttons */}
           <motion.div 
