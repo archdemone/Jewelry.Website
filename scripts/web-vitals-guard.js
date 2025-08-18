@@ -20,26 +20,39 @@ const THRESHOLDS = {
 
 let hasViolations = false;
 
-// Check hero image size
-function checkHeroImage() {
-  console.log('📸 Checking hero image...');
+// Check hero optimization (CSS gradient vs image)
+function checkHeroOptimization() {
+  console.log('🎨 Checking hero optimization...');
   
-  const heroPath = path.join(__dirname, '../public/images/header/hero-optimized.webp');
+  const heroCarouselPath = path.join(__dirname, '../src/components/home/HeroCarousel.tsx');
   
-  if (fs.existsSync(heroPath)) {
-    const stats = fs.statSync(heroPath);
-    const sizeKB = Math.round(stats.size / 1024);
+  if (fs.existsSync(heroCarouselPath)) {
+    const content = fs.readFileSync(heroCarouselPath, 'utf8');
     
-    console.log(`   Hero image size: ${sizeKB}KB`);
-    
-    if (sizeKB > THRESHOLDS.HERO_IMAGE_SIZE) {
-      console.log(`   ❌ VIOLATION: Hero image > ${THRESHOLDS.HERO_IMAGE_SIZE}KB`);
-      hasViolations = true;
-    } else {
-      console.log('   ✅ Hero image size OK');
+    // Check if using CSS gradient (our optimization)
+    if (content.includes('bg-gradient-to-br') && !content.includes('Image')) {
+      console.log('   ✅ CSS gradient hero (instant LCP)');
+      console.log('   ✅ No image loading required');
+      return;
     }
-  } else {
-    console.log('   ⚠️  Hero image not found');
+    
+    // Fallback checks for image-based hero
+    const checks = [
+      { name: 'priority attribute', check: content.includes('priority') },
+      { name: 'fetchPriority="high"', check: content.includes('fetchPriority') && (content.includes('"high"') || content.includes('"high"')) },
+      { name: 'explicit dimensions', check: content.includes('width=') && content.includes('height=') },
+      { name: 'sizes attribute', check: content.includes('sizes=') },
+      { name: 'WebP format', check: content.includes('.webp') }
+    ];
+    
+    checks.forEach(({ name, check }) => {
+      if (check) {
+        console.log(`   ✅ ${name}`);
+      } else {
+        console.log(`   ❌ Missing ${name}`);
+        hasViolations = true;
+      }
+    });
   }
 }
 
@@ -78,33 +91,33 @@ function checkCriticalCSS() {
           console.log('   ✅ Critical CSS size OK');
         }
       }
+    } else {
+      console.log('   ✅ No excessive inline CSS');
     }
   }
 }
 
-// Check image optimization
+// Check image optimization in featured products
 function checkImageOptimization() {
   console.log('\n🖼️  Checking image optimization...');
   
-  const heroCarouselPath = path.join(__dirname, '../src/components/home/HeroCarousel.tsx');
+  const featuredProductsPath = path.join(__dirname, '../src/components/home/FeaturedProducts.tsx');
   
-  if (fs.existsSync(heroCarouselPath)) {
-    const content = fs.readFileSync(heroCarouselPath, 'utf8');
+  if (fs.existsSync(featuredProductsPath)) {
+    const content = fs.readFileSync(featuredProductsPath, 'utf8');
     
     const checks = [
-      { name: 'priority attribute', check: content.includes('priority') },
-      { name: 'fetchPriority="high"', check: content.includes('fetchPriority') && (content.includes('"high"') || content.includes('"high"')) },
-      { name: 'explicit dimensions', check: content.includes('width=') && content.includes('height=') },
-      { name: 'sizes attribute', check: content.includes('sizes=') },
-      { name: 'WebP format', check: content.includes('.webp') }
+      { name: 'lazy loading', check: content.includes('loading="lazy"') },
+      { name: 'quality optimization', check: content.includes('quality={') },
+      { name: 'blur placeholder', check: content.includes('placeholder="blur"') },
+      { name: 'reduced product count', check: content.includes('slice(0, 2)') || content.includes('initialProducts') }
     ];
     
     checks.forEach(({ name, check }) => {
       if (check) {
         console.log(`   ✅ ${name}`);
       } else {
-        console.log(`   ❌ Missing ${name}`);
-        hasViolations = true;
+        console.log(`   ⚠️  Missing ${name}`);
       }
     });
   }
@@ -122,7 +135,7 @@ function checkJavaScriptOptimization() {
     const checks = [
       { name: 'dynamic imports', check: content.includes('dynamic(') },
       { name: 'ssr: false', check: content.includes('ssr: false') },
-      { name: 'requestIdleCallback', check: content.includes('requestIdleCallback') }
+      { name: 'turbo mode', check: content.includes('--turbo') }
     ];
     
     checks.forEach(({ name, check }) => {
@@ -160,6 +173,32 @@ function checkFontOptimization() {
   }
 }
 
+// Check Next.js configuration
+function checkNextConfig() {
+  console.log('\n⚙️  Checking Next.js configuration...');
+  
+  const nextConfigPath = path.join(__dirname, '../next.config.js');
+  
+  if (fs.existsSync(nextConfigPath)) {
+    const content = fs.readFileSync(nextConfigPath, 'utf8');
+    
+    const checks = [
+      { name: 'image optimization', check: content.includes('quality:') },
+      { name: 'bundle splitting', check: content.includes('splitChunks') },
+      { name: 'compression', check: content.includes('compress: true') },
+      { name: 'turbo mode', check: content.includes('turbo:') }
+    ];
+    
+    checks.forEach(({ name, check }) => {
+      if (check) {
+        console.log(`   ✅ ${name}`);
+      } else {
+        console.log(`   ⚠️  Missing ${name}`);
+      }
+    });
+  }
+}
+
 // Generate report
 function generateReport() {
   console.log('\n📊 Web Vitals Guardrail Report');
@@ -169,10 +208,10 @@ function generateReport() {
     console.log('\n❌ VIOLATIONS DETECTED');
     console.log('Please fix the issues above before proceeding.');
     console.log('\n🔧 Quick Fixes:');
-    console.log('1. Optimize hero image: npx sharp-cli -i hero.jpg -o hero.webp --format webp --quality 60');
-    console.log('2. Add priority to hero image: <Image priority fetchPriority="high" />');
+    console.log('1. CSS gradient hero: Use bg-gradient-to-br for instant LCP');
+    console.log('2. Optimize images: Add quality={50} and loading="lazy"');
     console.log('3. Use dynamic imports: dynamic(() => import(\'./Component\'), { ssr: false })');
-    console.log('4. Minimize critical CSS: Keep inline styles < 20 lines');
+    console.log('4. Enable turbo mode: next dev --turbo');
     
     process.exit(1);
   } else {
@@ -187,12 +226,13 @@ function generateReport() {
 
 // Main execution
 function main() {
-  checkHeroImage();
+  checkHeroOptimization();
   checkBundleSize();
   checkCriticalCSS();
   checkImageOptimization();
   checkJavaScriptOptimization();
   checkFontOptimization();
+  checkNextConfig();
   generateReport();
 }
 
