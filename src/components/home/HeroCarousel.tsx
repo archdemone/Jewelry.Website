@@ -36,8 +36,6 @@ const HeroCarousel = () => {
                 placeholder="blur"
                 blurDataURL="/images/header/hero-blur.webp"
                 loading="eager"
-                width={1920}
-                height={1080}
               />
         <div 
           className="hero-overlay"
