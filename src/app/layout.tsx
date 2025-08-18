@@ -117,14 +117,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <head>
-        {/* Preload critical resources */}
-        <link
-          rel="preload"
-          href="/images/header/hero-1-1920.webp"
-          as="image"
-          type="image/webp"
-          fetchPriority="high"
-        />
+        {/* Preload critical fonts */}
         <link
           rel="preload"
           href="/fonts/inter-var.woff2"

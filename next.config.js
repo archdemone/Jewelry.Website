@@ -25,7 +25,7 @@ const nextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
     domains: [],
     unoptimized: false,
-    quality: 60, // Reduced default quality
+    quality: 50, // Very low quality for maximum performance
   },
   compress: true,
   poweredByHeader: false,
@@ -80,20 +80,20 @@ const nextConfig = {
           options: {
             mozjpeg: {
               progressive: true,
-              quality: 60, // Reduced quality
+              quality: 50, // Very low quality
             },
             optipng: {
               enabled: false,
             },
             pngquant: {
-              quality: [0.60, 0.80], // Reduced quality range
+              quality: [0.50, 0.70], // Very low quality range
               speed: 4,
             },
             gifsicle: {
               interlaced: false,
             },
             webp: {
-              quality: 60, // Reduced quality
+              quality: 50, // Very low quality
             },
           },
         },
