@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { motion } from 'framer-motion';
+import { MobileMenu } from './MobileMenu';
 
 export function Header() {
   const count = useCartStore((s) => s.count);
@@ -50,8 +51,8 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-white/70 backdrop-blur">
       <div className="container flex h-16 items-center justify-between">
-        <Link href="/" className="text-xl font-[var(--font-serif)] font-semibold text-secondary">
-          Aurora Jewelry
+        <Link href="/" className="text-2xl font-bold text-black tracking-wider" style={{ fontFamily: 'Playfair Display, serif', letterSpacing: '0.1em' }}>
+          J&M Jewelry
         </Link>
         <nav className="hidden items-center gap-6 md:flex">
           <Link href="/" className="text-sm text-text hover:text-secondary" data-testid="nav-home">
@@ -110,10 +111,8 @@ export function Header() {
             Contact
           </Link>
         </nav>
-        {/* Mobile fallback link for Products (no test id to avoid duplicates) */}
-        <Link href="/products" className="text-sm text-text hover:text-secondary md:hidden">
-          Products
-        </Link>
+        {/* Mobile Menu */}
+        <MobileMenu />
         <div className="flex items-center gap-4">
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { AuthGuard } from '@/components/auth/AuthGuard';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';

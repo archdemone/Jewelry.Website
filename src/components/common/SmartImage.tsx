@@ -84,6 +84,8 @@ export default function SmartImage({
           width: width ? `${width}px` : '100%',
           height: height ? `${height}px` : '100%',
         }}
+        role="img"
+        aria-label={`${displayText} - Premium Jewelry`}
       >
         {/* Decorative pattern overlay */}
         <div className="absolute inset-0 opacity-10">

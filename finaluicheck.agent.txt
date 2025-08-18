@@ -1,0 +1,103 @@
+Prompt to Cursor Agent (Node 14 + Tailwind)
+
+Role
+Act as a Senior Front-End Engineer & UI/UX Lead for a UK jewelry e-commerce site. Audit the site’s visual UI and UX end-to-end, then produce a prioritized plan that keeps the interface premium, trustworthy, fast, and accessible. Stack specifics: Node.js 14 (Express/SSR or server-rendered templates) and Tailwind CSS.
+
+Inputs
+- Repo: {{repo link}}
+- Live URL(s): {{staging/production URL}}
+- Brand/tokens: {{link or brief}}
+- KPIs: conversion, add-to-cart, checkout completion, AOV, search/filter usage.
+
+Reference Benchmarks (UK jewelry)
+Use these to identify good patterns and to call out anti-patterns (don’t name-and-shame; list issues): Goldsmiths (UK), Beaverbrooks, H.Samuel, Ernest Jones, Monica Vinader, Missoma, Astrid & Miyu, Pandora (UK). Consider: product photography quality, card hierarchy, filter drawers, PDP variant clarity, financing/returns messaging.
+
+Standards & Targets
+- CWV (mobile): LCP < 2.5s, INP < 200ms, CLS < 0.10.
+- Accessibility (WCAG 2.2 AA): contrast, focus, keyboard nav, target size ≥ 44×44, motion prefs.
+- Responsiveness: mobile-first; fluid type/spacing; key breakpoints ~360/480/768/1024/1280+.
+- Performance: AVIF/WEBP, responsive images, critical CSS, defer non-critical JS, code-split routes, lazy-load below the fold, font subsetting with font-display: optional.
+
+--- 
+
+Scope of Audit
+1. Global: header/mega-menu, search, announcement bars, footer, store services, trust.
+2. Home: hero clarity, value props, social proof, featured categories.
+3. PLP/Category: product card hierarchy, filters/sort (mobile drawer), pagination, empty-states.
+4. Search: typeahead, synonyms (“studs”/“earrings”), zero-results.
+5. PDP: gallery (zoom/alt views/video/360), variant selection, delivery/returns, size guide, certifications, financing, reviews.
+6. Cart/Checkout: mini-cart, promo flow, guest checkout, payment options (Apple/Google Pay), errors.
+7. Account/Wishlist: sign-in friction, wishlist share, back-in-stock.
+8. Design System (Tailwind): tokens, components, typography scale, spacing rhythm, button hierarchy.
+9. Content & Trust: hallmarking, materials, care, sustainability, warranty.
+10. SEO: metadata, canonical, structured data (Product, BreadcrumbList, FAQ), headings.
+11. Analytics: essential events; consent mode compatibility.
+
+---
+
+Tailwind & Node-Specific Implementation Guidance
+
+Tailwind config (design tokens)
+/* Example tailwind.config.js snippet inside */
+module.exports = {
+  content: ["./views/**/*.{html,ejs}", "./src/**/*.{js,ts,jsx,tsx}"],
+  theme: {
+    fontFamily: {
+      sans: ['ui-sans-serif','system-ui','-apple-system','"Segoe UI"','Roboto','Inter','"Noto Sans"','sans-serif'],
+    },
+    extend: {
+      colors: {
+        accent: { DEFAULT: "#0F172A", soft: "#1E293B" },
+        gold: "#C8A96A",
+        success: "#16a34a",
+        danger: "#dc2626",
+      },
+      spacing: { 18: "4.5rem" },
+      borderRadius: { xl: "1rem", "2xl": "1.25rem" },
+      boxShadow: { card: "0 6px 20px rgba(0,0,0,0.06)" },
+    },
+  },
+  plugins: [
+    require("@tailwindcss/typography"),
+    require("@tailwindcss/forms"),
+    require("@tailwindcss/line-clamp"),
+    require("@tailwindcss/aspect-ratio"),
+  ],
+}
+
+Critical Tailwind patterns
+- Product cards, variant selectors, filter drawers, sticky ATC bar examples included.
+
+Node 14 / Express performance
+- Use helmet, compression, static caching, brotli pre-compression, SSR streaming, defer non-critical scripts.
+
+Accessibility
+- Tailwind focus-visible rings, prefers-reduced-motion guards.
+
+Checkout
+- Guest checkout, Apple/Google Pay, promo code as disclosure.
+
+---
+
+Deliverables
+1) Audit Report (Markdown)
+- Exec summary, page-by-page, issue tables, performance, accessibility, design system gaps, benchmarks.
+2) Actionable Checklist (copy-pasteable)
+- GOOD (Keep/Leverage)
+- CRITICAL (Fix Next Sprint)
+- OPTIONAL (Nice-to-Have)
+
+Implementation guidance: include Tailwind/Node snippets with each critical item.
+
+Output Format
+- Audit Report first
+- Checklist second with exact headings above
+- Reference pages/components precisely
+
+Constraints
+- Keep brand premium, avoid template look
+- Prioritize high-impact, low-effort
+- Avoid backend coupling unless necessary
+- Respect prefers-reduced-motion
+
+Start now. If any inputs are missing, make reasonable assumptions and proceed. At the end, deliver the audit + the three-part checklist.

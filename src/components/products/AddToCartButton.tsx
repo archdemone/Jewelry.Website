@@ -20,6 +20,8 @@ export function AddToCartButton({
     <Button
       size="lg"
       data-testid="add-to-cart-card"
+      aria-label={`Add ${name} to cart`}
+      aria-describedby={`product-${productId}`}
       onClick={() => {
         addItem({ productId, name, price, image });
         toast.success('Added to cart');

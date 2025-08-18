@@ -46,6 +46,11 @@ const LiveChat = dynamic(() => import('@/components/features/LiveChat'), {
   loading: () => null,
 });
 
+const ExitIntentPopup = dynamic(() => import('@/components/features/ExitIntentPopup'), {
+  ssr: false,
+  loading: () => null,
+});
+
 // Development helper - only load in development
 const DevReloadHelper = dynamic(() => import('@/components/dev/DevReloadHelper').then(mod => ({ default: mod.DevReloadHelper })), {
   ssr: false,
@@ -54,8 +59,8 @@ const DevReloadHelper = dynamic(() => import('@/components/dev/DevReloadHelper')
 
 export const metadata: Metadata = {
   title: {
-    default: 'Handcrafted Rings | Artisan Jewelry',
-    template: '%s | Handcrafted Rings'
+    default: 'J&M Jewelry | Handcrafted Rings & Artisan Jewelry',
+    template: '%s | J&M Jewelry'
   },
   description: 'Each ring is personally crafted by a master artisan, ensuring unique beauty and exceptional quality for your most precious moments.',
   keywords: ['handcrafted rings', 'artisan jewelry', 'engagement rings', 'wedding bands', 'custom rings'],
@@ -75,9 +80,9 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'en_US',
     url: 'https://handcrafted-rings.com',
-    title: 'Handcrafted Rings | Artisan Jewelry',
+    title: 'J&M Jewelry | Handcrafted Rings & Artisan Jewelry',
     description: 'Each ring is personally crafted by a master artisan, ensuring unique beauty and exceptional quality.',
-    siteName: 'Handcrafted Rings',
+    siteName: 'J&M Jewelry',
     images: [
       {
         url: '/images/og-image.jpg',
@@ -89,7 +94,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Handcrafted Rings | Artisan Jewelry',
+    title: 'J&M Jewelry | Handcrafted Rings & Artisan Jewelry',
     description: 'Each ring is personally crafted by a master artisan, ensuring unique beauty and exceptional quality.',
     images: ['/images/og-image.jpg'],
   },
@@ -117,21 +122,20 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <head>
-        {/* Preload critical fonts */}
-        <link
-          rel="preload"
-          href="/fonts/inter-var.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
-        <link
-          rel="preload"
-          href="/fonts/playfair-display-var.woff2"
-          as="font"
-          type="font/woff2"
-          crossOrigin="anonymous"
-        />
+                 {/* Google Fonts */}
+         <link
+           rel="preconnect"
+           href="https://fonts.googleapis.com"
+         />
+         <link
+           rel="preconnect"
+           href="https://fonts.gstatic.com"
+           crossOrigin="anonymous"
+         />
+         <link
+           href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+           rel="stylesheet"
+         />
         {/* DNS prefetch for external domains */}
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
@@ -139,15 +143,28 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
-      <body className={`${inter.className} antialiased`}>
-        <ErrorBoundary>
+             <body className={`${inter.className} antialiased`}>
+         {/* Skip Links for Accessibility */}
+         <a 
+           href="#main-content" 
+           className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-black text-white px-4 py-2 rounded z-50"
+         >
+           Skip to main content
+         </a>
+         <a 
+           href="#footer" 
+           className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-20 bg-black text-white px-4 py-2 rounded z-50"
+         >
+           Skip to footer
+         </a>
+         <ErrorBoundary>
           <AuthSessionProvider>
             <CartProvider>
               <div className="flex flex-col min-h-screen">
                 <Header />
-                <main className="flex-grow">
-                  {children}
-                </main>
+                                 <main id="main-content" className="flex-grow">
+                   {children}
+                 </main>
                 <Footer />
               </div>
               
@@ -155,6 +172,7 @@ export default function RootLayout({
               <NewsletterPopup />
               <CookieBanner />
               <LiveChat />
+              <ExitIntentPopup />
               {process.env.NODE_ENV === 'development' && <DevReloadHelper />}
               
               <Toaster

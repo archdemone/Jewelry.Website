@@ -1,39 +1,72 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
+import { motion } from 'framer-motion';
 
 const HeroCarousel = () => {
   return (
-    <section className="relative w-full h-[90vh] min-h-[600px] overflow-hidden bg-gradient-to-br from-amber-900 via-orange-800 to-red-900">
-      {/* CSS Gradient Background instead of image for instant LCP */}
-      <div className="absolute inset-0 bg-gradient-to-br from-amber-900/80 via-orange-800/80 to-red-900/80"></div>
+    <section className="relative w-full h-[90vh] min-h-[600px] overflow-hidden">
+      {/* Hero Background Image */}
+      <div className="absolute inset-0">
+        <Image
+          src="/images/header/hero-1.webp"
+          alt="J&M Jewelry - Exquisite handcrafted engagement rings"
+          fill
+          priority
+          className="object-cover"
+          sizes="100vw"
+          quality={90}
+        />
+        <div className="absolute inset-0 bg-gradient-to-br from-black/40 via-black/30 to-black/50"></div>
+      </div>
       
       {/* Content Overlay */}
       <div className="absolute inset-0 flex flex-col items-center justify-center text-white z-10">
-        <div className="text-center space-y-6 px-4">
-          <h1 className="text-5xl md:text-6xl font-bold drop-shadow-lg font-serif">
-            Discover Timeless Jewelry
-          </h1>
-          <p className="mt-4 text-xl md:text-2xl drop-shadow max-w-2xl mx-auto text-orange-200">
-            Handcrafted pieces for every occasion
-          </p>
+        <motion.div 
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-center space-y-8 px-4 max-w-4xl"
+        >
+          <motion.h1 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-5xl md:text-7xl font-light drop-shadow-lg font-serif leading-tight"
+          >
+            J&M Jewelry
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="text-xl md:text-2xl drop-shadow max-w-2xl mx-auto text-gray-100 font-light"
+          >
+            Handcrafted rings with passion, designed for your forever moments
+          </motion.p>
           
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="flex flex-col sm:flex-row gap-6 justify-center mt-12"
+          >
             <Link 
               href="/products"
-              className="btn-stable bg-white text-gray-900 hover:bg-gray-100 transition-colors"
+              className="btn-stable bg-white text-gray-900 hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
             >
-              Shop Collection
+              Explore Collection
             </Link>
             <Link 
               href="/about-artisan"
-              className="btn-stable bg-transparent border-2 border-orange-300 text-orange-300 hover:bg-orange-300 hover:text-white transition-colors"
+              className="btn-stable bg-transparent border-2 border-white text-white hover:bg-white hover:text-gray-900 transition-all duration-300 transform hover:scale-105"
             >
               Meet the Artisan
             </Link>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
