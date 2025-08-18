@@ -18,7 +18,7 @@ export default function GiftCardForm() {
   function addToCart() {
     const value = typeof amount === 'number' ? amount : Number(amount);
     if (!value || value < 10) {
-      toast.error('Enter a valid amount (min $10)');
+              toast.error('Enter a valid amount (min £10)');
       return;
     }
     addItem({

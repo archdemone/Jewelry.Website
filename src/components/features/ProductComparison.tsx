@@ -50,7 +50,7 @@ export default function ProductComparison() {
           </thead>
           <tbody>
             {[
-              { label: 'Price', render: (i: ComparedProduct) => `$${i.price.toFixed(2)}` },
+              { label: 'Price', render: (i: ComparedProduct) => `£${i.price.toFixed(2)}` },
               { label: 'Material', render: (i: ComparedProduct) => i.material ?? '—' },
               { label: 'Gemstone', render: (i: ComparedProduct) => i.gemstone ?? '—' },
               { label: 'Weight', render: (i: ComparedProduct) => i.weight ?? '—' },

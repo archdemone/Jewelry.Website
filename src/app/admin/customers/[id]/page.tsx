@@ -31,8 +31,8 @@ export default function CustomerDetailsPage({ params }: { params: { id: string }
         <div className="space-y-4">
           <Card className="space-y-1 p-4">
             <div className="font-semibold">Metrics</div>
-            <div className="text-sm">Total LTV: $2,980</div>
-            <div className="text-sm">Average Order: $220</div>
+                            <div className="text-sm">Total LTV: £2,980</div>
+                <div className="text-sm">Average Order: £220</div>
             <div className="text-sm">Last Order: 2024-05-03</div>
           </Card>
           <Card className="space-y-2 p-4">

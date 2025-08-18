@@ -63,7 +63,7 @@ export default function ReferralProgram() {
     <div className="grid gap-4 rounded-lg border p-6">
       <h3 className="text-xl font-semibold">Refer friends, get rewards</h3>
       <p className="text-sm text-gray-600">
-        Share your unique code. Friends get 10% off. You earn $10 for each successful referral.
+                        Share your unique code. Friends get 10% off. You earn £10 for each successful referral.
       </p>
       <div className="flex items-center gap-2">
         <div className="rounded-md border px-3 py-2 font-mono text-sm">{code}</div>

@@ -47,7 +47,7 @@ export default function RelatedProducts({ products }: RelatedProductsProps) {
                     {product.name}
                   </h3>
                   <p className="mt-1 text-lg font-semibold text-primary">
-                    ${product.price.toFixed(2)}
+                    £{product.price.toFixed(2)}
                   </p>
                 </div>
               </Link>

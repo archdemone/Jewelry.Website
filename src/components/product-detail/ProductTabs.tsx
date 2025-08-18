@@ -39,7 +39,7 @@ export function ProductTabs({ description }: { description: string }) {
           </ul>
         )}
         {tab === 'shipping' && (
-          <p>Free shipping on orders over $500. 30-day returns on eligible items.</p>
+                          <p>Free shipping on orders over £500. 30-day returns on eligible items.</p>
         )}
       </div>
     </div>
