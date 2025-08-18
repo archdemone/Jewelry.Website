@@ -121,35 +121,101 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
-      <head>
-                                      {/* Google Fonts */}
-                     <link
-                       rel="preconnect"
-                       href="https://fonts.googleapis.com"
-                     />
-                     <link
-                       rel="preconnect"
-                       href="https://fonts.gstatic.com"
-                       crossOrigin="anonymous"
-                     />
-                     <link
-                       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
-                       rel="stylesheet"
-                     />
-                     {/* Preload critical images */}
-                     <link
-                       rel="preload"
-                       as="image"
-                       href="/images/header/hero-optimized-768.webp"
-                       type="image/webp"
-                     />
-                  {/* DNS prefetch for external domains */}
-          <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-          <link rel="dns-prefetch" href="//fonts.gstatic.com" />
-                    {/* Resource hints for performance */}
-          <link rel="preconnect" href="https://fonts.googleapis.com" />
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      </head>
+             <head>
+         {/* Critical CSS Inline */}
+         <style dangerouslySetInnerHTML={{
+           __html: `
+             /* Critical above-the-fold styles */
+             .hero-section {
+               position: relative;
+               width: 100%;
+               height: 90vh;
+               min-height: 600px;
+               overflow: hidden;
+             }
+             .hero-background {
+               position: absolute;
+               inset: 0;
+               width: 100%;
+               height: 100%;
+               background: linear-gradient(to bottom right, #92400e, #ea580c, #dc2626);
+             }
+             .hero-content {
+               position: absolute;
+               inset: 0;
+               display: flex;
+               flex-direction: column;
+               align-items: center;
+               justify-content: center;
+               color: white;
+               z-index: 10;
+             }
+             .hero-title {
+               font-size: 3rem;
+               font-weight: 300;
+               text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+               font-family: 'Playfair Display', serif;
+               line-height: 1.2;
+               margin: 0;
+             }
+             .hero-subtitle {
+               font-size: 1.25rem;
+               text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+               max-width: 32rem;
+               margin: 0 auto;
+               color: #f3f4f6;
+               font-weight: 300;
+             }
+             /* Prevent layout shifts */
+             img {
+               max-width: 100%;
+               height: auto;
+             }
+             /* Font display optimization */
+             @font-face {
+               font-family: 'Playfair Display';
+               font-display: swap;
+             }
+             @font-face {
+               font-family: 'Inter';
+               font-display: swap;
+             }
+           `
+         }} />
+         
+         {/* Google Fonts - Load asynchronously */}
+         <link
+           rel="preconnect"
+           href="https://fonts.googleapis.com"
+         />
+         <link
+           rel="preconnect"
+           href="https://fonts.gstatic.com"
+           crossOrigin="anonymous"
+         />
+         <link
+           href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+           rel="stylesheet"
+           media="print"
+           onLoad="this.media='all'"
+         />
+         
+         {/* Preload critical images */}
+         <link
+           rel="preload"
+           as="image"
+           href="/images/header/hero-optimized-768.webp"
+           type="image/webp"
+         />
+         
+         {/* DNS prefetch for external domains */}
+         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+         
+         {/* Resource hints for performance */}
+         <link rel="preconnect" href="https://fonts.googleapis.com" />
+         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+       </head>
              <body className={`${inter.className} antialiased`}>
          {/* Skip Links for Accessibility */}
          <a 

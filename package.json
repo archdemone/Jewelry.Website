@@ -37,7 +37,10 @@
     "lighthouse": "lighthouse http://localhost:3000 --output json --output-path ./lighthouse-report.json",
     "lighthouse:ci": "lighthouse http://localhost:3000 --only-categories=performance --output json --output-path ./lighthouse-report.json",
     "lighthouse:html": "lighthouse http://localhost:3000 --output html --output-path ./lighthouse-report.html",
-    "optimize:hero": "node scripts/optimize-hero-images.mjs"
+    "optimize:hero": "node scripts/optimize-hero-images.mjs",
+    "build:prod": "npm run build",
+    "start:prod": "npm run start",
+    "perf:lighthouse": "npm run build:prod && npm run start:prod & timeout 10 && lighthouse http://localhost:3000 --output json --output-path ./perf/lh-report.json --output html --output-path ./perf/lh-report.html"
   },
   "size-limit": [
     {
