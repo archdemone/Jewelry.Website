@@ -11,8 +11,8 @@ const HeroCarousel = () => {
       style={{
         position: 'relative',
         width: '100%',
-        height: '90vh',
-        minHeight: '600px',
+        height: '55vh',
+        minHeight: '480px',
         overflow: 'hidden',
       }}
     >

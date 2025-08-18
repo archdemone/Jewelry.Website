@@ -137,7 +137,7 @@ const FeaturedProducts = () => {
               onMouseLeave={() => setHoveredProduct(null)}
             >
               {/* Product Image */}
-              <div className="relative aspect-square overflow-hidden">
+              <div className="relative aspect-square overflow-hidden border-2 border-black">
                 <Image
                   src={ring.image}
                   alt={ring.name}
@@ -160,7 +160,7 @@ const FeaturedProducts = () => {
                   }`}
                   aria-label={wishlist.has(ring.id) ? 'Remove from wishlist' : 'Add to wishlist'}
                 >
-                  <Heart className={`w-5 h-5 ${wishlist.has(ring.id) ? 'fill-current' : ''}`} />
+                  <Heart className={`w-5 h-5 text-red-500 ${wishlist.has(ring.id) ? 'fill-current' : ''}`} />
                 </button>
 
                 {/* Quick Add to Cart */}
@@ -209,11 +209,21 @@ const FeaturedProducts = () => {
                   <span className="text-sm text-gray-600">({ring.reviews})</span>
                 </div>
                 <div className="flex flex-wrap gap-1 mb-3">
-                  <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
+                  <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded border border-gray-300">
                     {ring.material}
                   </span>
-                  <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded">
-                    {ring.gemColor}
+                  <span className={`px-2 py-1 text-xs rounded border ${
+                    ring.gemColor === 'Red' ? 'bg-red-100 text-red-800 border-red-300' :
+                    ring.gemColor === 'Blue' ? 'bg-blue-100 text-blue-800 border-blue-300' :
+                    ring.gemColor === 'Green' ? 'bg-green-100 text-green-800 border-green-300' :
+                    ring.gemColor === 'Purple' ? 'bg-purple-100 text-purple-800 border-purple-300' :
+                    ring.gemColor === 'Yellow' ? 'bg-yellow-100 text-yellow-800 border-yellow-300' :
+                    'bg-gray-100 text-gray-700 border-gray-300'
+                  }`}>
+                    {ring.gemVariation === 'Dark' ? `Dark ${ring.gemColor}` :
+                     ring.gemVariation === 'Bright' ? `Bright ${ring.gemColor}` :
+                     ring.gemVariation === 'Mixed' ? `Mixed ${ring.gemColor}` :
+                     ring.gemColor}
                   </span>
                 </div>
                 <Link
