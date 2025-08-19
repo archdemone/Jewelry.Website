@@ -46,10 +46,24 @@ jobs:
           echo "NEXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_test_123" >> $GITHUB_ENV
           echo "SKIP_TYPE_CHECK=true" >> $GITHUB_ENV
           echo "NEXT_SKIP_TYPE_CHECK=true" >> $GITHUB_ENV
-          echo "NODE_ENV=production" >> $GITHUB_ENV
+          echo "NODE_ENV=test" >> $GITHUB_ENV
+          echo "CI=true" >> $GITHUB_ENV
 
-      - name: Run tests
-        run: npm run test:ci
+      - name: Verify Jest configuration
+        run: |
+          echo "Checking Jest configuration..."
+          node -e "console.log('Jest config exists:', require('fs').existsSync('jest.config.js'))"
+          node -e "console.log('Jest setup exists:', require('fs').existsSync('jest.setup.js'))"
+          echo "Jest configuration verified"
+
+      - name: Verify test dependencies
+        run: |
+          echo "Checking test dependencies..."
+          npm list jest @testing-library/react jest-axe jest-environment-jsdom
+          echo "Test dependencies verified"
+
+      - name: Run tests with verbose output
+        run: npm run test:ci -- --verbose
         env:
           DATABASE_URL: file:./test.db
           NEXTAUTH_URL: http://localhost:3000
@@ -58,7 +72,8 @@ jobs:
           NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
           SKIP_TYPE_CHECK: true
           NEXT_SKIP_TYPE_CHECK: true
-          NODE_ENV: production
+          NODE_ENV: test
+          CI: true
 
       - name: Run E2E tests
         run: npm run test:e2e
@@ -70,7 +85,8 @@ jobs:
           NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
           SKIP_TYPE_CHECK: true
           NEXT_SKIP_TYPE_CHECK: true
-          NODE_ENV: production
+          NODE_ENV: test
+          CI: true
 
       - name: Run Cypress tests
         run: npm run cypress:run
@@ -82,4 +98,5 @@ jobs:
           NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
           SKIP_TYPE_CHECK: true
           NEXT_SKIP_TYPE_CHECK: true
-          NODE_ENV: production
+          NODE_ENV: test
+          CI: true

@@ -50,17 +50,32 @@ jobs:
           echo "NEXTAUTH_SECRET=test-secret-key" >> $GITHUB_ENV
           echo "STRIPE_SECRET_KEY=sk_test_123" >> $GITHUB_ENV
           echo "NEXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_test_123" >> $GITHUB_ENV
-          echo "NODE_ENV=production" >> $GITHUB_ENV
+          echo "NODE_ENV=test" >> $GITHUB_ENV
+          echo "CI=true" >> $GITHUB_ENV
+
+      - name: Verify Jest configuration
+        run: |
+          echo "Checking Jest configuration..."
+          node -e "console.log('Jest config exists:', require('fs').existsSync('jest.config.js'))"
+          node -e "console.log('Jest setup exists:', require('fs').existsSync('jest.setup.js'))"
+          echo "Jest configuration verified"
+
+      - name: Verify test dependencies
+        run: |
+          echo "Checking test dependencies..."
+          npm list jest @testing-library/react jest-axe jest-environment-jsdom
+          echo "Test dependencies verified"
 
       - name: Type Check
         run: npm run type-check:ci
-      #   env:
-      #     DATABASE_URL: file:./test.db
-      #     NEXTAUTH_URL: http://localhost:3000
-      #     NEXTAUTH_SECRET: test-secret-key
-      #     STRIPE_SECRET_KEY: sk_test_123
-      #     NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
-      #     NODE_ENV: production
+        env:
+          DATABASE_URL: file:./test.db
+          NEXTAUTH_URL: http://localhost:3000
+          NEXTAUTH_SECRET: test-secret-key
+          STRIPE_SECRET_KEY: sk_test_123
+          NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
+          NODE_ENV: test
+          CI: true
 
       - name: Run linting
         run: npm run lint
@@ -70,7 +85,8 @@ jobs:
           NEXTAUTH_SECRET: test-secret-key
           STRIPE_SECRET_KEY: sk_test_123
           NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
-          NODE_ENV: production
+          NODE_ENV: test
+          CI: true
           SKIP_TYPE_CHECK: true
 
       - name: Build application
@@ -90,15 +106,16 @@ jobs:
           ls -la .next/static/ | head -10
           echo "Build artifacts verified"
 
-      - name: Run tests
-        run: npm run test:ci
+      - name: Run tests with verbose output
+        run: npm run test:ci -- --verbose
         env:
           DATABASE_URL: file:./test.db
           NEXTAUTH_URL: http://localhost:3000
           NEXTAUTH_SECRET: test-secret-key
           STRIPE_SECRET_KEY: sk_test_123
           NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
-          NODE_ENV: production
+          NODE_ENV: test
+          CI: true
 
       - name: Run Web Vitals check
         run: npm run web-vitals-check
