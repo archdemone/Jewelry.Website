@@ -14,7 +14,9 @@ jobs:
           node-version: 20
           cache: 'npm'
       - name: Install deps
-        run: npm ci
+        run: |
+          npm install --no-audit --no-fund
+          echo "Dependencies installed successfully"
       - name: Generate Prisma Client
         run: npx prisma generate
       - name: Setup environment
