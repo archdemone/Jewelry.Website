@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { Heart, Home, Users, Award } from 'lucide-react';
 import { getImageUrlWithVersion } from '@/lib/utils';
 
-import Image from 'next/image';
+
 
 export default function ArtisanContent() {
   // Avoid hydration mismatch by rendering only after mount
@@ -20,13 +20,10 @@ export default function ArtisanContent() {
       {/* Hero Section - Personal Introduction */}
       <section className="relative h-[55vh] min-h-[480px] overflow-hidden bg-gradient-to-br from-stone-100 to-stone-200">
         <div className="absolute inset-0">
-          <Image
+          <img
             src={getImageUrlWithVersion("/images/artisan/bedroom-workshop-hero.jpg")}
             alt="Home workshop where each ring is crafted"
-            width={600}
-            height={400}
             className="absolute inset-0 h-full w-full object-cover"
-            sizes="(max-width: 768px) 100vw, 50vw"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
         </div>
@@ -115,8 +112,8 @@ export default function ArtisanContent() {
                 </p>
                 <div className="mt-4">
                   <div className="relative h-48 w-full overflow-hidden rounded-lg">
-                                         <Image
-                       src={getImageUrlWithVersion("/images/artisan/early-work-2015.jpg")}
+                    <img
+                      src={getImageUrlWithVersion("/images/artisan/early-work-2015.jpg")}
                        alt="Early jewelry experiments from 2015"
                        fill
                        className="object-cover"
@@ -148,14 +145,11 @@ export default function ArtisanContent() {
                 </p>
                 <div className="mt-4">
                   <div className="relative h-48 w-full overflow-hidden rounded-lg">
-                                         <Image
-                       src={getImageUrlWithVersion("/images/artisan/first-inlay-rings-2020.jpg")}
-                       alt="First gem inlay rings with carbon fiber"
-                       fill
-                       className="object-cover"
-                       sizes="(max-width: 768px) 100vw, 400px"
-                       priority={false}
-                     />
+                    <img
+                      src={getImageUrlWithVersion("/images/artisan/first-inlay-rings-2020.jpg")}
+                      alt="First gem inlay rings with carbon fiber"
+                      className="h-full w-full object-cover"
+                    />
                   </div>
                 </div>
               </div>
@@ -244,14 +238,11 @@ export default function ArtisanContent() {
               viewport={{ once: true }}
             >
               <div className="relative h-64 w-full overflow-hidden rounded-lg shadow-lg">
-                                 <Image
-                   src={getImageUrlWithVersion("/images/artisan/bedroom-workshop-1.jpg")}
-                   alt="My bedroom workshop setup"
-                   fill
-                   className="object-cover"
-                   sizes="(max-width: 768px) 100vw, 600px"
-                   priority={false}
-                 />
+                <img
+                  src={getImageUrlWithVersion("/images/artisan/bedroom-workshop-1.jpg")}
+                  alt="My bedroom workshop setup"
+                  className="h-full w-full object-cover"
+                />
               </div>
               <p className="mt-2 text-center text-sm text-gray-500">
                 Where the magic happens - my bedroom workshop
@@ -264,14 +255,11 @@ export default function ArtisanContent() {
               viewport={{ once: true }}
             >
               <div className="relative h-64 w-full overflow-hidden rounded-lg shadow-lg">
-                                 <Image
-                   src={getImageUrlWithVersion("/images/artisan/workshop-tools.jpg")}
-                   alt="Ring making tools and materials"
-                   fill
-                   className="object-cover"
-                   sizes="(max-width: 768px) 100vw, 600px"
-                   priority={false}
-                 />
+                <img
+                  src={getImageUrlWithVersion("/images/artisan/workshop-tools.jpg")}
+                  alt="Ring making tools and materials"
+                  className="h-full w-full object-cover"
+                />
               </div>
               <p className="mt-2 text-center text-sm text-gray-500">
                 Simple tools, endless possibilities
