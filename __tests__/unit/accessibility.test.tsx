@@ -74,6 +74,31 @@ jest.mock('@/components/layout/ConditionalFooter', () => {
   };
 });
 
+// Mock the dynamic components from the homepage
+jest.mock('@/components/home/HeroCarousel', () => {
+  return function MockHeroCarousel() {
+    return <section data-testid="hero-carousel">Hero Carousel</section>;
+  };
+});
+
+jest.mock('@/components/home/TrustSignals', () => {
+  return function MockTrustSignals() {
+    return <section data-testid="trust-signals">Trust Signals</section>;
+  };
+});
+
+jest.mock('@/components/home/FeaturedProducts', () => {
+  return function MockFeaturedProducts() {
+    return <section data-testid="featured-products">Featured Products</section>;
+  };
+});
+
+jest.mock('@/components/home/SocialProof', () => {
+  return function MockSocialProof() {
+    return <section data-testid="social-proof">Social Proof</section>;
+  };
+});
+
 // Mock data fetching functions
 jest.mock('@/lib/queries', () => ({
   getAllCategories: jest.fn(() => []),
@@ -101,10 +126,21 @@ describe('Accessibility', () => {
   it('homepage has no violations', async () => {
     const { container } = render(<HomePage />);
 
-    // Wait for all async operations to complete
+    // Wait for the main homepage content to be present
     await waitFor(() => {
-      expect(container).toBeInTheDocument();
+      expect(container.querySelector('[data-testid="homepage-main"]')).toBeInTheDocument();
     });
+
+    // Wait for all dynamic components to be loaded
+    await waitFor(() => {
+      expect(container.querySelector('[data-testid="hero-carousel"]')).toBeInTheDocument();
+      expect(container.querySelector('[data-testid="trust-signals"]')).toBeInTheDocument();
+      expect(container.querySelector('[data-testid="featured-products"]')).toBeInTheDocument();
+      expect(container.querySelector('[data-testid="social-proof"]')).toBeInTheDocument();
+    }, { timeout: 5000 });
+
+    // Additional wait to ensure all animations and async operations are complete
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
     try {
       const results = await axe(container);
@@ -125,10 +161,13 @@ describe('Accessibility', () => {
       />
     );
 
-    // Wait for all async operations to complete
+    // Wait for the component to be fully rendered
     await waitFor(() => {
       expect(container).toBeInTheDocument();
     });
+
+    // Additional wait to ensure all async operations are complete
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
     try {
       const results = await axe(container);
