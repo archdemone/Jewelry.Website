@@ -2,6 +2,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 import { Inter, Playfair_Display } from 'next/font/google';
 import './globals.css';
+import './critical.css';
 import { Header } from '@/components/layout/Header';
 import { ConditionalFooter } from '@/components/layout/ConditionalFooter';
 import { AuthSessionProvider } from '@/lib/auth/session-provider';
