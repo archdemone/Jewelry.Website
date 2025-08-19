@@ -24,7 +24,7 @@ export function Header() {
   const [q, setQ] = useState('');
   const [mounted, setMounted] = useState(false);
   const [showRingCollections, setShowRingCollections] = useState(false);
-  const [dropdownTimeout, setDropdownTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [dropdownTimeout, setDropdownTimeout] = useState<ReturnType<typeof setTimeout> | null>(null);
   const router = useRouter();
   const { data: session } = useSession();
 

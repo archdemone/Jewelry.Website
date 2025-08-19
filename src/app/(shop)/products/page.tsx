@@ -236,7 +236,7 @@ export default function ProductsPage() {
       }
     };
     loadData();
-  }, []);
+  }, [products]);
 
   // Handle smooth scrolling to products section
   useEffect(() => {

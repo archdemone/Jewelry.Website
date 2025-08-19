@@ -1,4 +1,4 @@
-import { HTMLAttributes, ReactNode } from 'react';
+import React, { HTMLAttributes, ReactNode } from 'react';
 
 // Extend Framer Motion types to include HTML attributes
 declare module 'framer-motion' {
