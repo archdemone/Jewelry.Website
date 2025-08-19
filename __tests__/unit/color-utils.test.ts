@@ -3,8 +3,8 @@ import { readableTextColor } from '@/lib/utils/color';
 describe('readableTextColor', () => {
   it('prefers white text on dark backgrounds', () => {
     // Use Jest assertions
-    expect(readableTextColor('#111111')).toBe('#FFFFFF');
-    expect(readableTextColor('#2563eb')).toBe('#FFFFFF');
+    expect(readableTextColor('#111111')).to.equal('#FFFFFF');
+    expect(readableTextColor('#2563eb')).to.equal('#FFFFFF');
   });
 
   it('prefers dark text on light backgrounds', () => {
