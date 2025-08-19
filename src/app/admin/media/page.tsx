@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import {
   Upload,
@@ -178,12 +179,13 @@ export default function AdminMediaPage() {
               className="relative group"
             >
               <div className="border-2 border-gray-200 rounded-lg overflow-hidden">
-                <div className="aspect-square bg-gray-100 relative">
-                  <img
+                <div className="aspect-square bg-gray-100 relative cursor-pointer" onClick={() => setPreviewFile(file)}>
+                  <Image
                     src={file.url}
                     alt={file.name}
-                    className="w-full h-full object-cover cursor-pointer"
-                    onClick={() => setPreviewFile(file)}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                   />
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <div className="flex justify-between items-center">
@@ -228,11 +230,15 @@ export default function AdminMediaPage() {
                 <tr key={file.path} className="border-b hover:bg-gray-50">
                   <td className="p-4">
                     <div className="flex items-center">
-                      <img
-                        src={file.url}
-                        alt={file.name}
-                        className="w-10 h-10 object-cover rounded mr-3"
-                      />
+                      <div className="relative w-10 h-10 mr-3">
+                        <Image
+                          src={file.url}
+                          alt={file.name}
+                          fill
+                          className="object-cover rounded"
+                          sizes="40px"
+                        />
+                      </div>
                       <span className="font-medium">{file.name}</span>
                     </div>
                   </td>
@@ -299,11 +305,16 @@ export default function AdminMediaPage() {
               </button>
             </div>
             <div className="p-4">
-              <img
-                src={previewFile.url}
-                alt={previewFile.name}
-                className="max-w-full max-h-[70vh] mx-auto"
-              />
+              <div className="relative flex justify-center items-center" style={{ maxHeight: '70vh' }}>
+                <Image
+                  src={previewFile.url}
+                  alt={previewFile.name}
+                  width={800}
+                  height={600}
+                  className="max-w-full max-h-[70vh] object-contain"
+                  sizes="(max-width: 768px) 100vw, 800px"
+                />
+              </div>
             </div>
             <div className="p-4 border-t bg-gray-50">
               <div className="flex items-center justify-between">

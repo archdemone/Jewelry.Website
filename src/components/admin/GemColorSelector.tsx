@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 
 interface GemColorSelectorProps {
   selectedColor: string;
@@ -46,10 +47,12 @@ export function GemColorSelector({ selectedColor, onColorChange }: GemColorSelec
           {hoveredColor === gem.name && gem.image && (
             <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
               <div className="rounded-lg border bg-white p-2 shadow-lg">
-                <img
+                <Image
                   src={gem.image}
                   alt={`${gem.name} gem`}
-                  className="h-20 w-20 rounded object-cover"
+                  width={80}
+                  height={80}
+                  className="rounded object-cover"
                 />
               </div>
             </div>

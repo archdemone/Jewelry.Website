@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -276,10 +277,12 @@ export default function AdminFeaturedProductsPage() {
             {/* Product Image */}
             <div className="relative h-48 bg-gray-100">
               {product.image && (
-                <img
+                <Image
                   src={product.image}
                   alt={product.name}
-                  className="h-full w-full object-cover"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                 />
               )}
               <div className="absolute right-2 top-2 flex gap-1">
@@ -465,10 +468,12 @@ export default function AdminFeaturedProductsPage() {
                 <div className="mb-6">
                   <div className="relative aspect-square bg-white rounded-lg border-2 border-dashed border-gray-300 overflow-hidden">
                     {editingProduct.image ? (
-                      <img
+                      <Image
                         src={editingProduct.image}
                         alt={editingProduct.name}
-                        className="w-full h-full object-cover"
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 50vw"
                       />
                     ) : (
                       <div className="flex items-center justify-center h-full">
@@ -583,10 +588,12 @@ export default function AdminFeaturedProductsPage() {
                            {hoveredGemColor === color && (
                              <div className="absolute bottom-full left-1/2 z-10 mb-3 -translate-x-1/2 transform">
                                <div className="rounded-lg border bg-white p-3 shadow-xl">
-                                 <img
+                                 <Image
                                    src={getGemColorImage(color)}
                                    alt={`${color} gem`}
-                                   className="h-36 w-36 rounded object-cover"
+                                   width={144}
+                                   height={144}
+                                   className="rounded object-cover"
                                  />
                                </div>
                              </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -480,10 +481,12 @@ export default function UnifiedAdminProductsPage() {
                 <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                   <div className="aspect-square bg-gray-100 relative">
                     {product.images && product.images[0] ? (
-                      <img
+                      <Image
                         src={product.images[0]}
                         alt={product.name}
-                        className="w-full h-full object-cover"
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                       />
                     ) : (
                       <div className="flex items-center justify-center h-full">
@@ -565,12 +568,14 @@ export default function UnifiedAdminProductsPage() {
                       <tr key={product.id} className="hover:bg-gray-50">
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="flex items-center">
-                            <div className="flex-shrink-0 h-10 w-10">
+                            <div className="flex-shrink-0 h-10 w-10 relative">
                               {product.images && product.images[0] ? (
-                                <img
-                                  className="h-10 w-10 rounded-full object-cover"
+                                <Image
                                   src={product.images[0]}
                                   alt={product.name}
+                                  fill
+                                  className="rounded-full object-cover"
+                                  sizes="40px"
                                 />
                               ) : (
                                 <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
@@ -692,10 +697,12 @@ export default function UnifiedAdminProductsPage() {
                  <div className="mb-6">
                    <div className="relative aspect-square bg-white rounded-lg border-2 border-dashed border-gray-300 overflow-hidden">
                      {editingProduct.images && editingProduct.images[0] ? (
-                       <img
+                       <Image
                          src={editingProduct.images[0]}
                          alt={editingProduct.name}
-                         className="w-full h-full object-cover"
+                         fill
+                         className="object-cover"
+                         sizes="(max-width: 768px) 100vw, 50vw"
                        />
                      ) : (
                        <div className="flex items-center justify-center h-full">
@@ -745,10 +752,12 @@ export default function UnifiedAdminProductsPage() {
                              : 'border-gray-200 hover:border-gray-300'
                          }`}
                        >
-                         <img
+                         <Image
                            src={image.url}
                            alt={image.name}
-                           className="w-full h-full object-cover"
+                           fill
+                           className="object-cover"
+                           sizes="200px"
                          />
                          {editingProduct.images.includes(image.url) && (
                            <div className="absolute top-1 right-1 w-5 h-5 bg-gold-500 rounded-full flex items-center justify-center">
@@ -851,10 +860,12 @@ export default function UnifiedAdminProductsPage() {
                            {hoveredGemColor === color && (
                              <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
                                <div className="rounded-lg border bg-white p-2 shadow-lg">
-                                 <img
+                                 <Image
                                    src={getGemColorImage(color)}
                                    alt={`${color} gem`}
-                                   className="h-32 w-32 rounded object-cover"
+                                   width={128}
+                                   height={128}
+                                   className="rounded object-cover"
                                  />
                                </div>
                              </div>
@@ -894,10 +905,12 @@ export default function UnifiedAdminProductsPage() {
                              {hoveredGemColor2 === color && (
                                <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
                                  <div className="rounded-lg border bg-white p-2 shadow-lg">
-                                   <img
+                                   <Image
                                      src={getGemColorImage(color)}
                                      alt={`${color} gem`}
-                                     className="h-32 w-32 rounded object-cover"
+                                     width={128}
+                                     height={128}
+                                     className="rounded object-cover"
                                    />
                                  </div>
                                </div>
@@ -967,10 +980,12 @@ export default function UnifiedAdminProductsPage() {
                            {hoveredMixColor === color && (
                              <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
                                <div className="rounded-lg border bg-white p-2 shadow-lg">
-                                 <img
+                                 <Image
                                    src={getGemColorImage(color)}
                                    alt={`${color} gem`}
-                                   className="h-32 w-32 rounded object-cover"
+                                   width={128}
+                                   height={128}
+                                   className="rounded object-cover"
                                  />
                                </div>
                              </div>
