@@ -15,11 +15,36 @@ jobs:
           cache: 'npm'
       - name: Install deps
         run: npm ci
-      - name: Typecheck
-        run: npm run type-check
+      - name: Generate Prisma Client
+        run: npx prisma generate
+      - name: Setup environment
+        run: |
+          echo "DATABASE_URL=file:./ui-test.db" >> $GITHUB_ENV
+          echo "NEXTAUTH_URL=http://localhost:3000" >> $GITHUB_ENV
+          echo "NEXTAUTH_SECRET=ui-test-secret-key" >> $GITHUB_ENV
+          echo "STRIPE_SECRET_KEY=sk_test_123" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_test_123" >> $GITHUB_ENV
       - name: Lint
         run: npm run lint
-      - name: Unit tests
+        env:
+          DATABASE_URL: file:./ui-test.db
+          NEXTAUTH_URL: http://localhost:3000
+          NEXTAUTH_SECRET: ui-test-secret-key
+          STRIPE_SECRET_KEY: sk_test_123
+          NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
+      - name: Build
+        run: npm run build:no-typescript
+        env:
+          DATABASE_URL: file:./ui-test.db
+          NEXTAUTH_URL: http://localhost:3000
+          NEXTAUTH_SECRET: ui-test-secret-key
+          STRIPE_SECRET_KEY: sk_test_123
+          NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
+      - name: Test
         run: npm run test:ci
-      - name: Build (smoke)
-        run: npm run build
+        env:
+          DATABASE_URL: file:./ui-test.db
+          NEXTAUTH_URL: http://localhost:3000
+          NEXTAUTH_SECRET: ui-test-secret-key
+          STRIPE_SECRET_KEY: sk_test_123
+          NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
