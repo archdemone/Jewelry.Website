@@ -1,0 +1,309 @@
+Phase 5 - Product Catalog Development Prompt
+
+Let's proceed with Phase 5: Product Catalog. This phase will create a comprehensive product browsing experience with filtering, sorting, and search capabilities.
+
+## Phase 5 Tasks:
+
+### 1. Create Product Catalog Structure
+Create the following structure:
+/app/
+  /products/
+    - page.tsx (main catalog)
+    - layout.tsx
+    /[category]/
+      - page.tsx (category page)
+      
+/components/
+  /products/
+    - ProductGrid.tsx
+    - ProductCard.tsx
+    - ProductFilters.tsx
+    - ProductSort.tsx
+    - PriceRangeSlider.tsx
+    - QuickViewModal.tsx
+    - ProductSkeleton.tsx
+    - Pagination.tsx
+
+### 2. Install Required Dependencies
+npx shadcn-ui@latest add slider
+npx shadcn-ui@latest add checkbox
+npx shadcn-ui@latest add select
+npx shadcn-ui@latest add dialog
+npx shadcn-ui@latest add skeleton
+npm install @tanstack/react-query
+npm install qs
+
+### 3. Create Main Products Page
+Create /app/products/page.tsx
+
+Features:
+- Server component that fetches products
+- URL-based filtering (searchParams)
+- Pass products to client components
+- SEO metadata
+- Breadcrumbs
+
+Structure:
+export default async function ProductsPage({
+  searchParams
+}: {
+  searchParams: { [key: string]: string | string[] | undefined }
+}) {
+  // Parse filters from URL
+  // Fetch products based on filters
+  // Return page with sidebar and grid
+}
+
+### 4. Create Product Filters Sidebar
+Create /components/products/ProductFilters.tsx
+
+Filter Options:
+1. Categories (checkbox list)
+   - Rings, Necklaces, Bracelets, Earrings, Watches
+2. Price Range (dual slider)
+   - Min: $0, Max: $10,000+
+   - Show current range values, Apply button
+3. Metal Type (checkboxes)
+   - Yellow Gold, White Gold, Rose Gold, Sterling Silver, Platinum
+4. Gemstone (checkboxes)
+   - Diamond, Ruby, Sapphire, Emerald, Pearl, No Gemstone
+5. Availability
+   - In Stock only toggle
+6. Collections (if applicable)
+   - Wedding, Everyday, Luxury, Vintage
+
+Features:
+- Clear all filters button
+- Filter count badges
+- Collapsible sections on mobile
+- Update URL params on change
+- Show active filter pills
+
+### 5. Create Product Card Component
+Create /components/products/ProductCard.tsx
+
+Card Features:
+- Product image with hover effect (show second image)
+- Sale badge if discounted
+- "New" badge if created within 30 days
+- Quick view button (eye icon) on hover
+- Add to cart button on hover
+- Wishlist heart icon (top right)
+- Product name (truncated if too long)
+- Price display (show original if on sale)
+- Star rating if reviews exist
+- Color/variant swatches (if applicable)
+
+Hover Effects:
+- Slight scale on image
+- Fade in overlay buttons
+- Show secondary image if available
+
+### 6. Create Product Grid Component
+Create /components/products/ProductGrid.tsx
+
+Features:
+- Responsive grid layout (1–2 mobile, 3 tablet, 4 desktop)
+- Loading skeletons while fetching
+- Empty state with suggestions
+- Product count display
+- Integration with filters and sort
+
+### 7. Create Sort Dropdown
+Create /components/products/ProductSort.tsx
+
+Sort Options:
+- Featured, Best Selling, Price: Low to High, Price: High to Low, Newest First, Customer Rating, A–Z, Z–A
+
+### 8. Create Price Range Slider
+Create /components/products/PriceRangeSlider.tsx
+
+Features:
+- Dual thumb slider
+- Min/max price inputs
+- Currency formatting
+- Debounced updates
+- Responsive to product price range
+
+### 9. Create Quick View Modal
+Create /components/products/QuickViewModal.tsx
+
+Modal Contents:
+- Product image gallery (simplified)
+- Product name and price
+- Brief description
+- Size/variant selector
+- Quantity selector
+- Add to cart button
+- View full details link
+- Close button (X)
+
+### 10. Create Pagination Component
+Create /components/products/Pagination.tsx
+
+Features:
+- Page numbers with ellipsis
+- Previous/Next buttons
+- Items per page selector (12, 24, 48)
+- "Showing X–Y of Z products"
+- URL-based pagination
+- Scroll to top on page change
+
+### 11. Implement Search Functionality
+Update search to work with catalog:
+
+Features:
+- Search products by name, description, SKU
+- Search suggestions dropdown
+- Recent searches
+- Popular searches
+- Highlight search terms in results
+- "No results" state with suggestions
+
+### 12. Create Category Pages
+Create /app/products/[category]/page.tsx
+
+Features:
+- Dynamic routing for each category
+- Pre-filtered products
+- Category hero banner & description
+- Same filtering/sorting as main catalog
+- Breadcrumbs with category
+
+### 13. Add Loading States
+Create /components/products/ProductSkeleton.tsx
+
+Skeleton Components:
+- Product card skeleton
+- Filter sidebar skeleton
+- Grid skeleton layout
+- Smooth transitions
+
+### 14. Implement Infinite Scroll (Alternative to Pagination)
+Optional: Replace or supplement pagination with infinite scroll:
+- Load more products on scroll
+- "Load More" button option
+- Maintain scroll position
+- URL updates for SEO
+
+### 15. Create Product API Routes
+Create /app/api/products/route.ts
+
+Endpoints:
+- GET /api/products - filtered products
+- GET /api/products/filters - available filter options
+- GET /api/products/search - search endpoint
+
+Query Parameters:
+- category, minPrice, maxPrice, metal, gemstone, sort, page, limit, search
+
+### 16. Implement Filter Logic
+Create /lib/products/filters.ts
+
+Functions:
+- parseFilters() - Parse URL params
+- buildWhereClause() - Build Prisma where clause
+- getFilterCounts() - Get counts for each filter
+- formatPrice() - Currency formatting
+
+### 17. Add View Toggle (Grid/List)
+Optional feature:
+- Grid view (default) and List view
+- Save preference in localStorage
+
+## Database Queries:
+
+Main Products Query (example):
+const products = await prisma.product.findMany({
+  where: {
+    active: true,
+    category: category ? { slug: category } : undefined,
+    price: { gte: minPrice, lte: maxPrice },
+    material: metal ? { in: metalArray } : undefined,
+  },
+  include: { category: true, reviews: { select: { rating: true } } },
+  orderBy: { [sortField]: sortOrder },
+  skip: (page - 1) * limit,
+  take: limit,
+})
+
+## Performance Optimizations:
+
+1) Image Optimization:
+- Use Next.js Image with sizing
+- Lazy load images
+- Blur placeholders
+
+2) Query Optimization:
+- Index database columns used in filters
+- Implement query caching
+- Use React Query for client caching
+
+3) URL State Management:
+- Debounce filter updates
+- Clean URL parameters
+- Shareable filter URLs
+
+## Mobile Responsiveness:
+- Filter drawer (slide from left)
+- Sticky filter/sort bar
+- Touch-friendly controls
+- Simplified product cards
+- Bottom sheet for quick view
+
+## SEO Requirements:
+- Dynamic title based on filters
+- Description with product count
+- Canonical URLs
+- Product, BreadcrumbList, and ItemList schema
+- Clean, readable URLs
+
+## Testing Checklist:
+- [ ] All filters work and combine correctly
+- [ ] Sort options change product order
+- [ ] Pagination navigates properly
+- [ ] Quick view modal displays product info
+- [ ] Search returns relevant results
+- [ ] Category pages show filtered products
+- [ ] Mobile filter drawer works
+- [ ] URLs update with filter changes
+- [ ] Back button maintains filter state
+- [ ] No duplicate products in results
+- [ ] Loading states show appropriately
+- [ ] Empty states have helpful messages
+
+## Sample Filter State:
+{
+  category: ['rings', 'necklaces'],
+  priceRange: [100, 5000],
+  metal: ['gold', 'silver'],
+  gemstone: ['diamond'],
+  inStock: true,
+  sort: 'price-asc',
+  page: 1,
+  search: '',
+}
+
+## Design Specifications:
+
+Layout:
+- Sidebar 280px (desktop), full width (mobile)
+- Grid gap: 24px
+- Card aspect: 1:1.3
+- Sticky sidebar (desktop)
+
+Colors:
+- Filter borders: border-gray-200
+- Active filters: gold accents
+- Slider: gold accent color
+
+Typography:
+- Filter headings: uppercase, font-semibold, text-sm
+- Product names: text-base
+- Prices: text-lg, font-semibold
+
+## After Completion:
+1) Test complete user flow: browse, filter, sort, quick view, paginate, search, clear filters
+2) Performance check: filter updates < 300ms, optimized images, no layout shifts
+3) Screenshots: catalog with filters, mobile filter drawer, quick view, search results, empty state
+4) Update DEVELOPMENT_CHECKLIST.md to mark Phase 5 complete
