@@ -3,14 +3,23 @@ import { render } from '@testing-library/react';
 import { axe } from 'jest-axe';
 import HomePage from '@/app/page';
 import CategoryPage from '@/components/products/CategoryPage';
+import '@testing-library/jest-dom';
 
-// Mock IntersectionObserver for Framer Motion
+// Mock IntersectionObserver for Framer Motion with proper typing
 global.IntersectionObserver = class IntersectionObserver {
-  constructor() {}
-  disconnect() {}
-  observe() {}
-  unobserve() {}
-};
+  readonly root: Element | null = null;
+  readonly rootMargin: string = '';
+  readonly thresholds: ReadonlyArray<number> = [];
+  
+  constructor(callback: IntersectionObserverCallback, options?: IntersectionObserverInit) {}
+  
+  disconnect(): void {}
+  observe(target: Element): void {}
+  unobserve(target: Element): void {}
+  takeRecords(): IntersectionObserverEntry[] {
+    return [];
+  }
+} as any;
 
 // Mock the data
 const mockProducts = [
@@ -65,13 +74,36 @@ jest.mock('@/components/layout/ConditionalFooter', () => {
   };
 });
 
+// Mock data fetching functions
+jest.mock('@/lib/queries', () => ({
+  getAllCategories: jest.fn(() => []),
+  getPaginatedProducts: jest.fn(() => []),
+}));
+
+jest.mock('@/lib/assets/images', () => ({
+  getProductImageFallback: jest.fn(() => '/fallback-image.jpg'),
+}));
+
+// Mock the cart store
+jest.mock('@/store/cart', () => ({
+  useCartStore: jest.fn(() => ({
+    addToCart: jest.fn(),
+    removeFromCart: jest.fn(),
+    updateQuantity: jest.fn(),
+    clearCart: jest.fn(),
+    items: [],
+    total: 0,
+    itemCount: 0,
+  })),
+}));
+
 describe('Accessibility', () => {
   it('homepage has no violations', async () => {
     const { container } = render(<HomePage />);
 
     try {
       const results = await axe(container);
-      expect(results).toHaveNoViolations();
+      (expect(results) as any).toHaveNoViolations();
     } catch (error) {
       console.error('Accessibility test error:', error);
       throw error;
@@ -81,15 +113,16 @@ describe('Accessibility', () => {
   it('product page is accessible', async () => {
     const { container } = render(
       <CategoryPage 
-        products={mockProducts}
         category="Wedding"
-        subCategory="Engagement"
+        categoryTitle="Wedding Rings"
+        categoryDescription="Beautiful wedding rings"
+        categoryImage="/wedding-rings.jpg"
       />
     );
 
     try {
       const results = await axe(container);
-      expect(results).toHaveNoViolations();
+      (expect(results) as any).toHaveNoViolations();
     } catch (error) {
       console.error('Product accessibility test error:', error);
       throw error;
