@@ -38,6 +38,7 @@ export interface Product {
   badge?: string;
   slug: string;
   description?: string;
+  status?: 'active' | 'draft' | 'archived';
 }
 
 export type ProductWithRelations = {

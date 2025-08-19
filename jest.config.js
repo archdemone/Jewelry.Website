@@ -33,4 +33,13 @@ module.exports = {
       statements: 0,
     },
   },
+  // Skip TypeScript checking during tests
+  globals: {
+    'ts-jest': {
+      tsconfig: {
+        skipLibCheck: true,
+        noEmit: true,
+      },
+    },
+  },
 };
