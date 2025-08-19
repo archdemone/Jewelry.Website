@@ -37,6 +37,11 @@ const nextConfig = {
       'zod',
       '@hookform/resolvers'
     ],
+    // Reduce bundle sizes
+    bundlePagesExternals: true,
+    serverComponentsExternalPackages: ['@prisma/client'],
+    // Optimize error pages
+    optimizeErrorOverlay: false,
     optimizeCss: true,
     turbo: {
       rules: {
@@ -55,7 +60,14 @@ const nextConfig = {
     webpackBuildWorker: true,
   },
   images: {
-    domains: ['localhost'],
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3000',
+        pathname: '/**',
+      },
+    ],
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256],
@@ -160,13 +172,13 @@ const nextConfig = {
         // Ultra-aggressive optimization
         splitChunks: {
           chunks: 'all',
-          minSize: 20000, // Reduced from default
-          maxSize: 244000, // Reduced chunk size
+          minSize: 15000, // Further reduced for smaller chunks
+          maxSize: 150000, // Reduced chunk size for better loading
           minChunks: 1,
-          maxAsyncRequests: 30,
-          maxInitialRequests: 30,
+          maxAsyncRequests: 50,
+          maxInitialRequests: 50,
           automaticNameDelimiter: '~',
-          enforceSizeThreshold: 50000,
+          enforceSizeThreshold: 30000,
           cacheGroups: {
             defaultVendors: {
               test: /[\\/]node_modules[\\/]/,
@@ -281,6 +293,13 @@ const nextConfig = {
 
     // Optimize CSS extraction
     if (!isServer) {
+      // Ensure splitChunks and cacheGroups exist
+      if (!config.optimization.splitChunks) {
+        config.optimization.splitChunks = {};
+      }
+      if (!config.optimization.splitChunks.cacheGroups) {
+        config.optimization.splitChunks.cacheGroups = {};
+      }
       config.optimization.splitChunks.cacheGroups.styles = {
         name: 'styles',
         test: /\.(css|scss)$/,

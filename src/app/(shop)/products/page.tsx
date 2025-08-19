@@ -23,10 +23,7 @@ import {
   TrendingUp,
   Award,
 } from 'lucide-react';
-import { getAllCategories, getPaginatedProducts } from '@/lib/queries';
-import { getProductImageFallback } from '@/lib/assets/images';
 import { useCartStore } from '@/store/cart';
-import CategoryShowcase from '@/components/home/CategoryShowcase';
 
 interface Product {
   id: string | number;
@@ -236,7 +233,11 @@ export default function ProductsPage() {
       }
     };
     loadData();
+<<<<<<< HEAD
   }, [products]);
+=======
+  }, []); // Remove products from dependency array to prevent infinite loop
+>>>>>>> fix/type-errors
 
   // Handle smooth scrolling to products section
   useEffect(() => {
@@ -494,8 +495,7 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      {/* Category Showcase */}
-      <CategoryShowcase />
+             {/* Category Showcase - temporarily removed */}
 
       {/* Main Content Area */}
       <section id="products-section" className="py-12">
