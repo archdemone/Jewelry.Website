@@ -115,10 +115,7 @@ export default function ArtisanContent() {
                     <img
                       src={getImageUrlWithVersion("/images/artisan/early-work-2015.jpg")}
                        alt="Early jewelry experiments from 2015"
-                       fill
-                       className="object-cover"
-                       sizes="(max-width: 768px) 100vw, 400px"
-                       priority={false}
+                       className="h-full w-full object-cover"
                      />
                   </div>
                 </div>

@@ -2,13 +2,12 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { Heart, ShoppingBag } from 'lucide-react';
 import { getFeaturedProducts, type FeaturedProduct } from '@/lib/featured-products';
 import { useCartStore } from '@/store/cart';
-import toast from 'react-hot-toast';
 import { getImageUrlWithVersion } from '@/lib/utils';
+import { onPostLCP } from '@/lib/postLcp';
 
 const FeaturedProducts = () => {
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
@@ -17,32 +16,40 @@ const FeaturedProducts = () => {
   const [mounted, setMounted] = useState(false);
   const { addItem, items, isHydrated } = useCartStore();
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  useEffect(() => { setMounted(true); }, []);
 
+  // Optimized data loading with postLCP scheduling
   useEffect(() => {
-    // Load featured products from the data store
-    setFeaturedRings(getFeaturedProducts());
-    
-    // Only access localStorage in browser environment
-    if (typeof window !== 'undefined') {
-      // Load wishlist from localStorage
-      const savedWishlist = localStorage.getItem('wishlist');
-      if (savedWishlist) {
-        setWishlist(new Set(JSON.parse(savedWishlist)));
+    const loadData = () => {
+      setFeaturedRings(getFeaturedProducts());
+      if (typeof window !== 'undefined') {
+        const savedWishlist = localStorage.getItem('wishlist');
+        if (savedWishlist) { setWishlist(new Set(JSON.parse(savedWishlist))); }
       }
-      
-      // Listen for storage changes to refresh the data
-      const handleStorageChange = () => {
-        setFeaturedRings(getFeaturedProducts());
-      };
-      
+    };
+
+    // Schedule work after LCP
+    onPostLCP(() => {
+      if (typeof window !== 'undefined' && window.requestIdleCallback) {
+        window.requestIdleCallback(loadData);
+      } else {
+        setTimeout(loadData, 0);
+      }
+    });
+
+    const handleStorageChange = () => {
+      onPostLCP(() => {
+        if (typeof window !== 'undefined' && window.requestIdleCallback) {
+          window.requestIdleCallback(() => { setFeaturedRings(getFeaturedProducts()); });
+        } else {
+          setTimeout(() => { setFeaturedRings(getFeaturedProducts()); }, 0);
+        }
+      });
+    };
+
+    if (typeof window !== 'undefined') {
       window.addEventListener('storage', handleStorageChange);
-      
-      // Also listen for custom events (for same-tab updates)
       window.addEventListener('featuredProductsUpdated', handleStorageChange);
-      
       return () => {
         window.removeEventListener('storage', handleStorageChange);
         window.removeEventListener('featuredProductsUpdated', handleStorageChange);
@@ -50,237 +57,196 @@ const FeaturedProducts = () => {
     }
   }, []);
 
-  const handleWishlistToggle = (productId: string) => {
+  // Optimized wishlist toggle with postLCP scheduling
+  const handleWishlistToggle = useCallback((productId: string) => {
     const newWishlist = new Set(wishlist);
     const product = featuredRings.find(ring => ring.id === productId);
     
     if (newWishlist.has(productId)) {
       newWishlist.delete(productId);
-      toast.success(`${product?.name} removed from wishlist`, {
-        duration: 2000,
-        position: 'top-right',
-        style: {
-          background: '#EF4444',
-          color: '#fff',
-        },
-      });
+      console.log(`Removed ${product?.name} from wishlist`);
     } else {
       newWishlist.add(productId);
-      toast.success(`${product?.name} added to wishlist!`, {
-        duration: 2000,
-        position: 'top-right',
-        style: {
-          background: '#10B981',
-          color: '#fff',
-        },
-      });
+      console.log(`Added ${product?.name} to wishlist`);
     }
+    
     setWishlist(newWishlist);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('wishlist', JSON.stringify([...newWishlist]));
-    }
-  };
+    
+    onPostLCP(() => {
+      if (typeof window !== 'undefined') {
+        if (window.requestIdleCallback) {
+          window.requestIdleCallback(() => { localStorage.setItem('wishlist', JSON.stringify([...newWishlist])); });
+        } else {
+          setTimeout(() => { localStorage.setItem('wishlist', JSON.stringify([...newWishlist])); }, 0);
+        }
+      }
+    });
+  }, [wishlist, featuredRings]);
 
-  const handleAddToCart = (ring: FeaturedProduct) => {
+  // Optimized add to cart with postLCP scheduling and dynamic toast import
+  const handleAddToCart = useCallback((ring: FeaturedProduct) => {
     if (!isHydrated) {
-      toast.error('Cart is still loading, please try again');
+      console.error('Cart is still loading, please try again');
       return;
     }
-    
-    addItem({
-      productId: ring.id,
-      name: ring.name,
-      price: ring.price,
-      image: ring.image,
-      material: ring.material,
-      gemColor: ring.gemColor,
-      gemDensity: ring.gemDensity,
-      gemVariation: ring.gemVariation,
-      ringSize: ring.ringSizes.us[0]?.toString() || '7',
-      ringWidth: ring.ringWidth[0]?.toString() || '6'
-    });
-    
-    // Show success toast
-    toast.success(`${ring.name} added to cart!`, {
-      duration: 2000,
-      position: 'top-right',
-      style: {
-        background: '#10B981',
-        color: '#fff',
-      },
-    });
-68  };
 
-  // Show 6 products for better engagement and variety
-  const initialProducts = featuredRings.slice(0, 6);
+    onPostLCP(() => {
+      // Dynamic import of toast to reduce initial bundle
+      import('react-hot-toast').then(({ default: toast }) => {
+        if (typeof window !== 'undefined' && window.requestIdleCallback) {
+          window.requestIdleCallback(() => {
+            addItem({
+              productId: ring.id,
+              name: ring.name,
+              price: ring.price,
+              image: ring.image
+            }, 1);
+            toast.success(`${ring.name} added to cart!`, {
+              duration: 3000,
+              position: 'top-right',
+              style: {
+                background: '#10B981',
+                color: '#fff',
+                borderRadius: '8px',
+                fontSize: '14px',
+                fontWeight: '500',
+                padding: '12px 16px',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                border: 'none',
+                maxWidth: '300px',
+                textAlign: 'center'
+              }
+            });
+          });
+        } else {
+          setTimeout(() => {
+            addItem({
+              productId: ring.id,
+              name: ring.name,
+              price: ring.price,
+              image: ring.image
+            }, 1);
+            toast.success(`${ring.name} added to cart!`, {
+              duration: 3000,
+              position: 'top-right',
+              style: {
+                background: '#10B981',
+                color: '#fff',
+                borderRadius: '8px',
+                fontSize: '14px',
+                fontWeight: '500',
+                padding: '12px 16px',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
+                border: 'none',
+                maxWidth: '300px',
+                textAlign: 'center'
+              }
+            });
+          }, 0);
+        }
+      });
+    });
+  }, [addItem, isHydrated]);
 
-  // Don't render until mounted to prevent SSR issues
-  if (!mounted) {
-    return (
-      <section className="py-16 bg-white">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl heading-primary text-charcoal-900 mb-4">
-              Featured Rings
-            </h2>
-            <p className="text-xl body-text text-gray-600 max-w-2xl mx-auto">
-              Discover our most popular handcrafted pieces, each telling a unique story of craftsmanship and beauty.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[...Array(6)].map((_, i) => (
-              <div key={i} className="bg-white rounded-lg shadow-lg overflow-hidden">
-                <div className="aspect-square bg-gray-200 animate-pulse"></div>
-                <div className="p-4">
-                  <div className="h-4 bg-gray-200 rounded animate-pulse mb-2"></div>
-                  <div className="h-6 bg-gray-200 rounded animate-pulse mb-2"></div>
-                  <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
+  // Optimized hover handlers with postLCP scheduling
+  const handleMouseEnter = useCallback((productId: string) => {
+    onPostLCP(() => {
+      if (typeof window !== 'undefined' && window.requestIdleCallback) {
+        window.requestIdleCallback(() => { setHoveredProduct(productId); });
+      } else {
+        setTimeout(() => { setHoveredProduct(productId); }, 0);
+      }
+    });
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    onPostLCP(() => {
+      if (typeof window !== 'undefined' && window.requestIdleCallback) {
+        window.requestIdleCallback(() => { setHoveredProduct(null); });
+      } else {
+        setTimeout(() => { setHoveredProduct(null); }, 0);
+      }
+    });
+  }, []);
 
   return (
-    <section className="py-16 bg-white" data-testid="featured-products">
+    <section
+      className="py-16 bg-white"
+      style={{ contentVisibility: 'auto', containIntrinsicSize: '1px 800px' }}
+    >
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <motion.h2 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="text-4xl md:text-5xl heading-primary text-charcoal-900 mb-4"
-          >
-            Featured Rings
-          </motion.h2>
-          <motion.p 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-xl body-text text-gray-600 max-w-2xl mx-auto"
-          >
-            Discover our most popular handcrafted pieces, each telling a unique story of craftsmanship and beauty.
-          </motion.p>
+          <h2 className="text-3xl md:text-4xl font-serif font-bold text-gray-900 mb-4">
+            Featured Collections
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Discover our most popular designs, each piece crafted with precision and passion
+          </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" data-testid="featured-products-grid">
-          {initialProducts.map((ring, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {featuredRings.map((ring) => (
             <motion.div
               key={ring.id}
+              className="group relative bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300"
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group relative bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
-              onMouseEnter={() => setHoveredProduct(ring.id)}
-              onMouseLeave={() => setHoveredProduct(null)}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              onMouseEnter={() => handleMouseEnter(ring.id)}
+              onMouseLeave={handleMouseLeave}
             >
-              {/* Product Image */}
-              <div className="relative aspect-square overflow-hidden border-2 border-black">
+              <div className="relative h-64 overflow-hidden">
                 <img
                   src={getImageUrlWithVersion(ring.image)}
                   alt={ring.name}
                   className="h-full w-full object-cover group-hover:scale-105 transition-transform duration-300"
                   loading="lazy"
                 />
+                <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300"></div>
                 
-                {/* Wishlist Button */}
                 <button
                   onClick={() => handleWishlistToggle(ring.id)}
-                  className={`absolute top-3 right-3 p-2 rounded-full transition-all duration-200 ${
+                  className={`absolute top-3 right-3 p-2 rounded-full transition-all duration-300 ${
                     wishlist.has(ring.id)
-                      ? 'bg-red-500 text-white'
-                      : 'bg-white/80 text-gray-600 hover:bg-white'
+                      ? 'bg-red-500 text-white shadow-lg'
+                      : 'bg-white text-gray-600 hover:bg-red-500 hover:text-white shadow-md'
                   }`}
                   aria-label={wishlist.has(ring.id) ? 'Remove from wishlist' : 'Add to wishlist'}
                 >
-                  <Heart className={`w-5 h-5 text-red-500 ${wishlist.has(ring.id) ? 'fill-current' : ''}`} aria-hidden="true" />
+                  <Heart className={`w-5 h-5 ${wishlist.has(ring.id) ? 'fill-current' : ''}`} />
                 </button>
-
-                {/* Quick Add to Cart */}
-                <motion.button
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ 
-                    opacity: hoveredProduct === ring.id ? 1 : 0,
-                    y: hoveredProduct === ring.id ? 0 : 20
-                  }}
-                  transition={{ duration: 0.2 }}
-                  onClick={() => handleAddToCart(ring)}
-                  className="absolute bottom-3 left-3 right-3 bg-white/90 backdrop-blur-sm text-gray-900 py-2 px-4 rounded-lg font-medium hover:bg-white transition-colors duration-200 flex items-center justify-center gap-2"
-                  aria-label={`Add ${ring.name} to cart`}
-                >
-                  <ShoppingBag className="w-4 h-4" aria-hidden="true" />
-                  Add to Cart
-                </motion.button>
               </div>
 
-              {/* Product Info */}
-              <div className="p-4">
-                <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2">
+              <div className="p-6">
+                <h3 className="text-xl font-semibold text-gray-900 mb-2 group-hover:text-gold-600 transition-colors duration-300">
                   {ring.name}
                 </h3>
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-2xl font-bold text-gray-900">
-                    £{ring.price.toLocaleString()}
+                <p className="text-gray-600 mb-4 line-clamp-2">
+                  {ring.description}
+                </p>
+                <div className="flex items-center justify-between">
+                  <span className="text-2xl font-bold text-gold-600">
+                    ${ring.price.toLocaleString()}
                   </span>
-                  {ring.originalPrice && ring.originalPrice > ring.price && (
-                    <span className="text-sm text-gray-500 line-through">
-                      £{ring.originalPrice.toLocaleString()}
-                    </span>
-                  )}
+                  <button
+                    onClick={() => handleAddToCart(ring)}
+                    className="flex items-center gap-2 bg-gold-600 text-white px-4 py-2 rounded-lg hover:bg-gold-700 transition-colors duration-300 shadow-md hover:shadow-lg"
+                    disabled={!mounted || !isHydrated}
+                  >
+                    <ShoppingBag className="w-4 h-4" />
+                    Add to Cart
+                  </button>
                 </div>
-                <div className="flex items-center gap-2 mb-3">
-                  <div className="flex text-yellow-400" role="img" aria-label={`${ring.rating} out of 5 stars`}>
-                    {[...Array(5)].map((_, i) => (
-                      <svg
-                        key={i}
-                        className={`w-4 h-4 ${i < Math.floor(ring.rating) ? 'fill-current' : 'fill-gray-300'}`}
-                        viewBox="0 0 20 20"
-                        aria-hidden="true"
-                      >
-                        <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
-                      </svg>
-                    ))}
-                  </div>
-                  <span className="text-sm text-gray-600">({ring.reviews} reviews)</span>
-                </div>
-                <div className="flex flex-wrap gap-1 mb-3">
-                  <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded border border-gray-300">
-                    {ring.material}
-                  </span>
-                  <span className={`px-2 py-1 text-xs rounded border ${
-                    ring.gemColor === 'Red' ? 'bg-red-100 text-red-800 border-red-300' :
-                    ring.gemColor === 'Blue' ? 'bg-blue-100 text-blue-800 border-blue-300' :
-                    ring.gemColor === 'Green' ? 'bg-green-100 text-green-800 border-green-300' :
-                    ring.gemColor === 'Purple' ? 'bg-purple-100 text-purple-800 border-purple-300' :
-                    ring.gemColor === 'Yellow' ? 'bg-yellow-100 text-yellow-800 border-yellow-300' :
-                    'bg-gray-100 text-gray-700 border-gray-300'
-                  }`}>
-                    {ring.gemVariation === 'Dark' ? `Dark ${ring.gemColor}` :
-                     ring.gemVariation === 'Bright' ? `Bright ${ring.gemColor}` :
-                     ring.gemVariation === 'Mixed' ? `Mixed ${ring.gemColor}` :
-                     ring.gemColor}
-                  </span>
-                </div>
-                <Link
-                  href={`/products/${ring.slug}`}
-                  className="block w-full text-center bg-gold-600 text-white py-3 px-4 rounded-lg hover:bg-gold-700 transition-all duration-300 transform hover:scale-105 font-medium"
-                >
-                  View Details
-                </Link>
               </div>
             </motion.div>
           ))}
         </div>
 
         <div className="text-center mt-12">
-          <Link
-            href="/products"
-            className="inline-flex items-center px-8 py-4 bg-gold-600 text-white font-semibold rounded-lg hover:bg-gold-700 transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl"
-          >
-            View All Products
+          <Link href="/products" passHref>
+            <button className="bg-gold-600 text-white px-8 py-3 rounded-lg hover:bg-gold-700 transition-colors duration-300 shadow-lg hover:shadow-xl font-semibold">
+              View All Collections
+            </button>
           </Link>
         </div>
       </div>
