@@ -8,6 +8,7 @@ module.exports = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
     '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
+    '^@testing-library/jest-dom$': '<rootDir>/node_modules/@testing-library/jest-dom',
   },
   collectCoverage: true,
   collectCoverageFrom: [
