@@ -9,7 +9,7 @@ const UPLOAD_DIR = path.join(PUBLIC_DIR, 'images', 'MyImages');
 
 async function isAdmin() {
   const session = await getServerSession(authOptions);
-  return session?.user?.role === 'ADMIN';
+  return (session?.user as any)?.role === 'ADMIN';
 }
 
 export async function POST(request: NextRequest) {
@@ -25,7 +25,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No files provided' }, { status: 400 });
     }
 
-    const uploadedFiles = [];
+    const uploadedFiles: Array<{
+      name: string;
+      originalName: string;
+      path: string;
+      size: number;
+      type: string;
+    }> = [];
 
     for (const file of files) {
       if (!file || typeof file === 'string') continue;

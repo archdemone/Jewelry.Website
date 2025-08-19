@@ -10,7 +10,7 @@ const PUBLIC_DIR = path.join(process.cwd(), 'public');
 
 async function isAdmin() {
   const session = await getServerSession(authOptions);
-  return session?.user?.role === 'ADMIN';
+  return (session?.user as any)?.role === 'ADMIN';
 }
 
 function isPathSafe(filePath: string): boolean {
