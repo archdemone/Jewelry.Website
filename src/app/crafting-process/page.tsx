@@ -403,73 +403,73 @@ export default function CraftingProcessPage() {
             </motion.h2>
 
             <div className="grid gap-6 md:grid-cols-3">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
-                className="group relative overflow-hidden rounded-xl"
-              >
-                <Image
-                  src="/images/process/material-selection.jpg"
-                  alt="Material Selection - Choosing the perfect materials for your ring"
-                  width={400}
-                  height={300}
-                  className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-110"
-                  sizes="(max-width: 768px) 100vw, 400px"
-                />
-                <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/70 to-transparent p-6">
-                  <div className="text-white">
-                    <h3 className="text-lg font-semibold">Material Selection</h3>
-                    <p className="text-sm opacity-90">
+                             <motion.div
+                 initial={{ opacity: 0, y: 20 }}
+                 whileInView={{ opacity: 1, y: 0 }}
+                 viewport={{ once: true }}
+                 transition={{ delay: 0.1 }}
+                 className="group relative overflow-hidden rounded-xl bg-white"
+               >
+                                 <Image
+                   src="/images/process/material-selection.jpg"
+                   alt="Material Selection - Choosing the perfect materials for your ring"
+                   width={400}
+                   height={300}
+                   className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-95 border-2 border-black/30"
+                   sizes="(max-width: 768px) 100vw, 400px"
+                 />
+                <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6">
+                  <div className="w-full rounded-lg bg-black/60 p-4 backdrop-blur-sm">
+                    <h3 className="text-lg font-semibold text-white !text-white">Material Selection</h3>
+                    <p className="text-sm text-white !text-white">
                       Choosing the perfect materials for your ring
                     </p>
                   </div>
                 </div>
               </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
-                className="group relative overflow-hidden rounded-xl"
-              >
-                <Image
-                  src="/images/process/crafting-action.jpg"
-                  alt="Precision Crafting - Every detail carefully shaped by hand"
-                  width={400}
-                  height={300}
-                  className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-110"
-                  sizes="(max-width: 768px) 100vw, 400px"
-                />
-                <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/70 to-transparent p-6">
-                  <div className="text-white">
-                    <h3 className="text-lg font-semibold">Precision Crafting</h3>
-                    <p className="text-sm opacity-90">Every detail carefully shaped by hand</p>
+                             <motion.div
+                 initial={{ opacity: 0, y: 20 }}
+                 whileInView={{ opacity: 1, y: 0 }}
+                 viewport={{ once: true }}
+                 transition={{ delay: 0.2 }}
+                 className="group relative overflow-hidden rounded-xl bg-white"
+               >
+                                 <Image
+                   src="/images/process/crafting-action.jpg"
+                   alt="Precision Crafting - Every detail carefully shaped by hand"
+                   width={400}
+                   height={300}
+                   className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-95 border-2 border-black/30"
+                   sizes="(max-width: 768px) 100vw, 400px"
+                 />
+                <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6">
+                  <div className="w-full rounded-lg bg-black/60 p-4 backdrop-blur-sm">
+                    <h3 className="text-lg font-semibold text-white !text-white">Precision Crafting</h3>
+                    <p className="text-sm text-white !text-white">Every detail carefully shaped by hand</p>
                   </div>
                 </div>
               </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3 }}
-                className="group relative overflow-hidden rounded-xl"
-              >
-                <Image
-                  src="/images/process/final-polish.jpg"
-                  alt="Perfect Finish - The final polish that makes it shine"
-                  width={400}
-                  height={300}
-                  className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-110"
-                  sizes="(max-width: 768px) 100vw, 400px"
-                />
-                <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/70 to-transparent p-6">
-                  <div className="text-white">
-                    <h3 className="text-lg font-semibold">Perfect Finish</h3>
-                    <p className="text-sm opacity-90">The final polish that makes it shine</p>
+                             <motion.div
+                 initial={{ opacity: 0, y: 20 }}
+                 whileInView={{ opacity: 1, y: 0 }}
+                 viewport={{ once: true }}
+                 transition={{ delay: 0.3 }}
+                 className="group relative overflow-hidden rounded-xl bg-white"
+               >
+                                 <Image
+                   src="/images/process/final-polish.jpg"
+                   alt="Perfect Finish - The final polish that makes it shine"
+                   width={400}
+                   height={300}
+                   className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-95 border-2 border-black/30"
+                   sizes="(max-width: 768px) 100vw, 400px"
+                 />
+                <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6">
+                  <div className="w-full rounded-lg bg-black/60 p-4 backdrop-blur-sm">
+                    <h3 className="text-lg font-semibold text-white !text-white">Perfect Finish</h3>
+                    <p className="text-sm text-white !text-white">The final polish that makes it shine</p>
                   </div>
                 </div>
               </motion.div>
