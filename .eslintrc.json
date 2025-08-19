@@ -1,5 +1,22 @@
 {
   "extends": ["next", "next/core-web-vitals"],
+  "env": {
+    "jest": true,
+    "node": true,
+    "browser": true,
+    "es6": true
+  },
+  "globals": {
+    "expect": "readonly",
+    "describe": "readonly",
+    "it": "readonly",
+    "test": "readonly",
+    "beforeEach": "readonly",
+    "afterEach": "readonly",
+    "beforeAll": "readonly",
+    "afterAll": "readonly",
+    "jest": "readonly"
+  },
   "rules": {
     "react/no-unescaped-entities": "off",
     "@next/next/no-sync-scripts": "warn",
