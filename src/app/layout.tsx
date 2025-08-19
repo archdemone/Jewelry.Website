@@ -158,8 +158,13 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
         
-        {/* Preload critical images */}
-        <link rel="preload" as="image" href="/images/header/hero-1.jpg" type="image/webp" />
+        {/* Preload critical hero image for LCP */}
+        <link 
+          rel="preload" 
+          as="image" 
+          href="/images/home/header1.webp" 
+          fetchPriority="high"
+        />
         
 
         

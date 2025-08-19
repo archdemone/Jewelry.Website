@@ -1,0 +1,268 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom CSS animations for performance optimization */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out;
+}
+
+.animate-fade-in-delay {
+  animation: fadeIn 0.8s ease-out 0.2s both;
+}
+
+.animate-fade-in-delay-2 {
+  animation: fadeIn 0.8s ease-out 0.4s both;
+}
+
+.animate-fade-in-delay-3 {
+  animation: fadeIn 0.8s ease-out 0.6s both;
+}
+
+/* Base styles */
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb)))
+    rgb(var(--background-start-rgb));
+  /* Prevent layout shifts during font loading */
+  font-display: swap;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Prevent text bouncing and layout shifts */
+* {
+  box-sizing: border-box;
+}
+
+/* Reserve space for fonts to prevent layout shifts */
+.heading-primary,
+.heading-secondary,
+h1, h2, h3, h4, h5, h6 {
+  font-display: swap;
+  min-height: 1.2em;
+  line-height: 1.2;
+  font-family: 'Playfair Display', 'Georgia', serif;
+}
+
+.body-text,
+.body-text-medium,
+p, span, div {
+  font-display: swap;
+  min-height: 1.6em;
+  line-height: 1.6;
+  font-family: 'Inter', 'Arial', sans-serif;
+}
+
+/* Prevent text jumping during font loading */
+* {
+  font-display: swap;
+}
+
+/* Ensure stable layout during font loading */
+.admin-layout {
+  font-family: 'Inter', 'Arial', sans-serif;
+}
+
+/* Prevent layout shifts in admin interface */
+.admin-content {
+  contain: layout style paint;
+}
+
+/* Stable text rendering */
+.text-stable {
+  font-display: swap;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Luxury Typography System */
+.heading-primary {
+  font-family: 'Playfair Display', 'Georgia', serif;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.heading-secondary {
+  font-family: 'Playfair Display', 'Georgia', serif;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+
+.body-text {
+  font-family: 'Inter', 'Arial', sans-serif;
+  font-weight: 300;
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+}
+
+.body-text-medium {
+  font-family: 'Inter', 'Arial', sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+/* Custom utility classes */
+.btn-stable {
+  @apply inline-flex transform items-center justify-center rounded-lg px-6 py-3 font-semibold transition-all duration-200;
+  min-width: 150px;
+  min-height: 48px;
+}
+
+.button-container {
+  @apply flex flex-wrap gap-4;
+}
+
+/* Performance optimizations */
+.hero-image-container {
+  contain: layout style paint;
+}
+
+.hero-content {
+  contain: layout style paint;
+}
+
+/* Ensure smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Optimize for reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Debug styles - remove after fixing */
+.viewport-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-area {
+  flex: 1;
+}
+
+/* Fix white text on white background issues */
+.text-white {
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+
+/* Ensure proper text contrast */
+.bg-white .text-white {
+  color: #1f2937; /* gray-800 */
+}
+
+/* Fix text contrast issues on light backgrounds */
+.bg-gradient-to-br.from-amber-50.via-orange-50.to-yellow-50 .text-white,
+.bg-gradient-to-r.from-amber-50.via-orange-50.to-yellow-50 .text-white {
+  color: #1f2937 !important; /* gray-800 */
+}
+
+/* Ensure proper contrast for buttons and text on light backgrounds */
+.bg-gradient-to-br.from-amber-50.via-orange-50.to-yellow-50 button,
+.bg-gradient-to-r.from-amber-50.via-orange-50.to-yellow-50 button {
+  color: #1f2937 !important; /* gray-800 */
+}
+
+/* Fix any other white text on light background issues */
+.bg-amber-50 .text-white,
+.bg-orange-50 .text-white,
+.bg-yellow-50 .text-white {
+  color: #1f2937 !important; /* gray-800 */
+}
+
+/* Tighter spacing throughout site */
+section {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  section {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+  }
+}
+
+/* Reduce excessive margins */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-bottom: 1rem;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+/* Compact card spacing */
+.product-card {
+  padding: 1rem;
+}
+
+/* Fix container max widths for less scrolling */
+.container {
+  max-width: 1280px;
+}
+
+/* Ensure buttons have proper contrast */
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Fix any invisible text issues */
+.bg-gradient-to-r.from-gold-500.to-amber-500 {
+  color: white !important;
+}
+
+/* Compact navigation spacing */
+nav {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+/* Reduce hero section heights */
+.hero-section {
+  min-height: 50vh; /* Instead of 100vh */
+}

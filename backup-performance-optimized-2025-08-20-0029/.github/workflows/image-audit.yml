@@ -1,0 +1,10 @@
+name: Image Audit (disabled)
+
+on:
+  workflow_call:
+
+jobs:
+  noop:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Image audit workflow intentionally disabled."

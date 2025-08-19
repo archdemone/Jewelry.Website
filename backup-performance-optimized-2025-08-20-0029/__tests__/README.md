@@ -1,0 +1,2 @@
+- Jest runs unit/integration tests in `__tests__/**`. Do not include Cypress specs here.
+- Cypress E2E tests live under `cypress/e2e/**` and run with `npm run cypress:run`.
