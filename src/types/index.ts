@@ -13,6 +13,33 @@ export type WishlistRef = { id: string; productId: string; userId?: string };
 export type AddressRef = { id: string };
 export type CartItemRef = { id: string; productId: string; quantity: number };
 
+// Product interface for frontend components
+export interface Product {
+  id: string | number;
+  name: string;
+  price: number;
+  originalPrice?: number | null;
+  images?: string[];
+  material?: string;
+  gemColor?: string;
+  gemDensity?: string;
+  gemVariation?: string;
+  mixColors?: string[];
+  category?: string;
+  subCategory?: string;
+  ringSizes?: {
+    us: number[];
+    eu: number[];
+  };
+  ringWidth?: number[];
+  isReadyToShip?: boolean;
+  rating?: number;
+  reviews?: number;
+  badge?: string;
+  slug: string;
+  description?: string;
+}
+
 export type ProductWithRelations = {
   id: string;
   slug: string;

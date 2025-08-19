@@ -27,49 +27,7 @@ import { getAllCategories, getPaginatedProducts } from '@/lib/queries';
 import { getProductImageFallback } from '@/lib/assets/images';
 import { useCartStore } from '@/store/cart';
 import CategoryShowcase from '@/components/home/CategoryShowcase';
-
-interface Product {
-  id: string | number;
-  name: string;
-  price: number;
-  originalPrice?: number | null;
-  images?: string[];
-  material:
-    | 'Silver'
-    | 'Damascus'
-    | 'Ceramic(white)'
-    | 'Ceramic(black)'
-    | 'Carbon'
-    | 'Tungsten'
-    | 'Titanium'
-    | 'Stainless Steel'
-    | 'Gold';
-  gemColor: 'Red' | 'Green' | 'Blue' | 'Purple' | 'Yellow' | 'Custom';
-  gemDensity: 'small' | 'medium' | 'large';
-  gemVariation: 'Dark' | 'Mixed' | 'Bright';
-  mixColors: string[];
-  category:
-    | 'Wedding'
-    | 'Inlay Ring'
-    | 'Couple Ring Set'
-    | 'Mens'
-    | 'Womens'
-    | 'Unisex'
-    | 'Single Inlay'
-    | 'Double Inlay';
-  subCategory?: string;
-  ringSizes: {
-    us: number[];
-    eu: number[];
-  };
-  ringWidth: number[];
-  isReadyToShip: boolean;
-  rating?: number;
-  reviews?: number;
-  badge?: string;
-  slug: string;
-  description?: string;
-}
+import { Product } from '@/types';
 
 interface FilterState {
   category: string[];
@@ -179,7 +137,7 @@ export default function CategoryPage({
         
         // Set categories based on available products
         const uniqueCategories = new Set();
-        products.forEach((product: any) => {
+        products.forEach((product: Product) => {
           if (product.category) uniqueCategories.add(product.category);
           if (product.subCategory) uniqueCategories.add(product.subCategory);
         });
@@ -280,11 +238,10 @@ export default function CategoryPage({
   // Handle add to cart
   const handleAddToCart = (product: Product) => {
     addItem({
-      id: product.id.toString(),
+      productId: product.id.toString(),
       name: product.name,
       price: product.price,
       image: product.images?.[0] || '',
-      quantity: 1,
     });
     
     setAddedProduct(product);
@@ -461,7 +418,7 @@ export default function CategoryPage({
                 {/* Product Image */}
                 <div className="relative aspect-square overflow-hidden border-2 border-black">
                   <Image
-                    src={product.images?.[0] || getProductImageFallback({ productSlug: product.slug, name: product.name })}
+                    src={product.images?.[0] || getProductImageFallback({ productSlug: product.slug, name: product.name })[0]}
                     alt={product.name}
                     fill
                     className="object-cover transition-transform duration-300 group-hover:scale-105"

@@ -7,7 +7,7 @@ import { ArrowLeft, Save, Package } from 'lucide-react';
 export default function AdminEditProductPage() {
   const params = useParams();
   const router = useRouter();
-  const productId = params.id;
+  const productId = params?.id;
 
   return (
     <div className="space-y-6">
