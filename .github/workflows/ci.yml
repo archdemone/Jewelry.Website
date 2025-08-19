@@ -35,7 +35,13 @@ jobs:
         run: npx prisma generate
 
       - name: Clean build cache
-        run: rm -rf .next
+        run: |
+          echo "Cleaning build cache..."
+          rm -rf .next
+          rm -rf out
+          rm -rf dist
+          rm -rf build
+          echo "Build cache cleaned"
 
       - name: Setup test environment
         run: |
