@@ -34,6 +34,7 @@ jobs:
           echo "NEXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_test_123" >> $GITHUB_ENV
           echo "SKIP_TYPE_CHECK=true" >> $GITHUB_ENV
           echo "NEXT_SKIP_TYPE_CHECK=true" >> $GITHUB_ENV
+          echo "NODE_ENV=production" >> $GITHUB_ENV
       - name: Lint
         run: npm run lint
         env:
@@ -44,6 +45,7 @@ jobs:
           NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
           SKIP_TYPE_CHECK: true
           NEXT_SKIP_TYPE_CHECK: true
+          NODE_ENV: production
       - name: Build
         run: npm run build:no-typescript
         env:
@@ -65,3 +67,4 @@ jobs:
           NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
           SKIP_TYPE_CHECK: true
           NEXT_SKIP_TYPE_CHECK: true
+          NODE_ENV: production

@@ -43,6 +43,7 @@ jobs:
           echo "NEXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_test_123" >> $GITHUB_ENV
           echo "SKIP_TYPE_CHECK=true" >> $GITHUB_ENV
           echo "NEXT_SKIP_TYPE_CHECK=true" >> $GITHUB_ENV
+          echo "NODE_ENV=production" >> $GITHUB_ENV
 
       - name: Build application
         run: npm run build:no-typescript
@@ -61,6 +62,13 @@ jobs:
 
       - name: Run Web Vitals check
         run: npm run web-vitals-check
+
+      - name: Verify compression files
+        run: |
+          echo "Checking for compression files..."
+          find .next -name "*.gz" | head -5
+          find .next -name "*.br" | head -5
+          echo "Compression files generated successfully"
 
   lighthouse:
     runs-on: ubuntu-latest
@@ -84,6 +92,8 @@ jobs:
           npm install --no-audit --no-fund --legacy-peer-deps
           echo "Dependencies installed successfully"
           npm list --depth=0
+          echo "Running postinstall script..."
+          npm run postinstall
 
       - name: Generate Prisma Client
         run: npx prisma generate
@@ -97,6 +107,7 @@ jobs:
           echo "NEXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_test_123" >> $GITHUB_ENV
           echo "SKIP_TYPE_CHECK=true" >> $GITHUB_ENV
           echo "NEXT_SKIP_TYPE_CHECK=true" >> $GITHUB_ENV
+          echo "NODE_ENV=production" >> $GITHUB_ENV
 
       - name: Build application
         run: npm run build:no-typescript
@@ -117,7 +128,7 @@ jobs:
         run: |
           npm start &
           echo "Starting application..."
-          sleep 5
+          sleep 10
 
       - name: Wait for application to be ready
         run: |
@@ -125,6 +136,8 @@ jobs:
             echo "Application failed to start within 60 seconds"
             echo "Checking if port 3000 is in use..."
             netstat -tulpn | grep :3000 || echo "Port 3000 not in use"
+            echo "Checking application logs..."
+            ps aux | grep node || echo "No node processes found"
             exit 1
           }
 
@@ -134,7 +147,7 @@ jobs:
             --output json \
             --output-path ./lighthouse-report.json \
             --only-categories=performance \
-            --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage" \
+            --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage --disable-gpu" \
             --port=9222
 
       - name: Check Lighthouse scores

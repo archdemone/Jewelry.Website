@@ -43,6 +43,7 @@ jobs:
           echo "NEXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_test_123" >> $GITHUB_ENV
           echo "SKIP_TYPE_CHECK=true" >> $GITHUB_ENV
           echo "NEXT_SKIP_TYPE_CHECK=true" >> $GITHUB_ENV
+          echo "NODE_ENV=production" >> $GITHUB_ENV
 
       - name: Run linting
         run: npm run lint
@@ -54,6 +55,7 @@ jobs:
           NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
           SKIP_TYPE_CHECK: true
           NEXT_SKIP_TYPE_CHECK: true
+          NODE_ENV: production
 
       - name: Build application
         run: npm run build:no-typescript
@@ -67,6 +69,13 @@ jobs:
           NEXT_SKIP_TYPE_CHECK: true
           NODE_ENV: production
 
+      - name: Verify build artifacts
+        run: |
+          echo "Checking build artifacts..."
+          ls -la .next/standalone/ || echo "No standalone directory"
+          ls -la .next/static/ | head -10
+          echo "Build artifacts verified"
+
       - name: Run tests
         run: npm run test:ci
         env:
@@ -77,6 +86,7 @@ jobs:
           NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
           SKIP_TYPE_CHECK: true
           NEXT_SKIP_TYPE_CHECK: true
+          NODE_ENV: production
 
       - name: Run Web Vitals check
         run: npm run web-vitals-check
@@ -88,3 +98,4 @@ jobs:
           NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
           SKIP_TYPE_CHECK: true
           NEXT_SKIP_TYPE_CHECK: true
+          NODE_ENV: production
