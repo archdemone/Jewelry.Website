@@ -108,10 +108,10 @@ export default function CategoryPage({
         // Load all products from API
         const response = await fetch('/api/admin/products');
         if (response.ok) {
-          const allProducts = await response.json();
+          const products = await response.json();
           
           // Filter products by category and include featured ring in all categories
-          const filteredProducts = allProducts.filter((product: Product) => {
+                      const filteredProducts = products.filter((product: Product) => {
             // Always include the featured ring (Women's Silver Inlay Ring - Dark Red)
             if (product.name === "Women's Silver Inlay Ring - Dark Red") return true;
             
@@ -126,7 +126,7 @@ export default function CategoryPage({
           });
           
           console.log('Category:', category);
-          console.log('All products:', allProducts.length);
+                      console.log('All products:', products.length);
           console.log('Filtered products:', filteredProducts.length);
           console.log('Filtered products:', filteredProducts);
           setProducts(filteredProducts);
