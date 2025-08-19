@@ -200,7 +200,7 @@ const FeaturedProducts = () => {
                   }`}
                   aria-label={wishlist.has(ring.id) ? 'Remove from wishlist' : 'Add to wishlist'}
                 >
-                  <Heart className={`w-5 h-5 text-red-500 ${wishlist.has(ring.id) ? 'fill-current' : ''}`} />
+                  <Heart className={`w-5 h-5 text-red-500 ${wishlist.has(ring.id) ? 'fill-current' : ''}`} aria-hidden="true" />
                 </button>
 
                 {/* Quick Add to Cart */}
@@ -213,8 +213,9 @@ const FeaturedProducts = () => {
                   transition={{ duration: 0.2 }}
                   onClick={() => handleAddToCart(ring)}
                   className="absolute bottom-3 left-3 right-3 bg-white/90 backdrop-blur-sm text-gray-900 py-2 px-4 rounded-lg font-medium hover:bg-white transition-colors duration-200 flex items-center justify-center gap-2"
+                  aria-label={`Add ${ring.name} to cart`}
                 >
-                  <ShoppingBag className="w-4 h-4" />
+                  <ShoppingBag className="w-4 h-4" aria-hidden="true" />
                   Add to Cart
                 </motion.button>
               </div>
@@ -235,18 +236,19 @@ const FeaturedProducts = () => {
                   )}
                 </div>
                 <div className="flex items-center gap-2 mb-3">
-                  <div className="flex text-yellow-400">
+                  <div className="flex text-yellow-400" role="img" aria-label={`${ring.rating} out of 5 stars`}>
                     {[...Array(5)].map((_, i) => (
                       <svg
                         key={i}
                         className={`w-4 h-4 ${i < Math.floor(ring.rating) ? 'fill-current' : 'fill-gray-300'}`}
                         viewBox="0 0 20 20"
+                        aria-hidden="true"
                       >
                         <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
                       </svg>
                     ))}
                   </div>
-                  <span className="text-sm text-gray-600">({ring.reviews})</span>
+                  <span className="text-sm text-gray-600">({ring.reviews} reviews)</span>
                 </div>
                 <div className="flex flex-wrap gap-1 mb-3">
                   <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded border border-gray-300">
