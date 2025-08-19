@@ -1,5 +1,9 @@
 import '@testing-library/jest-dom';
 import 'whatwg-fetch';
+import { toHaveNoViolations } from 'jest-axe';
+
+// Extend expect with jest-axe matchers
+expect.extend(toHaveNoViolations);
 
 // Mock next/link to avoid router issues in jsdom
 jest.mock('next/link', () => {
