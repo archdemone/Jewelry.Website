@@ -1,8 +1,10 @@
 name: UI PR Checks
 
 on:
+  push:
+    branches: [main, develop, ui-stable]
   pull_request:
-    branches: [ui-stable, main]
+    branches: [main, develop, ui-stable]
 
 jobs:
   ci:
