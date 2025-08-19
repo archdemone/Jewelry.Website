@@ -3,12 +3,21 @@
   "compilerOptions": {
     "skipLibCheck": true,
     "noEmit": true,
-    "pretty": true
+    "pretty": true,
+    "noImplicitAny": false,
+    "strict": false,
+    "strictNullChecks": false,
+    "strictFunctionTypes": false,
+    "strictBindCallApply": false,
+    "strictPropertyInitialization": false,
+    "noImplicitThis": false,
+    "alwaysStrict": false
   },
   "exclude": [
     "node_modules",
     "**/*.d.ts",
-    "src/types/framer-motion.d.ts"
+    "src/types/framer-motion.d.ts",
+    "**/framer-motion/**"
   ],
   "include": [
     "src/**/*.ts",

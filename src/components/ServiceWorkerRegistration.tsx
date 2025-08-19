@@ -2,6 +2,13 @@
 
 import { useEffect } from 'react';
 
+// Extend Window interface to include workbox
+declare global {
+  interface Window {
+    workbox?: any;
+  }
+}
+
 export function ServiceWorkerRegistration() {
   useEffect(() => {
     if (
@@ -9,40 +16,26 @@ export function ServiceWorkerRegistration() {
       'serviceWorker' in navigator &&
       window.workbox === undefined
     ) {
-      const swUrl = '/sw.js';
+      const wb = new (window as any).Workbox('/sw.js');
 
-      navigator.serviceWorker
-        .register(swUrl)
-        .then((registration) => {
-          console.log('Service Worker registered successfully:', registration);
-          
-          // Handle updates
-          registration.addEventListener('updatefound', () => {
-            const newWorker = registration.installing;
-            if (newWorker) {
-              newWorker.addEventListener('statechange', () => {
-                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-                  // New content is available, show update notification
-                  if (confirm('New version available! Reload to update?')) {
-                    window.location.reload();
-                  }
-                }
-              });
-            }
-          });
-        })
-        .catch((error) => {
-          console.error('Service Worker registration failed:', error);
-        });
-
-      // Handle service worker updates
-      let refreshing = false;
-      navigator.serviceWorker.addEventListener('controllerchange', () => {
-        if (!refreshing) {
-          refreshing = true;
-          window.location.reload();
-        }
+      // Add event listeners to handle PWA lifecycle
+      wb.addEventListener('installed', (event: any) => {
+        console.log('Service Worker installed');
       });
+
+      wb.addEventListener('controlling', (event: any) => {
+        console.log('Service Worker controlling');
+      });
+
+      wb.addEventListener('activated', (event: any) => {
+        console.log('Service Worker activated');
+      });
+
+      // Send the skipWaiting message
+      wb.messageSkipWaiting();
+
+      // Register the service worker
+      wb.register();
     }
   }, []);
 
