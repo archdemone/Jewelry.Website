@@ -995,7 +995,7 @@ export default function UnifiedAdminProductsPage() {
                      <input
                        type="number"
                        value={editingProduct.originalPrice || ''}
-                       onChange={(e) => setEditingProduct({ ...editingProduct, originalPrice: parseFloat(e.target.value) || null })}
+                       onChange={(e) => setEditingProduct({ ...editingProduct, originalPrice: parseFloat(e.target.value) || undefined })}
                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                      />
                    </div>

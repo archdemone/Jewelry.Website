@@ -1,0 +1,17 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "noEmit": true,
+    "pretty": true
+  },
+  "exclude": [
+    "node_modules",
+    "**/*.d.ts",
+    "src/types/framer-motion.d.ts"
+  ],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ]
+}

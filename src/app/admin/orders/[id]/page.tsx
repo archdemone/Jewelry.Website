@@ -6,7 +6,7 @@ import { ArrowLeft, Package, Truck, CreditCard, User } from 'lucide-react';
 
 export default function AdminOrderDetailPage() {
   const params = useParams();
-  const orderId = params.id;
+  const orderId = params?.id;
 
   return (
     <div className="space-y-6">

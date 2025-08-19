@@ -1,59 +1,76 @@
-import { configureAxe, toHaveNoViolations } from 'jest-axe';
-import { expect } from '@jest/globals';
+import React from 'react';
 import { render } from '@testing-library/react';
+import { axe, toHaveNoViolations } from 'jest-axe';
+import HomePage from '@/app/page';
+import CategoryPage from '@/components/products/CategoryPage';
 
-expect.extend(toHaveNoViolations as any);
+expect.extend(toHaveNoViolations);
 
-// Skip accessibility tests in CI to prevent failures
-const isCI = process.env.CI === 'true';
+// Mock IntersectionObserver for Framer Motion
+global.IntersectionObserver = class IntersectionObserver {
+  constructor() {}
+  disconnect() {}
+  observe() {}
+  unobserve() {}
+};
 
-// Configure axe with very lenient rules for CI environment
-const axe = configureAxe({
-  rules: {
-    // Disable all rules that commonly cause issues in CI
-    'color-contrast': { enabled: false },
-    'landmark-one-main': { enabled: false },
-    'page-has-heading-one': { enabled: false },
-    'region': { enabled: false },
-    'bypass': { enabled: false },
-    'document-title': { enabled: false },
-    'html-has-lang': { enabled: false },
-    'html-lang-valid': { enabled: false },
-    'image-alt': { enabled: false },
-    'input-image-alt': { enabled: false },
-    'label': { enabled: false },
-    'link-name': { enabled: false },
-    'list': { enabled: false },
-    'listitem': { enabled: false },
-    'meta-viewport': { enabled: false },
-    'object-alt': { enabled: false },
-    'video-caption': { enabled: false },
-    'video-description': { enabled: false },
+// Mock the data
+const mockProducts = [
+  {
+    id: '1',
+    name: 'Test Ring',
+    price: 100,
+    images: ['/test-image.jpg'],
+    material: 'Gold',
+    gemColor: 'Red',
+    gemDensity: 'medium',
+    gemVariation: 'Bright',
+    mixColors: ['red', 'blue'],
+    category: 'Wedding',
+    subCategory: 'Engagement',
+    slug: 'test-ring',
+    description: 'A beautiful test ring',
+    inStock: true,
+    featured: false,
+    newArrival: false,
+    bestSeller: false,
+    sale: false,
+    salePrice: null,
+    originalPrice: null,
+    weight: 5.5,
+    dimensions: '18x18x2mm',
+    sku: 'TEST-001',
+    tags: ['test', 'ring'],
+    rating: 4.5,
+    reviewCount: 10,
+    createdAt: new Date(),
+    updatedAt: new Date(),
   },
-  // Increase timeout for CI environment
-  timeout: 15000,
+];
+
+// Mock the components that might cause issues
+jest.mock('@/components/layout/Header', () => {
+  return function MockHeader() {
+    return <header data-testid="header">Header</header>;
+  };
 });
 
-function PlaceholderHome() {
-  return (
-    <div>
-      <h1>Home</h1>
-      <a href="/products">Shop</a>
-    </div>
-  );
-}
+jest.mock('@/components/layout/Footer', () => {
+  return function MockFooter() {
+    return <footer data-testid="footer">Footer</footer>;
+  };
+});
+
+jest.mock('@/components/layout/ConditionalFooter', () => {
+  return function MockConditionalFooter() {
+    return <footer data-testid="conditional-footer">Conditional Footer</footer>;
+  };
+});
 
 describe('Accessibility', () => {
   it('homepage has no violations', async () => {
-    // Skip accessibility tests in CI to prevent failures
-    if (isCI) {
-      console.log('Skipping accessibility test in CI environment');
-      expect(true).toBe(true);
-      return;
-    }
+    const { container } = render(<HomePage />);
 
-    const { container } = render(<PlaceholderHome />);
-    
     try {
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -64,20 +81,14 @@ describe('Accessibility', () => {
   });
 
   it('product page is accessible', async () => {
-    // Skip accessibility tests in CI to prevent failures
-    if (isCI) {
-      console.log('Skipping product accessibility test in CI environment');
-      expect(true).toBe(true);
-      return;
-    }
-
     const { container } = render(
-      <div>
-        <h1>Product</h1>
-        <button>Add to cart</button>
-      </div>,
+      <CategoryPage 
+        products={mockProducts}
+        category="Wedding"
+        subCategory="Engagement"
+      />
     );
-    
+
     try {
       const results = await axe(container);
       expect(results).toHaveNoViolations();
@@ -85,9 +96,5 @@ describe('Accessibility', () => {
       console.error('Product accessibility test error:', error);
       throw error;
     }
-  });
-
-  it('checkout is keyboard navigable', async () => {
-    expect(true).toBe(true);
   });
 });
