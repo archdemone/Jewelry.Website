@@ -215,14 +215,14 @@ export default function CategoryPage({
   // Handle wishlist toggle
   const handleWishlistToggle = (productId: string | number) => {
     const newWishlist = new Set(wishlistItems);
-    const product = products.find(p => p.id === productId);
+    const product = products.find(p => p.id === productId) || null;
     
     if (newWishlist.has(productId)) {
       newWishlist.delete(productId);
-      setWishlistAction({ action: 'removed', product: product || null });
+      setWishlistAction({ action: 'removed', product });
     } else {
       newWishlist.add(productId);
-      setWishlistAction({ action: 'added', product: product || null });
+      setWishlistAction({ action: 'added', product });
     }
     
     setWishlistItems(newWishlist);
@@ -418,7 +418,9 @@ export default function CategoryPage({
                 {/* Product Image */}
                 <div className="relative aspect-square overflow-hidden border-2 border-black">
                   <Image
-                    src={product.images?.[0] || getProductImageFallback({ productSlug: product.slug, name: product.name })[0]}
+                    src={Array.isArray(product.images) && product.images.length > 0 
+                      ? product.images[0] 
+                      : getProductImageFallback({ productSlug: product.slug, name: product.name })[0]}
                     alt={product.name}
                     fill
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
