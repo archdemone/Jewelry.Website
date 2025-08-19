@@ -1,16 +1,26 @@
-/* Critical CSS for Hero Section - Inline for LCP optimization */
+/* Critical CSS for above-the-fold content */
 
+/* Hero section critical styles */
 .hero-section {
   position: relative;
   width: 100%;
-  height: 90vh;
-  min-height: 600px;
+  height: 55vh;
+  min-height: 480px;
   overflow: hidden;
 }
 
 .hero-background {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom right, #92400e, #ea580c, #dc2626);
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom right, rgba(0,0,0,0.4), rgba(0,0,0,0.3), rgba(0,0,0,0.5));
 }
 
 .hero-content {
@@ -24,40 +34,103 @@
   z-index: 10;
 }
 
-.hero-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom right,
-    rgba(0, 0, 0, 0.4),
-    rgba(0, 0, 0, 0.3),
-    rgba(0, 0, 0, 0.5)
-  );
-}
-
 .hero-title {
-  font-size: 3rem;
-  font-weight: 300;
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 600;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
   font-family: 'Playfair Display', serif;
   line-height: 1.2;
   margin: 0;
+  letter-spacing: 0.15em;
+  font-style: italic;
 }
 
 .hero-subtitle {
-  font-size: 1.25rem;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  font-size: clamp(1rem, 2.5vw, 1.25rem);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.5);
   max-width: 32rem;
   margin: 0 auto;
   color: #f3f4f6;
   font-weight: 300;
 }
 
-@media (min-width: 768px) {
-  .hero-title {
-    font-size: 4.5rem;
+/* Loading states */
+.loading-hero {
+  display: flex;
+  height: 55vh;
+  min-height: 480px;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to bottom right, #92400e, #ea580c);
+  color: white;
+  font-size: 1.125rem;
+}
+
+.loading-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f9fafb;
+  color: #4b5563;
+}
+
+/* Essential button styles */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  background-color: white;
+  padding: 0.75rem 2rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #111827;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.btn-primary:hover {
+  background-color: #f3f4f6;
+  transform: scale(1.05);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  border: 2px solid white;
+  padding: 0.75rem 2rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: white;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background-color: white;
+  color: #111827;
+}
+
+/* Focus states for accessibility */
+.btn-primary:focus,
+.btn-secondary:focus {
+  outline: none;
+  ring: 2px;
+  ring-color: white;
+  ring-offset: 2px;
+  ring-offset-color: transparent;
+}
+
+/* Responsive utilities */
+@media (max-width: 640px) {
+  .hero-section {
+    height: 50vh;
+    min-height: 400px;
   }
-  .hero-subtitle {
-    font-size: 1.5rem;
+  
+  .loading-hero {
+    height: 50vh;
+    min-height: 400px;
   }
 }

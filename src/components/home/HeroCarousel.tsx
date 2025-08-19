@@ -3,96 +3,36 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-
 const HeroCarousel = () => {
   return (
-    <section
-      className="hero-section"
-      style={{
-        position: 'relative',
-        width: '100%',
-        height: '55vh',
-        minHeight: '480px',
-        overflow: 'hidden',
-      }}
-    >
+    <section className="hero-section">
       {/* Hero Background Image */}
-      <div
-        className="hero-background bg-gradient-to-br from-amber-900 via-orange-800 to-red-900"
-        style={{
-          position: 'absolute',
-          inset: '0',
-          width: '100%',
-          height: '100%',
-        }}
-      >
+      <div className="hero-background">
         <Image
           src="/images/header/hero-1.jpg"
-                          alt="J&M - Exquisite handcrafted engagement rings"
-          width={1920}
-          height={1080}
+          alt="J&M - Exquisite handcrafted engagement rings"
+          width={1200}
+          height={675}
           priority
           fetchPriority="high"
           className="h-full w-full object-cover"
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
-          quality={75}
+          sizes="100vw"
+          quality={85}
           placeholder="blur"
-          blurDataURL="/images/header/hero-blur.webp"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
           loading="eager"
           decoding="async"
         />
-        <div
-          className="hero-overlay"
-          style={{
-            position: 'absolute',
-            inset: '0',
-            background:
-              'linear-gradient(to bottom right, rgba(0,0,0,0.4), rgba(0,0,0,0.3), rgba(0,0,0,0.5))',
-          }}
-        ></div>
+        <div className="hero-overlay"></div>
       </div>
 
       {/* Content Overlay */}
-      <div
-        className="hero-content"
-        style={{
-          position: 'absolute',
-          inset: '0',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          color: 'white',
-          zIndex: 10,
-        }}
-      >
+      <div className="hero-content">
         <div className="max-w-4xl space-y-8 px-4 text-center">
-          <h1
-            className="hero-title"
-            style={{
-              fontSize: '3rem',
-              fontWeight: 600,
-              textShadow: '0 2px 4px rgba(0,0,0,0.5)',
-              fontFamily: "'Playfair Display', serif",
-              lineHeight: 1.2,
-              margin: 0,
-              letterSpacing: '0.15em',
-              fontStyle: 'italic'
-            }}
-          >
-                          J&M
+          <h1 className="hero-title">
+            J&M
           </h1>
-          <p
-            className="hero-subtitle"
-            style={{
-              fontSize: '1.25rem',
-              textShadow: '0 1px 2px rgba(0,0,0,0.5)',
-              maxWidth: '32rem',
-              margin: '0 auto',
-              color: '#f3f4f6',
-              fontWeight: 300,
-            }}
-          >
+          <p className="hero-subtitle">
             Handcrafted rings with passion, designed for your forever moments
           </p>
 
@@ -100,15 +40,15 @@ const HeroCarousel = () => {
           <div className="mt-12 flex flex-col justify-center gap-6 sm:flex-row">
             <Link
               href="/products"
-              className="btn-stable transform bg-white text-gray-900 shadow-lg transition-all duration-300 hover:scale-105 hover:bg-gray-100 hover:shadow-xl"
+              className="btn-primary"
             >
-              Explore Collection
+              Shop Collection
             </Link>
             <Link
               href="/about-artisan"
-              className="btn-stable transform border-2 border-white bg-transparent text-white transition-all duration-300 hover:scale-105 hover:bg-white hover:text-gray-900"
+              className="btn-secondary"
             >
-              Meet the Artisan
+              Meet Our Artisan
             </Link>
           </div>
         </div>
