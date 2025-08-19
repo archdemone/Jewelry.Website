@@ -14,7 +14,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { MobileMenu } from './MobileMenu';
 
 export function Header() {
@@ -110,24 +110,26 @@ export function Header() {
               Ring Collections
               <ChevronDown className="h-4 w-4" />
             </button>
-            {showRingCollections && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: 10 }}
-                className="absolute left-0 top-full mt-2 w-64 rounded-lg border bg-white py-2 shadow-lg"
-              >
-                {ringCollections.map((collection) => (
-                  <Link
-                    key={collection.name}
-                    href={collection.href}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary"
-                  >
-                    {collection.name}
-                  </Link>
-                ))}
-              </motion.div>
-            )}
+            <AnimatePresence>
+              {showRingCollections && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  className="absolute left-0 top-full mt-2 w-64 rounded-lg border bg-white py-2 shadow-lg"
+                >
+                  {ringCollections.map((collection) => (
+                    <Link
+                      key={collection.name}
+                      href={collection.href}
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary"
+                    >
+                      {collection.name}
+                    </Link>
+                  ))}
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
 
           <Link href="/about-artisan" className="text-sm text-text hover:text-secondary">
