@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 import {
   Plus,
   Edit,
@@ -341,10 +342,12 @@ export default function AdminPanel() {
             >
               <div className="relative h-48 bg-gray-100 rounded-t-lg overflow-hidden">
                 {product.images && product.images[0] ? (
-                  <img
+                  <Image
                     src={product.images[0]}
                     alt={product.name}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                   />
                 ) : (
                   <div className="flex items-center justify-center h-full">
@@ -426,10 +429,12 @@ export default function AdminPanel() {
                 <div className="mb-6">
                   <div className="relative aspect-square bg-white rounded-lg border-2 border-dashed border-gray-300 overflow-hidden">
                     {editingProduct.images && editingProduct.images[0] ? (
-                      <img
+                      <Image
                         src={editingProduct.images[0]}
                         alt={editingProduct.name}
-                        className="w-full h-full object-cover"
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 50vw"
                       />
                     ) : (
                       <div className="flex items-center justify-center h-full">
@@ -479,10 +484,12 @@ export default function AdminPanel() {
                             : 'border-gray-200 hover:border-gray-300'
                         }`}
                       >
-                        <img
+                        <Image
                           src={image.url}
                           alt={image.name}
-                          className="w-full h-full object-cover"
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 768px) 100vw, 200px"
                         />
                         {editingProduct.images?.includes(image.path) && (
                           <div className="absolute top-1 right-1 w-5 h-5 bg-gold-500 rounded-full flex items-center justify-center">
@@ -591,10 +598,12 @@ export default function AdminPanel() {
                           {hoveredGemColor === color && (
                             <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
                               <div className="rounded-lg border bg-white p-2 shadow-lg">
-                                <img
+                                <Image
                                   src={getGemColorImage(color)}
                                   alt={`${color} gem`}
-                                  className="h-32 w-32 rounded object-cover"
+                                  width={128}
+                                  height={128}
+                                  className="rounded object-cover"
                                 />
                               </div>
                             </div>
@@ -634,10 +643,12 @@ export default function AdminPanel() {
                             {hoveredGemColor2 === color && (
                               <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
                                 <div className="rounded-lg border bg-white p-2 shadow-lg">
-                                  <img
+                                  <Image
                                     src={getGemColorImage(color)}
                                     alt={`${color} gem`}
-                                    className="h-32 w-32 rounded object-cover"
+                                    width={128}
+                                    height={128}
+                                    className="rounded object-cover"
                                   />
                                 </div>
                               </div>
@@ -678,10 +689,12 @@ export default function AdminPanel() {
                             {hoveredGemColor2 === color && (
                               <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
                                 <div className="rounded-lg border bg-white p-2 shadow-lg">
-                                  <img
+                                  <Image
                                     src={getGemColorImage(color)}
                                     alt={`${color} gem`}
-                                    className="h-32 w-32 rounded object-cover"
+                                    width={128}
+                                    height={128}
+                                    className="rounded object-cover"
                                   />
                                 </div>
                               </div>
@@ -751,10 +764,12 @@ export default function AdminPanel() {
                           {hoveredMixColor === color && (
                             <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
                               <div className="rounded-lg border bg-white p-2 shadow-lg">
-                                <img
+                                <Image
                                   src={getGemColorImage(color)}
                                   alt={`${color} gem`}
-                                  className="h-32 w-32 rounded object-cover"
+                                  width={128}
+                                  height={128}
+                                  className="rounded object-cover"
                                 />
                               </div>
                             </div>
@@ -799,10 +814,12 @@ export default function AdminPanel() {
                             {hoveredMixColor2 === color && (
                               <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
                                 <div className="rounded-lg border bg-white p-2 shadow-lg">
-                                  <img
+                                  <Image
                                     src={getGemColorImage(color)}
                                     alt={`${color} gem`}
-                                    className="h-32 w-32 rounded object-cover"
+                                    width={128}
+                                    height={128}
+                                    className="rounded object-cover"
                                   />
                                 </div>
                               </div>
@@ -848,10 +865,12 @@ export default function AdminPanel() {
                             {hoveredMixColor2 === color && (
                               <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
                                 <div className="rounded-lg border bg-white p-2 shadow-lg">
-                                  <img
+                                  <Image
                                     src={getGemColorImage(color)}
                                     alt={`${color} gem`}
-                                    className="h-32 w-32 rounded object-cover"
+                                    width={128}
+                                    height={128}
+                                    className="rounded object-cover"
                                   />
                                 </div>
                               </div>

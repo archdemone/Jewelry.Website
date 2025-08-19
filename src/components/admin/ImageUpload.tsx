@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef } from 'react';
+import Image from 'next/image';
 import { Upload, X, Image as ImageIcon } from 'lucide-react';
 
 interface ImageUploadProps {
@@ -90,11 +91,13 @@ export function ImageUpload({ images, onImagesChange }: ImageUploadProps) {
       {images.length > 0 && (
         <div className="grid grid-cols-2 gap-2">
           {images.map((image, index) => (
-            <div key={index} className="relative group">
-              <img
+            <div key={index} className="relative group h-24">
+              <Image
                 src={image}
                 alt={`Ring ${index + 1}`}
-                className="h-24 w-full rounded-lg object-cover"
+                fill
+                className="rounded-lg object-cover"
+                sizes="200px"
               />
               <button
                 type="button"
