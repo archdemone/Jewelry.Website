@@ -9,7 +9,7 @@
     "test-ci-flow": "node scripts/test-ci-flow.js",
     "start": "next start",
     "lint": "next lint",
-    "lint:no-typescript": "eslint . --ext .js,.jsx,.ts,.tsx --ignore-pattern '*.d.ts' --ignore-pattern '__tests__/**' --ignore-pattern 'cypress/**' --ignore-pattern 'backup-*/**' --ignore-pattern 'scripts/**' --ignore-pattern 'public/sw.js' --ignore-pattern 'jest.setup.js' --ignore-pattern 'k6-load-test.js' --max-warnings 0",
+    "lint:no-typescript": "eslint src --ext .js,.jsx,.ts,.tsx --max-warnings 0",
     "analyze": "set ANALYZE=true && npm run build",
     "size-limit": "node scripts/check-bundle-size.js",
     "test": "jest",

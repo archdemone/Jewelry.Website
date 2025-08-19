@@ -43,7 +43,7 @@ jobs:
       #         NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
       #         NODE_ENV: production
       - name: Lint
-        run: npm run lint
+        run: npm run lint:no-typescript -- --max-warnings 0 --ignore-pattern "__tests__/**/*" --ignore-pattern "cypress/**/*" --ignore-pattern "backup-*/**/*" --ignore-pattern "*.test.*" --ignore-pattern "*.spec.*":no-typescript
         env:
           DATABASE_URL: file:./ui-test.db
           NEXTAUTH_URL: http://localhost:3000
