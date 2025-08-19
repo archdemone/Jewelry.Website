@@ -14,7 +14,7 @@ declare module 'framer-motion' {
     viewport?: any;
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;
-    onClick?: () => void;
+    onClick?: (event?: any) => void;
     href?: string;
     type?: 'button' | 'submit' | 'reset';
     disabled?: boolean;
@@ -40,7 +40,7 @@ declare module 'framer-motion' {
     viewport?: any;
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;
-    onClick?: () => void;
+    onClick?: (event?: any) => void;
     href?: string;
     type?: 'button' | 'submit' | 'reset';
     disabled?: boolean;
