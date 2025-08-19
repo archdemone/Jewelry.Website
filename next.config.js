@@ -53,6 +53,12 @@ const nextConfig = {
       'react-is': require.resolve('react-is'),
     };
     
+    // Add react-is to the module resolution
+    config.resolve.modules = [
+      ...(config.resolve.modules || []),
+      'node_modules',
+    ];
+    
     return config;
   },
 };

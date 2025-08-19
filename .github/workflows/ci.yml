@@ -28,6 +28,8 @@ jobs:
           npm install --no-audit --no-fund --legacy-peer-deps
           echo "Dependencies installed successfully"
           npm list --depth=0
+          echo "Running postinstall script..."
+          npm run postinstall
 
       - name: Generate Prisma Client
         run: npx prisma generate

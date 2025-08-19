@@ -34,6 +34,7 @@
     "clean": "rm -rf .next out",
     "prebuild": "echo 'Skipping type check for build'",
     "postbuild": "npm run size-limit",
+    "postinstall": "echo 'Ensuring react-is is available' && npm list react-is || npm install react-is@^18.3.1 --legacy-peer-deps",
     "web-vitals-check": "node scripts/web-vitals-guard.js",
     "pre-commit": "npm run web-vitals-check && npm run lint && npm run type-check",
     "lighthouse": "lighthouse http://localhost:3000 --output json --output-path ./lighthouse-report.json",
