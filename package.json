@@ -14,7 +14,7 @@
     "size-limit": "node scripts/check-bundle-size.js",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:ci": "jest --ci --coverage --watchAll=false --no-cache",
+    "test:ci": "jest --config=jest.config.js --ci --coverage --watchAll=false --no-cache",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "cypress": "cypress open",
