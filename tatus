@@ -1,0 +1,5 @@
+[33m19230fe[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m 🔧 Fix React import warnings and workflow configuration
+[33mfc6ada4[m Fix TypeScript errors: Add status property to Product interface
+[33mabf7a4f[m 🔧 Fix TypeScript errors and Framer Motion types
+[33m7fa6ac4[m Fix TypeScript errors: Add status property to Product interface
+[33m0cd0a85[m Fix TypeScript errors: Add status property to Product interface and update test configuration

@@ -66,7 +66,7 @@ declare global {
         disabled?: boolean;
       };
       'motion.a': HTMLAttributes<HTMLAnchorElement> & {
-        children?: ReactNode;
+    children?: ReactNode;
         initial?: any;
         animate?: any;
         exit?: any;
@@ -76,7 +76,7 @@ declare global {
         whileInView?: any;
         viewport?: any;
         href?: string;
-        onClick?: () => void;
+    onClick?: () => void;
       };
       'motion.section': HTMLAttributes<HTMLElement> & {
         children?: ReactNode;
@@ -442,13 +442,13 @@ declare global {
         whileTap?: any;
         whileInView?: any;
         viewport?: any;
-        onMouseEnter?: () => void;
-        onMouseLeave?: () => void;
+    onMouseEnter?: () => void;
+    onMouseLeave?: () => void;
         onClick?: (event?: any) => void;
-        href?: string;
-        type?: 'button' | 'submit' | 'reset';
-        disabled?: boolean;
-        id?: string;
+    href?: string;
+    type?: 'button' | 'submit' | 'reset';
+    disabled?: boolean;
+    id?: string;
         style?: React.CSSProperties;
         title?: string;
         role?: string;
