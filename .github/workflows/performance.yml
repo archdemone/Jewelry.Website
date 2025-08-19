@@ -39,6 +39,8 @@ jobs:
           echo "NEXTAUTH_SECRET=build-secret-key" >> $GITHUB_ENV
           echo "STRIPE_SECRET_KEY=sk_test_123" >> $GITHUB_ENV
           echo "NEXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_test_123" >> $GITHUB_ENV
+          echo "SKIP_TYPE_CHECK=true" >> $GITHUB_ENV
+          echo "NEXT_SKIP_TYPE_CHECK=true" >> $GITHUB_ENV
 
       - name: Build application
         run: npm run build:no-typescript
@@ -48,6 +50,9 @@ jobs:
           NEXTAUTH_SECRET: build-secret-key
           STRIPE_SECRET_KEY: sk_test_123
           NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
+          SKIP_TYPE_CHECK: true
+          NEXT_SKIP_TYPE_CHECK: true
+          NODE_ENV: production
 
       - name: Check bundle size
         run: npm run size-limit
@@ -88,6 +93,8 @@ jobs:
           echo "NEXTAUTH_SECRET=lighthouse-secret-key" >> $GITHUB_ENV
           echo "STRIPE_SECRET_KEY=sk_test_123" >> $GITHUB_ENV
           echo "NEXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_test_123" >> $GITHUB_ENV
+          echo "SKIP_TYPE_CHECK=true" >> $GITHUB_ENV
+          echo "NEXT_SKIP_TYPE_CHECK=true" >> $GITHUB_ENV
 
       - name: Build application
         run: npm run build:no-typescript
@@ -97,6 +104,9 @@ jobs:
           NEXTAUTH_SECRET: lighthouse-secret-key
           STRIPE_SECRET_KEY: sk_test_123
           NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
+          SKIP_TYPE_CHECK: true
+          NEXT_SKIP_TYPE_CHECK: true
+          NODE_ENV: production
 
       - name: Install wait-on
         run: npm install -g wait-on

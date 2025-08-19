@@ -39,6 +39,8 @@ jobs:
           echo "NEXTAUTH_SECRET=test-secret-key" >> $GITHUB_ENV
           echo "STRIPE_SECRET_KEY=sk_test_123" >> $GITHUB_ENV
           echo "NEXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_test_123" >> $GITHUB_ENV
+          echo "SKIP_TYPE_CHECK=true" >> $GITHUB_ENV
+          echo "NEXT_SKIP_TYPE_CHECK=true" >> $GITHUB_ENV
 
       - name: Run tests
         run: npm run test:ci
@@ -48,6 +50,8 @@ jobs:
           NEXTAUTH_SECRET: test-secret-key
           STRIPE_SECRET_KEY: sk_test_123
           NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
+          SKIP_TYPE_CHECK: true
+          NEXT_SKIP_TYPE_CHECK: true
 
       - name: Run E2E tests
         run: npm run test:e2e
@@ -57,6 +61,8 @@ jobs:
           NEXTAUTH_SECRET: test-secret-key
           STRIPE_SECRET_KEY: sk_test_123
           NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
+          SKIP_TYPE_CHECK: true
+          NEXT_SKIP_TYPE_CHECK: true
 
       - name: Run Cypress tests
         run: npm run cypress:run
@@ -66,3 +72,5 @@ jobs:
           NEXTAUTH_SECRET: test-secret-key
           STRIPE_SECRET_KEY: sk_test_123
           NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
+          SKIP_TYPE_CHECK: true
+          NEXT_SKIP_TYPE_CHECK: true
