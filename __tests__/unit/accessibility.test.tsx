@@ -1,10 +1,8 @@
 import React from 'react';
 import { render } from '@testing-library/react';
-import { axe, toHaveNoViolations } from 'jest-axe';
+import { axe } from 'jest-axe';
 import HomePage from '@/app/page';
 import CategoryPage from '@/components/products/CategoryPage';
-
-expect.extend(toHaveNoViolations);
 
 // Mock IntersectionObserver for Framer Motion
 global.IntersectionObserver = class IntersectionObserver {
