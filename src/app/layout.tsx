@@ -51,6 +51,55 @@ export default function RootLayout({
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {/* Preload critical hero image for LCP optimization */}
+        <link
+          rel="preload"
+          as="image"
+          href="/images/home/header1.jpg"
+          fetchPriority="high"
+          imageSizes="100vw"
+        />
+        {/* Inline critical CSS for hero section */}
+        <style dangerouslySetInnerHTML={{
+          __html: `
+            .hero-section {
+              position: relative;
+              height: 60vh;
+              overflow: hidden;
+            }
+            @media (min-width: 768px) {
+              .hero-section {
+                height: 70vh;
+              }
+            }
+            @media (min-width: 1024px) {
+              .hero-section {
+                height: 80vh;
+              }
+            }
+            .hero-image {
+              height: 100%;
+              width: 100%;
+              object-fit: cover;
+            }
+            .hero-overlay {
+              position: absolute;
+              inset: 0;
+              background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 50%, transparent 100%);
+            }
+            .hero-content {
+              position: relative;
+              z-index: 10;
+              display: flex;
+              height: 100%;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              text-align: center;
+              color: white;
+            }
+          `
+        }} />
       </head>
       <body className={`${inter.className} antialiased`}>
         <ErrorBoundary>

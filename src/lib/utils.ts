@@ -7,16 +7,17 @@ export function cn(...inputs: ClassValue[]) {
 
 // Image cache busting utility
 export function getImageUrl(path: string, version?: string): string {
-  if (process.env.NODE_ENV === 'development') {
-    // In development, use timestamp to force refresh
-    return `${path}?t=${Date.now()}`;
-  }
-  
+  // TEMPORARILY DISABLE cache busting for performance testing
+  // if (process.env.NODE_ENV === 'development') {
+  //   // In development, use timestamp to force refresh
+  //   return `${path}?t=${Date.now()}`;
+  // }
+
   // In production, use version parameter if provided
   if (version) {
     return `${path}?v=${version}`;
   }
-  
+
   return path;
 }
 
