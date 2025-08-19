@@ -1,0 +1,143 @@
+Phase 4 - Home Page Development Prompt
+
+[Copy this entire file into Cursor to run Phase 4.]
+
+Let's proceed with Phase 4: Home Page Development. This phase will create a stunning, conversion-optimized home page for the jewelry store.
+
+## Phase 4 Tasks:
+
+### 1. Create Home Page Components Structure
+Create the following folder structure:
+/components/
+  /home/
+    - HeroSection.tsx
+    - FeaturedProducts.tsx
+    - CategoryShowcase.tsx
+    - TestimonialsSection.tsx
+    - NewsletterSection.tsx
+    - WhyChooseUs.tsx
+    - InstagramFeed.tsx (optional)
+    - BrandsSection.tsx (optional)
+
+### 2. Install Additional Required Components
+npx shadcn-ui@latest add carousel
+npx shadcn-ui@latest add card
+npx shadcn-ui@latest add aspect-ratio
+npm install embla-carousel-react embla-carousel-autoplay
+
+### 3. Create Hero Section Component
+Create /components/home/HeroSection.tsx
+
+Features:
+- Full-width hero with 70vh height
+- Image carousel/slider with 3-4 high-quality jewelry images
+- Autoplay with pause on hover
+- Overlay with text content:
+  - Headline: "Exquisite Jewelry for Every Moment"
+  - Subheadline: "Handcrafted with Love, Designed for Life"
+  - Two CTA buttons: "Shop Collection" and "View Catalog"
+- Smooth transitions between slides
+- Mobile responsive with adjusted height and text sizing
+- Optional: Video background option
+
+Example Structure:
+const slides = [
+  {
+    image: "/images/hero/hero-1.jpg",
+    title: "New Summer Collection",
+    subtitle: "Discover timeless elegance",
+    cta: "Shop Now",
+    link: "/products"
+  },
+]
+
+### 4. Create Featured Products Section
+Create /components/home/FeaturedProducts.tsx
+
+Features:
+- Section title: "Featured Collection"
+- Grid of 4-6 featured products from database
+- Product cards with:
+  - Image with hover effect (zoom or secondary image)
+  - Product name
+  - Price (with sale price if applicable)
+  - "Quick View" button on hover
+  - "Add to Cart" button
+  - Wishlist heart icon
+- Link to "View All Products"
+- Fetch actual products from database marked as featured
+
+Database Query:
+const featuredProducts = await prisma.product.findMany({
+  where: { featured: true, active: true },
+  take: 6,
+  include: { category: true }
+})
+
+### 5. Create Category Showcase Section
+Create /components/home/CategoryShowcase.tsx
+
+Features:
+- Section title: "Shop by Category"
+- Grid layout (2x3 on desktop, 1x6 on mobile)
+- Category cards with image, name overlay, product count, hover zoom
+
+### 6. Create Testimonials Section
+Create /components/home/TestimonialsSection.tsx
+
+Features:
+- Section title: "What Our Customers Say"
+- Carousel of 4-5 testimonials
+- Each testimonial card includes name, rating, comment, optional product and date
+
+### 7. Create Newsletter Section
+Create /components/home/NewsletterSection.tsx
+
+Features:
+- Headline: "Get 10% Off Your First Order"
+- Email input with validation and subscribe button
+- Store emails in database
+
+### 8. Create Why Choose Us Section
+Create /components/home/WhyChooseUs.tsx
+
+Features:
+- 4 feature cards: Free Shipping, Lifetime Warranty, Ethical Sourcing, Expert Craftsmanship
+
+### 9. Optional Instagram Feed
+Create /components/home/InstagramFeed.tsx (optional)
+
+### 10. Update Main Home Page
+Update /app/page.tsx to render all sections in order.
+
+### 11. Add Animation Effects
+Use Framer Motion for fade-in and stagger animations.
+
+### 12. Placeholder Images
+Place images under /public/images per section (hero, categories, etc.).
+
+### 13. Performance
+Use next/image, lazy-loading, and skeletons.
+
+### 14. Responsiveness
+Test on mobile, tablet, desktop.
+
+### 15. SEO
+Add meta title/description, OG tags, LocalBusiness JSON-LD, correct headings, alt.
+
+Testing Checklist:
+- Hero carousel works
+- Featured products load
+- Category links navigate
+- Newsletter saves emails
+- Testimonials carousel smooth
+- All responsive
+- No console errors
+- Fast load
+- Proper alt text
+- Smooth animations
+
+After Completion:
+- Take screenshots (desktop hero, mobile featured, categories)
+- Run Lighthouse
+- Update DEVELOPMENT_CHECKLIST.md to mark Phase 4 complete
