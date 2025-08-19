@@ -2,13 +2,14 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
+import { getImageUrlWithVersion } from '@/lib/utils';
 
 const HeroSection = () => {
   return (
     <section className="relative h-[90vh] min-h-[600px] w-full overflow-hidden bg-gradient-to-br from-amber-50 to-orange-50">
       {/* Perfect LCP-optimized hero image */}
       <Image
-        src="/images/header/hero-1-1920.webp"
+        src={getImageUrlWithVersion("/images/header/hero-1-1920.webp")}
         alt="Elegant handcrafted jewelry"
         priority
         quality={70}

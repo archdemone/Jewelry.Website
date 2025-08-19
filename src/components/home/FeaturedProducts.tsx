@@ -8,6 +8,7 @@ import { Heart, ShoppingBag } from 'lucide-react';
 import { getFeaturedProducts, type FeaturedProduct } from '@/lib/featured-products';
 import { useCartStore } from '@/store/cart';
 import toast from 'react-hot-toast';
+import { getImageUrlWithVersion } from '@/lib/utils';
 
 const FeaturedProducts = () => {
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
@@ -179,7 +180,7 @@ const FeaturedProducts = () => {
               {/* Product Image */}
               <div className="relative aspect-square overflow-hidden border-2 border-black">
                 <Image
-                  src={ring.image}
+                  src={getImageUrlWithVersion(ring.image)}
                   alt={ring.name}
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"

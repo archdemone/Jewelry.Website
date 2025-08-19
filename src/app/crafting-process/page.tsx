@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 
 import Image from 'next/image';
+import { getImageUrlWithVersion } from '@/lib/utils';
 
 export default function CraftingProcessPage() {
   const [activeStep, setActiveStep] = useState(1);
@@ -94,11 +95,11 @@ export default function CraftingProcessPage() {
         <section className="relative h-[60vh] min-h-[500px] overflow-hidden bg-gradient-to-br from-amber-50 to-orange-50">
           <div className="absolute inset-0">
             <Image
-              src="/images/process/workshop-hero.jpg"
+              src={getImageUrlWithVersion("/images/process/workshop-hero.jpg")}
               alt="Artisan crafting a ring"
               width={1200}
               height={600}
-              className="absolute inset-0 h-full w-full object-cover opacity-60"
+              className="absolute inset-0 h-full w-full object-cover"
               sizes="100vw"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
@@ -411,7 +412,7 @@ export default function CraftingProcessPage() {
                  className="group relative overflow-hidden rounded-xl bg-white"
                >
                                  <Image
-                   src="/images/process/material-selection.jpg"
+                   src={getImageUrlWithVersion("/images/process/material-selection.jpg")}
                    alt="Material Selection - Choosing the perfect materials for your ring"
                    width={400}
                    height={300}
@@ -436,7 +437,7 @@ export default function CraftingProcessPage() {
                  className="group relative overflow-hidden rounded-xl bg-white"
                >
                                  <Image
-                   src="/images/process/crafting-action.jpg"
+                   src={getImageUrlWithVersion("/images/process/crafting-action.jpg")}
                    alt="Precision Crafting - Every detail carefully shaped by hand"
                    width={400}
                    height={300}
@@ -459,7 +460,7 @@ export default function CraftingProcessPage() {
                  className="group relative overflow-hidden rounded-xl bg-white"
                >
                                  <Image
-                   src="/images/process/final-polish.jpg"
+                   src={getImageUrlWithVersion("/images/process/final-polish.jpg")}
                    alt="Perfect Finish - The final polish that makes it shine"
                    width={400}
                    height={300}
