@@ -43,7 +43,7 @@ export const featuredProducts: FeaturedProduct[] = [
     gemDensity: 'medium',
     gemVariation: 'Dark',
     craftTime: '2-3 weeks',
-    image: '/images/MyImages/IMG-20250816-WA0000.jpg',
+    image: '/images/products/IMG-20250816-WA0000.jpg',
     description:
       'Beautiful handcrafted silver ring with dark red gem inlay. Perfect for everyday wear or special occasions.',
     isReadyToShip: true,
@@ -68,7 +68,7 @@ export const featuredProducts: FeaturedProduct[] = [
     gemDensity: 'large',
     gemVariation: 'Bright',
     craftTime: '3-4 weeks',
-    image: '/images/MyImages/IMG-20250816-WA0001.jpg',
+    image: '/images/products/IMG-20250816-WA0001.jpg',
     description:
       'Stunning Damascus steel wedding ring with bright blue gem inlay. A unique and durable choice for your special day.',
     isReadyToShip: true,
@@ -93,7 +93,7 @@ export const featuredProducts: FeaturedProduct[] = [
     gemDensity: 'small',
     gemVariation: 'Mixed',
     craftTime: '1-2 weeks',
-    image: '/images/MyImages/IMG-20250816-WA0002.jpg',
+    image: '/images/products/IMG-20250816-WA0002.jpg',
     description:
       'Lightweight carbon ring with mixed green and blue gem inlay. Perfect for active lifestyles.',
     isReadyToShip: true,
@@ -118,7 +118,7 @@ export const featuredProducts: FeaturedProduct[] = [
     gemDensity: 'medium',
     gemVariation: 'Bright',
     craftTime: '4-5 weeks',
-    image: '/images/MyImages/IMG-20250816-WA0003.jpg',
+    image: '/images/products/IMG-20250816-WA0003.jpg',
     description:
       'Matching couple rings featuring silver and gold with mixed gem inlays. Perfect for weddings and anniversaries.',
     isReadyToShip: false,
@@ -143,7 +143,7 @@ export const featuredProducts: FeaturedProduct[] = [
     gemDensity: 'large',
     gemVariation: 'Dark',
     craftTime: '2-3 weeks',
-    image: '/images/MyImages/IMG-20250816-WA0004.jpg',
+    image: '/images/products/IMG-20250816-WA0004.jpg',
     description:
       'Modern titanium wedding band with deep purple gem inlay. Lightweight and hypoallergenic.',
     isReadyToShip: true,
@@ -168,7 +168,7 @@ export const featuredProducts: FeaturedProduct[] = [
     gemDensity: 'small',
     gemVariation: 'Bright',
     craftTime: '3-4 weeks',
-    image: '/images/MyImages/IMG-20250816-WA0005.jpg',
+    image: '/images/products/IMG-20250816-WA0005.jpg',
     description:
       'Elegant ceramic eternity ring with bright yellow gem inlay. Scratch-resistant and lightweight.',
     isReadyToShip: true,
@@ -193,7 +193,7 @@ export const featuredProducts: FeaturedProduct[] = [
     gemDensity: 'medium',
     gemVariation: 'Mixed',
     craftTime: '2-3 weeks',
-    image: '/images/MyImages/IMG-20250816-WA0006.jpg',
+    image: '/images/products/IMG-20250816-WA0006.jpg',
     description:
       'Durable tungsten signet ring with custom gem inlay. Perfect for engraving and personalization.',
     isReadyToShip: false,
@@ -218,7 +218,7 @@ export const featuredProducts: FeaturedProduct[] = [
     gemDensity: 'large',
     gemVariation: 'Bright',
     craftTime: '3-4 weeks',
-    image: '/images/MyImages/IMG-20250816-WA0007.jpg',
+    image: '/images/products/IMG-20250816-WA0007.jpg',
     description:
       'Matching stainless steel couple rings with blue and red gem inlays. Corrosion-resistant and elegant.',
     isReadyToShip: false,
