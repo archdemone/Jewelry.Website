@@ -444,7 +444,7 @@ declare global {
         viewport?: any;
         onMouseEnter?: () => void;
         onMouseLeave?: () => void;
-        onClick?: () => void;
+        onClick?: (event?: any) => void;
         href?: string;
         type?: 'button' | 'submit' | 'reset';
         disabled?: boolean;
