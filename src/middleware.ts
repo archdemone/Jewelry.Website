@@ -4,8 +4,16 @@ import { getToken } from 'next-auth/jwt';
 import { UserRole } from '@/types/enums';
 
 export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+  
+  // Redirect /about to /about-artisan
+  if (pathname === '/about') {
+    const url = request.nextUrl.clone();
+    url.pathname = '/about-artisan';
+    return NextResponse.redirect(url, 301);
+  }
+  
   if (process.env.NEXT_PUBLIC_MAINTENANCE_MODE === 'true') {
-    const { pathname } = request.nextUrl;
     if (!pathname.startsWith('/maintenance') && !pathname.startsWith('/api')) {
       const url = request.nextUrl.clone();
       url.pathname = '/maintenance';
@@ -25,8 +33,6 @@ export async function middleware(request: NextRequest) {
       // For non-GET/HEAD, do not redirect to avoid breaking requests
     }
   }
-
-  const { pathname } = request.nextUrl;
   // Admin gating (skip MFA routes)
   if (pathname.startsWith('/admin') && !pathname.startsWith('/admin/mfa')) {
     const allowlist = (process.env.IP_ALLOWLIST || '')
