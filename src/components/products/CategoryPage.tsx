@@ -420,7 +420,7 @@ export default function CategoryPage({
                   <Image
                     src={Array.isArray(product.images) && product.images.length > 0 
                       ? product.images[0] 
-                      : getProductImageFallback({ productSlug: product.slug, name: product.name })[0]}
+                      : getProductImageFallback({ productSlug: product.slug, name: product.name })[0] || ''}
                     alt={product.name}
                     fill
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
