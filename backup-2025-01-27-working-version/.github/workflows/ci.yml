@@ -1,0 +1,128 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Clear npm cache
+        run: npm cache clean --force
+
+      - name: Install dependencies
+        run: |
+          echo "Installing dependencies..."
+          npm install --no-audit --no-fund --legacy-peer-deps
+          echo "Dependencies installed successfully"
+          npm list --depth=0
+          echo "Running postinstall script..."
+          npm run postinstall
+
+      - name: Generate Prisma Client
+        run: npx prisma generate
+
+      - name: Clean build cache
+        run: |
+          echo "Cleaning build cache..."
+          rm -rf .next
+          rm -rf out
+          rm -rf dist
+          rm -rf build
+          echo "Build cache cleaned"
+
+      - name: Setup test environment
+        run: |
+          echo "DATABASE_URL=file:./test.db" >> $GITHUB_ENV
+          echo "NEXTAUTH_URL=http://localhost:3000" >> $GITHUB_ENV
+          echo "NEXTAUTH_SECRET=test-secret-key" >> $GITHUB_ENV
+          echo "STRIPE_SECRET_KEY=sk_test_123" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_test_123" >> $GITHUB_ENV
+          echo "NODE_ENV=test" >> $GITHUB_ENV
+          echo "CI=true" >> $GITHUB_ENV
+
+      - name: Verify Jest configuration
+        run: |
+          echo "Checking Jest configuration..."
+          node -e "console.log('Jest config exists:', require('fs').existsSync('jest.config.js'))"
+          node -e "console.log('Jest setup exists:', require('fs').existsSync('jest.setup.js'))"
+          echo "Jest configuration verified"
+
+      - name: Verify test dependencies
+        run: |
+          echo "Checking test dependencies..."
+          npm list jest @testing-library/react jest-axe jest-environment-jsdom
+          echo "Test dependencies verified"
+
+      - name: Type Check
+        run: npm run type-check:ci
+        env:
+          DATABASE_URL: file:./test.db
+          NEXTAUTH_URL: http://localhost:3000
+          NEXTAUTH_SECRET: test-secret-key
+          STRIPE_SECRET_KEY: sk_test_123
+          NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
+          NODE_ENV: test
+          CI: true
+
+      - name: Run linting
+        run: npm run lint
+        env:
+          DATABASE_URL: file:./test.db
+          NEXTAUTH_URL: http://localhost:3000
+          NEXTAUTH_SECRET: test-secret-key
+          STRIPE_SECRET_KEY: sk_test_123
+          NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
+          NODE_ENV: test
+          CI: true
+          SKIP_TYPE_CHECK: true
+
+      - name: Build application
+        run: npm run build
+        env:
+          DATABASE_URL: file:./test.db
+          NEXTAUTH_URL: http://localhost:3000
+          NEXTAUTH_SECRET: test-secret-key
+          STRIPE_SECRET_KEY: sk_test_123
+          NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
+          NODE_ENV: production
+
+      - name: Verify build artifacts
+        run: |
+          echo "Checking build artifacts..."
+          ls -la .next/standalone/ || echo "No standalone directory"
+          ls -la .next/static/ | head -10
+          echo "Build artifacts verified"
+
+      - name: Run tests with verbose output
+        run: npm run test:ci -- --verbose
+        env:
+          DATABASE_URL: file:./test.db
+          NEXTAUTH_URL: http://localhost:3000
+          NEXTAUTH_SECRET: test-secret-key
+          STRIPE_SECRET_KEY: sk_test_123
+          NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
+          NODE_ENV: test
+          CI: true
+
+      - name: Run Web Vitals check
+        run: npm run web-vitals-check
+        env:
+          DATABASE_URL: file:./test.db
+          NEXTAUTH_URL: http://localhost:3000
+          NEXTAUTH_SECRET: test-secret-key
+          STRIPE_SECRET_KEY: sk_test_123
+          NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
+          NODE_ENV: production
