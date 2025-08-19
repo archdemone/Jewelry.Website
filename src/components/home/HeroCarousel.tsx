@@ -22,13 +22,18 @@ const HeroCarousel = () => {
     }
   ];
 
-  // Auto-advance carousel
+  // Auto-advance carousel - deferred to reduce initial TBT
   useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 5000); // Change image every 5 seconds
+    // Defer carousel start to reduce initial JavaScript execution
+    const startTimer = setTimeout(() => {
+      const timer = setInterval(() => {
+        setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+      }, 5000); // Change image every 5 seconds
 
-    return () => clearInterval(timer);
+      return () => clearInterval(timer);
+    }, 2000); // Start carousel after 2 seconds
+
+    return () => clearTimeout(startTimer);
   }, [images.length]);
 
   return (
