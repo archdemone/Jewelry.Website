@@ -34,6 +34,9 @@ jobs:
       - name: Generate Prisma Client
         run: npx prisma generate
 
+      - name: Clean build cache
+        run: rm -rf .next
+
       - name: Setup build environment
         run: |
           echo "DATABASE_URL=file:./build.db" >> $GITHUB_ENV
@@ -97,6 +100,9 @@ jobs:
 
       - name: Generate Prisma Client
         run: npx prisma generate
+
+      - name: Clean build cache
+        run: rm -rf .next
 
       - name: Setup build environment
         run: |
