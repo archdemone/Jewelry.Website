@@ -161,8 +161,7 @@ export default function RootLayout({
         {/* Preload critical images */}
         <link rel="preload" as="image" href="/images/header/hero-1.jpg" type="image/webp" />
         
-        {/* Preload critical fonts */}
-        <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" as="style" />
+
         
         {/* Preload service worker */}
         <link rel="preload" href="/sw.js" as="script" />

@@ -108,10 +108,25 @@ export default function CategoryPage({
         // Load all products from API
         const response = await fetch('/api/admin/products');
         if (response.ok) {
-          const products = await response.json();
+          const allProducts = await response.json();
+          
+          // Set categories based on all available products from API
+          const uniqueCategories = new Set();
+          allProducts.forEach((product: Product) => {
+            if (product.category) uniqueCategories.add(product.category);
+            if (product.subCategory) uniqueCategories.add(product.subCategory);
+          });
+          
+          const categoryList = Array.from(uniqueCategories).map((cat, index) => ({
+            id: index + 1,
+            name: cat as string,
+            slug: (cat as string).toLowerCase().replace(/\s+/g, '-'),
+          }));
+          
+          setCategories(categoryList);
           
           // Filter products by category and include featured ring in all categories
-                      const filteredProducts = products.filter((product: Product) => {
+          const filteredProducts = allProducts.filter((product: Product) => {
             // Always include the featured ring (Women's Silver Inlay Ring - Dark Red)
             if (product.name === "Women's Silver Inlay Ring - Dark Red") return true;
             
@@ -126,29 +141,15 @@ export default function CategoryPage({
           });
           
           console.log('Category:', category);
-                      console.log('All products:', products.length);
+          console.log('All products:', allProducts.length);
           console.log('Filtered products:', filteredProducts.length);
           console.log('Filtered products:', filteredProducts);
           setProducts(filteredProducts);
-                } else {
+        } else {
           console.error('Failed to load products');
           setProducts([]);
+          setCategories([]);
         }
-        
-        // Set categories based on available products
-        const uniqueCategories = new Set();
-        products.forEach((product: Product) => {
-          if (product.category) uniqueCategories.add(product.category);
-          if (product.subCategory) uniqueCategories.add(product.subCategory);
-        });
-        
-        const categoryList = Array.from(uniqueCategories).map((cat, index) => ({
-          id: index + 1,
-          name: cat as string,
-          slug: (cat as string).toLowerCase().replace(/\s+/g, '-'),
-        }));
-        
-        setCategories(categoryList);
         setLoading(false);
       } catch (error) {
         console.error('Error loading products:', error);
