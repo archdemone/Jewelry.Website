@@ -36,6 +36,25 @@ const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   swcMinify: true,
+  webpack: (config, { isServer }) => {
+    // Fix for recharts and react-is
+    if (!isServer) {
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        fs: false,
+        net: false,
+        tls: false,
+      };
+    }
+    
+    // Ensure react-is is properly resolved
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'react-is': require.resolve('react-is'),
+    };
+    
+    return config;
+  },
 };
 
 module.exports = withBundleAnalyzer(nextConfig);
