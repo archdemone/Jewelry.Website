@@ -9,10 +9,28 @@ module.exports = {
     '^@/(.*)$': '<rootDir>/src/$1',
     '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
   },
+  collectCoverage: true,
   collectCoverageFrom: [
     'src/app/**/*.{js,jsx,ts,tsx}',
     'src/components/**/*.{js,jsx,ts,tsx}',
+    'src/lib/**/*.{js,jsx,ts,tsx}',
+    'src/store/**/*.{js,jsx,ts,tsx}',
+    'src/types/**/*.{js,jsx,ts,tsx}',
     '!**/*.d.ts',
     '!**/node_modules/**',
+    '!**/.next/**',
+    '!**/coverage/**',
+    '!**/dist/**',
+    '!**/build/**',
   ],
+  coverageDirectory: 'coverage',
+  coverageReporters: ['text', 'lcov', 'html'],
+  coverageThreshold: {
+    global: {
+      branches: 0,
+      functions: 0,
+      lines: 0,
+      statements: 0,
+    },
+  },
 };
