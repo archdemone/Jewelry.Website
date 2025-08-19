@@ -1,28 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 
 const HeroCarousel = () => {
   return (
     <section className="hero-section">
-      {/* Hero Background Image */}
-      <div className="hero-background">
-        <Image
-          src="/images/header/hero-1.jpg"
-          alt="J&M - Exquisite handcrafted engagement rings"
-          width={800}
-          height={450}
-          priority
-          fetchPriority="high"
-          className="h-full w-full object-cover"
-          sizes="100vw"
-          quality={70}
-          placeholder="blur"
-          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R//2Q=="
-          loading="eager"
-          decoding="async"
-        />
+      {/* Hero Background with CSS Gradient for instant LCP */}
+      <div className="hero-background bg-gradient-to-br from-orange-800 via-orange-600 to-red-600">
         <div className="hero-overlay"></div>
       </div>
 
