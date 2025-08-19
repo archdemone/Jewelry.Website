@@ -41,7 +41,7 @@
     "postbuild": "npm run size-limit",
     "postinstall": "echo 'Ensuring react-is is available' && npm list react-is || npm install react-is@^18.3.1 --legacy-peer-deps",
     "web-vitals-check": "node scripts/web-vitals-guard.js",
-    "pre-commit": "echo 'Skipping pre-commit checks for now'",
+    "pre-commit": "npm run web-vitals-check && npm run lint && npm run type-check:strict",
     "lighthouse": "lighthouse http://localhost:3000 --output json --output-path ./lighthouse-report.json",
     "lighthouse:ci": "lighthouse http://localhost:3000 --only-categories=performance --output json --output-path ./lighthouse-report.json",
     "lighthouse:html": "lighthouse http://localhost:3000 --output html --output-path ./lighthouse-report.html",
