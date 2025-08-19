@@ -132,6 +132,7 @@
     "@next/bundle-analyzer": "^14.2.31",
     "@playwright/test": "^1.40.0",
     "@size-limit/preset-app": "^11.2.0",
+    "@testing-library/dom": "^10.4.1",
     "@types/jest": "^29.5.0",
     "@types/jest-axe": "^3.5.9",
     "@types/node": "^20.19.11",
