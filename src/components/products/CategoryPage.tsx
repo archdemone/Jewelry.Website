@@ -363,8 +363,10 @@ export default function CategoryPage({
                         ? 'bg-gold-500 text-white'
                         : 'text-gray-600 hover:text-gray-900'
                     }`}
+                    aria-label="Grid view"
+                    aria-pressed={viewMode === 'grid'}
                   >
-                    <Grid3x3 className="h-4 w-4" />
+                    <Grid3x3 className="h-4 w-4" aria-hidden="true" />
                   </button>
                   <button
                     onClick={() => setViewMode('list')}
@@ -373,8 +375,10 @@ export default function CategoryPage({
                         ? 'bg-gold-500 text-white'
                         : 'text-gray-600 hover:text-gray-900'
                     }`}
+                    aria-label="List view"
+                    aria-pressed={viewMode === 'list'}
                   >
-                    <Square className="h-4 w-4" />
+                    <Square className="h-4 w-4" aria-hidden="true" />
                   </button>
                 </div>
 
@@ -384,6 +388,7 @@ export default function CategoryPage({
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
                     className="appearance-none rounded-lg border border-gray-200 bg-white px-4 py-2 pr-8 text-sm focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20"
+                    aria-label="Sort products by"
                   >
                     <option value="featured">Featured</option>
                     <option value="price-low">Price: Low to High</option>
@@ -445,8 +450,9 @@ export default function CategoryPage({
                   <button
                     onClick={() => handleWishlistToggle(product.id)}
                     className="absolute right-2 top-2 rounded-full bg-white/90 p-2 text-red-500 transition-colors hover:bg-white"
+                    aria-label={wishlistItems.has(product.id) ? 'Remove from wishlist' : 'Add to wishlist'}
                   >
-                    <Heart className={`h-4 w-4 ${wishlistItems.has(product.id) ? 'fill-current' : ''}`} />
+                    <Heart className={`h-4 w-4 ${wishlistItems.has(product.id) ? 'fill-current' : ''}`} aria-hidden="true" />
                   </button>
 
                   {/* Quick Actions */}
@@ -455,14 +461,16 @@ export default function CategoryPage({
                       <button
                         onClick={() => handleAddToCart(product)}
                         className="rounded-full bg-white p-3 text-gray-900 transition-colors hover:bg-gray-100"
+                        aria-label={`Add ${product.name} to cart`}
                       >
-                        <ShoppingBag className="h-5 w-5" />
+                        <ShoppingBag className="h-5 w-5" aria-hidden="true" />
                       </button>
                       <Link
                         href={`/products/${product.slug}`}
                         className="rounded-full bg-white p-3 text-gray-900 transition-colors hover:bg-gray-100"
+                        aria-label={`View details for ${product.name}`}
                       >
-                        <Eye className="h-5 w-5" />
+                        <Eye className="h-5 w-5" aria-hidden="true" />
                       </Link>
                     </div>
                   </div>
@@ -498,7 +506,7 @@ export default function CategoryPage({
                   {/* Rating */}
                   {product.rating && (
                     <div className="mb-2 flex items-center gap-1">
-                      <div className="flex">
+                      <div className="flex" role="img" aria-label={`${product.rating} out of 5 stars`}>
                         {[...Array(5)].map((_, i) => (
                           <Star
                             key={i}
@@ -507,11 +515,12 @@ export default function CategoryPage({
                                 ? 'fill-yellow-400 text-yellow-400'
                                 : 'text-gray-300'
                             }`}
+                            aria-hidden="true"
                           />
                         ))}
                       </div>
                       <span className="text-sm text-gray-600">
-                        ({product.reviews})
+                        ({product.reviews} reviews)
                       </span>
                     </div>
                   )}

@@ -85,7 +85,7 @@ export const metadata = {
 
 export default function Home() {
   return (
-    <main>
+    <main data-testid="homepage-main">
       <HeroCarousel />
       <TrustSignals />
       <FeaturedProducts />
