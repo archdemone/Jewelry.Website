@@ -1,5 +1,23 @@
 /* Critical CSS for above-the-fold content */
 
+/* Reset and base styles */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  line-height: 1.5;
+  color: #333;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 /* Hero section critical styles */
 .hero-section {
   position: relative;
@@ -87,6 +105,9 @@
   color: #111827;
   transition: all 0.2s;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
 }
 
 .btn-primary:hover {
@@ -105,6 +126,9 @@
   font-weight: 600;
   color: white;
   transition: all 0.2s;
+  text-decoration: none;
+  background: transparent;
+  cursor: pointer;
 }
 
 .btn-secondary:hover {
@@ -122,6 +146,82 @@
   ring-offset-color: transparent;
 }
 
+/* Layout utilities */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.space-y-8 > * + * {
+  margin-top: 2rem;
+}
+
+.space-y-6 > * + * {
+  margin-top: 1.5rem;
+}
+
+.gap-6 {
+  gap: 1.5rem;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+/* Spacing utilities */
+.p-4 { padding: 1rem; }
+.px-4 { padding-left: 1rem; padding-right: 1rem; }
+.py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+.m-0 { margin: 0; }
+.mt-12 { margin-top: 3rem; }
+.mb-4 { margin-bottom: 1rem; }
+
+/* Typography utilities */
+.text-center { text-align: center; }
+.text-white { color: white; }
+.text-gray-600 { color: #4b5563; }
+.text-lg { font-size: 1.125rem; }
+.font-semibold { font-weight: 600; }
+
+/* Responsive utilities */
+.max-w-4xl { max-width: 56rem; }
+.max-w-32 { max-width: 8rem; }
+
+/* Image optimization */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Prevent layout shifts */
+.hero-section img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 /* Responsive utilities */
 @media (max-width: 640px) {
   .hero-section {
@@ -133,4 +233,105 @@
     height: 50vh;
     min-height: 400px;
   }
+
+  .flex-col {
+    flex-direction: column;
+  }
+
+  .sm\:flex-row {
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 640px) {
+  .sm\:flex-row {
+    flex-direction: row;
+  }
+}
+
+/* Font display optimization */
+@font-face {
+  font-family: 'Playfair Display';
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-display: swap;
+}
+
+/* Critical header styles */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: white;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+/* Critical navigation styles */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* Critical link styles */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Critical container styles */
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Critical grid styles */
+.grid {
+  display: grid;
+  gap: 1rem;
+}
+
+/* Critical flex styles */
+.flex {
+  display: flex;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+/* Critical spacing */
+.p-4 { padding: 1rem; }
+.m-0 { margin: 0; }
+.mt-3 { margin-top: 0.75rem; }
+.mb-4 { margin-bottom: 1rem; }
+
+/* Critical colors */
+.text-white { color: white; }
+.bg-white { background-color: white; }
+.text-gray-600 { color: #4b5563; }
+
+/* Critical typography */
+.text-sm { font-size: 0.875rem; }
+.font-medium { font-weight: 500; }
+
+/* Critical responsive */
+@media (max-width: 768px) {
+  .hero-title { font-size: 2rem; }
+  .hero-subtitle { font-size: 1rem; }
 }
