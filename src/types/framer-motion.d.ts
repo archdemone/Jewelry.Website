@@ -1,4 +1,4 @@
-import { HTMLAttributes, ReactNode } from 'react';
+import React, { HTMLAttributes, ReactNode } from 'react';
 
 // Extend Framer Motion module to include all HTML attributes
 declare module 'framer-motion' {
@@ -468,7 +468,7 @@ declare global {
         whileTap?: any;
         whileInView?: any;
         viewport?: any;
-        onClick?: () => void;
+        onClick?: (event?: any) => void;
         type?: 'button' | 'submit' | 'reset';
         disabled?: boolean;
         className?: string;
