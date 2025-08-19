@@ -19,10 +19,15 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      - name: Clear npm cache
+        run: npm cache clean --force
+
       - name: Install dependencies
         run: |
-          npm install --no-audit --no-fund
+          echo "Installing dependencies..."
+          npm install --no-audit --no-fund --legacy-peer-deps
           echo "Dependencies installed successfully"
+          npm list --depth=0
 
       - name: Generate Prisma Client
         run: npx prisma generate
@@ -63,10 +68,15 @@ jobs:
           node-version: '20'
           cache: 'npm'
 
+      - name: Clear npm cache
+        run: npm cache clean --force
+
       - name: Install dependencies
         run: |
-          npm install --no-audit --no-fund
+          echo "Installing dependencies..."
+          npm install --no-audit --no-fund --legacy-peer-deps
           echo "Dependencies installed successfully"
+          npm list --depth=0
 
       - name: Generate Prisma Client
         run: npx prisma generate
