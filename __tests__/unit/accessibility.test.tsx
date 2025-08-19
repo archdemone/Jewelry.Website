@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import { axe } from 'jest-axe';
 import HomePage from '@/app/page';
 import CategoryPage from '@/components/products/CategoryPage';
@@ -101,6 +101,11 @@ describe('Accessibility', () => {
   it('homepage has no violations', async () => {
     const { container } = render(<HomePage />);
 
+    // Wait for all async operations to complete
+    await waitFor(() => {
+      expect(container).toBeInTheDocument();
+    });
+
     try {
       const results = await axe(container);
       (expect(results) as any).toHaveNoViolations();
@@ -119,6 +124,11 @@ describe('Accessibility', () => {
         categoryImage="/wedding-rings.jpg"
       />
     );
+
+    // Wait for all async operations to complete
+    await waitFor(() => {
+      expect(container).toBeInTheDocument();
+    });
 
     try {
       const results = await axe(container);
