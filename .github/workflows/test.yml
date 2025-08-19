@@ -10,18 +10,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-    services:
-      postgres:
-        image: postgres:15
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: testdb
-        options: >-
-          --health-cmd="pg_isready -U postgres" --health-interval=10s --health-timeout=5s --health-retries=5
-
     steps:
       - uses: actions/checkout@v4
 
@@ -37,20 +25,20 @@ jobs:
       - name: Generate Prisma Client
         run: npx prisma generate
 
-      - name: Setup env
+      - name: Setup test environment
         run: |
-          cp .env.example .env.test || true
-          echo "NEXTAUTH_URL=http://localhost:3000" >> .env.test
-          echo "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/testdb" >> .env.test
-          echo "STRIPE_SECRET_KEY=sk_test_123" >> .env.test
-          echo "NEXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_test_123" >> .env.test
+          echo "DATABASE_URL=file:./test.db" >> $GITHUB_ENV
+          echo "NEXTAUTH_URL=http://localhost:3000" >> $GITHUB_ENV
+          echo "NEXTAUTH_SECRET=test-secret-key" >> $GITHUB_ENV
+          echo "STRIPE_SECRET_KEY=sk_test_123" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_test_123" >> $GITHUB_ENV
 
-      - name: Prepare DB
+      - name: Prepare test database
         run: |
           npx prisma migrate deploy
           npx prisma db seed
         env:
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/testdb
+          DATABASE_URL: file:./test.db
 
       - name: Cache Playwright
         uses: actions/cache@v4
@@ -72,21 +60,31 @@ jobs:
 
       - name: Run unit tests
         run: npm run test:ci
+        env:
+          DATABASE_URL: file:./test.db
 
       - name: Build and start app
         run: |
           npm run build
           npm run start &
           npx wait-on http://localhost:3000
+        env:
+          DATABASE_URL: file:./test.db
 
       - name: Run Playwright E2E tests
         run: npm run test:e2e
+        env:
+          DATABASE_URL: file:./test.db
 
       - name: Run Cypress E2E tests
         run: npm run cypress:run
+        env:
+          DATABASE_URL: file:./test.db
 
       - name: Run Lighthouse
         run: npm run test:lighthouse
+        env:
+          DATABASE_URL: file:./test.db
 
       - name: Upload coverage
         uses: codecov/codecov-action@v4

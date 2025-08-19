@@ -179,7 +179,7 @@ export default function CategoryPage({
         
         // Set categories based on available products
         const uniqueCategories = new Set();
-        allProducts.forEach(product => {
+        products.forEach((product: any) => {
           if (product.category) uniqueCategories.add(product.category);
           if (product.subCategory) uniqueCategories.add(product.subCategory);
         });
@@ -261,10 +261,10 @@ export default function CategoryPage({
     
     if (newWishlist.has(productId)) {
       newWishlist.delete(productId);
-      setWishlistAction({ action: 'removed', product });
+      setWishlistAction({ action: 'removed', product: product || null });
     } else {
       newWishlist.add(productId);
-      setWishlistAction({ action: 'added', product });
+      setWishlistAction({ action: 'added', product: product || null });
     }
     
     setWishlistItems(newWishlist);
@@ -461,7 +461,7 @@ export default function CategoryPage({
                 {/* Product Image */}
                 <div className="relative aspect-square overflow-hidden border-2 border-black">
                   <Image
-                    src={product.images?.[0] || getProductImageFallback()}
+                    src={product.images?.[0] || getProductImageFallback({ productSlug: product.slug, name: product.name })}
                     alt={product.name}
                     fill
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
