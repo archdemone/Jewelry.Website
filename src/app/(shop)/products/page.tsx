@@ -153,9 +153,12 @@ export default function ProductsPage() {
       try {
         // Load all products from API
         const response = await fetch('/api/admin/products');
+        let loadedProducts: Product[] = [];
+        
         if (response.ok) {
           const allProducts = await response.json();
           setProducts(allProducts);
+          loadedProducts = allProducts;
         } else {
           console.error('Failed to load products');
           // Fallback to sample data if API fails
@@ -208,11 +211,12 @@ export default function ProductsPage() {
           },
         ];
         setProducts(sampleProducts);
+        loadedProducts = sampleProducts;
       }
       
-      // Set categories based on available products
+      // Set categories based on loaded products
       const uniqueCategories = new Set();
-      products.forEach(product => {
+      loadedProducts.forEach((product: Product) => {
         if (product.category) uniqueCategories.add(product.category);
         if (product.subCategory) uniqueCategories.add(product.subCategory);
       });
