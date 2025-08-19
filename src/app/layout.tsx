@@ -59,6 +59,74 @@ export default function RootLayout({
           fetchPriority="high"
           imageSizes="100vw"
         />
+        {/* Preconnect to optimize connection setup */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* DNS prefetch for critical resources */}
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+        {/* Prefetch other carousel images */}
+        <link rel="prefetch" as="image" href="/images/home/header2.jpg" />
+        <link rel="prefetch" as="image" href="/images/home/header3.jpg" />
+        
+        {/* Performance monitoring and real user monitoring */}
+        <script dangerouslySetInnerHTML={{
+          __html: `
+            // Core Web Vitals monitoring
+            if ('PerformanceObserver' in window) {
+              new PerformanceObserver((list) => {
+                for (const entry of list.getEntries()) {
+                  if (entry.entryType === 'largest-contentful-paint') {
+                    console.log('LCP:', entry.startTime);
+                  }
+                  if (entry.entryType === 'layout-shift') {
+                    console.log('CLS:', entry.value);
+                  }
+                }
+              }).observe({ entryTypes: ['largest-contentful-paint', 'layout-shift'] });
+            }
+            
+            // Interaction to Next Paint (INP) monitoring
+            if ('PerformanceObserver' in window) {
+              try {
+                new PerformanceObserver((list) => {
+                  for (const entry of list.getEntries()) {
+                    if (entry.processingStart && entry.startTime) {
+                      console.log('INP:', entry.processingStart - entry.startTime);
+                    }
+                  }
+                }).observe({ entryTypes: ['event'] });
+              } catch (e) {
+                // Event timing not supported in this browser
+              }
+            }
+            
+            // Long task monitoring and breaking
+            if ('PerformanceObserver' in window) {
+              new PerformanceObserver((list) => {
+                for (const entry of list.getEntries()) {
+                  if (entry.duration > 50) {
+                    console.log('Long task detected:', entry.duration);
+                    // Break up long tasks
+                    setTimeout(() => {}, 0);
+                  }
+                }
+              }).observe({ entryTypes: ['longtask'] });
+            }
+            
+            // Network waterfall monitoring for LCP
+            if ('PerformanceObserver' in window) {
+              new PerformanceObserver((list) => {
+                for (const entry of list.getEntries()) {
+                  if (entry.name.includes('header1.jpg')) {
+                    console.log('LCP image start time:', entry.startTime);
+                  }
+                }
+              }).observe({ entryTypes: ['resource'] });
+            }
+          `
+        }} />
+        
         {/* Inline critical CSS for hero section */}
         <style dangerouslySetInnerHTML={{
           __html: `

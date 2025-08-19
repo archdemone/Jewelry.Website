@@ -37,6 +37,11 @@ const nextConfig = {
       'zod',
       '@hookform/resolvers'
     ],
+    // Reduce bundle sizes
+    bundlePagesExternals: true,
+    serverComponentsExternalPackages: ['@prisma/client'],
+    // Optimize error pages
+    optimizeErrorOverlay: false,
     optimizeCss: true,
     turbo: {
       rules: {
@@ -167,13 +172,13 @@ const nextConfig = {
         // Ultra-aggressive optimization
         splitChunks: {
           chunks: 'all',
-          minSize: 20000, // Reduced from default
-          maxSize: 244000, // Reduced chunk size
+          minSize: 15000, // Further reduced for smaller chunks
+          maxSize: 150000, // Reduced chunk size for better loading
           minChunks: 1,
-          maxAsyncRequests: 30,
-          maxInitialRequests: 30,
+          maxAsyncRequests: 50,
+          maxInitialRequests: 50,
           automaticNameDelimiter: '~',
-          enforceSizeThreshold: 50000,
+          enforceSizeThreshold: 30000,
           cacheGroups: {
             defaultVendors: {
               test: /[\\/]node_modules[\\/]/,
