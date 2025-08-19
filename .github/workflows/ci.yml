@@ -52,8 +52,8 @@ jobs:
           echo "NEXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_test_123" >> $GITHUB_ENV
           echo "NODE_ENV=production" >> $GITHUB_ENV
 
-      # - name: Type Check
-      #   run: npm run type-check:workflow
+      - name: Type Check
+        run: npm run type-check:ci
       #   env:
       #     DATABASE_URL: file:./test.db
       #     NEXTAUTH_URL: http://localhost:3000
@@ -63,7 +63,7 @@ jobs:
       #     NODE_ENV: production
 
       - name: Run linting
-        run: npm run lint:no-typescript -- --max-warnings 0
+        run: npm run lint
         env:
           DATABASE_URL: file:./test.db
           NEXTAUTH_URL: http://localhost:3000

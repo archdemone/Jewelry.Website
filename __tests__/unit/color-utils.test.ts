@@ -9,8 +9,8 @@ describe('readableTextColor', () => {
 
   it('prefers dark text on light backgrounds', () => {
     // Use Jest assertions
-    expect(readableTextColor('#f9fafb')).toEqual('#111827');
-    expect(readableTextColor('#ca8a04')).toEqual('#111827');
+    expect(readableTextColor('#f9fafb')).to.equal('#111827');
+    expect(readableTextColor('#ca8a04')).to.equal('#111827');
   });
 });
 
