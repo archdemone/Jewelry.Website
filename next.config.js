@@ -31,7 +31,11 @@ const nextConfig = {
       'react-hook-form',
       'date-fns',
       'clsx',
-      'tailwind-merge'
+      'tailwind-merge',
+      'react-hot-toast',
+      'zustand',
+      'zod',
+      '@hookform/resolvers'
     ],
     optimizeCss: true,
     turbo: {
@@ -47,12 +51,14 @@ const nextConfig = {
     serverComponentsExternalPackages: ['@prisma/client'],
     // Advanced optimizations
     taint: true, // Taint tracking for better caching
+    // Ultra-aggressive optimizations
+    webpackBuildWorker: true,
   },
   images: {
     domains: ['localhost'],
     formats: ['image/webp', 'image/avif'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256],
     minimumCacheTTL: 31536000, // 1 year
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
@@ -75,9 +81,14 @@ const nextConfig = {
   generateEtags: false, // Disable ETags for better caching
   onDemandEntries: {
     // Period (in ms) where the server will keep pages in the buffer
-    maxInactiveAge: 25 * 1000,
+    maxInactiveAge: 15 * 1000, // Reduced from 25s to 15s
     // Number of pages that should be kept simultaneously without being disposed
-    pagesBufferLength: 2,
+    pagesBufferLength: 1, // Reduced from 2 to 1
+  },
+  // Ultra-aggressive performance settings
+  trailingSlash: false,
+  async redirects() {
+    return [];
   },
   webpack: (config, { isServer, dev, webpack }) => {
     // Fix for recharts and react-is
@@ -96,6 +107,29 @@ const nextConfig = {
         assert: false,
         os: false,
         path: false,
+        util: false,
+        buffer: false,
+        process: false,
+        querystring: false,
+        punycode: false,
+        domain: false,
+        dns: false,
+        dgram: false,
+        cluster: false,
+        child_process: false,
+        worker_threads: false,
+        inspector: false,
+        repl: false,
+        readline: false,
+        vm: false,
+        perf_hooks: false,
+        async_hooks: false,
+        events: false,
+        string_decoder: false,
+        timers: false,
+        tty: false,
+        v8: false,
+        wasi: false,
       };
     }
     
@@ -123,50 +157,88 @@ const nextConfig = {
           ...config.optimization.minimizer,
           new webpack.optimize.AggressiveMergingPlugin(),
         ],
-      };
-      
-      // Split chunks for better caching
-      config.optimization.splitChunks = {
-        chunks: 'all',
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-            priority: 10,
-            enforce: true,
-          },
-          common: {
-            name: 'common',
-            minChunks: 2,
-            chunks: 'all',
-            enforce: true,
-            priority: 5,
-          },
-          // Separate heavy libraries
-          framer: {
-            test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
-            name: 'framer-motion',
-            chunks: 'all',
-            priority: 20,
-          },
-          radix: {
-            test: /[\\/]node_modules[\\/]@radix-ui[\\/]/,
-            name: 'radix-ui',
-            chunks: 'all',
-            priority: 15,
-          },
-          stripe: {
-            test: /[\\/]node_modules[\\/]@stripe[\\/]/,
-            name: 'stripe',
-            chunks: 'all',
-            priority: 15,
-          },
-          recharts: {
-            test: /[\\/]node_modules[\\/]recharts[\\/]/,
-            name: 'recharts',
-            chunks: 'all',
-            priority: 15,
+        // Ultra-aggressive optimization
+        splitChunks: {
+          chunks: 'all',
+          minSize: 20000, // Reduced from default
+          maxSize: 244000, // Reduced chunk size
+          minChunks: 1,
+          maxAsyncRequests: 30,
+          maxInitialRequests: 30,
+          automaticNameDelimiter: '~',
+          enforceSizeThreshold: 50000,
+          cacheGroups: {
+            defaultVendors: {
+              test: /[\\/]node_modules[\\/]/,
+              priority: -10,
+              reuseExistingChunk: true,
+            },
+            default: {
+              minChunks: 2,
+              priority: -20,
+              reuseExistingChunk: true,
+            },
+            // Separate heavy libraries
+            framer: {
+              test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
+              name: 'framer-motion',
+              chunks: 'all',
+              priority: 20,
+              enforce: true,
+            },
+            radix: {
+              test: /[\\/]node_modules[\\/]@radix-ui[\\/]/,
+              name: 'radix-ui',
+              chunks: 'all',
+              priority: 15,
+              enforce: true,
+            },
+            stripe: {
+              test: /[\\/]node_modules[\\/]@stripe[\\/]/,
+              name: 'stripe',
+              chunks: 'all',
+              priority: 15,
+              enforce: true,
+            },
+            recharts: {
+              test: /[\\/]node_modules[\\/]recharts[\\/]/,
+              name: 'recharts',
+              chunks: 'all',
+              priority: 15,
+              enforce: true,
+            },
+            // Separate React and React DOM
+            react: {
+              test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+              name: 'react',
+              chunks: 'all',
+              priority: 25,
+              enforce: true,
+            },
+            // Separate Next.js
+            next: {
+              test: /[\\/]node_modules[\\/]next[\\/]/,
+              name: 'next',
+              chunks: 'all',
+              priority: 20,
+              enforce: true,
+            },
+            // Separate utilities
+            utils: {
+              test: /[\\/]node_modules[\\/](clsx|tailwind-merge|class-variance-authority)[\\/]/,
+              name: 'utils',
+              chunks: 'all',
+              priority: 10,
+              enforce: true,
+            },
+            // Separate forms
+            forms: {
+              test: /[\\/]node_modules[\\/](react-hook-form|@hookform|zod)[\\/]/,
+              name: 'forms',
+              chunks: 'all',
+              priority: 10,
+              enforce: true,
+            },
           },
         },
       };
@@ -182,6 +254,29 @@ const nextConfig = {
           })
         );
       }
+
+      // Add compression plugin for better gzip
+      const CompressionPlugin = require('compression-webpack-plugin');
+      config.plugins.push(
+        new CompressionPlugin({
+          filename: '[path][base].gz',
+          algorithm: 'gzip',
+          test: /\.(js|css|html|svg)$/,
+          threshold: 10240,
+          minRatio: 0.8,
+        })
+      );
+
+      // Add Brotli compression
+      config.plugins.push(
+        new CompressionPlugin({
+          filename: '[path][base].br',
+          algorithm: 'brotliCompress',
+          test: /\.(js|css|html|svg)$/,
+          threshold: 10240,
+          minRatio: 0.8,
+        })
+      );
     }
 
     // Optimize CSS extraction
@@ -191,6 +286,7 @@ const nextConfig = {
         test: /\.(css|scss)$/,
         chunks: 'all',
         enforce: true,
+        priority: 30,
       };
     }
     
@@ -218,6 +314,10 @@ const nextConfig = {
             key: 'Referrer-Policy',
             value: 'strict-origin-when-cross-origin',
           },
+          {
+            key: 'Permissions-Policy',
+            value: 'camera=(), microphone=(), geolocation=()',
+          },
         ],
       },
       {
@@ -226,6 +326,10 @@ const nextConfig = {
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
+          },
+          {
+            key: 'Accept-Encoding',
+            value: 'gzip, deflate, br',
           },
         ],
       },
@@ -236,6 +340,10 @@ const nextConfig = {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
           },
+          {
+            key: 'Accept-Encoding',
+            value: 'gzip, deflate, br',
+          },
         ],
       },
       {
@@ -244,6 +352,27 @@ const nextConfig = {
           {
             key: 'Cache-Control',
             value: 'public, max-age=31536000, immutable',
+          },
+          {
+            key: 'Accept-Encoding',
+            value: 'gzip, deflate, br',
+          },
+        ],
+      },
+      {
+        source: '/sw.js',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'no-cache, no-store, must-revalidate',
+          },
+          {
+            key: 'Pragma',
+            value: 'no-cache',
+          },
+          {
+            key: 'Expires',
+            value: '0',
           },
         ],
       },
