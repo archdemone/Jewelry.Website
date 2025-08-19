@@ -2,7 +2,7 @@ name: UI PR Checks
 
 on:
   push:
-    branches: [main, develop, ui-stable]
+    branches: [main, develop, ui-stable, fix/type-errors]
   pull_request:
     branches: [main, develop, ui-stable]
 
