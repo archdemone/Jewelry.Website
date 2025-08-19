@@ -58,6 +58,29 @@ export const metadata = {
   alternates: {
     canonical: '/',
   },
+  // Structured data for better SEO
+  other: {
+    'application/ld+json': JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      name: 'J&M Jewelry',
+      url: 'https://jm-jewelry.com',
+      logo: 'https://jm-jewelry.com/images/logo.png',
+      description: 'Handcrafted rings with passion, designed for your forever moments',
+      address: {
+        '@type': 'PostalAddress',
+        addressCountry: 'US',
+      },
+      contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'customer service',
+      },
+      sameAs: [
+        'https://facebook.com/jmjewelry',
+        'https://instagram.com/jmjewelry',
+      ],
+    }),
+  },
 };
 
 export default function Home() {
