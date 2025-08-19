@@ -4,7 +4,7 @@ import React, { HTMLAttributes, ReactNode } from 'react';
 declare module 'framer-motion' {
   interface MotionProps {
     className?: string;
-    onClick?: () => void;
+    onClick?: (event?: any) => void;
     onMouseEnter?: () => void;
     onMouseLeave?: () => void;
     id?: string;
@@ -484,7 +484,7 @@ declare global {
         whileInView?: any;
         viewport?: any;
         href?: string;
-        onClick?: () => void;
+        onClick?: (event?: any) => void;
         className?: string;
       };
       'motion.section': HTMLAttributes<HTMLElement> & {
