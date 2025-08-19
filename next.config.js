@@ -281,6 +281,13 @@ const nextConfig = {
 
     // Optimize CSS extraction
     if (!isServer) {
+      // Ensure splitChunks and cacheGroups exist
+      if (!config.optimization.splitChunks) {
+        config.optimization.splitChunks = {};
+      }
+      if (!config.optimization.splitChunks.cacheGroups) {
+        config.optimization.splitChunks.cacheGroups = {};
+      }
       config.optimization.splitChunks.cacheGroups.styles = {
         name: 'styles',
         test: /\.(css|scss)$/,
