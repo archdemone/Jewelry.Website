@@ -33,8 +33,14 @@ jobs:
       - name: Type check (strict)
         run: npm run type-check:strict
 
-      - name: Lint
-        run: npm run lint
+      - name: Lint (no warnings allowed)
+        run: |
+          if npm run -s lint:ci > /dev/null 2>&1; then
+            npm run lint:ci
+          else
+            npx next lint --max-warnings=0
+          fi
 
       - name: Unit tests
         run: npm run test:ci
+
