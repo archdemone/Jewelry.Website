@@ -5,9 +5,8 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Heart, Home, Users, Award } from 'lucide-react';
-import { getImageUrlWithVersion } from '@/lib/utils';
 
-
+import Image from 'next/image';
 
 export default function ArtisanContent() {
   // Avoid hydration mismatch by rendering only after mount
@@ -20,20 +19,23 @@ export default function ArtisanContent() {
       {/* Hero Section - Personal Introduction */}
       <section className="relative h-[55vh] min-h-[480px] overflow-hidden bg-gradient-to-br from-stone-100 to-stone-200">
         <div className="absolute inset-0">
-          <img
-            src={getImageUrlWithVersion("/images/artisan/bedroom-workshop-hero.jpg")}
+          <Image
+            src="/images/artisan/bedroom-workshop-hero.jpg"
             alt="Home workshop where each ring is crafted"
-            className="absolute inset-0 h-full w-full object-cover"
+            width={600}
+            height={400}
+            className="absolute inset-0 h-full w-full object-cover opacity-70"
+            sizes="(max-width: 768px) 100vw, 50vw"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
         </div>
 
-        <div className="container relative z-10 flex h-full items-center justify-center">
+        <div className="container relative z-10 flex h-full items-center">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="max-w-3xl text-center"
+            className="max-w-3xl"
           >
             <h1 className="mb-4 font-serif text-5xl text-white md:text-6xl">Meet the Artisan</h1>
             <p className="text-xl leading-relaxed text-orange-400">
@@ -112,11 +114,14 @@ export default function ArtisanContent() {
                 </p>
                 <div className="mt-4">
                   <div className="relative h-48 w-full overflow-hidden rounded-lg">
-                    <img
-                      src={getImageUrlWithVersion("/images/artisan/early-work-2015.jpg")}
-                       alt="Early jewelry experiments from 2015"
-                       className="h-full w-full object-cover"
-                     />
+                    <Image
+                      src="/images/artisan/early-work-2015.jpg"
+                      alt="Early jewelry experiments from 2015"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 400px"
+                      priority={false}
+                    />
                   </div>
                 </div>
               </div>
@@ -142,10 +147,13 @@ export default function ArtisanContent() {
                 </p>
                 <div className="mt-4">
                   <div className="relative h-48 w-full overflow-hidden rounded-lg">
-                    <img
-                      src={getImageUrlWithVersion("/images/artisan/first-inlay-rings-2020.jpg")}
+                    <Image
+                      src="/images/artisan/first-inlay-rings-2020.jpg"
                       alt="First gem inlay rings with carbon fiber"
-                      className="h-full w-full object-cover"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 400px"
+                      priority={false}
                     />
                   </div>
                 </div>
@@ -235,10 +243,13 @@ export default function ArtisanContent() {
               viewport={{ once: true }}
             >
               <div className="relative h-64 w-full overflow-hidden rounded-lg shadow-lg">
-                <img
-                  src={getImageUrlWithVersion("/images/artisan/bedroom-workshop-1.jpg")}
+                <Image
+                  src="/images/artisan/bedroom-workshop-1.jpg"
                   alt="My bedroom workshop setup"
-                  className="h-full w-full object-cover"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 600px"
+                  priority={false}
                 />
               </div>
               <p className="mt-2 text-center text-sm text-gray-500">
@@ -252,10 +263,13 @@ export default function ArtisanContent() {
               viewport={{ once: true }}
             >
               <div className="relative h-64 w-full overflow-hidden rounded-lg shadow-lg">
-                <img
-                  src={getImageUrlWithVersion("/images/artisan/workshop-tools.jpg")}
+                <Image
+                  src="/images/artisan/workshop-tools.jpg"
                   alt="Ring making tools and materials"
-                  className="h-full w-full object-cover"
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 600px"
+                  priority={false}
                 />
               </div>
               <p className="mt-2 text-center text-sm text-gray-500">

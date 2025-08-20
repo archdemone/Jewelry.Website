@@ -4,12 +4,10 @@ import React, { useState } from 'react';
 import { Menu, X, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useSession } from 'next-auth/react';
 
 export function MobileMenu() {
   const [isOpen, setIsOpen] = useState(false);
   const [showCollections, setShowCollections] = useState(false);
-  const { data: session } = useSession();
 
   const ringCollections = [
     { name: "Women's Rings", href: '/products/womens' },
@@ -56,7 +54,7 @@ export function MobileMenu() {
             <nav className="space-y-2 p-4">
               <Link
                 href="/"
-                className="block rounded-lg px-4 py-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-primary"
+                className="block rounded-lg px-4 py-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600"
                 onClick={handleMenuToggle}
               >
                 Home
@@ -64,7 +62,7 @@ export function MobileMenu() {
 
               <Link
                 href="/products"
-                className="block rounded-lg px-4 py-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-primary"
+                className="block rounded-lg px-4 py-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600"
                 onClick={handleMenuToggle}
               >
                 Products
@@ -74,7 +72,7 @@ export function MobileMenu() {
               <div className="relative">
                 <button
                   onClick={handleCollectionsToggle}
-                  className="flex w-full items-center justify-between rounded-lg px-4 py-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-primary"
+                  className="flex w-full items-center justify-between rounded-lg px-4 py-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600"
                   aria-expanded={showCollections}
                 >
                   <span>Ring Collections</span>
@@ -97,7 +95,7 @@ export function MobileMenu() {
                           <Link
                             key={collection.name}
                             href={collection.href}
-                            className="block rounded-lg px-4 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-50 hover:text-primary"
+                            className="block rounded-lg px-4 py-2 text-sm text-gray-600 transition-colors hover:bg-gray-50 hover:text-gold-600"
                             onClick={handleMenuToggle}
                           >
                             {collection.name}
@@ -111,7 +109,7 @@ export function MobileMenu() {
 
               <Link
                 href="/about-artisan"
-                className="block rounded-lg px-4 py-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-primary"
+                className="block rounded-lg px-4 py-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600"
                 onClick={handleMenuToggle}
               >
                 The Artisan
@@ -119,7 +117,7 @@ export function MobileMenu() {
 
               <Link
                 href="/crafting-process"
-                className="block rounded-lg px-4 py-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-primary"
+                className="block rounded-lg px-4 py-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600"
                 onClick={handleMenuToggle}
               >
                 Process
@@ -127,28 +125,26 @@ export function MobileMenu() {
 
               <Link
                 href="/contact"
-                className="block rounded-lg px-4 py-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-primary"
+                className="block rounded-lg px-4 py-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600"
                 onClick={handleMenuToggle}
               >
                 Contact
               </Link>
 
               {/* Admin Panel Link - Only show if user is logged in */}
-              {session?.user && (
-                <Link
-                  href="/admin"
-                  className="block rounded-lg px-4 py-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-primary border-t border-gray-100"
-                  onClick={handleMenuToggle}
-                >
-                  <div className="flex items-center gap-2">
-                    <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                    </svg>
-                    Admin Panel
-                  </div>
-                </Link>
-              )}
+              <Link
+                href="/admin"
+                className="block rounded-lg px-4 py-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600 border-t border-gray-100"
+                onClick={handleMenuToggle}
+              >
+                <div className="flex items-center gap-2">
+                  <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  Admin Panel
+                </div>
+              </Link>
             </nav>
           </motion.div>
         )}

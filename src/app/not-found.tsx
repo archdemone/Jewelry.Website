@@ -1,5 +1,6 @@
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
+import { Input } from '@/components/ui/input';
 
 export default function NotFound() {
   return (
@@ -13,11 +14,7 @@ export default function NotFound() {
             We can’t find the page you’re looking for. Try searching or explore popular categories.
           </p>
           <div className="mt-6">
-            <input 
-              type="text" 
-              placeholder="Search products" 
-              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:border-black focus:outline-none"
-            />
+            <Input placeholder="Search products" />
           </div>
           <div className="mt-6 grid gap-3 sm:grid-cols-2">
             <a href="/products" className="rounded-md border p-4 text-left">

@@ -11,7 +11,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Mail, Gift, Sparkles, CheckCircle } from 'lucide-react';
-import toast from 'react-hot-toast';
+import { showToast } from '@/components/ui/SimpleToast';
 
 export type NewsletterPopupProps = {
   initialDelayMs?: number;
@@ -76,7 +76,7 @@ export default function NewsletterPopup({
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-      toast.error('Please enter a valid email address');
+      showToast('Please enter a valid email address', 'error');
       return;
     }
 
@@ -87,14 +87,14 @@ export default function NewsletterPopup({
       setIsSuccess(true);
       // Mark user as subscribed so popup won't show again
       localStorage.setItem('newsletter_subscribed', 'true');
-      toast.success('Welcome to our community!');
+      showToast('Welcome to our community!', 'success');
       setTimeout(() => {
         setOpen(false);
         setIsSuccess(false);
         setEmail('');
       }, 2000);
     } catch (error) {
-      toast.error('Something went wrong. Please try again.');
+      showToast('Something went wrong. Please try again.', 'error');
     } finally {
       setIsSubmitting(false);
     }
