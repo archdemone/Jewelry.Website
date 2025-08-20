@@ -1,0 +1,15 @@
+---
+alwaysApply: true
+---
+
+Memory 3 — Safety, Promotion & Reporting (how to behave):
+
+Baseline protection: Do not modify main unless I say “promote/apply patch.”
+
+Promotion flow: In sandbox npm run sandbox:patch → in main npm run sandbox:apply → commit. Never copy files manually.
+
+Installs: If sandbox install fails, sync package.json + package-lock.json from main, then npm ci. Retry once, then STOP and report.
+
+Reporting: Always show commands + exit codes, npm run status, and last 20–50 log lines for each server. Do not change/disable tests to pass. Fail if logs contain Error/Unhandled/TypeError.
+
+Performance targets (context, not a trigger): aim for LCP < 2.5s, TBT < 300ms, CLS < 0.1. Do not start “optimizing” unless I ask.
