@@ -1,47 +1,30 @@
-# API Documentation
+# API Documentation (App Router)
 
-## Authentication
+## Auth model
+- Browser/API calls rely on **NextAuth session cookies** (server: `getServerSession`).
+- Admin-only routes require `role=ADMIN` (and MFA if `ADMIN_MFA_REQUIRED=true`).
 
-All API requests require authentication via JWT token:
+## Stable endpoints (today)
+### GET /api/healthz
+- **200 OK** when server is healthy.
+- No auth. Used by CI and uptime checks.
 
-```
-Authorization: Bearer <token>
-```
+### POST /api/contact
+- Accepts JSON `{ name, email, message }`.
+- **Validation + rate limiting**; returns `400` on invalid, `429` when limited.
+- No auth required.
 
-## Endpoints
+### POST /api/upload  *(admin only)*
+- Accepts image file; validates magic bytes; creates WebP/AVIF variants.
+- **Requires admin session** (and MFA if enforced). Returns `403` if unauthorized.
 
-### Products
+## Optional / planned endpoints
+> Product/Cart/Order endpoints are implemented behind pages/components. If/when you expose public REST for these, document the contract here and add auth + rate limits.
 
-- `GET /api/products` - List products
-- `GET /api/products/:id` - Get product
-- `POST /api/products` - Create product (admin)
-- `PUT /api/products/:id` - Update product (admin)
-- `DELETE /api/products/:id` - Delete product (admin)
+## Errors
+- `400` invalid input • `401` not authenticated • `403` not authorized  
+- `404` not found • `405` method not allowed • `429` rate limit • `5xx` server error
 
-### Orders
-
-- `GET /api/orders` - List user orders
-- `GET /api/orders/:id` - Get order details
-- `POST /api/orders` - Create order
-- `PUT /api/orders/:id/status` - Update status (admin)
-
-### Cart
-
-- `GET /api/cart` - Get cart
-- `POST /api/cart/items` - Add item
-- `PUT /api/cart/items/:id` - Update quantity
-- `DELETE /api/cart/items/:id` - Remove item
-
-## Rate Limiting
-
-- 100 requests per minute per IP
-- 1000 requests per hour per user
-
-## Error Codes
-
-- 400: Bad Request
-- 401: Unauthorized
-- 403: Forbidden
-- 404: Not Found
-- 429: Too Many Requests
-- 500: Internal Server Error
+## Notes
+- Use `credentials: 'include'` for browser `fetch` so cookies are sent.
+- Server code should call `getServerSession()` and role-check helpers.
