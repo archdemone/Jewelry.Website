@@ -17,6 +17,7 @@
     "test-ci-flow": "node scripts/test-ci-flow.js",
     "start": "next start",
     "lint": "next lint",
+    "lint:ci": "next lint --max-warnings=0",
     "lint:no-typescript": "eslint src --ext .js,.jsx,.ts,.tsx --max-warnings 20",
     "analyze": "set ANALYZE=true && npm run build",
     "size-limit": "node scripts/check-bundle-size.js",
