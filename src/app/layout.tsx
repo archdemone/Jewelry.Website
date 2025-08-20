@@ -158,11 +158,23 @@ export default function RootLayout({
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* <link rel="preload" href="/images/header/hero-bg.webp" as="image" type="image/webp" /> */}
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#ffffff" />
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/manifest.webmanifest" />
+        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+        
+        {/* Preload critical images */}
+        <link rel="preload" as="image" href="/images/header/hero-1.jpg" type="image/webp" />
+        
+
+        
+        {/* Preload service worker */}
+        <link rel="preload" href="/sw.js" as="script" />
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <meta name="theme-color" content="#d4af37" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <meta name="apple-mobile-web-app-title" content="J&M Jewelry" />
+        <link rel="apple-touch-icon" href="/images/icon-192x192.png" />
         <link rel="manifest" href="/manifest.webmanifest" />
       </head>
       <body className={`${inter.className} antialiased`}>

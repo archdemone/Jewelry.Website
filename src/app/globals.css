@@ -98,6 +98,24 @@ p, span, div {
 /* Stable text rendering */
 .text-stable {
   font-display: swap;
+}
+
+/* Content visibility optimization for below-the-fold sections */
+.section-below-fold {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 800px;
+}
+
+/* Optimize hero section for LCP */
+.hero-section {
+  contain: layout style paint;
+  contain-intrinsic-size: 1px 600px;
+  aspect-ratio: 16/9;
+  min-height: 400px;
+  max-height: 600px;
+}
+
+body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
