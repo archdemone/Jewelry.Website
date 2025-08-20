@@ -33,7 +33,7 @@ jobs:
         run: npm run type-check:strict
 
       - name: Lint
-        run: npm run lint
+        run: npm run lint:ci
 
       - name: Build (Next.js)
         run: npm run build
