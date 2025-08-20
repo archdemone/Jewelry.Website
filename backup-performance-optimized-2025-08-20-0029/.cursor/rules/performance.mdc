@@ -2,90 +2,40 @@
 alwaysApply: true
 ---
 
-# 🚦 Master Rulebook for Jewelry Shop Website (Frontend + Backend)
+7) Release process (future live)
 
-**Role:**  
-Always enforce **performance, stability, SEO, accessibility, and security** for this Next.js + Node.js project. Prevent regressions by applying these rules automatically.  
+Merge to main (PR green).
 
----
+CI build → push image or deploy preview.
 
-## 🔹 Performance & Web Vitals (Frontend)
-- **Targets:** LCP <2.5s, TBT <300ms, CLS <0.1, FCP <1.8s.  
-- **Hero Image:**  
-  - Use `<Image priority sizes="100vw" />` with WebP/AVIF ≤200KB.  
-  - Preload hero with `<link rel="preload" as="image" />`.  
-- **Fonts:** Use `next/font` with `display: "swap"`.  
-- **JS & CSS:**  
-  - Lazy-load non-critical components via `dynamic()` or `ssr:false`.  
-  - Keep critical CSS minimal (only above-the-fold).  
-  - Bundle budget: First Load JS ≤200KB gzip.  
-- **Third-party scripts:** load with `strategy="lazyOnload"`.  
+Smoke live: /, /api/healthz → 200.
 
----
+Perf check (Lighthouse CI or Web Vitals).
 
-## 🔹 Code Hygiene (Frontend)
-- Only use `"use client"` where necessary.  
-- Imports: **literal paths only** (no template strings, no barrel imports).  
-- Replace heavy libs with lightweight ones (`date-fns` > `moment`, `lodash-es` > `lodash`).  
-- Reserve space for all images/components → no layout shifts.  
-- All interactive elements require accessible labels/semantic HTML.  
+Promote to production environment.
 
----
+Rollback plan: redeploy previous artifact (tagged release) in one command.
 
-## 🔹 Backend (Node.js / API)
-- **Performance:**  
-  - Use async/await with modern APIs (`fs/promises`).  
-  - Cache heavy/slow queries (Redis, ISR, revalidate).  
-  - Always gzip/Brotli compress responses.  
-- **Security:**  
-  - Sanitize all inputs (XSS, SQL injection safe).  
-  - Never expose secrets in frontend bundles.  
-  - Apply security headers (`X-Frame-Options`, `X-Content-Type-Options`, CSP).  
-  - Cookies must be `HttpOnly`, `Secure`, `SameSite`.  
-- **Error Handling:**  
-  - Wrap async code in try/catch.  
-  - Return consistent JSON errors (`{ error, message }`).  
-  - Log safely without leaking sensitive stack traces.  
+8) Must-have checks before merge
 
----
+npm run type-check:strict passes.
 
-## 💎 Project-Specific Rules (Jewelry Shop Website)
+npm run lint passes (no disabled rules added).
 
-### SEO & Marketing
-- Every `<Image>` must have descriptive `alt` text with jewelry keywords.  
-- Each page must define `title`, `meta description`, and `og:image`.  
-- Product pages must include structured data (JSON-LD) with **price, brand, availability**.  
+npm run build passes.
 
-### E-Commerce Performance
-- Product images must be **≤150KB WebP** (unless zoom feature requires larger).  
-- Enable **lazy loading** for product gallery thumbnails.  
-- Use `priority` only for the first hero/product image, never for all.  
+Local smoke (sandbox prod on :3001): / and /api/healthz return 200; logs show no Error/Unhandled/TypeError.
 
-### UI Consistency
-- Buttons must follow shared design system (no inline one-off styles).  
-- Navbar + footer = consistent across all pages.  
-- Use shared components (Tailwind or internal UI library) to prevent drift.  
+9) Fast commands you’ll actually use
 
-### Accessibility
-- All clickable elements must be keyboard accessible (`tabindex`, `:focus`).  
-- Correct heading hierarchy (`h1` → `h2` → `h3`).  
-- Forms must have labels and error messages.  
+Start dev safe: npm run dev:safe
 
-### Backend / API
-- Product listings must be paginated (no >50 items at once).  
-- Cache product queries for faster response.  
-- Use slugs for product URLs (e.g., `/products/gold-ring-rose`), not raw IDs.  
+Start prod both: npm run run:both
 
-### Deployment & Stability
-- Homepage must **always build statically** (ISR or `force-static`).  
-- Fail build if Lighthouse LCP or TBT targets are not met.  
-- Monitor uptime & errors (Sentry/LogRocket frontend, Winston backend).  
+Sandbox dev only: npm run dev:sandbox
 
----
+Stop servers: npm run stop
 
-## 🔹 Workflow & Verification
-- Run `next build`, `lint`, and type-check before commit.  
-- Run Lighthouse (mobile) → confirm vitals meet targets.  
-- Use bundle analyzer on builds → fail PRs if limits exceeded.  
-- Every fix/feature requires a short explanation of **why** it improves performance, stability, or security.  
-- Add/update tests (frontend: Jest/Playwright, backend: Jest).  
+Status: npm run status
+
+Promote: npm run sandbox:patch → npm run sandbox:apply

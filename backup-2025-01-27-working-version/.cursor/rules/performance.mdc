@@ -2,90 +2,59 @@
 alwaysApply: true
 ---
 
-# 🚦 Master Rulebook for Jewelry Shop Website (Frontend + Backend)
+1) Sandbox usage (local safety)
 
-**Role:**  
-Always enforce **performance, stability, SEO, accessibility, and security** for this Next.js + Node.js project. Prevent regressions by applying these rules automatically.  
+Only edit in sandbox: C:\Users\dimam\OneDrive\Desktop\Jewelry.Website\sandbox-20250820-183517.
+Baseline (main) is read-only unless you promote.
 
----
+Ports are fixed: baseline :3000, sandbox :3001. No other ports.
 
-## 🔹 Performance & Web Vitals (Frontend)
-- **Targets:** LCP <2.5s, TBT <300ms, CLS <0.1, FCP <1.8s.  
-- **Hero Image:**  
-  - Use `<Image priority sizes="100vw" />` with WebP/AVIF ≤200KB.  
-  - Preload hero with `<link rel="preload" as="image" />`.  
-- **Fonts:** Use `next/font` with `display: "swap"`.  
-- **JS & CSS:**  
-  - Lazy-load non-critical components via `dynamic()` or `ssr:false`.  
-  - Keep critical CSS minimal (only above-the-fold).  
-  - Bundle budget: First Load JS ≤200KB gzip.  
-- **Third-party scripts:** load with `strategy="lazyOnload"`.  
+Start modes
 
----
+Dev (baseline prod + sandbox hot reload): npm run dev:safe
 
-## 🔹 Code Hygiene (Frontend)
-- Only use `"use client"` where necessary.  
-- Imports: **literal paths only** (no template strings, no barrel imports).  
-- Replace heavy libs with lightweight ones (`date-fns` > `moment`, `lodash-es` > `lodash`).  
-- Reserve space for all images/components → no layout shifts.  
-- All interactive elements require accessible labels/semantic HTML.  
+Prod both (parity/perf): npm run run:both
 
----
+Stop first, always: npm run stop (frees 3000/3001).
 
-## 🔹 Backend (Node.js / API)
-- **Performance:**  
-  - Use async/await with modern APIs (`fs/promises`).  
-  - Cache heavy/slow queries (Redis, ISR, revalidate).  
-  - Always gzip/Brotli compress responses.  
-- **Security:**  
-  - Sanitize all inputs (XSS, SQL injection safe).  
-  - Never expose secrets in frontend bundles.  
-  - Apply security headers (`X-Frame-Options`, `X-Content-Type-Options`, CSP).  
-  - Cookies must be `HttpOnly`, `Secure`, `SameSite`.  
-- **Error Handling:**  
-  - Wrap async code in try/catch.  
-  - Return consistent JSON errors (`{ error, message }`).  
-  - Log safely without leaking sensitive stack traces.  
+Promote flow (no manual copy):
 
----
+sandbox → npm run sandbox:patch
 
-## 💎 Project-Specific Rules (Jewelry Shop Website)
+main → npm run sandbox:apply → commit
 
-### SEO & Marketing
-- Every `<Image>` must have descriptive `alt` text with jewelry keywords.  
-- Each page must define `title`, `meta description`, and `og:image`.  
-- Product pages must include structured data (JSON-LD) with **price, brand, availability**.  
+2) Environments & secrets
 
-### E-Commerce Performance
-- Product images must be **≤150KB WebP** (unless zoom feature requires larger).  
-- Enable **lazy loading** for product gallery thumbnails.  
-- Use `priority` only for the first hero/product image, never for all.  
+Local: .env.local in baseline; sandbox inherits its own env (set SANDBOX=1 when running).
 
-### UI Consistency
-- Buttons must follow shared design system (no inline one-off styles).  
-- Navbar + footer = consistent across all pages.  
-- Use shared components (Tailwind or internal UI library) to prevent drift.  
+Future Live (production):
 
-### Accessibility
-- All clickable elements must be keyboard accessible (`tabindex`, `:focus`).  
-- Correct heading hierarchy (`h1` → `h2` → `h3`).  
-- Forms must have labels and error messages.  
+No .env.production committed. Store secrets in GitHub Actions Secrets (or your host’s secret store).
 
-### Backend / API
-- Product listings must be paginated (no >50 items at once).  
-- Cache product queries for faster response.  
-- Use slugs for product URLs (e.g., `/products/gold-ring-rose`), not raw IDs.  
+Validate env at boot (Zod or a tiny validator) and fail fast on missing vars.
 
-### Deployment & Stability
-- Homepage must **always build statically** (ISR or `force-static`).  
-- Fail build if Lighthouse LCP or TBT targets are not met.  
-- Monitor uptime & errors (Sentry/LogRocket frontend, Winston backend).  
+Service worker:
 
----
+Register prod SW only on baseline; use sandbox SW (different scope/cache) on :3001.
 
-## 🔹 Workflow & Verification
-- Run `next build`, `lint`, and type-check before commit.  
-- Run Lighthouse (mobile) → confirm vitals meet targets.  
-- Use bundle analyzer on builds → fail PRs if limits exceeded.  
-- Every fix/feature requires a short explanation of **why** it improves performance, stability, or security.  
-- Add/update tests (frontend: Jest/Playwright, backend: Jest).  
+If things look stale, unregister all SWs and hard-reload.
+
+3) Git workflow (simple & safe)
+
+Branches:
+
+main = stable.
+
+Feature work → sandbox branch (e.g. sandbox/feat-xyz) in the worktree.
+
+Commits:
+
+Commit in sandbox branch as you iterate.
+
+Promote via patch → apply to main → commit → push.
+
+Pull Requests (optional but good):
+
+Push sandbox branch and open a PR into main.
+
+Squash merge to keep history clean.

@@ -28,3 +28,15 @@ coverage
 dist
 
 
+
+# Local backups
+coverage.zip
+*.zip
+backups/
+
+
+# Local backups
+Jewelry.Website/coverage.zip
+*.zip
+backups/
+
