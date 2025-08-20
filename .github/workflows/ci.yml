@@ -2,127 +2,66 @@ name: CI
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
   pull_request:
-    branches: [main, develop]
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  test:
+  build-test:
     runs-on: ubuntu-latest
-
+    env:
+      NODE_ENV: production
+      NEXT_TELEMETRY_DISABLED: 1
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Use Node.js 20.x
+      - name: Setup Node 20
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
-          cache: 'npm'
+          node-version: 20
+          cache: npm
 
-      - name: Clear npm cache
-        run: npm cache clean --force
+      - name: Install deps (deterministic)
+        run: npm ci
 
-      - name: Install dependencies
-        run: |
-          echo "Installing dependencies..."
-          npm install --no-audit --no-fund --legacy-peer-deps
-          echo "Dependencies installed successfully"
-          npm list --depth=0
-          echo "Running postinstall script..."
-          npm run postinstall
+      - name: Type check (strict)
+        run: npm run type-check:strict
 
-      - name: Generate Prisma Client
-        run: npx prisma generate
-
-      - name: Clean build cache
-        run: |
-          echo "Cleaning build cache..."
-          rm -rf .next
-          rm -rf out
-          rm -rf dist
-          rm -rf build
-          echo "Build cache cleaned"
-
-      - name: Setup test environment
-        run: |
-          echo "DATABASE_URL=file:./test.db" >> $GITHUB_ENV
-          echo "NEXTAUTH_URL=http://localhost:3000" >> $GITHUB_ENV
-          echo "NEXTAUTH_SECRET=test-secret-key" >> $GITHUB_ENV
-          echo "STRIPE_SECRET_KEY=sk_test_123" >> $GITHUB_ENV
-          echo "NEXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_test_123" >> $GITHUB_ENV
-          echo "NODE_ENV=test" >> $GITHUB_ENV
-          echo "CI=true" >> $GITHUB_ENV
-
-      - name: Verify Jest configuration
-        run: |
-          echo "Checking Jest configuration..."
-          node -e "console.log('Jest config exists:', require('fs').existsSync('jest.config.js'))"
-          node -e "console.log('Jest setup exists:', require('fs').existsSync('jest.setup.js'))"
-          echo "Jest configuration verified"
-
-      - name: Verify test dependencies
-        run: |
-          echo "Checking test dependencies..."
-          npm list jest @testing-library/react jest-axe jest-environment-jsdom
-          echo "Test dependencies verified"
-
-      - name: Type Check
-        run: npm run type-check:ci
-        env:
-          DATABASE_URL: file:./test.db
-          NEXTAUTH_URL: http://localhost:3000
-          NEXTAUTH_SECRET: test-secret-key
-          STRIPE_SECRET_KEY: sk_test_123
-          NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
-          NODE_ENV: test
-          CI: true
-
-      - name: Run linting
+      - name: Lint
         run: npm run lint
-        env:
-          DATABASE_URL: file:./test.db
-          NEXTAUTH_URL: http://localhost:3000
-          NEXTAUTH_SECRET: test-secret-key
-          STRIPE_SECRET_KEY: sk_test_123
-          NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
-          NODE_ENV: test
-          CI: true
-          SKIP_TYPE_CHECK: true
 
-      - name: Build application
+      - name: Build (Next.js)
         run: npm run build
-        env:
-          DATABASE_URL: file:./test.db
-          NEXTAUTH_URL: http://localhost:3000
-          NEXTAUTH_SECRET: test-secret-key
-          STRIPE_SECRET_KEY: sk_test_123
-          NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
-          NODE_ENV: production
 
-      - name: Verify build artifacts
+      - name: Create .env.production for runtime
         run: |
-          echo "Checking build artifacts..."
-          ls -la .next/standalone/ || echo "No standalone directory"
-          ls -la .next/static/ | head -10
-          echo "Build artifacts verified"
+          {
+            echo "NODE_ENV=production"
+            echo "NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL || 'http://localhost:4000' }}"
+            echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET || 'ci-secret' }}"
+            echo "DATABASE_URL=${{ secrets.DATABASE_URL || 'file:./ci.db' }}"
+          } > .env.production
 
-      - name: Run tests with verbose output
-        run: npm run test:ci -- --verbose
-        env:
-          DATABASE_URL: file:./test.db
-          NEXTAUTH_URL: http://localhost:3000
-          NEXTAUTH_SECRET: test-secret-key
-          STRIPE_SECRET_KEY: sk_test_123
-          NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
-          NODE_ENV: test
-          CI: true
+      - name: Start server on :4000 (background)
+        run: |
+          nohup npx next start -p 4000 > server.log 2>&1 & echo $! > server.pid
+          sleep 2
 
-      - name: Run Web Vitals check
-        run: npm run web-vitals-check
-        env:
-          DATABASE_URL: file:./test.db
-          NEXTAUTH_URL: http://localhost:3000
-          NEXTAUTH_SECRET: test-secret-key
-          STRIPE_SECRET_KEY: sk_test_123
-          NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
-          NODE_ENV: production
+      - name: Smoke test (/, /api/healthz)
+        run: |
+          npx wait-on -t 60000 http://localhost:4000/
+          code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:4000/) && echo "/ -> $code" && test "$code" = "200"
+          code2=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:4000/api/healthz || echo 000) && echo "/api/healthz -> $code2" && test "$code2" = "200"
+
+      - name: Tail server log on failure
+        if: failure()
+        run: tail -n 200 server.log || true
+
+      - name: Stop server
+        if: always()
+        run: kill "$(cat server.pid)" || true

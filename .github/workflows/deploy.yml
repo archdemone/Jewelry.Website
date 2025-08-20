@@ -1,91 +1,73 @@
-name: Deploy to Production
+name: Deploy
 
 on:
-  push:
-    branches: [main, develop, ui-stable, fix/type-errors]
-  workflow_run:
-    workflows: ['UI PR', 'CI', 'Test']
-    types:
-      - completed
   workflow_dispatch:
-    inputs:
-      force_deploy:
-        description: 'Force deploy even if tests failed'
-        required: false
-        default: false
-        type: boolean
+  push:
+    branches: [main]
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  deploy:
-    if: |
-      github.event_name == 'push' ||
-      github.event.workflow_run.conclusion == 'success' || 
-      github.event_name == 'workflow_dispatch'
+  build-artifact:
     runs-on: ubuntu-latest
+    env:
+      NODE_ENV: production
+      NEXT_TELEMETRY_DISABLED: 1
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node 20
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: 20
+          cache: npm
 
-      - name: Install dependencies
+      - name: Install deps
+        run: npm ci
+
+      - name: Type check & Lint
         run: |
-          echo "Installing dependencies..."
-          npm install --no-audit --no-fund --legacy-peer-deps
-          echo "Dependencies installed successfully"
-          npm run postinstall
+          npm run type-check:strict
+          npm run lint
 
-      - name: Generate Prisma Client
-        run: npx prisma generate
-
-      - name: Setup production environment
-        run: |
-          echo "Setting up production environment..."
-          echo "NODE_ENV=production" >> $GITHUB_ENV
-          echo "CI=true" >> $GITHUB_ENV
-
-      - name: Verify production build
+      - name: Build (Next.js)
         run: npm run build
-        env:
-          NODE_ENV: production
-          CI: true
-          # These will be overridden by Vercel environment variables
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
-          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
-          NEXT_PUBLIC_STRIPE_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLIC_KEY }}
 
-      - name: Prepare for deployment (Vercel deployment skipped)
-        run: |
-          echo "✅ Production build verified successfully!"
-          echo "📦 Application is ready for deployment"
-          echo "🚀 Vercel deployment is currently disabled for local development"
-          echo "📋 To enable Vercel deployment:"
-          echo "   1. Set up Vercel project and get credentials"
-          echo "   2. Add VERCEL_TOKEN, VERCEL_ORG_ID, VERCEL_PROJECT_ID secrets"
-          echo "   3. Uncomment the Vercel deployment steps in this workflow"
-          echo "   4. Update the production URL in health check"
+      - name: Export artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: next-build
+          path: |
+            .next
+            package.json
+            package-lock.json
+            next.config.js
+            public
+            .env.example
 
-      - name: Build artifacts summary
-        run: |
-          echo "📊 Build Summary:"
-          echo "   - Next.js build: ✅ Complete"
-          echo "   - Prisma client: ✅ Generated"
-          echo "   - Environment: ✅ Production-ready"
-          echo "   - Bundle size: $(du -sh .next | cut -f1)"
-          echo "   - Build time: $(date)"
+  # Optional Vercel deploy (skips if secrets are not present)
+  vercel-deploy:
+    needs: build-artifact
+    runs-on: ubuntu-latest
+    if: ${{ secrets.VERCEL_TOKEN && secrets.VERCEL_ORG_ID && secrets.VERCEL_PROJECT_ID }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Notify deployment status
-        if: always()
-        run: |
-          if [ "${{ job.status }}" == "success" ]; then
-            echo "✅ Deployment successful!"
-            echo "🌐 Production URL: https://yourjewelrystore.com"
-          else
-            echo "❌ Deployment failed!"
-            echo "Check the logs above for details."
-          fi
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: next-build
+          path: ./
+
+      - name: Deploy to Vercel
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./
+          prod: true
