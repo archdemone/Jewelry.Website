@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-// Removed Button import to reduce bundle size
+import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
 export default function Error({
@@ -57,19 +57,13 @@ export default function Error({
         )}
 
         <div className="space-y-3">
-          <button 
-            onClick={reset} 
-            className="w-full rounded-md bg-primary px-4 py-2 text-white hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-          >
+          <Button onClick={reset} className="w-full bg-primary hover:opacity-90">
             Try again
-          </button>
+          </Button>
 
-          <Link 
-            href="/" 
-            className="block w-full rounded-md border border-gray-300 bg-white px-4 py-2 text-center text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
-          >
-            Go to homepage
-          </Link>
+          <Button variant="outline" asChild className="w-full">
+            <Link href="/">Go to homepage</Link>
+          </Button>
         </div>
 
         <div className="mt-6 border-t border-gray-200 pt-6">

@@ -1,41 +1,7 @@
-import dynamic from 'next/dynamic';
-
-// Lazy-load all non-critical components with better loading states
-const HeroCarousel = dynamic(() => import('@/components/home/HeroCarousel'), {
-  loading: () => (
-    <div className="loading-hero">
-      <div className="text-white text-lg">Loading...</div>
-    </div>
-  ),
-  ssr: false, // Disable SSR to prevent context issues
-});
-
-const TrustSignals = dynamic(() => import('@/components/home/TrustSignals'), {
-  loading: () => (
-    <div className="loading-section h-32">
-      <div className="text-gray-600">Loading trust signals...</div>
-    </div>
-  ),
-  ssr: false,
-});
-
-const FeaturedProducts = dynamic(() => import('@/components/home/FeaturedProducts'), {
-  loading: () => (
-    <div className="loading-section h-96">
-      <div className="text-gray-600">Loading featured products...</div>
-    </div>
-  ),
-  ssr: false,
-});
-
-const SocialProof = dynamic(() => import('@/components/home/SocialProof'), {
-  loading: () => (
-    <div className="loading-section h-64">
-      <div className="text-gray-600">Loading testimonials...</div>
-    </div>
-  ),
-  ssr: false,
-});
+import HeroCarousel from '@/components/home/HeroCarousel';
+import TrustSignals from '@/components/home/TrustSignals';
+import FeaturedProducts from '@/components/home/FeaturedProducts';
+import SocialProof from '@/components/home/SocialProof';
 
 // Static generation for better performance
 export const revalidate = 3600; // Revalidate every hour

@@ -2,20 +2,20 @@
 
 import Link from 'next/link';
 import { ShoppingBag, User, Search, LogOut, ChevronDown } from 'lucide-react';
-import { useSession, signOut, signIn } from 'next-auth/react';
+// import { useSession, signOut, signIn } from 'next-auth/react';
 import { useCartStore } from '@/store/cart';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { motion, AnimatePresence } from 'framer-motion';
-import { MobileMenu } from './MobileMenu';
+// import {
+//   Dialog,
+//   DialogContent,
+//   DialogHeader,
+//   DialogTitle,
+//   DialogTrigger,
+// } from '@/components/ui/dialog';
+// import { Input } from '@/components/ui/input';
+// import { motion } from 'framer-motion';
+// import { MobileMenu } from './MobileMenu';
 
 export function Header() {
   const count = useCartStore((s) => s.count);
@@ -26,7 +26,7 @@ export function Header() {
   const [showRingCollections, setShowRingCollections] = useState(false);
   const [dropdownTimeout, setDropdownTimeout] = useState<ReturnType<typeof setTimeout> | null>(null);
   const router = useRouter();
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
 
   useEffect(() => {
     setMounted(true);
@@ -98,124 +98,101 @@ export function Header() {
             onMouseLeave={() => {
               const timeout = setTimeout(() => {
                 setShowRingCollections(false);
-              }, 150); // 150ms delay before hiding
+              }, 200);
               setDropdownTimeout(timeout);
             }}
           >
-            <button
-              className="flex items-center gap-1 text-sm text-text hover:text-secondary"
-              data-testid="nav-ring-collections"
-              type="button"
-            >
+            <button className="flex items-center gap-1 text-sm text-text hover:text-secondary">
               Ring Collections
               <ChevronDown className="h-4 w-4" />
             </button>
-            <AnimatePresence>
-              {showRingCollections && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  className="absolute left-0 top-full mt-2 w-64 rounded-lg border bg-white py-2 shadow-lg"
-                >
-                  {ringCollections.map((collection) => (
-                    <Link
-                      key={collection.name}
-                      href={collection.href}
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 hover:text-primary"
-                    >
-                      {collection.name}
-                    </Link>
-                  ))}
-                </motion.div>
-              )}
-            </AnimatePresence>
+
+            {showRingCollections && (
+              <div className="absolute left-0 top-full mt-2 w-48 rounded-md border bg-white shadow-lg">
+                {ringCollections.map((collection) => (
+                  <Link
+                    key={collection.name}
+                    href={collection.href}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    {collection.name}
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
 
-          <Link href="/about-artisan" className="text-sm text-text hover:text-secondary">
+          <Link
+            href="/about-artisan"
+            className="text-sm text-text hover:text-secondary"
+            data-testid="nav-artisan"
+          >
             The Artisan
           </Link>
-          <Link href="/crafting-process" className="text-sm text-text hover:text-secondary">
+
+          <Link
+            href="/crafting-process"
+            className="text-sm text-text hover:text-secondary"
+            data-testid="nav-process"
+          >
             Process
           </Link>
-          <Link href="/contact" className="text-sm text-text hover:text-secondary">
+
+          <Link
+            href="/contact"
+            className="text-sm text-text hover:text-secondary"
+            data-testid="nav-contact"
+          >
             Contact
           </Link>
         </nav>
-        {/* Mobile Menu */}
-        <MobileMenu />
+
         <div className="flex items-center gap-4">
-          <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-              <button aria-label="Search" className="p-2 text-secondary hover:opacity-80">
-                <Search className="h-5 w-5" />
-              </button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Search rings</DialogTitle>
-              </DialogHeader>
-              <Input
-                autoFocus
-                placeholder="Search rings..."
+          {/* Search */}
+          <div className="hidden md:block">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+              <input
+                type="text"
+                placeholder="Search products..."
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
+                className="w-64 rounded-full border border-gray-300 bg-white px-10 py-2 text-sm focus:border-gold-500 focus:outline-none focus:ring-1 focus:ring-gold-500"
               />
-            </DialogContent>
-          </Dialog>
-          {session?.user ? (
-            <div className="flex items-center gap-2">
-              <Link
-                href="/admin"
-                className="p-2 text-secondary hover:opacity-80"
-                aria-label="Admin Panel"
-                title="Admin Panel"
-              >
-                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-              </Link>
-              <Link
-                href="/account"
-                className="p-2 text-secondary hover:opacity-80"
-                aria-label="Account"
-              >
-                <User className="h-5 w-5" />
-              </Link>
-              <button
-                onClick={() => signOut()}
-                aria-label="Logout"
-                className="p-2 text-secondary hover:opacity-80"
-              >
-                <LogOut className="h-5 w-5" />
-              </button>
             </div>
-          ) : (
-            <button
-              onClick={() => signIn()}
-              aria-label="Account"
-              className="p-2 text-secondary hover:opacity-80"
-            >
-              <User className="h-5 w-5" />
-            </button>
-          )}
+          </div>
+
+          {/* Cart */}
           <Link
             href="/cart"
-            aria-label="Cart"
-            className="relative p-2 text-secondary hover:opacity-80"
-            data-testid="cart-icon"
+            className="relative flex items-center gap-2 rounded-full bg-gold-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gold-700"
           >
-            <ShoppingBag className="h-5 w-5" />
+            <ShoppingBag className="h-4 w-4" />
+            Cart
             {mounted && isHydrated && count > 0 && (
-              <span
-                className="absolute -right-1 -top-1 inline-flex min-w-[1rem] items-center justify-center rounded-full bg-primary px-1.5 text-[10px] font-medium text-white"
-                data-testid="cart-count"
-              >
+              <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
                 {count}
               </span>
             )}
           </Link>
+
+          {/* User Menu */}
+          <Link
+            href="/auth/login"
+            className="flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200"
+          >
+            <User className="h-4 w-4" />
+            Sign In
+          </Link>
+        </div>
+
+        {/* Mobile Menu Button */}
+        <div className="md:hidden">
+          <button className="p-2 text-gray-600 transition-colors hover:text-gray-900">
+            <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
         </div>
       </div>
     </header>

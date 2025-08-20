@@ -7,7 +7,7 @@ import { useState, useEffect } from 'react';
 import { Heart, ShoppingBag } from 'lucide-react';
 import { getFeaturedProducts, type FeaturedProduct } from '@/lib/featured-products';
 import { useCartStore } from '@/store/cart';
-import toast from 'react-hot-toast';
+import { showToast } from '@/components/ui/SimpleToast';
 
 const FeaturedProducts = () => {
   const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
@@ -55,24 +55,10 @@ const FeaturedProducts = () => {
     
     if (newWishlist.has(productId)) {
       newWishlist.delete(productId);
-      toast.success(`${product?.name} removed from wishlist`, {
-        duration: 2000,
-        position: 'top-right',
-        style: {
-          background: '#EF4444',
-          color: '#fff',
-        },
-      });
+      showToast(`${product?.name} removed from wishlist`, 'info');
     } else {
       newWishlist.add(productId);
-      toast.success(`${product?.name} added to wishlist!`, {
-        duration: 2000,
-        position: 'top-right',
-        style: {
-          background: '#10B981',
-          color: '#fff',
-        },
-      });
+      showToast(`${product?.name} added to wishlist!`, 'success');
     }
     setWishlist(newWishlist);
     if (typeof window !== 'undefined') {
@@ -82,7 +68,7 @@ const FeaturedProducts = () => {
 
   const handleAddToCart = (ring: FeaturedProduct) => {
     if (!isHydrated) {
-      toast.error('Cart is still loading, please try again');
+      showToast('Cart is still loading, please try again', 'error');
       return;
     }
     
@@ -100,15 +86,8 @@ const FeaturedProducts = () => {
     });
     
     // Show success toast
-    toast.success(`${ring.name} added to cart!`, {
-      duration: 2000,
-      position: 'top-right',
-      style: {
-        background: '#10B981',
-        color: '#fff',
-      },
-    });
-68  };
+    showToast(`${ring.name} added to cart!`, 'success');
+  };
 
   // Show 6 products for better engagement and variety
   const initialProducts = featuredRings.slice(0, 6);

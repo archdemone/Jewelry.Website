@@ -37,11 +37,6 @@ const nextConfig = {
       'zod',
       '@hookform/resolvers'
     ],
-    // Reduce bundle sizes
-    bundlePagesExternals: true,
-    serverComponentsExternalPackages: ['@prisma/client'],
-    // Optimize error pages
-    optimizeErrorOverlay: false,
     optimizeCss: true,
     turbo: {
       rules: {
@@ -60,14 +55,7 @@ const nextConfig = {
     webpackBuildWorker: true,
   },
   images: {
-    remotePatterns: [
-      {
-        protocol: 'http',
-        hostname: 'localhost',
-        port: '3000',
-        pathname: '/**',
-      },
-    ],
+    domains: ['localhost'],
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256],
@@ -172,13 +160,13 @@ const nextConfig = {
         // Ultra-aggressive optimization
         splitChunks: {
           chunks: 'all',
-          minSize: 15000, // Further reduced for smaller chunks
-          maxSize: 150000, // Reduced chunk size for better loading
+          minSize: 20000, // Reduced from default
+          maxSize: 244000, // Reduced chunk size
           minChunks: 1,
-          maxAsyncRequests: 50,
-          maxInitialRequests: 50,
+          maxAsyncRequests: 30,
+          maxInitialRequests: 30,
           automaticNameDelimiter: '~',
-          enforceSizeThreshold: 30000,
+          enforceSizeThreshold: 50000,
           cacheGroups: {
             defaultVendors: {
               test: /[\\/]node_modules[\\/]/,
@@ -292,14 +280,7 @@ const nextConfig = {
     }
 
     // Optimize CSS extraction
-    if (!isServer) {
-      // Ensure splitChunks and cacheGroups exist
-      if (!config.optimization.splitChunks) {
-        config.optimization.splitChunks = {};
-      }
-      if (!config.optimization.splitChunks.cacheGroups) {
-        config.optimization.splitChunks.cacheGroups = {};
-      }
+    if (!isServer && config.optimization && config.optimization.splitChunks && config.optimization.splitChunks.cacheGroups) {
       config.optimization.splitChunks.cacheGroups.styles = {
         name: 'styles',
         test: /\.(css|scss)$/,

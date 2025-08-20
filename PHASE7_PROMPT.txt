@@ -1,0 +1,72 @@
+Phase 7 - Shopping Cart Development Prompt
+
+This phase implements a fully functional shopping cart with persistence, item management, and checkout preparation.
+
+## Structure
+/app/
+  /cart/
+    - page.tsx
+/components/
+  /cart/
+    - CartItem.tsx
+    - CartSummary.tsx
+    - EmptyCart.tsx
+    - CartRecommendations.tsx (optional)
+    - PromoCodeInput.tsx (optional)
+    - ShippingCalculator.tsx (optional)
+    - SavedForLater.tsx (optional)
+    - CartProgress.tsx (optional)
+
+/lib/
+  /store/
+    - useCartStore.ts (Zustand store)
+  /hooks/
+    - useCart.ts (optional helpers)
+
+## Store (Zustand)
+- items[], addItem(product, qty, options?), removeItem(id), setQuantity(id, qty), clear()
+- derived: count, subtotal, tax, shipping, total
+- persistence: localStorage; optional DB sync for logged-in users
+- drawer state (optional): isOpen, openCart/closeCart
+
+## Pages and Components
+- /app/cart/page.tsx: renders items (or EmptyCart), summary, and optional modules
+- CartItem.tsx: image, name/link, options, unit price, qty +/- with validation, line total, remove, save for later
+- CartSummary.tsx: subtotal, discounts, tax, shipping, total, checkout CTA; sticky on desktop
+- EmptyCart.tsx: friendly empty state with Continue Shopping link and suggested categories
+- Optional: recommendations, promo code, shipping calc, saved-for-later, progress bar
+
+## API (optional)
+/app/api/cart/
+- GET /api/cart
+- POST /api/cart/add
+- PUT /api/cart/update
+- DELETE /api/cart/remove
+- POST /api/cart/merge
+
+## Features
+- Add to cart from product page; success toast and open drawer (if implemented)
+- Cart badge updates in header
+- URL: /cart
+- Stock checks, max qty validation
+- Guest cart persists; merge on login
+
+## Testing Checklist
+- [ ] Add items from product page
+- [ ] Items render in /cart; qty +/- works; remove works
+- [ ] Subtotal/tax/shipping/total calculate accurately
+- [ ] Cart persists on refresh
+- [ ] Badge updates with count
+- [ ] Empty state displays when no items
+- [ ] Mobile responsive; sticky checkout on mobile
+- [ ] No console errors; operations are fast
+
+## Design
+- Desktop grid: 2/3 items, 1/3 summary
+- Mobile stacked; touch-friendly controls
+- Buttons use brand gold accents; totals prominent
+
+## After Completion
+- Test full flow: add → update → remove → clear → persist
+- Screenshots: full cart, empty cart, mobile view
+- Update DEVELOPMENT_CHECKLIST.md to mark Phase 7 complete
