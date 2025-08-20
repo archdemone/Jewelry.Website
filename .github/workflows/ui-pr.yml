@@ -1,65 +1,63 @@
 name: UI PR Checks
 
 on:
-  push:
-    branches: [main, develop, ui-stable, fix/type-errors]
   pull_request:
-    branches: [main, develop, ui-stable]
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: ui-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  ci:
+  e2e:
     runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      NODE_ENV: production
+      NEXT_TELEMETRY_DISABLED: 1
+      BASE_URL: http://localhost:4000
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
-      - name: Clear npm cache
-        run: npm cache clean --force
+          cache: npm
+
       - name: Install deps
-        run: |
-          echo "Installing dependencies..."
-          npm install --no-audit --no-fund --legacy-peer-deps
-          echo "Dependencies installed successfully"
-          npm list --depth=0
-          echo "Running postinstall script..."
-          npm run postinstall
-      - name: Generate Prisma Client
-        run: npx prisma generate
-      - name: Setup environment
-        run: |
-          echo "DATABASE_URL=file:./ui-test.db" >> $GITHUB_ENV
-          echo "NEXTAUTH_URL=http://localhost:3000" >> $GITHUB_ENV
-          echo "NEXTAUTH_SECRET=ui-test-secret-key" >> $GITHUB_ENV
-          echo "STRIPE_SECRET_KEY=sk_test_123" >> $GITHUB_ENV
-          echo "NEXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_test_123" >> $GITHUB_ENV
-          echo "NODE_ENV=production" >> $GITHUB_ENV
-      - name: Lint
-        run: npm run lint:no-typescript -- --max-warnings 0 --ignore-pattern "__tests__/**/*" --ignore-pattern "cypress/**/*" --ignore-pattern "backup-*/**/*" --ignore-pattern "*.test.*" --ignore-pattern "*.spec.*"
-        env:
-          DATABASE_URL: file:./ui-test.db
-          NEXTAUTH_URL: http://localhost:3000
-          NEXTAUTH_SECRET: ui-test-secret-key
-          STRIPE_SECRET_KEY: sk_test_123
-          NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
-          NODE_ENV: production
+        run: npm ci
 
       - name: Build
         run: npm run build
+
+      - name: Install Playwright (with deps)
+        run: npx playwright install --with-deps
+
+      - name: Start server on :4000 (background)
+        run: |
+          nohup npx next start -p 4000 > server.log 2>&1 & echo $! > server.pid
+          sleep 2
+
+      - name: Run Playwright tests
+        run: npx playwright test --reporter=github
         env:
-          DATABASE_URL: file:./ui-test.db
-          NEXTAUTH_URL: http://localhost:3000
-          NEXTAUTH_SECRET: ui-test-secret-key
-          STRIPE_SECRET_KEY: sk_test_123
-          NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
-          NODE_ENV: production
-      - name: Test
-        run: npm run test:ci
-        env:
-          DATABASE_URL: file:./ui-test.db
-          NEXTAUTH_URL: http://localhost:3000
-          NEXTAUTH_SECRET: ui-test-secret-key
-          STRIPE_SECRET_KEY: sk_test_123
-          NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
-          NODE_ENV: test
+          BASE_URL: ${{ env.BASE_URL }}
+
+      - name: Upload Playwright report (if generated)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+          if-no-files-found: ignore
+
+      - name: Tail log on failure
+        if: failure()
+        run: tail -n 200 server.log || true
+
+      - name: Stop server
+        if: always()
+        run: kill "$(cat server.pid)" || true

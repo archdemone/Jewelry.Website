@@ -1,10 +1,46 @@
-name: Image Audit (disabled)
+name: Image Audit
 
 on:
-  workflow_call:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
 
 jobs:
-  noop:
+  image-audit:
     runs-on: ubuntu-latest
+    env:
+      MAX_KB: 300   # fail if any JPG/PNG > this size (KB)
+      GLOB: "public/**/*.{jpg,jpeg,png}"
     steps:
-      - run: echo "Image audit workflow intentionally disabled."
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Scan images
+        id: scan
+        run: |
+          shopt -s globstar nullglob
+          THRESH=$((MAX_KB*1024))
+          echo "Threshold: ${MAX_KB}KB (${THRESH} bytes)"
+          FAIL=0
+          : > image-audit.txt
+          for f in $(ls $GLOB 2>/dev/null); do
+            sz=$(stat -c%s "$f" 2>/dev/null || stat -f%z "$f")
+            if [ "$sz" -gt "$THRESH" ]; then
+              echo "❌ $f -> $sz bytes" | tee -a image-audit.txt
+              FAIL=1
+            fi
+          done
+          if [ -s image-audit.txt ]; then
+            echo "details<<EOF" >> $GITHUB_OUTPUT
+            cat image-audit.txt >> $GITHUB_OUTPUT
+            echo "EOF" >> $GITHUB_OUTPUT
+          fi
+          exit $FAIL
+
+      - name: Upload audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: image-audit
+          path: image-audit.txt
+          if-no-files-found: ignore
