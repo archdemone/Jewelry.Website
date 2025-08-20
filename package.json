@@ -5,12 +5,8 @@
   "scripts": {
     "dev": "cross-env NEXT_DISABLE_TURBOPACK=1 next dev",
     "dev:baseline": "cross-env NEXT_DISABLE_TURBOPACK=1 next dev -p 3000",
-    "dev:sandbox": "powershell -NoProfile -Command \"$sb='C:\\\\Users\\\\dimam\\\\OneDrive\\\\Desktop\\\\Jewelry.Website\\\\sandbox-20250820-183517'; if (Test-Path $sb){ Push-Location $sb; $env:SANDBOX='1'; $env:NEXT_DISABLE_TURBOPACK='1'; next dev -p 3001; Pop-Location } else { Write-Host 'Sandbox not found'; exit 2 }\"",
+    "dev:sandbox": "powershell -NoProfile -Command \"$sb=$env:SANDBOX_PATH; if (-not $sb) { $sb='C:\\\\Users\\\\dimam\\\\OneDrive\\\\Desktop\\\\Jewelry.Website\\\\sandbox-20250820-183517' }; if (Test-Path $sb) { Push-Location $sb; $env:SANDBOX='1'; $env:NEXT_DISABLE_TURBOPACK='1'; next dev -p 3001; Pop-Location } else { Write-Host 'Sandbox not found: ' $sb; exit 2 }\"",
     "dev:safe": "npm run ports:free && concurrently -n base,sbx -c auto \"npm run start:baseline\" \"npm run dev:sandbox\"",
-    "dev:both": "npm run ports:free && concurrently -n base,sbx -c auto \"npm run dev:baseline\" \"npm run dev:sandbox\"",
-    "dev:safe": "npm run ports:free && concurrently -n base,sbx -c auto \"npm run start:baseline\" \"npm run dev:sandbox\"",
-    "dev:baseline": "cross-env NEXT_DISABLE_TURBOPACK=1 next dev -p 3000",
-    "dev:sandbox": "powershell -NoProfile -Command \"$sb='C:\\\\Users\\\\dimam\\\\OneDrive\\\\Desktop\\\\Jewelry.Website\\\\sandbox-20250820-183517'; if (Test-Path $sb){ Push-Location $sb; $env:SANDBOX='1'; $env:NEXT_DISABLE_TURBOPACK='1'; next dev -p 3001; Pop-Location } else { Write-Host 'Sandbox not found'; exit 2 }\"",
     "dev:both": "npm run ports:free && concurrently -n base,sbx -c auto \"npm run dev:baseline\" \"npm run dev:sandbox\"",
     "build": "next build",
     "build:no-typescript": "node scripts/build-without-typescript.js",
@@ -19,7 +15,7 @@
     "lint": "next lint",
     "lint:ci": "next lint --max-warnings=0",
     "lint:no-typescript": "eslint src --ext .js,.jsx,.ts,.tsx --max-warnings 20",
-    "analyze": "set ANALYZE=true && npm run build",
+    "analyze": "cross-env ANALYZE=true next build",
     "size-limit": "node scripts/check-bundle-size.js",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -45,10 +41,9 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint:fix": "next lint --fix",
-    "clean": "rm -rf .next out",
+    "clean": "powershell -NoProfile -Command \"Remove-Item -Recurse -Force .next, out 2>$null; exit 0\"",
     "prebuild": "echo 'Skipping type check for build'",
     "postbuild": "npm run size-limit",
-    "postinstall": "echo 'Ensuring react-is is available' && npm list react-is || npm install react-is@^18.3.1 --legacy-peer-deps",
     "web-vitals-check": "node scripts/web-vitals-guard.js",
     "pre-commit": "npm run web-vitals-check && npm run lint && npm run type-check:strict",
     "lighthouse": "lighthouse http://localhost:3000 --output json --output-path ./lighthouse-report.json",
@@ -57,19 +52,18 @@
     "optimize:hero": "node scripts/optimize-hero-images.mjs",
     "build:prod": "npm run build",
     "start:prod": "npm run start",
-    "perf:lighthouse": "npm run build:prod && npm run start:prod & timeout 10 && lighthouse http://localhost:3000 --output json --output-path ./perf/lh-report.json --output html --output-path ./perf/lh-report.html",
-
+    "perf:lighthouse": "npm run build:prod && (npm run start:prod & npx wait-on http://localhost:3000) && lighthouse http://localhost:3000 --output json --output-path ./perf/lh-report.json --output html --output-path ./perf/lh-report.html && npm run stop",
     "ports:free": "kill-port 3000 3001",
     "start:baseline": "next start -p 3000",
-    "build:sandbox": "powershell -NoProfile -Command \"$sb='C:\\\\Users\\\\dimam\\\\OneDrive\\\\Desktop\\\\Jewelry.Website\\\\sandbox-20250820-183517'; if (Test-Path $sb){ Push-Location $sb; npm ci; npm run build; Pop-Location } else { Write-Host 'Sandbox not found'; exit 2 }\"",
-    "start:sandbox": "powershell -NoProfile -Command \"$sb='C:\\\\Users\\\\dimam\\\\OneDrive\\\\Desktop\\\\Jewelry.Website\\\\sandbox-20250820-183517'; if (Test-Path $sb){ Push-Location $sb; $env:SANDBOX='1'; npm run start -- -p 3001; Pop-Location } else { Write-Host 'Sandbox not found'; exit 2 }\"",
+    "build:sandbox": "powershell -NoProfile -Command \"$sb=$env:SANDBOX_PATH; if (-not $sb) { $sb='C:\\\\Users\\\\dimam\\\\OneDrive\\\\Desktop\\\\Jewelry.Website\\\\sandbox-20250820-183517' }; if (Test-Path $sb) { Push-Location $sb; npm ci; npm run build; Pop-Location } else { Write-Host 'Sandbox not found: ' $sb; exit 2 }\"",
+    "start:sandbox": "powershell -NoProfile -Command \"$sb=$env:SANDBOX_PATH; if (-not $sb) { $sb='C:\\\\Users\\\\dimam\\\\OneDrive\\\\Desktop\\\\Jewelry.Website\\\\sandbox-20250820-183517' }; if (Test-Path $sb) { Push-Location $sb; $env:SANDBOX='1'; npm run start -- -p 3001; Pop-Location } else { Write-Host 'Sandbox not found: ' $sb; exit 2 }\"",
     "build:both": "concurrently -n build:base,build:sbx \"npm run build\" \"npm run build:sandbox\"",
-    "sandbox:patch": "powershell -NoProfile -Command \"cd 'C:\\\\Users\\\\dimam\\\\OneDrive\\\\Desktop\\\\Jewelry.Website\\\\sandbox-20250820-183517'; git diff --binary > ..\\\\sandbox-change.patch; Write-Host 'Wrote ..\\\\sandbox-change.patch'\"",
-    "sandbox:apply": "powershell -NoProfile -Command \"if (Test-Path '..\\\\sandbox-change.patch'){ git apply --check ..\\\\sandbox-change.patch && git apply --index ..\\\\sandbox-change.patch } else { Write-Host 'No patch file'; exit 2 }\"",
+    "sandbox:patch": "powershell -NoProfile -Command \"$sb=$env:SANDBOX_PATH; if (-not $sb) { $sb='C:\\\\Users\\\\dimam\\\\OneDrive\\\\Desktop\\\\Jewelry.Website\\\\sandbox-20250820-183517' }; if (Test-Path $sb) { Push-Location $sb; git diff --binary > ..\\sandbox-change.patch; Write-Host 'Wrote ..\\sandbox-change.patch'; Pop-Location } else { Write-Host 'Sandbox not found: ' $sb; exit 2 }\"",
+    "sandbox:apply": "powershell -NoProfile -Command \"if (Test-Path '..\\sandbox-change.patch'){ git apply --check ..\\sandbox-change.patch && git apply --index ..\\sandbox-change.patch } else { Write-Host 'No patch file'; exit 2 }\"",
     "start:both": "npm run ports:free && concurrently -n base,sbx -c auto \"npm run start:baseline\" \"npm run start:sandbox\"",
     "run:both": "npm run ports:free && npm run build:both && npm run start:both",
     "stop": "kill-port 3000 3001",
-    "status": "node -e \"(async()=>{for (const u of ['http://localhost:3000/','http://localhost:3001/']){try{const r=await fetch(u);console.log(u,'->',r.status)}catch{console.log(u,'-> FAIL')}})()\""
+    "status": "node -e \"(async()=>{for (const u of ['http://localhost:3000/','http://localhost:3001/']){try{const r=await fetch(u);console.log(u,'->',r.status)}catch{console.log(u,'-> FAIL')}})()\"\""
   },
   "size-limit": [
     {
@@ -188,7 +182,7 @@
     "whatwg-fetch": "^3.6.20"
   },
   "engines": {
-    "node": ">=18.0.0",
+    "node": ">=20.0.0",
     "npm": ">=9.0.0"
   },
   "prisma": {
