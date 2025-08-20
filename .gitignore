@@ -27,6 +27,16 @@ pnpm-debug.log*
 coverage
 dist
 
+# Local backups / large blobs
+backups/
+*.zip
+*.7z
+*.tar
+*.tar.gz
+*.bak
+*.sql
+coverage.zip
+
 
 
 # Local backups

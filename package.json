@@ -7,8 +7,8 @@
     "dev:baseline": "cross-env NEXT_DISABLE_TURBOPACK=1 next dev -p 3000",
     "dev:sandbox": "powershell -NoProfile -Command \"$sb='C:\\\\Users\\\\dimam\\\\OneDrive\\\\Desktop\\\\Jewelry.Website\\\\sandbox-20250820-183517'; if (Test-Path $sb){ Push-Location $sb; $env:SANDBOX='1'; $env:NEXT_DISABLE_TURBOPACK='1'; next dev -p 3001; Pop-Location } else { Write-Host 'Sandbox not found'; exit 2 }\"",
     "dev:safe": "npm run ports:free && concurrently -n base,sbx -c auto \"npm run start:baseline\" \"npm run dev:sandbox\"",
-    "dev:both": "npm run ports:free && concurrently -n base,sbx -c auto \"npm run dev:baseline\" \"npm run dev:sandbox\""
-    "dev:safe": "npm run ports:free && concurrently -n base,sbx -c auto \"npm run start:baseline\" \"npm run dev:sandbox\""
+    "dev:both": "npm run ports:free && concurrently -n base,sbx -c auto \"npm run dev:baseline\" \"npm run dev:sandbox\"",
+    "dev:safe": "npm run ports:free && concurrently -n base,sbx -c auto \"npm run start:baseline\" \"npm run dev:sandbox\"",
     "dev:baseline": "cross-env NEXT_DISABLE_TURBOPACK=1 next dev -p 3000",
     "dev:sandbox": "powershell -NoProfile -Command \"$sb='C:\\\\Users\\\\dimam\\\\OneDrive\\\\Desktop\\\\Jewelry.Website\\\\sandbox-20250820-183517'; if (Test-Path $sb){ Push-Location $sb; $env:SANDBOX='1'; $env:NEXT_DISABLE_TURBOPACK='1'; next dev -p 3001; Pop-Location } else { Write-Host 'Sandbox not found'; exit 2 }\"",
     "dev:both": "npm run ports:free && concurrently -n base,sbx -c auto \"npm run dev:baseline\" \"npm run dev:sandbox\"",
@@ -64,7 +64,7 @@
     "start:sandbox": "powershell -NoProfile -Command \"$sb='C:\\\\Users\\\\dimam\\\\OneDrive\\\\Desktop\\\\Jewelry.Website\\\\sandbox-20250820-183517'; if (Test-Path $sb){ Push-Location $sb; $env:SANDBOX='1'; npm run start -- -p 3001; Pop-Location } else { Write-Host 'Sandbox not found'; exit 2 }\"",
     "build:both": "concurrently -n build:base,build:sbx \"npm run build\" \"npm run build:sandbox\"",
     "sandbox:patch": "powershell -NoProfile -Command \"cd 'C:\\\\Users\\\\dimam\\\\OneDrive\\\\Desktop\\\\Jewelry.Website\\\\sandbox-20250820-183517'; git diff --binary > ..\\\\sandbox-change.patch; Write-Host 'Wrote ..\\\\sandbox-change.patch'\"",
-    "sandbox:apply": "powershell -NoProfile -Command \"if (Test-Path '..\\\\sandbox-change.patch'){ git apply --check ..\\\\sandbox-change.patch && git apply --index ..\\\\sandbox-change.patch } else { Write-Host 'No patch file'; exit 2 }\""
+    "sandbox:apply": "powershell -NoProfile -Command \"if (Test-Path '..\\\\sandbox-change.patch'){ git apply --check ..\\\\sandbox-change.patch && git apply --index ..\\\\sandbox-change.patch } else { Write-Host 'No patch file'; exit 2 }\"",
     "start:both": "npm run ports:free && concurrently -n base,sbx -c auto \"npm run start:baseline\" \"npm run start:sandbox\"",
     "run:both": "npm run ports:free && npm run build:both && npm run start:both",
     "stop": "kill-port 3000 3001",
