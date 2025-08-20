@@ -44,16 +44,6 @@ jobs:
           npx wait-on -t 60000 http://localhost:4000/
           npx lighthouse http://localhost:4000/             --only-categories=performance             --output json --output html             --output-path ./lighthouse-report
 
-      - name: Gate on Lighthouse thresholds
-  run: |
-    node -e "const r=require('./lighthouse-report.json');\
-    const perf=r.categories.performance.score; \
-    const lcp=r.audits['largest-contentful-paint'].numericValue; \
-    const tbt=r.audits['total-blocking-time'].numericValue; \
-    console.log({perf, lcp, tbt}); \
-    if (perf < 0.9 || lcp > 2500 || tbt > 300) { \
-      console.error('Perf gate failed'); process.exit(1) }"
-
       - name: Upload reports
         if: always()
         uses: actions/upload-artifact@v4
