@@ -52,16 +52,16 @@ jobs:
             echo "NEXT_PUBLIC_SITE_URL=http://localhost:4000"
           } > .env.production
 
-      - name: Start standalone server on :4000 (background)
+      - name: Start standalone server on :3000 (background)
         run: |
-          nohup node .next/standalone/server.js > server.log 2>&1 & echo $! > server.pid
-          sleep 5
+          nohup node .next/standalone/server.js -p 3000 > server.log 2>&1 & echo $! > server.pid
+          sleep 10
 
       - name: Smoke test (/, /api/healthz)
         run: |
-          npx wait-on -t 60000 http://localhost:4000/
-          code=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:4000/) && echo "/ -> $code" && test "$code" = "200"
-          code2=$(curl -s -o /dev/null -w "%{http_code}" http://localhost:4000/api/healthz || echo 000) && echo "/api/healthz -> $code2" && test "$code2" = "200"
+          npx wait-on -t 60000 http://localhost:3000/
+          curl -f http://localhost:3000/ || exit 1
+          curl -f http://localhost:3000/api/healthz || exit 1
 
       - name: Tail server log on failure
         if: failure()
