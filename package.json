@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "cross-env NEXT_DISABLE_TURBOPACK=1 next dev",
     "dev:baseline": "cross-env NEXT_DISABLE_TURBOPACK=1 next dev -p 3000",
-    "dev:sandbox": "powershell -NoProfile -Command \"$sb=$env:SANDBOX_PATH; if (-not $sb) { $sb='C:\\\\Users\\\\dimam\\\\OneDrive\\\\Desktop\\\\Jewelry.Website\\\\sandbox-20250820-183517' }; if (Test-Path $sb) { Push-Location $sb; $env:SANDBOX='1'; $env:NEXT_DISABLE_TURBOPACK='1'; next dev -p 3001; Pop-Location } else { Write-Host 'Sandbox not found: ' $sb; exit 2 }\"",
-    "dev:safe": "npm run ports:free && concurrently -n base,sbx -c auto \"npm run start:baseline\" \"npm run dev:sandbox\"",
+    "dev:sandbox": "powershell -NoProfile -Command \"$sb=$env:SANDBOX_PATH; if (-not $sb) { $sb='C:\\\\Users\\\\dimam\\\\OneDrive\\\\Desktop\\\\Jewelry.Website\\\\sandbox-20250820-183517' }; if (Test-Path $sb) { Push-Location $sb; $env:SANDBOX='1'; $env:NEXT_DISABLE_TURBOPACK='1'; $env:NEXT_DISABLE_REACT_DEV_OVERLAY='1'; $env:NEXT_DISABLE_ERROR_OVERLAY='1'; next dev -p 3001; Pop-Location } else { Write-Host 'Sandbox not found: ' $sb; exit 2 }\"",
+    "dev:safe": "npm run ports:free && concurrently -n base,sbx -c auto \"npm run dev:baseline\" \"npm run start:sandbox\"",
     "dev:both": "npm run ports:free && concurrently -n base,sbx -c auto \"npm run dev:baseline\" \"npm run dev:sandbox\"",
     "build": "next build",
     "build:no-typescript": "node scripts/build-without-typescript.js",
@@ -63,7 +63,24 @@
     "start:both": "npm run ports:free && concurrently -n base,sbx -c auto \"npm run start:baseline\" \"npm run start:sandbox\"",
     "run:both": "npm run ports:free && npm run build:both && npm run start:both",
     "stop": "kill-port 3000 3001",
-    "status": "node -e \"(async()=>{for (const u of ['http://localhost:3000/','http://localhost:3001/']){try{const r=await fetch(u);console.log(u,'->',r.status)}catch{console.log(u,'-> FAIL')}})()\"\""
+    "status": "node -e \"(async()=>{for (const u of ['http://localhost:3000/','http://localhost:3001/']){try{const r=await fetch(u);console.log(u+' -> '+r.status)}catch{console.log(u+' -> FAIL')}})()\"",
+    "health:check": "node scripts/enhanced-health-check.js",
+    "health:check:sandbox": "cross-env HEALTHCHECK_URL=http://localhost:3001 node scripts/enhanced-health-check.js",
+    "health:check:baseline": "cross-env HEALTHCHECK_URL=http://localhost:3000 node scripts/enhanced-health-check.js",
+    "pre:deploy": "node scripts/pre-deployment-check.js",
+    "monitor:start": "node scripts/enhanced-health-check.js && echo 'Monitoring started - run this in a loop for continuous monitoring'",
+    "monitor:continuous": "while true; do npm run health:check; sleep 30; done",
+    "console:check": "npm run test:e2e -- --grep \"Console Error Monitoring\"",
+    "console:check:sandbox": "cross-env BASE_URL=http://localhost:3001 npm run test:e2e -- --grep \"Console Error Monitoring\"",
+    "console:check:baseline": "cross-env BASE_URL=http://localhost:3000 npm run test:e2e -- --grep \"Console Error Monitoring\"",
+    "monitor:full": "npm run health:check && npm run console:check",
+    "monitor:full:sandbox": "npm run health:check:sandbox && npm run console:check:sandbox",
+    "monitor:full:baseline": "npm run health:check:baseline && npm run console:check:baseline",
+    "dev:helper": "node scripts/dev-helper.js",
+    "web-vitals-check": "node scripts/web-vitals-guard.js",
+    "bundle:analyze": "cross-env ANALYZE=true npm run build",
+    "check:bundle-size": "node scripts/check-bundle-size.js",
+    "type-check:fix": "node scripts/fix-typescript-errors.js"
   },
   "size-limit": [
     {

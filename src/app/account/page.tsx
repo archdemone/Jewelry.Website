@@ -1,5 +1,9 @@
+'use client';
+
 import { AuthGuard } from '@/components/auth/AuthGuard';
 import Link from 'next/link';
+
+
 
 export default function AccountPage() {
   return (

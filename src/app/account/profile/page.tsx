@@ -31,6 +31,8 @@ interface PasswordFormData {
   confirmPassword: string;
 }
 
+
+
 export default function ProfilePage() {
   const { data: session, update } = useSession();
   const [profileData, setProfileData] = useState<ProfileFormData>({

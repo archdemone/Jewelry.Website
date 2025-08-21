@@ -1,0 +1,782 @@
+{
+  "config": {
+    "configFile": "C:\\Users\\dimam\\OneDrive\\Desktop\\Jewelry.Website\\Jewelry.Website\\playwright.config.ts",
+    "rootDir": "C:/Users/dimam/OneDrive/Desktop/Jewelry.Website/Jewelry.Website/__tests__/e2e",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 3
+    },
+    "preserveOutput": "always",
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "playwright-report"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "test-results/results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "quiet": false,
+    "projects": [
+      {
+        "outputDir": "C:/Users/dimam/OneDrive/Desktop/Jewelry.Website/Jewelry.Website/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 3
+        },
+        "id": "chromium",
+        "name": "chromium",
+        "testDir": "C:/Users/dimam/OneDrive/Desktop/Jewelry.Website/Jewelry.Website/__tests__/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/Users/dimam/OneDrive/Desktop/Jewelry.Website/Jewelry.Website/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 3
+        },
+        "id": "baseline",
+        "name": "baseline",
+        "testDir": "C:/Users/dimam/OneDrive/Desktop/Jewelry.Website/Jewelry.Website/__tests__/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "C:/Users/dimam/OneDrive/Desktop/Jewelry.Website/Jewelry.Website/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 3
+        },
+        "id": "sandbox",
+        "name": "sandbox",
+        "testDir": "C:/Users/dimam/OneDrive/Desktop/Jewelry.Website/Jewelry.Website/__tests__/e2e",
+        "testIgnore": [],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "shard": null,
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.55.0",
+    "workers": 14,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "console-error-check.spec.ts",
+      "file": "console-error-check.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Console Error Monitoring",
+          "file": "console-error-check.spec.ts",
+          "line": 49,
+          "column": 6,
+          "specs": [
+            {
+              "title": "check for console errors on all critical pages",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "failed",
+                      "duration": 23327,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m12\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m12\u001b[39m\n    at C:\\Users\\dimam\\OneDrive\\Desktop\\Jewelry.Website\\Jewelry.Website\\__tests__\\e2e\\console-error-check.spec.ts:194:43",
+                        "location": {
+                          "file": "C:\\Users\\dimam\\OneDrive\\Desktop\\Jewelry.Website\\Jewelry.Website\\__tests__\\e2e\\console-error-check.spec.ts",
+                          "column": 43,
+                          "line": 194
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 192 |\u001b[39m     \u001b[36mif\u001b[39m (categorized\u001b[33m.\u001b[39m\u001b[33mCRITICAL\u001b[39m\u001b[33m.\u001b[39mlength \u001b[33m>\u001b[39m \u001b[35m0\u001b[39m) {\n \u001b[90m 193 |\u001b[39m       console\u001b[33m.\u001b[39mlog(\u001b[32m`\\n❌ ${categorized.CRITICAL.length} critical console errors found!`\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 194 |\u001b[39m       expect(categorized\u001b[33m.\u001b[39m\u001b[33mCRITICAL\u001b[39m\u001b[33m.\u001b[39mlength)\u001b[33m.\u001b[39mtoBe(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 195 |\u001b[39m     }\n \u001b[90m 196 |\u001b[39m     \n \u001b[90m 197 |\u001b[39m     \u001b[90m// Optional: fail on high severity errors too\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\dimam\\OneDrive\\Desktop\\Jewelry.Website\\Jewelry.Website\\__tests__\\e2e\\console-error-check.spec.ts",
+                            "column": 43,
+                            "line": 194
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m12\u001b[39m\n\n\u001b[0m \u001b[90m 192 |\u001b[39m     \u001b[36mif\u001b[39m (categorized\u001b[33m.\u001b[39m\u001b[33mCRITICAL\u001b[39m\u001b[33m.\u001b[39mlength \u001b[33m>\u001b[39m \u001b[35m0\u001b[39m) {\n \u001b[90m 193 |\u001b[39m       console\u001b[33m.\u001b[39mlog(\u001b[32m`\\n❌ ${categorized.CRITICAL.length} critical console errors found!`\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 194 |\u001b[39m       expect(categorized\u001b[33m.\u001b[39m\u001b[33mCRITICAL\u001b[39m\u001b[33m.\u001b[39mlength)\u001b[33m.\u001b[39mtoBe(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 195 |\u001b[39m     }\n \u001b[90m 196 |\u001b[39m     \n \u001b[90m 197 |\u001b[39m     \u001b[90m// Optional: fail on high severity errors too\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\dimam\\OneDrive\\Desktop\\Jewelry.Website\\Jewelry.Website\\__tests__\\e2e\\console-error-check.spec.ts:194:43\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "📄 Testing page: /\n"
+                        },
+                        {
+                          "text": "📄 Testing page: /products\n"
+                        },
+                        {
+                          "text": "📄 Testing page: /about\n"
+                        },
+                        {
+                          "text": "📄 Testing page: /contact\n"
+                        },
+                        {
+                          "text": "📄 Testing page: /cart\n"
+                        },
+                        {
+                          "text": "📄 Testing page: /checkout\n"
+                        },
+                        {
+                          "text": "\n📊 Console Error Check Results:\n"
+                        },
+                        {
+                          "text": "Total errors found: 17\n"
+                        },
+                        {
+                          "text": "\n🚨 CRITICAL (12):\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/: Request failed: http://localhost:3001/products?_rsc=1wtp7 - net::ERR_ABORTED...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/products: Request failed: http://localhost:3001/products/womens?_rsc=zdyp4 - net::ERR_ABORTED...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/products: Request failed: http://localhost:3001/products/mens?_rsc=zdyp4 - net::ERR_ABORTED...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/products: Request failed: http://localhost:3001/products/unisex?_rsc=zdyp4 - net::ERR_ABORTED...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/products: Request failed: http://localhost:3001/products/inlay?_rsc=zdyp4 - net::ERR_ABORTED...\n"
+                        },
+                        {
+                          "text": "  • /products: Navigation failed: page.goto: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://loca...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/products: Request failed: http://localhost:3001/api/admin/products - net::ERR_ABORTED...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/about: Request failed: http://localhost:3001/products?_rsc=1yt06 - net::ERR_ABORTED...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/contact: Request failed: http://localhost:3001/products?_rsc=zewlb - net::ERR_ABORTED...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/cart: Request failed: http://localhost:3001/products?_rsc=1l3yv - net::ERR_ABORTED...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/checkout: Request failed: https://js.stripe.com/v3 - csp...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/checkout: Request failed: http://localhost:3001/products?_rsc=42y2r - net::ERR_ABORTED...\n"
+                        },
+                        {
+                          "text": "\nℹ️ MEDIUM (5):\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/about: Missing critical element: [data-testid=\"homepage-main\"]...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/contact: Missing critical element: [data-testid=\"homepage-main\"]...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/cart: Missing critical element: [data-testid=\"homepage-main\"]...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/checkout: Refused to load the script 'https://js.stripe.com/v3' because it violates the following Content Secu...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/checkout: Missing critical element: [data-testid=\"homepage-main\"]...\n"
+                        },
+                        {
+                          "text": "\n❌ 12 critical console errors found!\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-21T08:31:55.320Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\dimam\\OneDrive\\Desktop\\Jewelry.Website\\Jewelry.Website\\test-results\\console-error-check-Consol-a712e-rrors-on-all-critical-pages-chromium\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\dimam\\OneDrive\\Desktop\\Jewelry.Website\\Jewelry.Website\\__tests__\\e2e\\console-error-check.spec.ts",
+                        "column": 43,
+                        "line": 194
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "1fbdf80f3d0ac8aeddad-5022f26946283bfb88ab",
+              "file": "console-error-check.spec.ts",
+              "line": 50,
+              "column": 7
+            },
+            {
+              "title": "check for React Dev Overlay errors specifically",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3743,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-21T08:32:19.270Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1fbdf80f3d0ac8aeddad-9db90525756c31fecdd9",
+              "file": "console-error-check.spec.ts",
+              "line": 209,
+              "column": 7
+            },
+            {
+              "title": "check for manifest and PWA errors",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "chromium",
+                  "projectName": "chromium",
+                  "results": [
+                    {
+                      "workerIndex": 3,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3695,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-21T08:32:23.077Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1fbdf80f3d0ac8aeddad-9d8191051595bd439937",
+              "file": "console-error-check.spec.ts",
+              "line": 231,
+              "column": 7
+            },
+            {
+              "title": "check for console errors on all critical pages",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "baseline",
+                  "projectName": "baseline",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 1,
+                      "status": "failed",
+                      "duration": 29193,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m5\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m5\u001b[39m\n    at C:\\Users\\dimam\\OneDrive\\Desktop\\Jewelry.Website\\Jewelry.Website\\__tests__\\e2e\\console-error-check.spec.ts:194:43",
+                        "location": {
+                          "file": "C:\\Users\\dimam\\OneDrive\\Desktop\\Jewelry.Website\\Jewelry.Website\\__tests__\\e2e\\console-error-check.spec.ts",
+                          "column": 43,
+                          "line": 194
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 192 |\u001b[39m     \u001b[36mif\u001b[39m (categorized\u001b[33m.\u001b[39m\u001b[33mCRITICAL\u001b[39m\u001b[33m.\u001b[39mlength \u001b[33m>\u001b[39m \u001b[35m0\u001b[39m) {\n \u001b[90m 193 |\u001b[39m       console\u001b[33m.\u001b[39mlog(\u001b[32m`\\n❌ ${categorized.CRITICAL.length} critical console errors found!`\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 194 |\u001b[39m       expect(categorized\u001b[33m.\u001b[39m\u001b[33mCRITICAL\u001b[39m\u001b[33m.\u001b[39mlength)\u001b[33m.\u001b[39mtoBe(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 195 |\u001b[39m     }\n \u001b[90m 196 |\u001b[39m     \n \u001b[90m 197 |\u001b[39m     \u001b[90m// Optional: fail on high severity errors too\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\dimam\\OneDrive\\Desktop\\Jewelry.Website\\Jewelry.Website\\__tests__\\e2e\\console-error-check.spec.ts",
+                            "column": 43,
+                            "line": 194
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m5\u001b[39m\n\n\u001b[0m \u001b[90m 192 |\u001b[39m     \u001b[36mif\u001b[39m (categorized\u001b[33m.\u001b[39m\u001b[33mCRITICAL\u001b[39m\u001b[33m.\u001b[39mlength \u001b[33m>\u001b[39m \u001b[35m0\u001b[39m) {\n \u001b[90m 193 |\u001b[39m       console\u001b[33m.\u001b[39mlog(\u001b[32m`\\n❌ ${categorized.CRITICAL.length} critical console errors found!`\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 194 |\u001b[39m       expect(categorized\u001b[33m.\u001b[39m\u001b[33mCRITICAL\u001b[39m\u001b[33m.\u001b[39mlength)\u001b[33m.\u001b[39mtoBe(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 195 |\u001b[39m     }\n \u001b[90m 196 |\u001b[39m     \n \u001b[90m 197 |\u001b[39m     \u001b[90m// Optional: fail on high severity errors too\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\dimam\\OneDrive\\Desktop\\Jewelry.Website\\Jewelry.Website\\__tests__\\e2e\\console-error-check.spec.ts:194:43\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "📄 Testing page: /\n"
+                        },
+                        {
+                          "text": "📄 Testing page: /products\n"
+                        },
+                        {
+                          "text": "📄 Testing page: /about\n"
+                        },
+                        {
+                          "text": "📄 Testing page: /contact\n"
+                        },
+                        {
+                          "text": "📄 Testing page: /cart\n"
+                        },
+                        {
+                          "text": "📄 Testing page: /checkout\n"
+                        },
+                        {
+                          "text": "\n📊 Console Error Check Results:\n"
+                        },
+                        {
+                          "text": "Total errors found: 19\n"
+                        },
+                        {
+                          "text": "\n🚨 CRITICAL (5):\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3000/: Request failed: http://localhost:3000/?_rsc=r3yhw - net::ERR_ABORTED...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3000/: Failed to fetch RSC payload for http://localhost:3000/. Falling back to browser navigation. TypeErro...\n"
+                        },
+                        {
+                          "text": "  • /products: Navigation failed: page.goto: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://loca...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3000/products: Request failed: http://localhost:3000/api/admin/products - net::ERR_ABORTED...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3000/products: Error loading products: TypeError: Failed to fetch\n    at loadData (webpack-internal:///(app-pages-b...\n"
+                        },
+                        {
+                          "text": "\nℹ️ MEDIUM (14):\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3000/: Missing critical element: header...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3000/: Missing critical element: footer...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3000/about: Missing critical element: header...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3000/about: Missing critical element: footer...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3000/about: Missing critical element: [data-testid=\"homepage-main\"]...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3000/contact: Missing critical element: header...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3000/contact: Missing critical element: footer...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3000/contact: Missing critical element: [data-testid=\"homepage-main\"]...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3000/cart: Missing critical element: header...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3000/cart: Missing critical element: footer...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3000/cart: Missing critical element: [data-testid=\"homepage-main\"]...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3000/checkout: Missing critical element: header...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3000/checkout: Missing critical element: footer...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3000/checkout: Missing critical element: [data-testid=\"homepage-main\"]...\n"
+                        },
+                        {
+                          "text": "\n❌ 5 critical console errors found!\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-21T08:31:55.321Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\dimam\\OneDrive\\Desktop\\Jewelry.Website\\Jewelry.Website\\test-results\\console-error-check-Consol-a712e-rrors-on-all-critical-pages-baseline\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\dimam\\OneDrive\\Desktop\\Jewelry.Website\\Jewelry.Website\\__tests__\\e2e\\console-error-check.spec.ts",
+                        "column": 43,
+                        "line": 194
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "1fbdf80f3d0ac8aeddad-f649642f8ad53ed275ca",
+              "file": "console-error-check.spec.ts",
+              "line": 50,
+              "column": 7
+            },
+            {
+              "title": "check for React Dev Overlay errors specifically",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "baseline",
+                  "projectName": "baseline",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3970,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-21T08:32:25.137Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1fbdf80f3d0ac8aeddad-13471d9d8727283dc9c2",
+              "file": "console-error-check.spec.ts",
+              "line": 209,
+              "column": 7
+            },
+            {
+              "title": "check for manifest and PWA errors",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "baseline",
+                  "projectName": "baseline",
+                  "results": [
+                    {
+                      "workerIndex": 5,
+                      "parallelIndex": 1,
+                      "status": "passed",
+                      "duration": 3908,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-21T08:32:29.170Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1fbdf80f3d0ac8aeddad-9b5efe7379583c508b5d",
+              "file": "console-error-check.spec.ts",
+              "line": 231,
+              "column": 7
+            },
+            {
+              "title": "check for console errors on all critical pages",
+              "ok": false,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "sandbox",
+                  "projectName": "sandbox",
+                  "results": [
+                    {
+                      "workerIndex": 2,
+                      "parallelIndex": 2,
+                      "status": "failed",
+                      "duration": 23328,
+                      "error": {
+                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m12\u001b[39m",
+                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m12\u001b[39m\n    at C:\\Users\\dimam\\OneDrive\\Desktop\\Jewelry.Website\\Jewelry.Website\\__tests__\\e2e\\console-error-check.spec.ts:194:43",
+                        "location": {
+                          "file": "C:\\Users\\dimam\\OneDrive\\Desktop\\Jewelry.Website\\Jewelry.Website\\__tests__\\e2e\\console-error-check.spec.ts",
+                          "column": 43,
+                          "line": 194
+                        },
+                        "snippet": "\u001b[0m \u001b[90m 192 |\u001b[39m     \u001b[36mif\u001b[39m (categorized\u001b[33m.\u001b[39m\u001b[33mCRITICAL\u001b[39m\u001b[33m.\u001b[39mlength \u001b[33m>\u001b[39m \u001b[35m0\u001b[39m) {\n \u001b[90m 193 |\u001b[39m       console\u001b[33m.\u001b[39mlog(\u001b[32m`\\n❌ ${categorized.CRITICAL.length} critical console errors found!`\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 194 |\u001b[39m       expect(categorized\u001b[33m.\u001b[39m\u001b[33mCRITICAL\u001b[39m\u001b[33m.\u001b[39mlength)\u001b[33m.\u001b[39mtoBe(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 195 |\u001b[39m     }\n \u001b[90m 196 |\u001b[39m     \n \u001b[90m 197 |\u001b[39m     \u001b[90m// Optional: fail on high severity errors too\u001b[39m\u001b[0m"
+                      },
+                      "errors": [
+                        {
+                          "location": {
+                            "file": "C:\\Users\\dimam\\OneDrive\\Desktop\\Jewelry.Website\\Jewelry.Website\\__tests__\\e2e\\console-error-check.spec.ts",
+                            "column": 43,
+                            "line": 194
+                          },
+                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m0\u001b[39m\nReceived: \u001b[31m12\u001b[39m\n\n\u001b[0m \u001b[90m 192 |\u001b[39m     \u001b[36mif\u001b[39m (categorized\u001b[33m.\u001b[39m\u001b[33mCRITICAL\u001b[39m\u001b[33m.\u001b[39mlength \u001b[33m>\u001b[39m \u001b[35m0\u001b[39m) {\n \u001b[90m 193 |\u001b[39m       console\u001b[33m.\u001b[39mlog(\u001b[32m`\\n❌ ${categorized.CRITICAL.length} critical console errors found!`\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 194 |\u001b[39m       expect(categorized\u001b[33m.\u001b[39m\u001b[33mCRITICAL\u001b[39m\u001b[33m.\u001b[39mlength)\u001b[33m.\u001b[39mtoBe(\u001b[35m0\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 195 |\u001b[39m     }\n \u001b[90m 196 |\u001b[39m     \n \u001b[90m 197 |\u001b[39m     \u001b[90m// Optional: fail on high severity errors too\u001b[39m\u001b[0m\n\u001b[2m    at C:\\Users\\dimam\\OneDrive\\Desktop\\Jewelry.Website\\Jewelry.Website\\__tests__\\e2e\\console-error-check.spec.ts:194:43\u001b[22m"
+                        }
+                      ],
+                      "stdout": [
+                        {
+                          "text": "📄 Testing page: /\n"
+                        },
+                        {
+                          "text": "📄 Testing page: /products\n"
+                        },
+                        {
+                          "text": "📄 Testing page: /about\n"
+                        },
+                        {
+                          "text": "📄 Testing page: /contact\n"
+                        },
+                        {
+                          "text": "📄 Testing page: /cart\n"
+                        },
+                        {
+                          "text": "📄 Testing page: /checkout\n"
+                        },
+                        {
+                          "text": "\n📊 Console Error Check Results:\n"
+                        },
+                        {
+                          "text": "Total errors found: 17\n"
+                        },
+                        {
+                          "text": "\n🚨 CRITICAL (12):\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/: Request failed: http://localhost:3001/products?_rsc=1wtp7 - net::ERR_ABORTED...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/products: Request failed: http://localhost:3001/products/womens?_rsc=zdyp4 - net::ERR_ABORTED...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/products: Request failed: http://localhost:3001/products/mens?_rsc=zdyp4 - net::ERR_ABORTED...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/products: Request failed: http://localhost:3001/products/unisex?_rsc=zdyp4 - net::ERR_ABORTED...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/products: Request failed: http://localhost:3001/products/inlay?_rsc=zdyp4 - net::ERR_ABORTED...\n"
+                        },
+                        {
+                          "text": "  • /products: Navigation failed: page.goto: Timeout 10000ms exceeded.\nCall log:\n\u001b[2m  - navigating to \"http://loca...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/products: Request failed: http://localhost:3001/api/admin/products - net::ERR_ABORTED...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/about: Request failed: http://localhost:3001/products?_rsc=1yt06 - net::ERR_ABORTED...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/contact: Request failed: http://localhost:3001/products?_rsc=zewlb - net::ERR_ABORTED...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/cart: Request failed: http://localhost:3001/products?_rsc=1l3yv - net::ERR_ABORTED...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/checkout: Request failed: https://js.stripe.com/v3 - csp...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/checkout: Request failed: http://localhost:3001/products?_rsc=42y2r - net::ERR_ABORTED...\n"
+                        },
+                        {
+                          "text": "\nℹ️ MEDIUM (5):\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/about: Missing critical element: [data-testid=\"homepage-main\"]...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/contact: Missing critical element: [data-testid=\"homepage-main\"]...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/cart: Missing critical element: [data-testid=\"homepage-main\"]...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/checkout: Refused to load the script 'https://js.stripe.com/v3' because it violates the following Content Secu...\n"
+                        },
+                        {
+                          "text": "  • http://localhost:3001/checkout: Missing critical element: [data-testid=\"homepage-main\"]...\n"
+                        },
+                        {
+                          "text": "\n❌ 12 critical console errors found!\n"
+                        }
+                      ],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-21T08:31:55.322Z",
+                      "annotations": [],
+                      "attachments": [
+                        {
+                          "name": "error-context",
+                          "contentType": "text/markdown",
+                          "path": "C:\\Users\\dimam\\OneDrive\\Desktop\\Jewelry.Website\\Jewelry.Website\\test-results\\console-error-check-Consol-a712e-rrors-on-all-critical-pages-sandbox\\error-context.md"
+                        }
+                      ],
+                      "errorLocation": {
+                        "file": "C:\\Users\\dimam\\OneDrive\\Desktop\\Jewelry.Website\\Jewelry.Website\\__tests__\\e2e\\console-error-check.spec.ts",
+                        "column": 43,
+                        "line": 194
+                      }
+                    }
+                  ],
+                  "status": "unexpected"
+                }
+              ],
+              "id": "1fbdf80f3d0ac8aeddad-e4c30c762505b03f78c1",
+              "file": "console-error-check.spec.ts",
+              "line": 50,
+              "column": 7
+            },
+            {
+              "title": "check for React Dev Overlay errors specifically",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "sandbox",
+                  "projectName": "sandbox",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 3729,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-21T08:32:19.269Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1fbdf80f3d0ac8aeddad-6706bd727bd4a8413495",
+              "file": "console-error-check.spec.ts",
+              "line": 209,
+              "column": 7
+            },
+            {
+              "title": "check for manifest and PWA errors",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "sandbox",
+                  "projectName": "sandbox",
+                  "results": [
+                    {
+                      "workerIndex": 4,
+                      "parallelIndex": 2,
+                      "status": "passed",
+                      "duration": 3721,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2025-08-21T08:32:23.061Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "1fbdf80f3d0ac8aeddad-3a624e431b017a646ee3",
+              "file": "console-error-check.spec.ts",
+              "line": 231,
+              "column": 7
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2025-08-21T08:31:54.781Z",
+    "duration": 38351.222,
+    "expected": 6,
+    "skipped": 0,
+    "unexpected": 3,
+    "flaky": 0
+  }
+}
