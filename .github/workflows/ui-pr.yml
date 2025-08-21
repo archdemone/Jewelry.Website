@@ -16,8 +16,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:
-      NODE_ENV: production
-      NEXT_TELEMETRY_DISABLED: 1
+      NODE_ENV: test
+      CI: true
       BASE_URL: http://localhost:3000
     steps:
       - name: Checkout
@@ -31,6 +31,18 @@ jobs:
 
       - name: Install deps
         run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Type check (CI-safe)
+        run: npm run type-check:ci
+
+      - name: Lint (no warnings allowed)
+        run: npm run lint:ci
+
+      - name: Unit tests
+        run: npm run test:ci
 
       - name: Build
         run: npm run build

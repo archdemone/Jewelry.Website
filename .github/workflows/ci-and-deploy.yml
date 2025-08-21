@@ -15,8 +15,8 @@ jobs:
   ci:
     runs-on: ubuntu-latest
     env:
-      NODE_ENV: production
-      NEXT_TELEMETRY_DISABLED: 1
+      NODE_ENV: test
+      CI: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -36,10 +36,39 @@ jobs:
       - name: Type check (CI-safe)
         run: npm run type-check:ci
 
-      - name: Lint
+      - name: Lint (no warnings allowed)
         run: npm run lint:ci
 
+      - name: Unit tests
+        run: npm run test:ci
+
       - name: Build
+        run: npm run build
+
+  deploy:
+    needs: ci
+    if: github.ref == 'refs/heads/main' && success()
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: production
+      NEXT_TELEMETRY_DISABLED: 1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Build for deployment
         run: npm run build
 
       - name: Create .env.production for runtime
@@ -70,32 +99,6 @@ jobs:
       - name: Stop server
         if: always()
         run: kill "$(cat server.pid)" || true
-
-  deploy:
-    needs: ci
-    if: github.ref == 'refs/heads/main' && success()
-    runs-on: ubuntu-latest
-    env:
-      NODE_ENV: production
-      NEXT_TELEMETRY_DISABLED: 1
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Node 20
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: npm
-
-      - name: Install deps
-        run: npm ci
-
-      - name: Generate Prisma client
-        run: npx prisma generate
-
-      - name: Build for deployment
-        run: npm run build
 
       - name: Export artifact
         uses: actions/upload-artifact@v4

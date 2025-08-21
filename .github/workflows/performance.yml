@@ -15,8 +15,8 @@ jobs:
   perf:
     runs-on: ubuntu-latest
     env:
-      NODE_ENV: production
-      NEXT_TELEMETRY_DISABLED: 1
+      NODE_ENV: test
+      CI: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -30,16 +30,28 @@ jobs:
       - name: Install deps
         run: npm ci
 
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Type check (CI-safe)
+        run: npm run type-check:ci
+
+      - name: Lint (no warnings allowed)
+        run: npm run lint:ci
+
+      - name: Unit tests
+        run: npm run test:ci
+
       - name: Build
         run: npm run build
+
+      - name: Size budget check
+        run: npm run size-limit
 
       - name: Start server on :3000 (background)
         run: |
           nohup node .next/standalone/server.js -p 3000 > server.log 2>&1 & echo $! > server.pid
           sleep 5
-
-      - name: Size budget check
-        run: npm run size-limit
 
       - name: Lighthouse (performance only)
         run: |
