@@ -77,7 +77,6 @@
     "monitor:full:sandbox": "npm run health:check:sandbox && npm run console:check:sandbox",
     "monitor:full:baseline": "npm run health:check:baseline && npm run console:check:baseline",
     "dev:helper": "node scripts/dev-helper.js",
-    "web-vitals-check": "node scripts/web-vitals-guard.js",
     "bundle:analyze": "cross-env ANALYZE=true npm run build",
     "check:bundle-size": "node scripts/check-bundle-size.js",
     "type-check:fix": "node scripts/fix-typescript-errors.js"
