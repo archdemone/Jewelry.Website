@@ -8,7 +8,7 @@ const HeroSection = () => {
     <section className="relative h-[90vh] min-h-[600px] w-full overflow-hidden bg-gradient-to-br from-amber-50 to-orange-50">
       {/* Perfect LCP-optimized hero image */}
       <Image
-        src="/images/header/hero-1-1920.webp"
+        src="/images/header/hero-1.jpg"
         alt="Elegant handcrafted jewelry"
         priority
         quality={70}
@@ -16,7 +16,7 @@ const HeroSection = () => {
         sizes="100vw"
         style={{ objectFit: 'cover' }}
         placeholder="blur"
-        blurDataURL="/images/header/hero-1-blur.webp"
+        blurDataURL="/images/header/hero-blur.webp"
       />
 
       {/* Overlay content - positioned inside hero for faster FCP/LCP */}
@@ -33,7 +33,7 @@ const HeroSection = () => {
           <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
             <Link
               href="/products"
-              className="btn-stable bg-white text-secondary transition-colors hover:bg-gray-100"
+              className="btn-stable bg-white text-[#1A1A1A] !text-[#1A1A1A] transition-colors hover:bg-gray-100 hover:!text-[#1A1A1A]"
             >
               Shop Collection
             </Link>
