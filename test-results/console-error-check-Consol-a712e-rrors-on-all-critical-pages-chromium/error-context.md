@@ -1,0 +1,165 @@
+# Page snapshot
+
+```yaml
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - link "J&M" [ref=e5] [cursor=pointer]:
+          - /url: /
+        - navigation [ref=e6]:
+          - link "Home" [ref=e7] [cursor=pointer]:
+            - /url: /
+          - link "Products" [ref=e8] [cursor=pointer]:
+            - /url: /products
+          - button "Ring Collections" [ref=e10] [cursor=pointer]:
+            - text: Ring Collections
+            - img [ref=e11] [cursor=pointer]
+          - link "The Artisan" [ref=e13] [cursor=pointer]:
+            - /url: /about-artisan
+          - link "Process" [ref=e14] [cursor=pointer]:
+            - /url: /crafting-process
+          - link "Contact" [ref=e15] [cursor=pointer]:
+            - /url: /contact
+        - generic [ref=e16]:
+          - generic [ref=e18]:
+            - img [ref=e19]
+            - textbox "Search products..." [ref=e22]
+          - link "Cart" [ref=e23] [cursor=pointer]:
+            - /url: /cart
+            - img [ref=e24] [cursor=pointer]
+            - text: Cart
+          - link "Sign In" [ref=e27] [cursor=pointer]:
+            - /url: /auth/login
+            - img [ref=e28] [cursor=pointer]
+            - text: Sign In
+    - main [ref=e31]:
+      - generic [ref=e34]:
+        - list [ref=e35]:
+          - listitem [ref=e36]:
+            - generic [ref=e37]: "1"
+            - generic [ref=e38]: Information
+          - listitem [ref=e39]:
+            - generic [ref=e40]: "2"
+            - generic [ref=e41]: Shipping
+          - listitem [ref=e42]:
+            - generic [ref=e43]: "3"
+            - generic [ref=e44]: Payment
+          - listitem [ref=e45]:
+            - generic [ref=e46]: "4"
+            - generic [ref=e47]: Review
+        - generic [ref=e48]:
+          - generic [ref=e49]:
+            - heading "Express checkout" [level=3] [ref=e51]
+            - generic [ref=e53]:
+              - generic [ref=e54]:
+                - generic [ref=e55]: Email *
+                - textbox "you@example.com" [ref=e56]
+              - generic [ref=e57]:
+                - generic [ref=e58]:
+                  - generic [ref=e59]: First name *
+                  - textbox [ref=e60]
+                - generic [ref=e61]:
+                  - generic [ref=e62]: Last name *
+                  - textbox [ref=e63]
+              - generic [ref=e64]:
+                - generic [ref=e65]: Company
+                - textbox [ref=e66]
+              - generic [ref=e67]:
+                - generic [ref=e68]: Address line 1 *
+                - textbox [ref=e69]
+              - generic [ref=e70]:
+                - generic [ref=e71]: Address line 2
+                - textbox [ref=e72]
+              - generic [ref=e73]:
+                - generic [ref=e74]:
+                  - generic [ref=e75]: City *
+                  - textbox [ref=e76]
+                - generic [ref=e77]:
+                  - generic [ref=e78]: State/Province *
+                  - textbox [ref=e79]
+                - generic [ref=e80]:
+                  - generic [ref=e81]: ZIP/Postal code *
+                  - textbox [ref=e82]
+              - generic [ref=e83]:
+                - generic [ref=e84]:
+                  - generic [ref=e85]: Country *
+                  - textbox [ref=e86]
+                - generic [ref=e87]:
+                  - generic [ref=e88]: Phone
+                  - textbox [ref=e89]
+              - generic [ref=e90]:
+                - checkbox [ref=e91]
+                - generic [ref=e92]: Save this address for future purchases
+            - generic [ref=e93]:
+              - button "Back" [disabled] [ref=e94]
+              - button "Continue" [ref=e95] [cursor=pointer]
+          - complementary [ref=e97]:
+            - generic [ref=e98]:
+              - heading "Order Summary" [level=3] [ref=e99]
+              - separator [ref=e101]
+              - generic [ref=e102]:
+                - generic [ref=e103]:
+                  - generic [ref=e104]: Subtotal
+                  - generic [ref=e105]: $0.00
+                - generic [ref=e106]:
+                  - generic [ref=e107]: Shipping
+                  - generic [ref=e108]: Free
+                - generic [ref=e109]:
+                  - generic [ref=e110]: Tax
+                  - generic [ref=e111]: $0.00
+              - separator [ref=e112]
+              - generic [ref=e113]:
+                - generic [ref=e114]: Total
+                - generic [ref=e115]: $0.00
+            - button "Have a promo code?" [ref=e117] [cursor=pointer]
+    - contentinfo [ref=e118]:
+      - generic [ref=e119]:
+        - generic [ref=e120]:
+          - heading "J&M" [level=3] [ref=e121]
+          - paragraph [ref=e122]: Timeless pieces crafted with care.
+        - generic [ref=e123]:
+          - heading "Quick Links" [level=4] [ref=e124]
+          - list [ref=e125]:
+            - listitem [ref=e126]:
+              - link "Home" [ref=e127] [cursor=pointer]:
+                - /url: /
+            - listitem [ref=e128]:
+              - link "Shop" [ref=e129] [cursor=pointer]:
+                - /url: /products
+            - listitem [ref=e130]:
+              - link "About" [ref=e131] [cursor=pointer]:
+                - /url: /about
+            - listitem [ref=e132]:
+              - link "Contact" [ref=e133] [cursor=pointer]:
+                - /url: /contact
+        - generic [ref=e134]:
+          - heading "Legal" [level=4] [ref=e135]
+          - list [ref=e136]:
+            - listitem [ref=e137]:
+              - link "Terms of Service" [ref=e138] [cursor=pointer]:
+                - /url: /terms
+            - listitem [ref=e139]:
+              - link "Privacy Policy" [ref=e140] [cursor=pointer]:
+                - /url: /privacy
+        - generic [ref=e141]:
+          - heading "Newsletter" [level=4] [ref=e142]
+          - paragraph [ref=e143]: Join for exclusive offers.
+          - form "Footer newsletter signup" [ref=e144]:
+            - generic [ref=e145]: Email address
+            - textbox "Email address" [ref=e146]
+            - button "Subscribe" [ref=e147] [cursor=pointer]
+      - generic [ref=e148]: © 2025 J&M. All rights reserved.
+    - generic [ref=e150]:
+      - generic [ref=e151]:
+        - strong [ref=e152]: We use cookies.
+        - text: We use essential cookies to make our site work and optional analytics for a better experience. See our
+        - link "Privacy Policy" [ref=e153] [cursor=pointer]:
+          - /url: /privacy
+        - text: .
+      - generic [ref=e154]:
+        - button "Reject" [ref=e155] [cursor=pointer]
+        - button "Accept" [ref=e156] [cursor=pointer]
+        - button "Customize" [ref=e157] [cursor=pointer]
+  - alert [ref=e158]
+```

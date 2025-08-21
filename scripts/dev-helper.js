@@ -30,8 +30,10 @@ console.log('🚀 Starting development server with hot reloading...');
 
 // Start the development server with specific flags
 const { spawn } = require('child_process');
-const child = spawn('npx', ['next', 'dev', '--turbo'], {
+const isWindows = process.platform === 'win32';
+const child = spawn(isWindows ? 'npx.cmd' : 'npx', ['next', 'dev', '--turbo'], {
   stdio: 'inherit',
+  shell: isWindows,
   env: {
     ...process.env,
     NODE_ENV: 'development',

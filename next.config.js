@@ -77,6 +77,7 @@ const nextConfig = {
   },
   // Enable static optimization
   output: 'standalone',
+
   // Advanced performance settings
   generateEtags: false, // Disable ETags for better caching
   onDemandEntries: {
