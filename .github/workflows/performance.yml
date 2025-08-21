@@ -48,6 +48,9 @@ jobs:
       - name: Size budget check
         run: npm run size-limit
 
+      - name: Install wait-on
+        run: npm install -g wait-on
+
       - name: Start server on :3000 (background)
         run: |
           nohup node .next/standalone/server.js -p 3000 > server.log 2>&1 & echo $! > server.pid

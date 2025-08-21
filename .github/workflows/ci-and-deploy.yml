@@ -110,6 +110,5 @@ jobs:
             package-lock.json
             next.config.js
             public
-            .env.example
 
       # Vercel deployment will be added when ready for production
