@@ -1,4 +1,4 @@
-﻿name: Tests
+name: Tests
 
 on:
   push:
@@ -30,14 +30,17 @@ jobs:
       - name: Install deps
         run: npm ci
 
-      - name: Generate Prisma client
-        run: npx prisma generate
-
-      - name: Type check (CI-safe)
-        run: npm run type-check:ci
+      - name: Type check (strict)
+        run: npm run type-check:strict
 
       - name: Lint (no warnings allowed)
-        run: npm run lint:ci
+        run: |
+          if npm run -s lint:ci > /dev/null 2>&1; then
+            npm run lint:ci
+          else
+            npx next lint --max-warnings=0
+          fi
 
       - name: Unit tests
         run: npm run test:ci
+

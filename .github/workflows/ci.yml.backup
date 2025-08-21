@@ -1,4 +1,4 @@
-﻿name: CI
+name: CI
 
 on:
   push:
@@ -29,11 +29,8 @@ jobs:
       - name: Install deps (deterministic)
         run: npm ci
 
-      - name: Generate Prisma client
-        run: npx prisma generate
-
-      - name: Type check (CI-safe)
-        run: npm run type-check:ci
+      - name: Type check (strict)
+        run: npm run type-check:strict
 
       - name: Lint
         run: npm run lint:ci
@@ -48,13 +45,12 @@ jobs:
             echo "NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL || 'http://localhost:4000' }}"
             echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET || 'ci-secret' }}"
             echo "DATABASE_URL=${{ secrets.DATABASE_URL || 'file:./ci.db' }}"
-            echo "NEXT_PUBLIC_SITE_URL=http://localhost:4000"
           } > .env.production
 
-      - name: Start standalone server on :4000 (background)
+      - name: Start server on :4000 (background)
         run: |
-          nohup node .next/standalone/server.js > server.log 2>&1 & echo $! > server.pid
-          sleep 5
+          nohup npx next start -p 4000 > server.log 2>&1 & echo $! > server.pid
+          sleep 2
 
       - name: Smoke test (/, /api/healthz)
         run: |

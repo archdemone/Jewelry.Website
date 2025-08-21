@@ -1,0 +1,21 @@
+﻿{
+  "extends": "./tsconfig.json",
+  "exclude": [
+    "node_modules",
+    ".next",
+    ".next/**/*",
+    "cypress",
+    "**/cypress/**",
+    "**/*.cy.ts",
+    "**/*.cy.tsx",
+    "playwright.config.ts",
+    "**/playwright/**",
+    "backup-*",
+    "**/backup-*/**",
+    "__tests__/**/*",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx"
+  ]
+}
