@@ -172,7 +172,8 @@
     "zod": "^3.22.4",
     "zustand": "^5.0.7",
     "compression-webpack-plugin": "^11.1.0",
-    "autoprefixer": "^10.4.16"
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.31"
   },
   "devDependencies": {
     "@playwright/test": "^1.40.0",
