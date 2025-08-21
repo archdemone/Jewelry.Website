@@ -2,5 +2,6 @@
 
 ```yaml
 - main [ref=e3]:
-  - paragraph [ref=e9]: Loading checkout...
+  - main [ref=e4]:
+    - main [ref=e5]
 ```

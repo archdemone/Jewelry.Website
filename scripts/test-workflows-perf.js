@@ -2,9 +2,8 @@
 
 const { spawn, execSync } = require('child_process');
 const fs = require('fs');
-const path = require('path');
 
-console.log('🚀 Running Enhanced Local Workflow Tests...\n');
+console.log('🚀 Running Performance Tests with Lighthouse...\n');
 
 // Colors for output
 const colors = {
@@ -65,19 +64,6 @@ function runCommand(command, description, options = {}) {
       reject(error);
     });
   });
-}
-
-function runCommandSync(command, description) {
-  try {
-    log(`▶ ${description}...`, 'blue');
-    const output = execSync(command, { encoding: 'utf8', stdio: 'pipe' });
-    log(`✅ ${description} - PASSED`, 'green');
-    return { success: true, output };
-  } catch (error) {
-    log(`❌ ${description} - FAILED`, 'red');
-    log(`Error: ${error.message}`, 'red');
-    return { success: false, output: error.stdout || '', errorOutput: error.stderr || '' };
-  }
 }
 
 async function startServer(port = 3000) {
@@ -170,54 +156,45 @@ async function waitForServer(port = 3000, maxAttempts = 30) {
   return false;
 }
 
-async function runE2ETests() {
-  log(`\n============================================================`, 'blue');
-  log(`🎨 E2E Tests (Local Server)`, 'blue');
-  log(`============================================================`, 'blue');
-
-  let serverProcess = null;
-  
+async function analyzePerformanceReport() {
   try {
-    // Start the server
-    serverProcess = await startServer(3000);
-    
-    // Wait for server to be ready
-    const serverReady = await waitForServer(3000);
-    if (!serverReady) {
-      throw new Error('Server failed to become ready');
-    }
-
-    // Run E2E tests
-    const result = await runCommand(
-      'npm run test:e2e',
-      'E2E Tests',
-      { 
-        env: { 
-          ...process.env, 
-          BASE_URL: 'http://localhost:3000',
-          CI: 'true'
-        },
-        verbose: true 
+    const reportPath = './lighthouse-report.report.json';
+    if (fs.existsSync(reportPath)) {
+      const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+      const performance = report.categories?.performance?.score;
+      if (performance) {
+        const score = Math.round(performance * 100);
+        log(`📊 Performance Score: ${score}/100`, score >= 90 ? 'green' : score >= 70 ? 'yellow' : 'red');
+        
+        // Check Core Web Vitals
+        const audits = report.audits || {};
+        const lcp = audits['largest-contentful-paint']?.numericValue;
+        const fid = audits['max-potential-fid']?.numericValue;
+        const cls = audits['cumulative-layout-shift']?.numericValue;
+        
+        if (lcp) {
+          const lcpScore = lcp < 2500 ? 'green' : lcp < 4000 ? 'yellow' : 'red';
+          log(`   LCP: ${Math.round(lcp)}ms`, lcpScore);
+        }
+        if (fid) {
+          const fidScore = fid < 100 ? 'green' : fid < 300 ? 'yellow' : 'red';
+          log(`   FID: ${Math.round(fid)}ms`, fidScore);
+        }
+        if (cls) {
+          const clsScore = cls < 0.1 ? 'green' : cls < 0.25 ? 'yellow' : 'red';
+          log(`   CLS: ${cls.toFixed(3)}`, clsScore);
+        }
+        
+        return score;
       }
-    );
-
-    return result.success;
-  } catch (error) {
-    log(`❌ E2E Tests - ERROR: ${error.message}`, 'red');
-    return false;
-  } finally {
-    if (serverProcess) {
-      serverProcess.kill();
-      log(`🛑 Test server stopped`, 'yellow');
     }
+  } catch (error) {
+    log(`⚠️ Could not parse performance report: ${error.message}`, 'yellow');
   }
+  return null;
 }
 
-async function runPerformanceTests() {
-  log(`\n============================================================`, 'blue');
-  log(`📊 Performance Tests (Local Server)`, 'blue');
-  log(`============================================================`, 'blue');
-
+async function main() {
   let serverProcess = null;
   
   try {
@@ -229,6 +206,10 @@ async function runPerformanceTests() {
     if (!serverReady) {
       throw new Error('Server failed to become ready');
     }
+
+    log(`\n============================================================`, 'blue');
+    log(`📊 Running Performance Tests`, 'blue');
+    log(`============================================================`, 'blue');
 
     // Run Lighthouse performance test
     const result = await runCommand(
@@ -237,100 +218,40 @@ async function runPerformanceTests() {
       { verbose: true }
     );
 
+    // Analyze results
+    const performanceScore = await analyzePerformanceReport();
+
+    // Summary
+    log(`\n============================================================`, 'blue');
+    log(`📋 Performance Test Summary`, 'blue');
+    log(`============================================================`, 'blue');
+
     if (result.success) {
-      // Check if performance scores are acceptable
-      try {
-        const reportPath = './lighthouse-report.report.json';
-        if (fs.existsSync(reportPath)) {
-          const report = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
-          const performance = report.categories?.performance?.score;
-          if (performance) {
-            const score = Math.round(performance * 100);
-            log(`📊 Performance Score: ${score}/100`, score >= 90 ? 'green' : score >= 70 ? 'yellow' : 'red');
-          }
+      log(`✅ Performance Tests - PASSED`, 'green');
+      if (performanceScore !== null) {
+        if (performanceScore >= 90) {
+          log(`\n🎉 Excellent performance! Score: ${performanceScore}/100`, 'green');
+        } else if (performanceScore >= 70) {
+          log(`\n⚠️ Good performance, but room for improvement. Score: ${performanceScore}/100`, 'yellow');
+        } else {
+          log(`\n❌ Performance needs improvement. Score: ${performanceScore}/100`, 'red');
         }
-      } catch (error) {
-        log(`⚠️ Could not parse performance report: ${error.message}`, 'yellow');
       }
+      log(`\n📄 Detailed report: lighthouse-report.report.html`, 'blue');
+    } else {
+      log(`❌ Performance Tests - FAILED`, 'red');
+      log(`\n⚠️ Performance tests failed. Check the output above for issues.`, 'yellow');
+      process.exit(1);
     }
 
-    return result.success;
   } catch (error) {
     log(`❌ Performance Tests - ERROR: ${error.message}`, 'red');
-    return false;
+    process.exit(1);
   } finally {
     if (serverProcess) {
       serverProcess.kill();
       log(`🛑 Test server stopped`, 'yellow');
     }
-  }
-}
-
-async function main() {
-  const results = {
-    typeCheck: false,
-    lint: false,
-    unitTests: false,
-    build: false,
-    sizeLimit: false,
-    e2eTests: false,
-    performanceTests: false
-  };
-
-  // Core CI tests
-  log(`\n============================================================`, 'blue');
-  log(`🔧 CI and Deploy Workflow Simulation`, 'blue');
-  log(`============================================================`, 'blue');
-
-  results.typeCheck = (await runCommand('npm run type-check:ci', 'Type Check (CI-safe)')).success;
-  results.lint = (await runCommand('npm run lint:ci', 'Lint (no warnings allowed)')).success;
-  results.unitTests = (await runCommand('npm run test:ci', 'Unit Tests')).success;
-  results.build = (await runCommand('npm run build', 'Build for deployment')).success;
-
-  // Performance & Bundle Analysis
-  log(`\n============================================================`, 'blue');
-  log(`📊 Performance & Bundle Analysis Workflow Simulation`, 'blue');
-  log(`============================================================`, 'blue');
-
-  results.sizeLimit = (await runCommand('npm run size-limit', 'Size budget check')).success;
-
-  // E2E Tests (with local server)
-  results.e2eTests = await runE2ETests();
-
-  // Performance Tests (with local server)
-  results.performanceTests = await runPerformanceTests();
-
-  // Summary
-  log(`\n============================================================`, 'blue');
-  log(`📋 Enhanced Workflow Test Summary`, 'blue');
-  log(`============================================================`, 'blue');
-
-  const testResults = [
-    { name: 'Type Check', result: results.typeCheck },
-    { name: 'Lint', result: results.lint },
-    { name: 'Unit Tests', result: results.unitTests },
-    { name: 'Build', result: results.build },
-    { name: 'Size Limit', result: results.sizeLimit },
-    { name: 'E2E Tests', result: results.e2eTests },
-    { name: 'Performance Tests', result: results.performanceTests }
-  ];
-
-  testResults.forEach(({ name, result }) => {
-    const status = result ? '✅ PASS' : '❌ FAIL';
-    const color = result ? 'green' : 'red';
-    log(`${status} ${name}`, color);
-  });
-
-  const passedCount = testResults.filter(t => t.result).length;
-  const totalCount = testResults.length;
-
-  log(`\nResults: ${passedCount}/${totalCount} tests passed`, passedCount === totalCount ? 'green' : 'yellow');
-
-  if (passedCount < totalCount) {
-    log(`\n⚠️ Some workflow tests failed. Check the output above for details.`, 'yellow');
-    process.exit(1);
-  } else {
-    log(`\n🎉 All workflow tests passed! Your CI/CD pipeline should work correctly.`, 'green');
   }
 }
 
