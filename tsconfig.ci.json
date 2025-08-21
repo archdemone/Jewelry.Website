@@ -9,6 +9,7 @@
     ".next/**/*",
     "cypress",
     "**/cypress/**",
+    "cypress.config.ts",
     "**/*.cy.ts",
     "**/*.cy.tsx",
     "playwright.config.ts",
