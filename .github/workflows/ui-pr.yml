@@ -50,6 +50,9 @@ jobs:
       - name: Install Playwright (with deps)
         run: npx playwright install --with-deps
 
+      - name: Install wait-on
+        run: npm install -g wait-on
+
       - name: Start server on :3000 (background)
         run: |
           nohup node .next/standalone/server.js -p 3000 > server.log 2>&1 & echo $! > server.pid
