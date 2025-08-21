@@ -1,17 +1,18 @@
-﻿name: CI
+name: CI and Deploy
 
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
 
 concurrency:
-  group: ci-${{ github.ref }}
+  group: ci-deploy-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  build-test:
+  ci:
     runs-on: ubuntu-latest
     env:
       NODE_ENV: production
@@ -26,7 +27,7 @@ jobs:
           node-version: 20
           cache: npm
 
-      - name: Install deps (deterministic)
+      - name: Install deps
         run: npm ci
 
       - name: Generate Prisma client
@@ -38,7 +39,7 @@ jobs:
       - name: Lint
         run: npm run lint:ci
 
-      - name: Build (Next.js)
+      - name: Build
         run: npm run build
 
       - name: Create .env.production for runtime
@@ -69,3 +70,51 @@ jobs:
       - name: Stop server
         if: always()
         run: kill "$(cat server.pid)" || true
+
+  deploy:
+    needs: ci
+    if: github.ref == 'refs/heads/main' && success()
+    runs-on: ubuntu-latest
+    env:
+      NODE_ENV: production
+      NEXT_TELEMETRY_DISABLED: 1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Build for deployment
+        run: npm run build
+
+      - name: Export artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: next-build
+          path: |
+            .next
+            package.json
+            package-lock.json
+            next.config.js
+            public
+            .env.example
+
+      - name: Deploy to Vercel
+        if: ${{ secrets.VERCEL_TOKEN && secrets.VERCEL_ORG_ID && secrets.VERCEL_PROJECT_ID }}
+        uses: amondnet/vercel-action@v25
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+          working-directory: ./
+          vercel-args: '--prod'
