@@ -170,7 +170,8 @@
     "tailwindcss-animate": "^1.0.7",
     "xlsx": "^0.18.5",
     "zod": "^3.22.4",
-    "zustand": "^5.0.7"
+    "zustand": "^5.0.7",
+    "compression-webpack-plugin": "^11.1.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.40.0",
@@ -183,7 +184,6 @@
     "@types/react": "^18.3.23",
     "@types/react-dom": "^18.3.7",
     "autoprefixer": "^10.4.16",
-    "compression-webpack-plugin": "^11.1.0",
     "concurrently": "^9.2.0",
     "cross-env": "^10.0.0",
     "cypress": "^13.6.0",
