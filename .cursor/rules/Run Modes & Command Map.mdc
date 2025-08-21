@@ -4,6 +4,8 @@ alwaysApply: true
 
 Memory 2 — Run Modes & Command Map (what to run):
 
+Default server start: "start the server" = npm run dev:safe (baseline prod + sandbox dev)
+
 Dev (live edit): npm run dev:safe (baseline prod on :3000 + sandbox dev on :3001).
 Dev uses webpack (Turbopack off via NEXT_DISABLE_TURBOPACK=1).
 
