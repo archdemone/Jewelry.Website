@@ -30,7 +30,7 @@ jobs:
 
       - name: Type check & Lint
         run: |
-          npm run type-check:strict
+          npm run type-check:ci
           npm run lint
 
       - name: Build (Next.js)

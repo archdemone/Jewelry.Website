@@ -38,7 +38,7 @@ jobs:
 
       - name: Start server on :4000 (background)
         run: |
-          nohup npx next start -p 4000 > server.log 2>&1 & echo $! > server.pid
+          nohup node .next/standalone/server.js -p 4000 > server.log 2>&1 & echo $! > server.pid
           sleep 2
 
       - name: Run Playwright tests
