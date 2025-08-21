@@ -53,7 +53,7 @@ jobs:
 
       - name: Start server on :3000 (background)
         run: |
-          nohup node .next/standalone/server.js -p 3000 > server.log 2>&1 & echo $! > server.pid
+          nohup node .next/standalone/server.js -p 3000 -H 127.0.0.1 > server.log 2>&1 & echo $! > server.pid
           sleep 5
 
       - name: Lighthouse (performance only)

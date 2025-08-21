@@ -79,7 +79,15 @@
     "dev:helper": "node scripts/dev-helper.js",
     "bundle:analyze": "cross-env ANALYZE=true npm run build",
     "check:bundle-size": "node scripts/check-bundle-size.js",
-    "type-check:fix": "node scripts/fix-typescript-errors.js"
+    "test:workflows": "act push",
+    "test:workflows:local": "node scripts/test-workflows-local.js",
+    "test:performance": "act push -W .github/workflows/performance.yml",
+    "test:ui": "act push -W .github/workflows/ui-pr.yml",
+    "test:all": "act push",
+    "workflow:debug": "act push --verbose",
+    "workflow:list": "act -l",
+    "workflow:setup": "echo 'Installing act CLI...' && echo 'Download from: https://github.com/nektos/act/releases' && echo 'Or use: choco install act-cli (Windows with Chocolatey)'",
+    "workflow:setup:auto": "node scripts/setup-github-actions-local.js"
   },
   "size-limit": [
     {
@@ -106,6 +114,7 @@
   "dependencies": {
     "@auth/prisma-adapter": "^2.10.0",
     "@hookform/resolvers": "^3.3.2",
+    "@next/bundle-analyzer": "^14.2.31",
     "@prisma/client": "^5.0.0",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.5",
@@ -164,7 +173,6 @@
     "zustand": "^5.0.7"
   },
   "devDependencies": {
-    "@next/bundle-analyzer": "^14.2.31",
     "@playwright/test": "^1.40.0",
     "@size-limit/preset-app": "^11.2.0",
     "@testing-library/dom": "^10.4.1",
