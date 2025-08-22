@@ -18,10 +18,7 @@ const FeaturedProducts = () => {
 
   useEffect(() => {
     setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    // Load featured products from the data store
+    // Load featured products immediately after mounting
     setFeaturedRings(getFeaturedProducts());
     
     // Only access localStorage in browser environment
@@ -92,8 +89,8 @@ const FeaturedProducts = () => {
   // Show 6 products for better engagement and variety
   const initialProducts = featuredRings.slice(0, 6);
 
-  // Don't render until mounted to prevent SSR issues
-  if (!mounted) {
+  // Show loading state only if not mounted or no products loaded
+  if (!mounted || featuredRings.length === 0) {
     return (
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
