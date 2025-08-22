@@ -41,15 +41,20 @@ export default function LoginForm() {
 
       if (res?.error) {
         setError('Invalid email or password.');
+        setLoading(false);
         return;
       }
 
-      // Successful login
-      router.push('/account');
+      if (res?.ok) {
+        // Successful login
+        router.push('/account');
+      } else {
+        setError('Login failed. Please try again.');
+        setLoading(false);
+      }
     } catch (err) {
       console.error('Login error:', err);
       setError('An unexpected error occurred. Please try again.');
-    } finally {
       setLoading(false);
     }
   }

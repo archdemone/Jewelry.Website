@@ -134,10 +134,18 @@ export default function RootLayout({
         {/* Manifest and SW disabled to avoid errors */}
       </head>
       <body className={`${inter.className} antialiased`}>
-        {/* Minimal layout to fix React context issue */}
-        <div className="min-h-screen">
-          <main>{children}</main>
-        </div>
+        <AuthSessionProvider>
+          <CartProvider>
+            <ErrorBoundary>
+              <Header />
+              <main>{children}</main>
+              <ConditionalFooter />
+              <SimpleToastContainer />
+              <NewsletterPopup />
+              <CookieBanner />
+            </ErrorBoundary>
+          </CartProvider>
+        </AuthSessionProvider>
       </body>
     </html>
   );
