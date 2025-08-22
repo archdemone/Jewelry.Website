@@ -37,13 +37,17 @@ backups/
 *.sql
 coverage.zip
 
-
+# Test artifacts
+playwright-report/
+test-results/
+lighthouse-report.*
+core
+tsconfig.ci.tsbuildinfo
 
 # Local backups
 coverage.zip
 *.zip
 backups/
-
 
 # Local backups
 Jewelry.Website/coverage.zip
