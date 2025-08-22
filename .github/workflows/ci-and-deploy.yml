@@ -45,6 +45,12 @@ jobs:
       - name: Build
         run: npm run build
 
+<<<<<<< HEAD
+      - name: Size budget check
+        run: npm run size-limit
+
+=======
+>>>>>>> efe9b86fc74c3a51342e610dd3cfb0a77ccc824b
   deploy:
     needs: ci
     if: github.ref == 'refs/heads/main' && success()

@@ -11,6 +11,11 @@ test('products page loads', async ({ page }) => {
 });
 
 test('about page loads', async ({ page }) => {
+<<<<<<< HEAD
+  await page.goto('/about-artisan');
+  await expect(page).toHaveURL(/\/about-artisan/);
+=======
   await page.goto('/about');
   await expect(page).toHaveURL(/\/about/);
+>>>>>>> efe9b86fc74c3a51342e610dd3cfb0a77ccc824b
 });
