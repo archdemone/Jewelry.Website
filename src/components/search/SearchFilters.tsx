@@ -36,7 +36,7 @@ export function SearchFilters({ query, category, minPrice, maxPrice, sort }: Sea
   ];
 
   const updateFilters = () => {
-    const params = new URLSearchParams(searchParams);
+    const params = new URLSearchParams(searchParams || '');
     
     if (localMinPrice) params.set('minPrice', localMinPrice);
     else params.delete('minPrice');
@@ -94,7 +94,7 @@ export function SearchFilters({ query, category, minPrice, maxPrice, sort }: Sea
                 value={cat.value}
                 checked={category === cat.value}
                 onChange={(e) => {
-                  const params = new URLSearchParams(searchParams);
+                  const params = new URLSearchParams(searchParams || '');
                   if (e.target.value) {
                     params.set('category', e.target.value);
                   } else {
@@ -163,7 +163,7 @@ export function SearchFilters({ query, category, minPrice, maxPrice, sort }: Sea
                 checked={localSort === option.value}
                 onChange={(e) => {
                   setLocalSort(e.target.value as any);
-                  const params = new URLSearchParams(searchParams);
+                  const params = new URLSearchParams(searchParams || '');
                   if (e.target.value !== 'new') {
                     params.set('sort', e.target.value);
                   } else {
@@ -190,7 +190,7 @@ export function SearchFilters({ query, category, minPrice, maxPrice, sort }: Sea
                 <span>Category: {categories.find(c => c.value === category)?.label}</span>
                 <button
                   onClick={() => {
-                    const params = new URLSearchParams(searchParams);
+                    const params = new URLSearchParams(searchParams || '');
                     params.delete('category');
                     if (query) params.set('q', query);
                     router.push(`/search?${params.toString()}`);
@@ -206,7 +206,7 @@ export function SearchFilters({ query, category, minPrice, maxPrice, sort }: Sea
                 <span>Min Price: £{minPrice}</span>
                 <button
                   onClick={() => {
-                    const params = new URLSearchParams(searchParams);
+                    const params = new URLSearchParams(searchParams || '');
                     params.delete('minPrice');
                     if (query) params.set('q', query);
                     router.push(`/search?${params.toString()}`);
@@ -222,7 +222,7 @@ export function SearchFilters({ query, category, minPrice, maxPrice, sort }: Sea
                 <span>Max Price: £{maxPrice}</span>
                 <button
                   onClick={() => {
-                    const params = new URLSearchParams(searchParams);
+                    const params = new URLSearchParams(searchParams || '');
                     params.delete('maxPrice');
                     if (query) params.set('q', query);
                     router.push(`/search?${params.toString()}`);
@@ -238,7 +238,7 @@ export function SearchFilters({ query, category, minPrice, maxPrice, sort }: Sea
                 <span>Sort: {sortOptions.find(s => s.value === sort)?.label}</span>
                 <button
                   onClick={() => {
-                    const params = new URLSearchParams(searchParams);
+                    const params = new URLSearchParams(searchParams || '');
                     params.delete('sort');
                     if (query) params.set('q', query);
                     router.push(`/search?${params.toString()}`);
