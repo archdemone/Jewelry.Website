@@ -77,10 +77,15 @@ jobs:
         run: |
           {
             echo "NODE_ENV=production"
-            echo "NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL || 'http://localhost:3000' }}"
-            echo "NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET || 'ci-secret' }}"
-            echo "DATABASE_URL=${{ secrets.DATABASE_URL || 'file:./ci.db' }}"
+            echo "NEXTAUTH_URL=http://localhost:3000"
+            echo "NEXTAUTH_SECRET=ci-test-secret-key-for-github-actions-2024-long-enough-for-validation"
+            echo "DATABASE_URL=file:./ci-test.db"
             echo "NEXT_PUBLIC_SITE_URL=http://localhost:3000"
+            echo "GOOGLE_CLIENT_ID="
+            echo "GOOGLE_CLIENT_SECRET="
+            echo "TURNSTILE_SECRET_KEY="
+            echo "RATE_LIMIT_WINDOW_MS=900000"
+            echo "LOGIN_MAX_FAILS=5"
           } > .env.production
 
       - name: Start standalone server on :3000 (background)
