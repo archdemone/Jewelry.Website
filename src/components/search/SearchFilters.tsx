@@ -36,7 +36,11 @@ export function SearchFilters({ query, category, minPrice, maxPrice, sort }: Sea
   ];
 
   const updateFilters = () => {
+<<<<<<< HEAD
     const params = new URLSearchParams(searchParams || '');
+=======
+    const params = new URLSearchParams(searchParams);
+>>>>>>> efe9b86fc74c3a51342e610dd3cfb0a77ccc824b
     
     if (localMinPrice) params.set('minPrice', localMinPrice);
     else params.delete('minPrice');
@@ -94,7 +98,11 @@ export function SearchFilters({ query, category, minPrice, maxPrice, sort }: Sea
                 value={cat.value}
                 checked={category === cat.value}
                 onChange={(e) => {
+<<<<<<< HEAD
                   const params = new URLSearchParams(searchParams || '');
+=======
+                  const params = new URLSearchParams(searchParams);
+>>>>>>> efe9b86fc74c3a51342e610dd3cfb0a77ccc824b
                   if (e.target.value) {
                     params.set('category', e.target.value);
                   } else {
@@ -163,7 +171,11 @@ export function SearchFilters({ query, category, minPrice, maxPrice, sort }: Sea
                 checked={localSort === option.value}
                 onChange={(e) => {
                   setLocalSort(e.target.value as any);
+<<<<<<< HEAD
                   const params = new URLSearchParams(searchParams || '');
+=======
+                  const params = new URLSearchParams(searchParams);
+>>>>>>> efe9b86fc74c3a51342e610dd3cfb0a77ccc824b
                   if (e.target.value !== 'new') {
                     params.set('sort', e.target.value);
                   } else {
@@ -190,7 +202,11 @@ export function SearchFilters({ query, category, minPrice, maxPrice, sort }: Sea
                 <span>Category: {categories.find(c => c.value === category)?.label}</span>
                 <button
                   onClick={() => {
+<<<<<<< HEAD
                     const params = new URLSearchParams(searchParams || '');
+=======
+                    const params = new URLSearchParams(searchParams);
+>>>>>>> efe9b86fc74c3a51342e610dd3cfb0a77ccc824b
                     params.delete('category');
                     if (query) params.set('q', query);
                     router.push(`/search?${params.toString()}`);
@@ -206,7 +222,11 @@ export function SearchFilters({ query, category, minPrice, maxPrice, sort }: Sea
                 <span>Min Price: £{minPrice}</span>
                 <button
                   onClick={() => {
+<<<<<<< HEAD
                     const params = new URLSearchParams(searchParams || '');
+=======
+                    const params = new URLSearchParams(searchParams);
+>>>>>>> efe9b86fc74c3a51342e610dd3cfb0a77ccc824b
                     params.delete('minPrice');
                     if (query) params.set('q', query);
                     router.push(`/search?${params.toString()}`);
@@ -222,7 +242,11 @@ export function SearchFilters({ query, category, minPrice, maxPrice, sort }: Sea
                 <span>Max Price: £{maxPrice}</span>
                 <button
                   onClick={() => {
+<<<<<<< HEAD
                     const params = new URLSearchParams(searchParams || '');
+=======
+                    const params = new URLSearchParams(searchParams);
+>>>>>>> efe9b86fc74c3a51342e610dd3cfb0a77ccc824b
                     params.delete('maxPrice');
                     if (query) params.set('q', query);
                     router.push(`/search?${params.toString()}`);
@@ -238,7 +262,11 @@ export function SearchFilters({ query, category, minPrice, maxPrice, sort }: Sea
                 <span>Sort: {sortOptions.find(s => s.value === sort)?.label}</span>
                 <button
                   onClick={() => {
+<<<<<<< HEAD
                     const params = new URLSearchParams(searchParams || '');
+=======
+                    const params = new URLSearchParams(searchParams);
+>>>>>>> efe9b86fc74c3a51342e610dd3cfb0a77ccc824b
                     params.delete('sort');
                     if (query) params.set('q', query);
                     router.push(`/search?${params.toString()}`);
