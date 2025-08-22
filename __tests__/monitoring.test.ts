@@ -1,6 +1,11 @@
 // Mock the health check module since it's a Node.js script
-const mockDetectCommonIssues = (results: any[]) => {
-  const issues = [];
+interface Issue {
+  type: string;
+  severity: string;
+}
+
+const mockDetectCommonIssues = (results: any[]): Issue[] => {
+  const issues: Issue[] = [];
   
   for (const result of results) {
     if (result.statusCode === 500) {
