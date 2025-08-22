@@ -187,17 +187,10 @@ async function runE2ETests() {
       throw new Error('Server failed to become ready');
     }
 
-<<<<<<< HEAD
     // Run E2E tests (baseline only)
     const result = await runCommand(
       'npx playwright test --project=baseline',
       'E2E Tests (Baseline)',
-=======
-    // Run E2E tests
-    const result = await runCommand(
-      'npm run test:e2e',
-      'E2E Tests',
->>>>>>> efe9b86fc74c3a51342e610dd3cfb0a77ccc824b
       { 
         env: { 
           ...process.env, 
@@ -304,14 +297,8 @@ async function main() {
   // E2E Tests (with local server)
   results.e2eTests = await runE2ETests();
 
-<<<<<<< HEAD
-  // Performance Tests (with local server) - disabled due to Chrome crashes
-  console.log('Skipping performance tests due to Chrome crashes in CI environment');
-  results.performanceTests = true; // Mark as passed for now
-=======
   // Performance Tests (with local server)
   results.performanceTests = await runPerformanceTests();
->>>>>>> efe9b86fc74c3a51342e610dd3cfb0a77ccc824b
 
   // Summary
   log(`\n============================================================`, 'blue');
