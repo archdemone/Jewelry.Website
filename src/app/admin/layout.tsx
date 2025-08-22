@@ -16,7 +16,9 @@ export const metadata = {
 export default async function AdminLayout({ children }: { children: ReactNode }) {
   const { allowed } = await requireAdminAccess();
   if (!allowed) {
-    return null;
+    // Redirect to login if not authenticated or not admin
+    const { redirect } = await import('next/navigation');
+    redirect('/auth/login?callbackUrl=/admin');
   }
   return (
     <AuthSessionProvider>

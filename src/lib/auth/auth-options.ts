@@ -153,6 +153,7 @@ export const authOptions: NextAuthOptions = {
     },
     async jwt({ token, user }) {
       if (user) {
+        token.sub = user.id;
         (token as any).role = (user as any).role;
         (token as any).mfaEnabled = (user as any).mfaEnabled ?? false;
         (token as any).tokenVersion = (user as any).tokenVersion ?? 0;
