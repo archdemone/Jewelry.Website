@@ -45,7 +45,7 @@ export function Header() {
   useEffect(() => {
     if (!q) return;
     const t = setTimeout(() => {
-      router.push(`/products?q=${encodeURIComponent(q)}`);
+      router.push(`/search?q=${encodeURIComponent(q)}`);
     }, 500);
     return () => clearTimeout(t);
   }, [q, router]);
