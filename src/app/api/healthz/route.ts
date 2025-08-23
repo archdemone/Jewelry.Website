@@ -3,8 +3,7 @@ import { NextResponse } from 'next/server';
 
 let prisma: any = null;
 try {
-  // Lazy require so we don’t crash if prisma isn’t installed in some env
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  // Lazy require so we don't crash if prisma isn't installed in some env
   const { PrismaClient } = require('@prisma/client');
   prisma = new PrismaClient();
 } catch {

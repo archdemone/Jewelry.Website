@@ -66,3 +66,9 @@ Jewelry.Website/coverage.zip
 *.zip
 backups/
 
+*.zip
+*.7z
+*.rar
+/coverage
+/coverage.*
+*.log
