@@ -41,14 +41,11 @@ const AnimatedButton = ({
   };
 
   return (
-    <motion.button
-      type={type}
+    <motion.button type={type}
       onClick={onClick}
       disabled={disabled}
       whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      className={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`}
-    >
+      whileTap={{ scale: 0.95 }} className={`${baseClasses} ${sizeClasses[size]} ${variantClasses[variant]} ${className}`}>
       {children}
     </motion.button>
   );

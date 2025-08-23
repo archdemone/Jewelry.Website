@@ -1,0 +1,5 @@
+# Quality Gates
+- `npm run dev:precheck --json` must be clean before commit.
+- If building: `npm run dev:precheck:build` + `npm run check-bundle-size --json` (enforce budgets).
+- Web Vitals: LCP < 2.5s, TBT < 300ms, CLS < 0.1. Avoid index-based keys in lists.
+- Images: next/image; hero ≤200KB; use `priority` only for the LCP element; defer non-critical JS (dynamic import).

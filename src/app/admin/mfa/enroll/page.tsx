@@ -17,24 +17,23 @@ export default async function EnrollMfaPage() {
   const qr = await QRCode.toDataURL(otpauth);
   return (
     <div className="max-w-md">
-      <h1 className="mb-4 text-2xl font-semibold">Enroll MFA</h1>
-      <p className="mb-4 text-sm text-gray-600">
+              <h1 className="mb-4 text-2xl font-semibold">Enroll MFA</h1>
+              <p className="mb-4 text-sm text-gray-600">
         Scan this QR with your authenticator app and enter the 6-digit code in the next step.
       </p>
-      <Image
-        src={qr}
+              <Image src={qr}
         alt="MFA QR"
         width={256}
         height={256}
         className="rounded border"
         unoptimized
       />
-      <div className="mt-4 text-sm text-gray-600">
+              <div className="mt-4 text-sm text-gray-600">
         If you cannot scan, use secret: <code>{secret}</code>
-      </div>
-      <a href="/admin/mfa/verify" className="mt-6 inline-block underline">
+              </div>
+              <a href="/admin/mfa/verify" className="mt-6 inline-block underline">
         Continue to verify
       </a>
-    </div>
+              </div>
   );
 }

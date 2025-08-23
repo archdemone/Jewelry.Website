@@ -29,15 +29,12 @@ function InnerPaymentForm({ clientSecret }: { clientSecret: string }) {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <PaymentElement options={{ layout: 'tabs' }} />
+              <PaymentElement options={{ layout: 'tabs' }} />
       {error && <p className="text-sm text-red-600">{error}</p>}
-      <button
-        disabled={loading || !stripe}
-        className="w-full rounded-md bg-yellow-500 py-2 text-white disabled:opacity-50"
-      >
+      <button disabled={loading || !stripe} className="w-full rounded-md bg-yellow-500 py-2 text-white disabled:opacity-50">
         {loading ? 'Processing…' : 'Pay now'}
       </button>
-    </form>
+              </form>
   );
 }
 
@@ -85,7 +82,7 @@ export default function PaymentForm() {
   if (!clientSecret) return <p className="text-muted-foreground text-sm">Loading payment form…</p>;
   return (
     <Elements stripe={stripePromise} options={options as any}>
-      <InnerPaymentForm clientSecret={clientSecret} />
-    </Elements>
+              <InnerPaymentForm clientSecret={clientSecret} />
+              </Elements>
   );
 }

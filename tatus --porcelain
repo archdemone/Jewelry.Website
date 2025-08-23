@@ -1,0 +1,15 @@
+.cursor/rules/Environment & Paths.mdc
+.cursor/rules/Run Modes & Command Map.mdc
+.cursor/rules/Safety, Promotion & Reporting.mdc
+.cursor/rules/performance.mdc
+.cursor/rules/projectflow.mdc
+projectinfo/memories/.git-workflow-memory.md
+projectinfo/memories/Environments & secrets.md
+projectinfo/memories/Error-Handling-Reporting.md
+projectinfo/memories/Sandbox usage (local safety).md
+projectinfo/memories/checks before merge.md
+projectinfo/memories/commands.md
+projectinfo/memory-1.txt
+projectinfo/memory-2.txt
+projectinfo/memory-3.txt
+projectinfo/rules/ENVIRONMENT_RULE.md

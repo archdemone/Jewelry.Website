@@ -1,0 +1,7 @@
+Memory 3 — Safety, Promotion & Reporting
+- Baseline is protected: Do not modify main code unless instructed to "promote/apply patch".
+- Promotion flow: Create patch from sandbox → apply to main → run `smoke:all` → commit with rationale.
+- Error handling: If sandbox install fails, sync package.json/lockfile from main, retry once, then report.
+- Reporting: On every task show the exact commands run, their exit codes, and last 20–50 log lines. Include JSON outputs.
+- Security/perf/seo/accessibility must not regress; no disabling tests to pass CI.
+- Clarify “dev or prod?” when unclear; default to dev:safe.

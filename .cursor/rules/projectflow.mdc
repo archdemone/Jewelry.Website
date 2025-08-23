@@ -1,0 +1,7 @@
+# Sandbox Workflow
+1. Work ONLY inside sandbox when experimenting.
+2. After changes: run `npm run smoke:all`. If any fail, fix and re-run.
+3. Promotion:
+   - Create patch from sandbox → apply to main.
+   - Re-run `smoke:all` on main before commit.
+4. Never copy files manually between trees; use the patch flow.

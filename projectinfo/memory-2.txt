@@ -1,0 +1,12 @@
+Memory 2 — Run Modes & Commands
+- Default dev flow: `npm run dev:safe` (baseline prod:3000 + sandbox dev:3001, Turbopack off).
+- One-shot checks: `npm run smoke:all` (agent:status + health:check + console:check:sandbox).
+- Individual helpers:
+  - `npm run agent:status` — 3000/3001 + manifest 200.
+  - `npm run health:check` — /api/healthz on both ports JSON.
+  - `npm run console:check:sandbox` — fails on console errors.
+  - `npm run dev:precheck --json` — TS + ESLint (+ optional build via :build).
+- If `dev:safe` unavailable: baseline → `npm run build && npm run start`, sandbox → `PORT=3001 NEXT_DISABLE_TURBOPACK=1 npm run dev`.
+- CRITICAL: Use direct commands only. NO pipes (|) or redirections (>) - they hang in PowerShell.
+- Working: `node scripts/dev-error-helper.js --with-build`. Broken: `npm run command | cat`.
+- Never start hidden extra servers/ports. Use non-interactive commands only and print exit codes.

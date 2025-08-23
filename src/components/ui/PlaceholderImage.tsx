@@ -14,16 +14,15 @@ const PlaceholderImage = ({
 }: PlaceholderImageProps) => {
   return (
     <div className={`relative bg-gradient-to-br from-gray-100 to-gray-200 ${className}`}>
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="text-center">
-          <Camera className="mx-auto mb-2 h-12 w-12 text-gray-400" />
-          <p className="font-medium text-gray-500">{text}</p>
-        </div>
-      </div>
+              <div className="absolute inset-0 flex items-center justify-center">
+              <div className="text-center">
+              <Camera className="mx-auto mb-2 h-12 w-12 text-gray-400" />
+              <p className="font-medium text-gray-500">{text}</p>
+              </div>
+              </div>
 
       {/* Animated shimmer effect */}
-      <motion.div
-        animate={{
+      <motion.div animate={{
           x: ['-100%', '100%'],
         }}
         transition={{
@@ -33,7 +32,7 @@ const PlaceholderImage = ({
         }}
         className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent"
       />
-    </div>
+              </div>
   );
 };
 

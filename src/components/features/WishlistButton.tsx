@@ -23,12 +23,9 @@ export default function WishlistButton({ productId }: { productId: string }) {
     } catch {}
   }
   return (
-    <button
-      aria-pressed={active}
-      onClick={toggle}
-      className={`inline-flex items-center gap-1 text-sm ${active ? 'text-red-600' : 'text-gray-700'}`}
-    >
-      <Heart className="h-4 w-4" fill={active ? 'currentColor' : 'none'} />
+    <button aria-pressed={active}
+      onClick={toggle} className={`inline-flex items-center gap-1 text-sm ${active ? 'text-red-600' : 'text-gray-700'}`}>
+              <Heart className="h-4 w-4" fill={active ? 'currentColor' : 'none'} />
       {active ? 'Wishlisted' : 'Wishlist'}
     </button>
   );

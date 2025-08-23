@@ -14,9 +14,8 @@ const RingLoader = ({ size = 'md', className = '' }: RingLoaderProps) => {
 
   return (
     <div className={`${sizeClasses[size]} ${className} animate-spin`}>
-      <svg viewBox="0 0 50 50" className="h-full w-full">
-        <circle
-          cx="25"
+              <svg viewBox="0 0 50 50" className="h-full w-full">
+              <circle cx="25"
           cy="25"
           r="20"
           stroke="currentColor"
@@ -24,8 +23,8 @@ const RingLoader = ({ size = 'md', className = '' }: RingLoaderProps) => {
           fill="none"
           strokeLinecap="round"
         />
-      </svg>
-    </div>
+              </svg>
+              </div>
   );
 };
 

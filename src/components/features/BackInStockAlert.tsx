@@ -39,19 +39,18 @@ export default function BackInStockAlert({ productId }: { productId: string }) {
 
   return (
     <div className="grid gap-2">
-      <label className="text-sm">Notify me when available</label>
-      <div className="flex gap-2">
-        <Input
-          type="email"
+              <label className="text-sm">Notify me when available</label>
+              <div className="flex gap-2">
+              <Input type="email"
           placeholder="you@example.com"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <Button disabled={loading} onClick={subscribe}>
+              <Button disabled={loading} onClick={subscribe}>
           {loading ? 'Subscribing…' : 'Notify me'}
         </Button>
-      </div>
-      <p className="text-xs text-gray-500">We respect your privacy.</p>
-    </div>
+              </div>
+              <p className="text-xs text-gray-500">We respect your privacy.</p>
+              </div>
   );
 }

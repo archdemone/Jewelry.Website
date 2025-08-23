@@ -34,40 +34,30 @@ function ResetPasswordInner() {
 
   return (
     <div className="mx-auto max-w-md px-4 py-16">
-      <h1 className="mb-6 text-2xl font-semibold">Reset password</h1>
+              <h1 className="mb-6 text-2xl font-semibold">Reset password</h1>
       {done ? (
         <p className="text-sm text-gray-700">Password updated. Redirecting…</p>
       ) : (
         <form onSubmit={onSubmit} className="space-y-4">
-          <div>
-            <label className="mb-1 block text-sm font-medium">New password</label>
-            <input
-              type="password"
-              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-900"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={8}
+              <div>
+              <label className="mb-1 block text-sm font-medium">New password</label>
+              <input type="password"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-900"              value={password}              onChange={(e) => setPassword(e.target.value)}
+              required              minLength={8}
             />
-          </div>
-          <div>
-            <label className="mb-1 block text-sm font-medium">Confirm password</label>
-            <input
-              type="password"
-              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-900"
-              value={confirm}
-              onChange={(e) => setConfirm(e.target.value)}
+              </div>
+              <div>
+              <label className="mb-1 block text-sm font-medium">Confirm password</label>
+              <input type="password"
+              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-900"              value={confirm}              onChange={(e) => setConfirm(e.target.value)}
               required
             />
-          </div>
+              </div>
           {error && <p className="text-sm text-red-600">{error}</p>}
-          <button
-            type="submit"
-            className="w-full rounded-md bg-black px-4 py-2 font-medium text-white hover:bg-gray-800"
-          >
+          <button type="submit" className="w-full rounded-md bg-black px-4 py-2 font-medium text-white hover:bg-gray-800">
             Update password
           </button>
-        </form>
+              </form>
       )}
     </div>
   );
@@ -75,10 +65,9 @@ function ResetPasswordInner() {
 
 export default function ResetPasswordPage() {
   return (
-    <Suspense
-      fallback={<div className="mx-auto max-w-md px-4 py-16 text-sm text-gray-600">Loading…</div>}
+    <Suspense fallback={<div className="mx-auto max-w-md px-4 py-16 text-sm text-gray-600">Loading…</div>}
     >
-      <ResetPasswordInner />
-    </Suspense>
+              <ResetPasswordInner />
+              </Suspense>
   );
 }

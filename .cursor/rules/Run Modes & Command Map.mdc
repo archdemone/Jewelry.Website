@@ -1,3 +1,14 @@
+<<<<<<< HEAD
+# Start/Stop & Health
+- Start both (preferred): `npm run dev:safe`.
+- If unavailable:
+  - Baseline: `npm run build && npm run start`  (port 3000)
+  - Sandbox: `PORT=3001 NEXT_DISABLE_TURBOPACK=1 npm run dev`
+- Verify after start:
+  - `npm run agent:status` must return ok:true (200 on 3000, 3001, and /manifest.webmanifest).
+  - `npm run health:check` must return ok:true (200 on /api/healthz for both).
+  - `npm run console:check:sandbox` must return ok:true (no console errors).
+=======
 ---
 alwaysApply: true
 ---
@@ -22,3 +33,4 @@ Stop servers: npm run stop
 Status check: npm run status
 
 Default if unclear: ask “dev or prod?”; if no answer → npm run dev:safe.
+>>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f

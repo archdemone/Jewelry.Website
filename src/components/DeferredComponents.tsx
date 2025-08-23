@@ -42,10 +42,10 @@ export default function DeferredComponents() {
 
   return (
     <>
-      <NewsletterPopup />
-      <CookieBanner />
-      <LiveChat />
-      <ExitIntentPopup />
-    </>
+              <NewsletterPopup />
+              <CookieBanner />
+              <LiveChat />
+              <ExitIntentPopup />
+              </>
   );
 }

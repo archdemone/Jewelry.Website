@@ -45,60 +45,47 @@ const WhyChooseUs = () => {
 
   return (
     <section className="bg-white py-20">
-      <div className="container">
-        <motion.div
-          initial={false}
+              <div className="container">
+              <motion.div initial={false}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-16 text-center"
-        >
-          <h2 className="mb-4 font-serif text-4xl">Why Choose Handcrafted Rings?</h2>
-          <p className="mx-auto max-w-3xl text-xl text-gray-600">
+          viewport={{ once: true }} className="mb-16 text-center">
+              <h2 className="mb-4 font-serif text-4xl">Why Choose Handcrafted Rings?</h2>
+              <p className="mx-auto max-w-3xl text-xl text-gray-600">
             When you choose our handcrafted rings, you're not just buying jewelry - you're investing
             in a piece of art created with passion, tradition, and personal care.
           </p>
-        </motion.div>
-
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+              </motion.div>
+              <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {reasons.map((reason, index) => (
-            <motion.div
-              key={index}
+            <motion.div key={index}
               initial={false}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.1 }}
-              whileHover={{ y: -5 }}
-              className="rounded-xl bg-gray-50 p-6 text-center transition-all duration-300 hover:bg-white hover:shadow-lg"
-            >
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-primary to-orange-500"
-              >
-                <reason.icon className="h-8 w-8 text-white" />
+              whileHover={{ y: -5 }} className="rounded-xl bg-gray-50 p-6 text-center transition-all duration-300 hover:bg-white hover:shadow-lg">
+              <motion.div whileHover={{ scale: 1.05 }} className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-primary to-orange-500">
+              <reason.icon className="h-8 w-8 text-white" />
               </motion.div>
               <h3 className="mb-2 text-xl font-semibold">{reason.title}</h3>
               <p className="text-gray-600">{reason.description}</p>
-            </motion.div>
+              </motion.div>
           ))}
         </div>
 
         {/* Trust Badge */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
+        <motion.div initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
-          className="mx-auto max-w-4xl rounded-2xl bg-primary/5 p-8"
-        >
-          <div className="text-center">
-            <h3 className="mb-2 text-2xl font-semibold">Trusted by Hundreds of Couples</h3>
-            <p className="font-medium text-primary">
+          transition={{ delay: 0.4 }} className="mx-auto max-w-4xl rounded-2xl bg-primary/5 p-8">
+              <div className="text-center">
+              <h3 className="mb-2 text-2xl font-semibold">Trusted by Hundreds of Couples</h3>
+              <p className="font-medium text-primary">
               Every ring tells a story. Let us help you create yours.
             </p>
-          </div>
-        </motion.div>
-      </div>
-    </section>
+              </div>
+              </motion.div>
+              </div>
+              </section>
   );
 };
 

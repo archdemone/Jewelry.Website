@@ -22,6 +22,7 @@
     "@next/next/no-sync-scripts": "warn",
     "@next/next/no-img-element": "warn",
     "react-hooks/exhaustive-deps": "warn",
-    "no-undef": "warn"
+    "no-undef": "warn",
+    "@typescript-eslint/no-var-requires": "off"
   }
 }

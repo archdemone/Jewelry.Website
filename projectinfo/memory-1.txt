@@ -1,0 +1,7 @@
+Memory 1 — Environment & Dev Setup
+- OS: Windows + PowerShell. Node.js v20 LTS only; use `npm ci` for installs.
+- Ports: Baseline (main) http://localhost:3000 (read-only), Sandbox http://localhost:3001 (SANDBOX=1).
+- Start rule: Always free ports first with `npm run kill-ports`. Never start on other ports.
+- Manifest: Use static `public/manifest.webmanifest` + `/public/icons/*.png` only. Do NOT create `app/manifest.*`.
+- Images: Prefer WebP/AVIF; hero ≤200KB; use `next/image` with `priority` only for LCP element.
+- Targets: LCP < 2.5s, TBT < 300ms, CLS < 0.1. Avoid unstable React keys (no `key={index}`).

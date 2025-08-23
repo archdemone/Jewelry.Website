@@ -6,10 +6,14 @@
     "dev": "cross-env NEXT_DISABLE_TURBOPACK=1 next dev",
     "dev:baseline": "cross-env NEXT_DISABLE_TURBOPACK=1 next dev -p 3000",
     "dev:sandbox": "powershell -NoProfile -Command \"$sb=$env:SANDBOX_PATH; if (-not $sb) { $sb='C:\\\\Users\\\\dimam\\\\OneDrive\\\\Desktop\\\\Jewelry.Website\\\\sandbox-20250820-183517' }; if (Test-Path $sb) { Push-Location $sb; $env:SANDBOX='1'; $env:NEXT_DISABLE_TURBOPACK='1'; $env:NEXT_DISABLE_REACT_DEV_OVERLAY='1'; $env:NEXT_DISABLE_ERROR_OVERLAY='1'; next dev -p 3001; Pop-Location } else { Write-Host 'Sandbox not found: ' $sb; exit 2 }\"",
+<<<<<<< HEAD
+    "dev:safe": "npm run ports:free && concurrently -n base,sbx -c auto \"npm run dev:baseline\" \"npm run dev:sandbox\"",
+=======
     "dev:safe": "npm run ports:free && concurrently -n base,sbx -c auto \"npm run dev:baseline\" \"npm run start:sandbox\"",
+>>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f
     "dev:both": "npm run ports:free && concurrently -n base,sbx -c auto \"npm run dev:baseline\" \"npm run dev:sandbox\"",
     "build": "next build",
-    "build:no-typescript": "node scripts/build-without-typescript.js",
+    "smoke:all": "npm run agent:status && npm run health:check && npm run console:check:sandbox",
     "test-ci-flow": "node scripts/test-ci-flow.js",
     "start": "next start",
     "lint": "next lint",
@@ -64,6 +68,18 @@
     "run:both": "npm run ports:free && npm run build:both && npm run start:both",
     "stop": "kill-port 3000 3001",
     "status": "node -e \"(async()=>{for (const u of ['http://localhost:3000/','http://localhost:3001/']){try{const r=await fetch(u);console.log(u+' -> '+r.status)}catch{console.log(u+' -> FAIL')}})()\"",
+<<<<<<< HEAD
+    "health:check": "node scripts/health-check.js",
+    "pre:deploy": "node scripts/pre-deployment-check.js",
+    "pre:commit": "node scripts/pre-commit-error-check.js",
+    "jsx:format": "node scripts/jsx-formatting-check.js",
+    "css:validate": "node scripts/css-validation-check.js",
+    "test:comprehensive": "node scripts/comprehensive-test-suite.js",
+    "test:quick": "npm run type-check:strict && npm run lint && npm run validate:fast",
+    "monitor:continuous": "while true; do npm run health:check; sleep 30; done",
+    "console:check": "cross-env BASE_URL=http://localhost:3001 npm run test:e2e -- --grep \"Console Error Monitoring\"",
+    "console:check:sandbox": "node scripts/console-check-playwright.js",
+=======
     "health:check": "node scripts/enhanced-health-check.js",
     "health:check:sandbox": "cross-env HEALTHCHECK_URL=http://localhost:3001 node scripts/enhanced-health-check.js",
     "health:check:baseline": "cross-env HEALTHCHECK_URL=http://localhost:3000 node scripts/enhanced-health-check.js",
@@ -72,11 +88,20 @@
     "monitor:continuous": "while true; do npm run health:check; sleep 30; done",
     "console:check": "npm run test:e2e -- --grep \"Console Error Monitoring\"",
     "console:check:sandbox": "cross-env BASE_URL=http://localhost:3001 npm run test:e2e -- --grep \"Console Error Monitoring\"",
+>>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f
     "console:check:baseline": "cross-env BASE_URL=http://localhost:3000 npm run test:e2e -- --grep \"Console Error Monitoring\"",
     "monitor:full": "npm run health:check && npm run console:check",
     "monitor:full:sandbox": "npm run health:check:sandbox && npm run console:check:sandbox",
     "monitor:full:baseline": "npm run health:check:baseline && npm run console:check:baseline",
+<<<<<<< HEAD
+    "monitor:full:advanced": "npm run monitor:advanced && npm run monitor:full:sandbox",
+    "monitor:full:advanced:fix": "npm run monitor:advanced:fix && npm run monitor:full:sandbox",
+    "pre:deploy:advanced": "npm run monitor:advanced && npm run pre:deploy",
+    "pre:deploy:advanced:fix": "npm run monitor:advanced:loop && npm run pre:deploy",
+    "dev:error-helper": "node scripts/dev-error-helper.js",
+=======
     "dev:helper": "node scripts/dev-helper.js",
+>>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f
     "bundle:analyze": "cross-env ANALYZE=true npm run build",
     "check:bundle-size": "node scripts/check-bundle-size.js",
     "test:workflows": "act push",
@@ -89,8 +114,22 @@
     "test:all": "act push",
     "workflow:debug": "act push --verbose",
     "workflow:list": "act -l",
+<<<<<<< HEAD
+    "workflow:setup": "echo 'Installing act CLI' && echo 'Download from: https://github.com/nektos/act/releases' && echo 'Or use: choco install act-cli (Windows with Chocolatey)'",
+    "workflow:setup:auto": "node scripts/setup-github-actions-local.js",
+    "promote:to:production": "node scripts/promote-to-production.js",
+    "promote": "npm run promote:to:production",
+    "test:production": "npm run promote:to:production",
+    "kill-ports": "node scripts/kill-ports.js",
+    "agent:fix:manifest": "node scripts/agent/fix-manifest.js",
+    "agent:status": "node scripts/agent/status-check.js",
+    "agent:find:preload": "node scripts/agent/find-preload.js",
+    "dev:precheck": "node scripts/dev-error-helper.js",
+    "dev:precheck:build": "node scripts/dev-error-helper.js --with-build"
+=======
     "workflow:setup": "echo 'Installing act CLI...' && echo 'Download from: https://github.com/nektos/act/releases' && echo 'Or use: choco install act-cli (Windows with Chocolatey)'",
     "workflow:setup:auto": "node scripts/setup-github-actions-local.js"
+>>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f
   },
   "size-limit": [
     {
@@ -140,7 +179,7 @@
     "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-tooltip": "^1.0.7",
     "@stripe/react-stripe-js": "^3.9.0",
-    "@stripe/stripe-js": "^2.1.11",
+    "@stripe/stripe-js": "^2.4.0",
     "@testing-library/jest-dom": "^6.7.0",
     "@testing-library/react": "^16.3.0",
     "@vercel/analytics": "^1.5.0",
@@ -172,7 +211,7 @@
     "react-is": "^18.3.1",
     "recharts": "^3.1.2",
     "sharp": "^0.34.3",
-    "stripe": "^14.0.0",
+    "stripe": "^14.25.0",
     "tailwind-merge": "^2.0.0",
     "tailwindcss": "^3.3.5",
     "tailwindcss-animate": "^1.0.7",
@@ -210,7 +249,11 @@
     "whatwg-fetch": "^3.6.20"
   },
   "engines": {
+<<<<<<< HEAD
+    "node": ">=20",
+=======
     "node": ">=20.0.0",
+>>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f
     "npm": ">=9.0.0"
   },
   "prisma": {

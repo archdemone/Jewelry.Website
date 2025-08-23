@@ -78,19 +78,15 @@ export default function SmartImage({
   // If we're using fallback or no valid images, show CSS gradient
   if (useFallback || validImages.length === 0) {
     return (
-      <div
-        className={`relative flex items-center justify-center bg-gradient-to-br from-[#D4AF37] via-[#B8941F] to-[#8B6914] ${className}`}
+      <div className={`relative flex items-center justify-center bg-gradient-to-br from-[#D4AF37] via-[#B8941F] to-[#8B6914] ${className}`}
         style={{
           width: width ? `${width}px` : '100%',
           height: height ? `${height}px` : '100%',
         }}
-        role="img"
-        aria-label={`${displayText} - Premium Jewelry`}
-      >
+        role="img" aria-label={`${displayText} - Premium Jewelry`}>
         {/* Decorative pattern overlay */}
         <div className="absolute inset-0 opacity-10">
-          <div
-            className="absolute inset-0"
+              <div className="absolute inset-0"
             style={{
               backgroundImage: `
 							radial-gradient(circle at 25% 25%, rgba(255,255,255,0.3) 0, transparent 50%),
@@ -98,19 +94,19 @@ export default function SmartImage({
 						`,
             }}
           />
-        </div>
+              </div>
 
         {/* Main text */}
         <div className="relative z-10 text-center text-white">
-          <h3 className="text-lg font-semibold sm:text-xl md:text-2xl">{displayText}</h3>
-          <p className="mt-1 text-sm text-white/80 sm:text-base">Premium Jewelry</p>
-        </div>
+              <h3 className="text-lg font-semibold sm:text-xl md:text-2xl">{displayText}</h3>
+              <p className="mt-1 text-sm text-white/80 sm:text-base">Premium Jewelry</p>
+              </div>
 
         {/* Shimmer effect */}
         <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-        </div>
-      </div>
+              <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+              </div>
+              </div>
     );
   }
 
@@ -119,29 +115,24 @@ export default function SmartImage({
     if (fill) {
       return (
         <div className={`relative ${className ?? ''}`}>
-          <Image
-            src={versionedSrc}
+              <Image src={versionedSrc}
             alt={displayText}
-            fill
-            sizes={sizes || '100vw'}
+            fill sizes={sizes || '100vw'}
             className="object-cover"
-            unoptimized
-            onError={handleError}
+            unoptimized onError={handleError}
             priority={priority}
           />
-        </div>
+              </div>
       );
     }
     return (
-      <Image
-        src={versionedSrc}
+      <Image src={versionedSrc}
         alt={displayText}
         className={`object-cover ${className ?? ''}`}
         width={width || 800}
         height={height || 800}
         sizes={sizes || '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'}
-        unoptimized
-        onError={handleError}
+        unoptimized onError={handleError}
         priority={priority}
       />
     );
@@ -151,24 +142,21 @@ export default function SmartImage({
   if (fill) {
     return (
       <div className={`relative ${className ?? ''}`}>
-        <Image
-          src={versionedSrc as string}
+              <Image src={versionedSrc as string}
           alt={displayText}
-          fill
-          sizes={sizes || '100vw'}
+          fill sizes={sizes || '100vw'}
           quality={quality || 90}
           className="object-cover"
           unoptimized={process.env.NODE_ENV !== 'production'}
           onError={handleError}
           priority={priority}
         />
-      </div>
+              </div>
     );
   }
 
   return (
-    <Image
-      src={versionedSrc as string}
+    <Image src={versionedSrc as string}
       alt={displayText}
       className={`object-cover ${className ?? ''}`}
       width={width || 800}
