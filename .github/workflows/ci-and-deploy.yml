@@ -27,21 +27,48 @@ jobs:
           node-version: "20"
           cache: "npm"
 
+      - name: Create CI environment file
+        run: |
+          cat > .env.local << EOF
+          NEXTAUTH_SECRET=ci-secret-key-$(date +%s)
+          NEXTAUTH_URL=http://localhost:3000
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_ci
+          STRIPE_SECRET_KEY=sk_test_ci
+          DATABASE_URL=file:./prisma/dev.db
+          NODE_ENV=production
+          CI=true
+          EOF
+
       - name: Install deps (lockfile exact, skip scripts)
         run: npm ci --ignore-scripts --legacy-peer-deps
 
       - name: Generate Prisma client (if applicable)
         run: npx prisma generate
         continue-on-error: true
+        env:
+          DATABASE_URL: "file:./prisma/dev.db"
+          NEXTAUTH_SECRET: "ci-secret-key"
+          NEXTAUTH_URL: "http://localhost:3000"
 
       - name: Type check
         run: npm run type-check:ci
+        env:
+          NEXTAUTH_SECRET: "ci-secret-key"
+          NEXTAUTH_URL: "http://localhost:3000"
 
       - name: Lint
         run: npm run lint
+        env:
+          NEXTAUTH_SECRET: "ci-secret-key"
+          NEXTAUTH_URL: "http://localhost:3000"
 
       - name: Build
         run: npm run build
+        env:
+          NEXTAUTH_SECRET: "ci-secret-key"
+          NEXTAUTH_URL: "http://localhost:3000"
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: "pk_test_ci"
+          STRIPE_SECRET_KEY: "sk_test_ci"
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
