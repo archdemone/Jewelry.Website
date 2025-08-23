@@ -230,13 +230,11 @@ export function WriteReviewForm({ productId, productName, onSubmit, onCancel }: 
                 {uploadedImages.map((file, index) => (
                   <div key={index} className="relative">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <Image
-                      src={URL.createObjectURL(file)}
-                      alt={`Upload ${index + 1}`}
-                      width={80}
-                      height={80}
-                      className="w-full h-20 object-cover rounded-lg"
-                    />
+                                         <img
+                       src={URL.createObjectURL(file)}
+                       alt={`Upload ${index + 1}`}
+                       className="w-full h-20 object-cover rounded-lg"
+                     />
                     <button type="button" onClick={() => removeImage(index)}
                       className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
                     >
