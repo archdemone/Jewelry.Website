@@ -1,57 +1,7 @@
----
-alwaysApply: true
----
-
-# 🚦 Master Rulebook for This Project (Frontend + Backend)
-
-**Role:**  
-Always enforce **performance, stability, security, and code quality** for this Next.js + Node.js project. Prevent regressions by applying these rules automatically.  
-
----
-
-## 🔹 Performance & Web Vitals (Frontend)
-- **Targets:** LCP <2.5s, TBT <300ms, CLS <0.1, FCP <1.8s.  
-- **Hero Image:**  
-  - Use `<Image priority sizes="100vw" />` with WebP/AVIF ≤200KB.  
-  - Preload hero with `<link rel="preload" as="image" />`.  
-- **Fonts:** Use `next/font` with `display: "swap"`.  
-- **JS & CSS:**  
-  - Lazy-load non-critical components via `dynamic()` or `ssr:false`.  
-  - Keep critical CSS minimal (only above-the-fold).  
-  - Bundle budget: First Load JS ≤200KB gzip.  
-- **Third-party scripts:** load with `strategy="lazyOnload"`.  
-
----
-
-## 🔹 Code Hygiene (Frontend)
-- Only use `"use client"` where necessary.  
-- Imports: **literal paths only** (no template strings, no barrel imports).  
-- Replace heavy libs with lightweight ones (`date-fns` > `moment`, `lodash-es` > `lodash`).  
-- Reserve space for all images/components → no layout shifts.  
-- All interactive elements require accessible labels/semantic HTML.  
-
----
-
-## 🔹 Backend (Node.js / API)
-- **Performance:**  
-  - Use async/await with modern APIs (`fs/promises`).  
-  - Cache heavy/slow queries (Redis, ISR, revalidate).  
-  - Always gzip/Brotli compress responses.  
-- **Security:**  
-  - Sanitize all inputs (XSS, SQL injection safe).  
-  - Never expose secrets in frontend bundles.  
-  - Apply security headers (`X-Frame-Options`, `X-Content-Type-Options`, CSP).  
-  - Cookies must be `HttpOnly`, `Secure`, `SameSite`.  
-- **Error Handling:**  
-  - Wrap async code in try/catch.  
-  - Return consistent JSON errors (`{ error, message }`).  
-  - Log safely without leaking sensitive stack traces.  
-
----
-
-## 🔹 Workflow & Verification
-- Run `next build`, `lint`, type-check before commit.  
-- Run Lighthouse (mobile) → confirm vitals meet targets.  
-- Use bundle analyzer on builds → fail PRs if limits exceeded.  
-- Every fix/feature requires a short explanation of **why** it improves performance, stability, or security.  
-- Add/update tests (frontend: Jest/Playwright, backend: Jest).  
+# Sandbox Workflow
+1. Work ONLY inside sandbox when experimenting.
+2. After changes: run `npm run smoke:all`. If any fail, fix and re-run.
+3. Promotion:
+   - Create patch from sandbox → apply to main.
+   - Re-run `smoke:all` on main before commit.
+4. Never copy files manually between trees; use the patch flow.

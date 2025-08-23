@@ -5,6 +5,8 @@ Baseline (main) is read-only unless you promote.
 
 Ports are fixed: baseline :3000, sandbox :3001. No other ports.
 
+**CRITICAL: Always free ports first with `npm run kill-ports`. Never start on other ports.**
+
 Start modes
 
 Dev (baseline prod + sandbox hot reload): npm run dev:safe
@@ -13,8 +15,23 @@ Prod both (parity/perf): npm run run:both
 
 Stop first, always: npm run stop (frees 3000/3001).
 
+**Manifest Configuration:**
+- Use static `public/manifest.webmanifest` + `/public/icons/*.png` only
+- Do NOT create `app/manifest.*` files
+- Keep manifest configuration in public directory only
+
+**React Stability:**
+- Avoid unstable React keys (no `key={index}`)
+- Use stable, unique identifiers for keys
+- Prevent unnecessary re-renders and layout shifts
+
 Promote flow (no manual copy):
 
 sandbox → npm run sandbox:patch
 
-main → npm run sandbox:apply → commitality and type safety.
+main → npm run sandbox:apply → commit
+
+**Error Handling:**
+- If sandbox install fails, sync package.json/lockfile from main
+- Retry once, then report with exact error details
+- Never disable tests to pass CI
