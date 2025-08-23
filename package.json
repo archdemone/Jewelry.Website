@@ -9,6 +9,7 @@
     "dev:safe": "npm run ports:free && concurrently -n base,sbx -c auto \"npm run dev:baseline\" \"npm run dev:sandbox\"",
     "dev:both": "npm run ports:free && concurrently -n base,sbx -c auto \"npm run dev:baseline\" \"npm run dev:sandbox\"",
     "build": "next build",
+    "smoke:all": "npm run agent:status && npm run health:check && npm run console:check:sandbox",
     "test-ci-flow": "node scripts/test-ci-flow.js",
     "start": "next start",
     "lint": "next lint",
