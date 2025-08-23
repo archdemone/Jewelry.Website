@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Star, ThumbsUp, ThumbsDown, User, Verified, Filter, ChevronDown } from 'lucide-react';
+import Image from 'next/image';
 
 interface Review {
   id: string;
@@ -98,7 +99,8 @@ export function ReviewSystem({ productId, reviews = mockReviews, averageRating =
       <div className="flex items-center gap-1">
         {[1, 2, 3, 4, 5].map((star) => (
           <Star key={star}
-            className={`${sizeClasses[size]} ${ star <= rating ? 'text-gold-500 fill-gold-500' : 'text-gray-300' }`}
+            className={`${sizeClasses[size]} ${star <= rating ? 'text-gold-500 fill-gold-500' : 'text-gray-300'
+              }`}
           />
         ))}
       </div>
@@ -118,16 +120,16 @@ export function ReviewSystem({ productId, reviews = mockReviews, averageRating =
       <div className="space-y-2">
         {distribution.map((item) => (
           <div key={item.stars} className="flex items-center gap-3 text-sm">
-              <span className="flex items-center gap-1 min-w-[60px]">
+            <span className="flex items-center gap-1 min-w-[60px]">
               <span>{item.stars}</span>
               <Star className="h-3 w-3 text-gold-500 fill-gold-500" />
-              </span>
-              <div className="flex-1 bg-gray-200 rounded-full h-2">
-              <div className="bg-gold-500 h-2 rounded-full transition-all duration-300"              style={{ width: `${item.percentage}%` }}
+            </span>
+            <div className="flex-1 bg-gray-200 rounded-full h-2">
+              <div className="bg-gold-500 h-2 rounded-full transition-all duration-300" style={{ width: `${item.percentage}%` }}
               />
-              </div>
-              <span className="text-gray-600 min-w-[30px] text-right">{item.count}</span>
-              </div>
+            </div>
+            <span className="text-gray-600 min-w-[30px] text-right">{item.count}</span>
+          </div>
         ))}
       </div>
     );
@@ -164,70 +166,76 @@ export function ReviewSystem({ productId, reviews = mockReviews, averageRating =
     <div className="space-y-6">
       {/* Reviews Summary */}
       <motion.div initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }} className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-gray-50 rounded-lg">
-              <div className="text-center md:text-left">
-              <div className="flex flex-col md:flex-row md:items-center gap-4">
-              <div>
+        animate={{ opacity: 1, y: 0 }}
+        className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-gray-50 rounded-lg"
+      >
+        <div className="text-center md:text-left">
+          <div className="flex flex-col md:flex-row md:items-center gap-4">
+            <div>
               <div className="text-4xl font-bold text-gray-900">{averageRating}</div>
               <StarRating rating={Math.round(averageRating)} size="medium" />
               <p className="text-sm text-gray-600 mt-1">Based on {totalReviews} reviews</p>
-              </div>
-              </div>
-              </div>
-              <div>
-              <h4 className="font-medium text-gray-900 mb-3">Rating Distribution</h4>
-              <RatingDistribution />
-              </div>
-              </motion.div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h4 className="font-medium text-gray-900 mb-3">Rating Distribution</h4>
+          <RatingDistribution />
+        </div>
+      </motion.div>
 
       {/* Filters and Sort */}
       <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-              <button onClick={() => setShowFilters(!showFilters)}
+        <button onClick={() => setShowFilters(!showFilters)}
           className="flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-lg hover:border-gray-400 transition-colors"
         >
-              <Filter className="h-4 w-4" />
-              <span>Filters</span>
-              <ChevronDown className={`h-4 w-4 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
-              </button>
-              <div className="flex items-center gap-2">
-              <span className="text-sm text-gray-600">Sort by:</span>
-              <select value={sortBy}
+          <Filter className="h-4 w-4" />
+          <span>Filters</span>
+          <ChevronDown className={`h-4 w-4 transition-transform ${showFilters ? 'rotate-180' : ''}`} />
+        </button>
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-gray-600">Sort by:</span>
+          <select value={sortBy}
             onChange={(e) => setSortBy(e.target.value as any)}
             className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500"
           >
-              <option value="newest">Newest</option>
-              <option value="oldest">Oldest</option>
-              <option value="highest">Highest Rating</option>
-              <option value="lowest">Lowest Rating</option>
-              <option value="helpful">Most Helpful</option>
-              </select>
-              </div>
-              </div>
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+            <option value="highest">Highest Rating</option>
+            <option value="lowest">Lowest Rating</option>
+            <option value="helpful">Most Helpful</option>
+          </select>
+        </div>
+      </div>
 
       {/* Filter Panel */}
       <AnimatePresence>
         {showFilters && (
           <motion.div initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }} className="border border-gray-200 rounded-lg p-4 bg-white">
-              <h4 className="font-medium text-gray-900 mb-3">Filter by Rating</h4>
-              <div className="flex flex-wrap gap-2">
-              <button              onClick={() => setFilterRating(null)}              className={`px-3 py-1 rounded-full text-sm transition-colors ${
-                  filterRating === null
-                    ? 'bg-gold-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }`}
+            exit={{ opacity: 0, height: 0 }}
+            className="border border-gray-200 rounded-lg p-4 bg-white"
+          >
+            <h4 className="font-medium text-gray-900 mb-3">Filter by Rating</h4>
+            <div className="flex flex-wrap gap-2">
+              <button onClick={() => setFilterRating(null)} className={`px-3 py-1 rounded-full text-sm transition-colors ${filterRating === null
+                  ? 'bg-gold-500 text-white'
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
               >
                 All
               </button>
               {[5, 4, 3, 2, 1].map((rating) => (
-                <button              key={rating}              onClick={() => setFilterRating(rating)}              className={`px-3 py-1 rounded-full text-sm transition-colors flex items-center gap-1 ${
-                    filterRating === rating
-                      ? 'bg-gold-500 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200' }`}
+                <button key={rating} onClick={() => setFilterRating(rating)} className={`px-3 py-1 rounded-full text-sm transition-colors flex items-center gap-1 ${filterRating === rating
+                    ? 'bg-gold-500 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  }`}
                 >
                   {rating} <Star className="h-3 w-3" />
-              </button>
+                </button>
               ))}
             </div>
-              </motion.div>
+          </motion.div>
         )}
       </AnimatePresence>
 
@@ -237,36 +245,43 @@ export function ReviewSystem({ productId, reviews = mockReviews, averageRating =
           <motion.div key={review.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }} className="border border-gray-200 rounded-lg p-6 bg-white">
-              <div className="flex items-start gap-4">
+            transition={{ delay: index * 0.1 }}
+            className="border border-gray-200 rounded-lg p-6 bg-white"
+          >
+            <div className="flex items-start gap-4">
               <div className="flex-shrink-0">
                 {review.userAvatar ? (
-                  <img              src={review.userAvatar}              alt={review.userName}
-                    className="w-10 h-10 rounded-full"
+                  {/* eslint-disable-next-line @next/next/no-img-element */ }
+                  < Image
+                    src={review.userAvatar}
+                alt={review.userName}
+                width={40}
+                height={40}
+                className="w-10 h-10 rounded-full"
                   />
                 ) : (
-                  <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
-              <User className="h-5 w-5 text-gray-600" />
-              </div>
+                <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+                  <User className="h-5 w-5 text-gray-600" />
+                </div>
                 )}
               </div>
               <div className="flex-1 space-y-3">
-              <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-              <span className="font-medium text-gray-900">{review.userName}</span>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium text-gray-900">{review.userName}</span>
                     {review.verified && (
                       <div className="flex items-center gap-1 text-green-600">
-              <Verified className="h-4 w-4" />
-              <span className="text-xs">Verified Purchase</span>
-              </div>
+                        <Verified className="h-4 w-4" />
+                        <span className="text-xs">Verified Purchase</span>
+                      </div>
                     )}
                   </div>
-              <span className="text-sm text-gray-500">
+                  <span className="text-sm text-gray-500">
                     {new Date(review.date).toLocaleDateString()}
                   </span>
-              </div>
-              <div className="flex items-center gap-2">
-              <StarRating rating={review.rating} />
+                </div>
+                <div className="flex items-center gap-2">
+                  <StarRating rating={review.rating} />
                   {review.productVariant && (
                     <div className="text-xs text-gray-500">
                       {review.productVariant.size && `Size: ${review.productVariant.size}`}
@@ -274,39 +289,41 @@ export function ReviewSystem({ productId, reviews = mockReviews, averageRating =
                     </div>
                   )}
                 </div>
-              <div>
-              <h4 className="font-medium text-gray-900 mb-2">{review.title}</h4>
-              <p className="text-gray-700 leading-relaxed">{review.content}</p>
-              </div>
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-2">{review.title}</h4>
+                  <p className="text-gray-700 leading-relaxed">{review.content}</p>
+                </div>
 
                 {/* Helpful buttons */}
                 <div className="flex items-center gap-4 pt-2 border-t border-gray-100">
-              <span className="text-sm text-gray-600">Was this helpful?</span>
-              <div className="flex items-center gap-2">
-              <button className="flex items-center gap-1 text-sm text-gray-600 hover:text-green-600 transition-colors">
-              <ThumbsUp className="h-4 w-4" />
-              <span>{review.helpful}</span>
-              </button>
-              <button className="flex items-center gap-1 text-sm text-gray-600 hover:text-red-600 transition-colors">
-              <ThumbsDown className="h-4 w-4" />
-              <span>{review.notHelpful}</span>
-              </button>
+                  <span className="text-sm text-gray-600">Was this helpful?</span>
+                  <div className="flex items-center gap-2">
+                    <button className="flex items-center gap-1 text-sm text-gray-600 hover:text-green-600 transition-colors">
+                      <ThumbsUp className="h-4 w-4" />
+                      <span>{review.helpful}</span>
+                    </button>
+                    <button className="flex items-center gap-1 text-sm text-gray-600 hover:text-red-600 transition-colors">
+                      <ThumbsDown className="h-4 w-4" />
+                      <span>{review.notHelpful}</span>
+                    </button>
+                  </div>
+                </div>
               </div>
-              </div>
-              </div>
-              </div>
-              </motion.div>
+            </div>
+          </motion.div>
         ))}
       </div>
 
       {/* Write Review Button */}
       <motion.div initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }} className="text-center">
-              <button className="px-6 py-3 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition-colors">
+        transition={{ delay: 0.3 }}
+        className="text-center"
+      >
+        <button className="px-6 py-3 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition-colors">
           Write a Review
         </button>
-              </motion.div>
-              </div>
+      </motion.div>
+    </div>
   );
 }
