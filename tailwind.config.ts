@@ -5,38 +5,7 @@ const config: Config = {
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
-  // Enable CSS purging for production builds
-  purge: {
-    enabled: process.env.NODE_ENV === 'production',
-    content: [
-      './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-      './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-      './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-    ],
-    options: {
-      safelist: [
-        'hero-section',
-        'hero-background',
-        'hero-content',
-        'hero-title',
-        'hero-subtitle',
-        // Critical utility classes
-        'sr-only',
-        'focus:not-sr-only',
-        'focus:absolute',
-        'focus:top-4',
-        'focus:left-4',
-        'focus:left-20',
-        'bg-black',
-        'text-white',
-        'px-4',
-        'py-2',
-        'rounded',
-        'z-50',
       ],
-    },
-  },
   safelist: [
     'bg-blue-100',
     'border-blue-400',
