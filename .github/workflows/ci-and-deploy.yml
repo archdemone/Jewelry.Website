@@ -40,7 +40,13 @@ jobs:
           EOF
 
       - name: Install deps (lockfile exact, skip scripts)
-        run: npm ci --ignore-scripts --legacy-peer-deps
+        run: |
+          if [ -f "package-lock.json" ]; then
+            npm ci --ignore-scripts --legacy-peer-deps
+          else
+            echo "package-lock.json not found, using npm install"
+            npm install --ignore-scripts --legacy-peer-deps
+          fi
 
       - name: Generate Prisma client (if applicable)
         run: npx prisma generate
