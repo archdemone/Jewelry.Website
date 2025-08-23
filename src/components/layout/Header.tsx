@@ -1,60 +1,29 @@
-<<<<<<< HEAD
 'use client';
 
 import Link from 'next/link';
-import { ShoppingBag, User, Search, LogOut, ChevronDown } from 'lucide-react';
+import { ShoppingBag, User, Search, LogOut, ChevronDown, X } from 'lucide-react';
 import { useSession, signOut, signIn } from 'next-auth/react';
 import { useCartStore } from '@/store/cart';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MobileMenu } from './MobileMenu';
 import { EnhancedSearchInput } from '@/components/search/EnhancedSearchInput';
-// import {
-//   Dialog,
-//   DialogContent,
-//   DialogHeader,
-//   DialogTitle,
-//   DialogTrigger,
-// } from '@/components/ui/dialog';
-// import { Input } from '@/components/ui/input';
-// import { motion } from 'framer-motion';
-// import { MobileMenu } from './MobileMenu';
 
 export function Header() {
   const count = useCartStore((s) => s.count);
   const isHydrated = useCartStore((s) => s.isHydrated);
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [showRingCollections, setShowRingCollections] = useState(false);
-  const [dropdownTimeout, setDropdownTimeout] = useState<ReturnType<typeof setTimeout> | null>(null);
-  const router = useRouter();
   const { data: session } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as Element;
-      if (open && !target.closest('[aria-label="User menu"]') && !target.closest('.absolute')) {
-        setOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [open]);
-
-  // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (dropdownTimeout) {
-        clearTimeout(dropdownTimeout);
-      }
-    };
-  }, [dropdownTimeout]);
+  const handleSignOut = async () => {
+    await signOut({ callbackUrl: '/' });
+  };
 
   const handleSearch = (query: string) => {
     if (query.trim()) {
@@ -62,284 +31,153 @@ export function Header() {
     }
   };
 
-  const ringCollections = [
-    { name: "Women's Rings", href: '/products/womens' },
-    { name: "Men's Rings", href: '/products/mens' },
-    { name: 'Unisex Rings', href: '/products/unisex' },
-    { name: 'Inlay Rings', href: '/products/inlay' },
-    { name: 'Wedding Rings', href: '/products/wedding' },
-    { name: 'All Rings', href: '/products' },
-  ];
-
-  return (
-    <header className="sticky top-0 z-40 w-full bg-white/95 backdrop-blur" id="navigation" role="banner">
-              <div className="container flex h-16 items-center justify-between">
-              <Link href="/"
-          className="text-4xl font-bold tracking-wider text-black"
-          style={{
-            fontFamily: 'Playfair Display, serif',
-            letterSpacing: '0.15em',
-            fontWeight: '600',
-            fontStyle: 'italic'
-          }} aria-label="J&M Jewelry - Home">
-          J&M
-=======
-'use client';
-
-import Link from 'next/link';
-import { ShoppingBag, User, Search, LogOut, ChevronDown } from 'lucide-react';
-// import { useSession, signOut, signIn } from 'next-auth/react';
-import { useCartStore } from '@/store/cart';
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { MobileMenu } from './MobileMenu';
-// import {
-//   Dialog,
-//   DialogContent,
-//   DialogHeader,
-//   DialogTitle,
-//   DialogTrigger,
-// } from '@/components/ui/dialog';
-// import { Input } from '@/components/ui/input';
-// import { motion } from 'framer-motion';
-// import { MobileMenu } from './MobileMenu';
-
-export function Header() {
-  const count = useCartStore((s) => s.count);
-  const isHydrated = useCartStore((s) => s.isHydrated);
-  const [open, setOpen] = useState(false);
-  const [q, setQ] = useState('');
-  const [mounted, setMounted] = useState(false);
-  const [showRingCollections, setShowRingCollections] = useState(false);
-  const [dropdownTimeout, setDropdownTimeout] = useState<ReturnType<typeof setTimeout> | null>(null);
-  const router = useRouter();
-  // const { data: session } = useSession();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (dropdownTimeout) {
-        clearTimeout(dropdownTimeout);
-      }
-    };
-  }, [dropdownTimeout]);
-
-  useEffect(() => {
-    if (!q) return;
-    const t = setTimeout(() => {
-      router.push(`/search?q=${encodeURIComponent(q)}`);
-    }, 500);
-    return () => clearTimeout(t);
-  }, [q, router]);
-
-  const ringCollections = [
-    { name: "Women's Rings", href: '/products/womens' },
-    { name: "Men's Rings", href: '/products/mens' },
-    { name: 'Unisex Rings', href: '/products/unisex' },
-    { name: 'Inlay Rings', href: '/products/inlay' },
-    { name: 'Wedding Rings', href: '/products/wedding' },
-    { name: 'All Rings', href: '/products' },
-  ];
-
-  return (
-    <header className="sticky top-0 z-40 w-full border-b bg-white/70 backdrop-blur">
-      <div className="container flex h-16 items-center justify-between">
-        <Link
-          href="/"
-          className="text-4xl font-bold tracking-wider text-black"
-          style={{ 
-            fontFamily: 'Playfair Display, serif', 
-            letterSpacing: '0.15em',
-            fontWeight: '600',
-            fontStyle: 'italic'
-          }}
-        >
-          J&M
->>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f
-        </Link>
-              <nav className="hidden items-center gap-6 md:flex" role="navigation" aria-label="Main navigation">
-              <Link href="/" className="text-sm font-medium text-gray-800 hover:text-gold-600 transition-colors" data-testid="nav-home">
-            Home
-          </Link>
-              <Link href="/products"
-            className="text-sm font-medium text-gray-800 hover:text-gold-600 transition-colors" data-testid="nav-products">
-            Products
-          </Link>
-
-          {/* Ring Collections Dropdown */}
-          <div className="relative"
-            onMouseEnter={() => {
-              if (dropdownTimeout) {
-                clearTimeout(dropdownTimeout);
-                setDropdownTimeout(null);
-              }
-              setShowRingCollections(true);
-            }}
-            onMouseLeave={() => {
-              const timeout = setTimeout(() => {
-                setShowRingCollections(false);
-              }, 200);
-              setDropdownTimeout(timeout);
-            }}
-          >
-              <button className="flex items-center gap-1 text-sm font-medium text-gray-800 hover:text-gold-600 transition-colors"
-              aria-expanded={showRingCollections}
-              aria-haspopup="true" aria-label="Ring Collections Menu">
-              Ring Collections
-              <ChevronDown className="h-4 w-4" />
-              </button>
-
-            {showRingCollections && (
-              <div className="absolute left-0 top-full mt-2 w-48 rounded-md border border-gray-200 bg-white shadow-lg"
-                role="menu" aria-label="Ring Collections">
-                {ringCollections.map((collection) => (
-                  <Link key={collection.name}
-                    href={collection.href}
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors" role="menuitem">
-                    {collection.name}
-                  </Link>
-                ))}
-              </div>
-            )}
-          </div>
-              <Link href="/about-artisan"
-            className="text-sm font-medium text-gray-800 hover:text-gold-600 transition-colors" data-testid="nav-artisan">
-            The Artisan
-          </Link>
-              <Link href="/crafting-process"
-            className="text-sm font-medium text-gray-800 hover:text-gold-600 transition-colors" data-testid="nav-process">
-            Process
-          </Link>
-              <Link href="/contact"
-            className="text-sm font-medium text-gray-800 hover:text-gold-600 transition-colors" data-testid="nav-contact">
-            Contact
-          </Link>
-              </nav>
-              <div className="flex items-center gap-4">
-          {/* Enhanced Search */}
-          <div className="hidden md:block">
-              <EnhancedSearchInput placeholder="Search products..." onSearch={handleSearch}
-              className="w-64"
-            />
-              </div>
-
-          {/* Cart */}
-          <Link href="/cart"
-            className="relative flex items-center gap-2 rounded-full bg-gold-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gold-700"
-            aria-label={`Shopping cart with ${mounted && isHydrated && count > 0 ? count : 0} items`}
-          >
-              <ShoppingBag className="h-4 w-4" />
-            Cart
-            {mounted && isHydrated && count > 0 && (
-              <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-                {count}
-              </span>
-            )}
-          </Link>
-
-          {/* User Menu */}
-          {session ? (
-            <div className="relative">
-<<<<<<< HEAD
-              <button onClick={() => setOpen(!open)}
-                className="flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200"
-                aria-label="User menu"
-                aria-expanded={open}
-                aria-haspopup="true"
-              >
-              <User className="h-4 w-4" />
-                {session.user?.name || session.user?.email || 'Account'}
-                <ChevronDown className="h-4 w-4" />
-              </button>
-
-              {open && (
-                <div className="absolute right-0 top-full mt-2 w-48 rounded-md border bg-white shadow-lg">
-              <div className="px-4 py-2 text-sm text-gray-500 border-b">
-                    {session.user?.email}
-                  </div>
-              <Link href="/account"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={() => setOpen(false)}
-                  >
-                    My Account
-                  </Link>
-                  {session.user?.email === 'admin@jewelry.com' && (
-                    <Link href="/admin"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" onClick={() => setOpen(false)}
-                    >
-                      Admin Panel
-                    </Link>
-                  )}
-                  <button onClick={() => {
-                    setOpen(false);
-                    signOut();
-                  }}
-                    className="block w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-gray-100"
-                  >
-              <LogOut className="inline h-4 w-4 mr-2" />
-                    Sign Out
-                  </button>
-              </div>
-              )}
+  if (!mounted) {
+    return (
+      <header className="bg-white shadow-sm border-b border-gray-200">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center justify-between h-16">
+            <div className="h-8 w-32 bg-gray-200 rounded animate-pulse"></div>
+            <div className="hidden md:flex items-center space-x-4">
+              <div className="h-8 w-24 bg-gray-200 rounded animate-pulse"></div>
+              <div className="h-8 w-24 bg-gray-200 rounded animate-pulse"></div>
+              <div className="h-8 w-24 bg-gray-200 rounded animate-pulse"></div>
             </div>
-          ) : (
-            <Link href="/auth/login"
-              className="flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200" aria-label="Sign in to your account">
-              <User className="h-4 w-4" />
-              Sign In
+            <div className="h-8 w-8 bg-gray-200 rounded animate-pulse"></div>
+          </div>
+        </div>
+      </header>
+    );
+  }
+
+  return (
+    <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-16">
+          {/* Logo */}
+          <Link href="/" className="flex items-center space-x-2">
+            <div className="text-2xl font-bold text-gold-600">Jewelry</div>
+          </Link>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex items-center space-x-8">
+            <Link href="/products" className="text-gray-700 hover:text-gold-600 transition-colors">
+              Products
             </Link>
-          )}
-        </div>
+            <Link href="/about" className="text-gray-700 hover:text-gold-600 transition-colors">
+              About
+            </Link>
+            <Link href="/contact" className="text-gray-700 hover:text-gold-600 transition-colors">
+              Contact
+            </Link>
+          </nav>
 
-        {/* Mobile Menu */}
-        <MobileMenu />
-              </div>
-              </header>
-  );
-}
-=======
-              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search products..."
-                value={q}
-                onChange={(e) => setQ(e.target.value)}
-                className="w-64 rounded-full border border-gray-300 bg-white px-10 py-2 text-sm focus:border-gold-500 focus:outline-none focus:ring-1 focus:ring-gold-500"
-              />
-            </div>
+          {/* Search Bar */}
+          <div className="hidden md:block flex-1 max-w-md mx-8">
+            <EnhancedSearchInput onSearch={handleSearch} />
           </div>
 
-          {/* Cart */}
-          <Link
-            href="/cart"
-            className="relative flex items-center gap-2 rounded-full bg-gold-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-gold-700"
-          >
-            <ShoppingBag className="h-4 w-4" />
-            Cart
-            {mounted && isHydrated && count > 0 && (
-              <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs text-white">
-                {count}
-              </span>
+          {/* Right Side Actions */}
+          <div className="flex items-center space-x-4">
+            {/* User Menu */}
+            {session ? (
+              <div className="relative group">
+                <button className="flex items-center space-x-1 text-gray-700 hover:text-gold-600 transition-colors">
+                  <User className="h-5 w-5" />
+                  <span className="hidden sm:block">{session.user?.name || 'Account'}</span>
+                  <ChevronDown className="h-4 w-4" />
+                </button>
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border border-gray-200 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
+                  <div className="py-1">
+                    <Link href="/account" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                      My Account
+                    </Link>
+                    <Link href="/account/orders" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                      Orders
+                    </Link>
+                    <button
+                      onClick={handleSignOut}
+                      className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      Sign Out
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <button
+                onClick={() => signIn()}
+                className="flex items-center space-x-1 text-gray-700 hover:text-gold-600 transition-colors"
+              >
+                <User className="h-5 w-5" />
+                <span className="hidden sm:block">Sign In</span>
+              </button>
             )}
-          </Link>
 
-          {/* User Menu */}
-          <Link
-            href="/auth/login"
-            className="flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200"
-          >
-            <User className="h-4 w-4" />
-            Sign In
-          </Link>
+            {/* Cart */}
+            <Link href="/cart" className="relative text-gray-700 hover:text-gold-600 transition-colors">
+              <ShoppingBag className="h-6 w-6" />
+              {isHydrated && count > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  {count}
+                </span>
+              )}
+            </Link>
+
+            {/* Mobile Menu Button */}
+            <button
+              onClick={() => setOpen(true)}
+              className="md:hidden text-gray-700 hover:text-gold-600 transition-colors"
+            >
+              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            </button>
+          </div>
         </div>
-
-        {/* Mobile Menu */}
-        <MobileMenu />
       </div>
+
+      {/* Mobile Search Bar */}
+      <div className="md:hidden border-t border-gray-200 p-4">
+        <EnhancedSearchInput onSearch={handleSearch} />
+      </div>
+
+      {/* Mobile Menu */}
+      {open && (
+        <div className="md:hidden fixed inset-0 z-50 bg-black bg-opacity-50" onClick={() => setOpen(false)}>
+          <div className="fixed right-0 top-0 h-full w-64 bg-white shadow-lg" onClick={(e) => e.stopPropagation()}>
+            <div className="p-4">
+              <button onClick={() => setOpen(false)} className="text-gray-500 hover:text-gray-700">
+                <X className="h-6 w-6" />
+              </button>
+              <nav className="mt-8 space-y-4">
+                <Link href="/products" className="block text-gray-700 hover:text-gold-600">
+                  Products
+                </Link>
+                <Link href="/about" className="block text-gray-700 hover:text-gold-600">
+                  About
+                </Link>
+                <Link href="/contact" className="block text-gray-700 hover:text-gold-600">
+                  Contact
+                </Link>
+                {session ? (
+                  <>
+                    <Link href="/account" className="block text-gray-700 hover:text-gold-600">
+                      My Account
+                    </Link>
+                    <button onClick={handleSignOut} className="block w-full text-left text-gray-700 hover:text-gold-600">
+                      Sign Out
+                    </button>
+                  </>
+                ) : (
+                  <button onClick={() => signIn()} className="block w-full text-left text-gray-700 hover:text-gold-600">
+                    Sign In
+                  </button>
+                )}
+              </nav>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
->>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f

@@ -1,63 +1,3 @@
-<<<<<<< HEAD
-'use client';
-
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Heart, ShoppingBag } from 'lucide-react';
-import { ProductImage } from '@/components/products/ProductImage';
-
-const FeaturedProducts = () => {
-  const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
-  const [wishlist, setWishlist] = useState<Set<string>>(new Set());
-
-  const handleWishlistToggle = (productId: string) => {
-    const newWishlist = new Set(wishlist);
-    if (newWishlist.has(productId)) {
-      newWishlist.delete(productId);
-    } else {
-      newWishlist.add(productId);
-    }
-    setWishlist(newWishlist);
-  };
-
-  const initialProducts = [
-    {
-      id: '1',
-      name: 'Rose Gold Engagement Ring',
-      price: 1299.99,
-      image: '/images/MyImages/IMG-20250816-WA0000.jpg',
-      slug: 'rose-gold-engagement-ring'
-    },
-    {
-      id: '2',
-      name: 'Classic Wedding Band',
-      price: 899.99,
-      image: '/images/MyImages/IMG-20250816-WA0001.jpg',
-      slug: 'classic-wedding-band'
-    },
-    {
-      id: '3',
-      name: 'Diamond Stud Earrings',
-      price: 1599.99,
-      image: '/images/MyImages/IMG-20250816-WA0002.jpg',
-      slug: 'diamond-stud-earrings'
-    }
-  ];
-
-  return (
-    <section className="py-16 bg-gradient-to-b from-white to-gray-50">
-              <div className="container mx-auto px-4">
-              <motion.div initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }} className="text-center mb-12">
-              <h2 className="text-4xl font-bold text-gray-900 mb-4" style={{ fontFamily: 'Playfair Display, serif' }}>
-            Featured Collections
-          </h2>
-              <motion.p initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }} className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Discover our most popular handcrafted pieces, each telling a unique story of artistry and passion.
-=======
 'use client';
 
 import { motion } from 'framer-motion';
@@ -80,7 +20,7 @@ const FeaturedProducts = () => {
     setMounted(true);
     // Load featured products immediately after mounting
     setFeaturedRings(getFeaturedProducts());
-    
+
     // Only access localStorage in browser environment
     if (typeof window !== 'undefined') {
       // Load wishlist from localStorage
@@ -88,17 +28,17 @@ const FeaturedProducts = () => {
       if (savedWishlist) {
         setWishlist(new Set(JSON.parse(savedWishlist)));
       }
-      
+
       // Listen for storage changes to refresh the data
       const handleStorageChange = () => {
         setFeaturedRings(getFeaturedProducts());
       };
-      
+
       window.addEventListener('storage', handleStorageChange);
-      
+
       // Also listen for custom events (for same-tab updates)
       window.addEventListener('featuredProductsUpdated', handleStorageChange);
-      
+
       return () => {
         window.removeEventListener('storage', handleStorageChange);
         window.removeEventListener('featuredProductsUpdated', handleStorageChange);
@@ -109,7 +49,7 @@ const FeaturedProducts = () => {
   const handleWishlistToggle = (productId: string) => {
     const newWishlist = new Set(wishlist);
     const product = featuredRings.find(ring => ring.id === productId);
-    
+
     if (newWishlist.has(productId)) {
       newWishlist.delete(productId);
       showToast(`${product?.name} removed from wishlist`, 'info');
@@ -128,7 +68,7 @@ const FeaturedProducts = () => {
       showToast('Cart is still loading, please try again', 'error');
       return;
     }
-    
+
     addItem({
       productId: ring.id,
       name: ring.name,
@@ -141,7 +81,7 @@ const FeaturedProducts = () => {
       ringSize: ring.ringSizes.us[0]?.toString() || '7',
       ringWidth: ring.ringWidth[0]?.toString() || '6'
     });
-    
+
     // Show success toast
     showToast(`${ring.name} added to cart!`, 'success');
   };
@@ -183,7 +123,7 @@ const FeaturedProducts = () => {
     <section className="py-16 bg-white" data-testid="featured-products">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <motion.h2 
+          <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
@@ -191,17 +131,16 @@ const FeaturedProducts = () => {
           >
             Featured Rings
           </motion.h2>
-          <motion.p 
+          <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
             className="text-xl body-text text-gray-600 max-w-2xl mx-auto"
           >
             Discover our most popular handcrafted pieces, each telling a unique story of craftsmanship and beauty.
->>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f
           </motion.p>
-              </motion.div>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" data-testid="featured-products-grid">
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" data-testid="featured-products-grid">
           {initialProducts.map((ring, index) => (
             <motion.div key={ring.id}
               initial={{ opacity: 0, y: 20 }}
@@ -213,7 +152,8 @@ const FeaturedProducts = () => {
             >
               {/* Product Image */}
               <div className="relative aspect-square overflow-hidden">
-              <ProductImage src={ring.image}
+                <Image
+                  src={ring.image}
                   alt={ring.name}
                   className="w-full h-full group-hover:scale-105 transition-transform duration-300"
                   width={400}
@@ -221,49 +161,57 @@ const FeaturedProducts = () => {
                   sizes="(max-width: 768px) 100vw, 50vw"
                   quality={50}
                   priority={index === 0}
-                  productSlug={ring.slug}
-                  productName={ring.name}
                 />
 
                 {/* Wishlist Button */}
-                <button onClick={() => handleWishlistToggle(ring.id)}
+                <button
+                  onClick={() => handleWishlistToggle(ring.id)}
                   className={`absolute top-3 right-3 p-2 rounded-full transition-all duration-200 ${wishlist.has(ring.id)
-                      ? 'bg-red-500 text-white' : 'bg-white/80 text-gray-600 hover:bg-white' }`}
+                      ? 'bg-red-500 text-white'
+                      : 'bg-white/80 text-gray-600 hover:bg-white'
+                    }`}
                   aria-label={wishlist.has(ring.id) ? 'Remove from wishlist' : 'Add to wishlist'}
                 >
-              <Heart className={`w-5 h-5 ${wishlist.has(ring.id) ? 'fill-current' : ''}`} />
-              </button>
+                  <Heart className={`w-5 h-5 ${wishlist.has(ring.id) ? 'fill-current' : ''}`} />
+                </button>
 
                 {/* Quick Add to Cart */}
-                <motion.button initial={{ opacity: 0, y: 20 }}
+                <motion.button
+                  initial={{ opacity: 0, y: 20 }}
                   animate={{
                     opacity: hoveredProduct === ring.id ? 1 : 0,
                     y: hoveredProduct === ring.id ? 0 : 20
                   }}
                   transition={{ duration: 0.3 }}
-                  className="absolute bottom-3 left-3 right-3 bg-white/90 backdrop-blur-sm text-gray-900 py-2 px-4 rounded-lg font-medium hover:bg-white transition-colors duration-200 flex items-center justify-center gap-2" aria-label={`Quick add ${ring.name} to cart`}>
-              <ShoppingBag className="w-4 h-4" />
+                  onClick={() => handleAddToCart(ring)}
+                  className="absolute bottom-3 left-3 right-3 bg-white/90 backdrop-blur-sm text-gray-900 py-2 px-4 rounded-lg font-medium hover:bg-white transition-colors duration-200 flex items-center justify-center gap-2"
+                  aria-label={`Quick add ${ring.name} to cart`}
+                >
+                  <ShoppingBag className="w-4 h-4" />
                   Quick Add
                 </motion.button>
               </div>
 
               {/* Product Info */}
               <div className="p-6">
-              <h3 className="text-xl font-semibold text-gray-900 mb-2" style={{ fontFamily: 'Playfair Display, serif' }}>
+                <h3 className="text-xl font-semibold text-gray-900 mb-2">
                   {ring.name}
                 </h3>
-              <p className="text-2xl font-bold text-gold-600 mb-4">
+                <p className="text-2xl font-bold text-gold-600 mb-4">
                   £{ring.price.toFixed(2)}
                 </p>
-              <button className="w-full bg-gold-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-gold-700 transition-colors duration-200">
+                <Link
+                  href={`/products/${ring.slug}`}
+                  className="w-full bg-gold-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-gold-700 transition-colors duration-200 block text-center"
+                >
                   View Details
-                </button>
+                </Link>
               </div>
-              </motion.div>
+            </motion.div>
           ))}
         </div>
-              </div>
-              </section>
+      </div>
+    </section>
   );
 };
 

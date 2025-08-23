@@ -1,3 +1,4 @@
+// next.config.js
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
@@ -5,21 +6,17 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   typescript: {
-    // !! WARN !!
-    // Dangerously allow production builds to successfully complete even if
-    // your project has type errors.
-    // !! WARN !!
-    ignoreBuildErrors: true,
+    // Enable type checking during builds for better code quality
+    ignoreBuildErrors: false,
   },
   eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
-    ignoreDuringBuilds: true,
+    ignoreDuringBuilds: false,
   },
   experimental: {
+    // Keep: valid, helpful for bundle size.
     optimizePackageImports: [
-      '@radix-ui/react-icons', 
-      'lucide-react', 
+      '@radix-ui/react-icons',
+      'lucide-react',
       'framer-motion',
       '@radix-ui/react-dialog',
       '@radix-ui/react-dropdown-menu',
@@ -35,9 +32,10 @@ const nextConfig = {
       'react-hot-toast',
       'zustand',
       'zod',
-      '@hookform/resolvers'
+      '@hookform/resolvers',
     ],
     optimizeCss: true,
+    // Keep turbo svg rule if you use it; safe to leave.
     turbo: {
       rules: {
         '*.svg': {
@@ -46,53 +44,56 @@ const nextConfig = {
         },
       },
     },
-    // Performance optimizations
-    optimizeServerReact: true,
+    // Remove invalid/unstable flags that trigger warnings:
+    // optimizeServerReact: true,
+    // taint: true,
+    // webpackBuildWorker: true,
     serverComponentsExternalPackages: ['@prisma/client'],
-    // Advanced optimizations
-    taint: true, // Taint tracking for better caching
-    // Ultra-aggressive optimizations
-    webpackBuildWorker: true,
   },
+
   images: {
-    domains: ['localhost'],
+    // Prefer remotePatterns so localhost:3000/3001 work in both envs
+    remotePatterns: [
+      { protocol: 'http', hostname: 'localhost', port: '3000' },
+      { protocol: 'http', hostname: 'localhost', port: '3001' },
+    ],
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256],
-    minimumCacheTTL: 31536000, // 1 year
+    minimumCacheTTL: 31536000,
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    // Advanced image optimization
     unoptimized: false,
     loader: 'default',
     path: '/_next/image',
   },
-  compress: true,
+
+  compress: true, // Next handles compression responses; no webpack compression plugin needed.
   poweredByHeader: false,
   reactStrictMode: true,
   swcMinify: true,
-  // Performance optimizations
+
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-  // Enable static optimization
-  output: 'standalone',
 
-  // Advanced performance settings
-  generateEtags: false, // Disable ETags for better caching
+  // Remove 'standalone' unless you’re actually running the standalone server.
+  // If you need it for deploy, set NEXT_OUTPUT=standalone in that environment and use the conditional below.
+  ...(process.env.NEXT_OUTPUT === 'standalone' ? { output: 'standalone' } : {}),
+
+  generateEtags: false,
   onDemandEntries: {
-    // Period (in ms) where the server will keep pages in the buffer
-    maxInactiveAge: 15 * 1000, // Reduced from 25s to 15s
-    // Number of pages that should be kept simultaneously without being disposed
-    pagesBufferLength: 1, // Reduced from 2 to 1
+    maxInactiveAge: 15 * 1000,
+    pagesBufferLength: 1,
   },
-  // Ultra-aggressive performance settings
   trailingSlash: false,
+
   async redirects() {
     return [];
   },
+
   webpack: (config, { isServer, dev, webpack }) => {
-    // Fix for recharts and react-is
+    // Browser fallbacks – keep minimal false shims to avoid polyfills
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
@@ -133,23 +134,20 @@ const nextConfig = {
         wasi: false,
       };
     }
-    
-    // Ensure react-is is properly resolved and add path aliases
+
+    // Helpful aliases
     config.resolve.alias = {
       ...config.resolve.alias,
       'react-is': require.resolve('react-is'),
       '@': require('path').resolve(__dirname, 'src'),
     };
-    
-    // Add react-is to the module resolution
+
     config.resolve.modules = [
       ...(config.resolve.modules || []),
       'node_modules',
     ];
 
-    // Performance optimizations for production
     if (!dev && !isServer) {
-      // Enable tree shaking
       config.optimization = {
         ...config.optimization,
         usedExports: true,
@@ -159,11 +157,10 @@ const nextConfig = {
           ...config.optimization.minimizer,
           new webpack.optimize.AggressiveMergingPlugin(),
         ],
-        // Ultra-aggressive optimization
         splitChunks: {
           chunks: 'all',
-          minSize: 20000, // Reduced from default
-          maxSize: 244000, // Reduced chunk size
+          minSize: 20000,
+          maxSize: 244000,
           minChunks: 1,
           maxAsyncRequests: 30,
           maxInitialRequests: 30,
@@ -180,7 +177,6 @@ const nextConfig = {
               priority: -20,
               reuseExistingChunk: true,
             },
-            // Separate heavy libraries
             framer: {
               test: /[\\/]node_modules[\\/]framer-motion[\\/]/,
               name: 'framer-motion',
@@ -209,7 +205,6 @@ const nextConfig = {
               priority: 15,
               enforce: true,
             },
-            // Separate React and React DOM
             react: {
               test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
               name: 'react',
@@ -217,7 +212,6 @@ const nextConfig = {
               priority: 25,
               enforce: true,
             },
-            // Separate Next.js
             next: {
               test: /[\\/]node_modules[\\/]next[\\/]/,
               name: 'next',
@@ -225,7 +219,6 @@ const nextConfig = {
               priority: 20,
               enforce: true,
             },
-            // Separate utilities
             utils: {
               test: /[\\/]node_modules[\\/](clsx|tailwind-merge|class-variance-authority)[\\/]/,
               name: 'utils',
@@ -233,7 +226,6 @@ const nextConfig = {
               priority: 10,
               enforce: true,
             },
-            // Separate forms
             forms: {
               test: /[\\/]node_modules[\\/](react-hook-form|@hookform|zod)[\\/]/,
               name: 'forms',
@@ -245,44 +237,12 @@ const nextConfig = {
         },
       };
 
-      // Add bundle analyzer plugin for better insights
-      if (process.env.ANALYZE === 'true') {
-        const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-        config.plugins.push(
-          new BundleAnalyzerPlugin({
-            analyzerMode: 'static',
-            openAnalyzer: false,
-            reportFilename: 'bundle-report.html',
-          })
-        );
-      }
-
-      // Add compression plugin for better gzip
-      const CompressionPlugin = require('compression-webpack-plugin');
-      config.plugins.push(
-        new CompressionPlugin({
-          filename: '[path][base].gz',
-          algorithm: 'gzip',
-          test: /\.(js|css|html|svg)$/,
-          threshold: 10240,
-          minRatio: 0.8,
-        })
-      );
-
-      // Add Brotli compression
-      config.plugins.push(
-        new CompressionPlugin({
-          filename: '[path][base].br',
-          algorithm: 'brotliCompress',
-          test: /\.(js|css|html|svg)$/,
-          threshold: 10240,
-          minRatio: 0.8,
-        })
-      );
+      // NOTE: Removed compression-webpack-plugin (gzip + brotli) to avoid AJV chain.
+      // Your host (Vercel/NGINX/Cloudflare) should handle compression at the edge.
+      // If you insist on keeping it, see the alternative below.
     }
 
-    // Optimize CSS extraction
-    if (!isServer && config.optimization && config.optimization.splitChunks && config.optimization.splitChunks.cacheGroups) {
+    if (!isServer && config.optimization?.splitChunks?.cacheGroups) {
       config.optimization.splitChunks.cacheGroups.styles = {
         name: 'styles',
         test: /\.(css|scss)$/,
@@ -291,103 +251,56 @@ const nextConfig = {
         priority: 30,
       };
     }
-    
+
     return config;
   },
-  // Add headers for better caching and performance
+
   async headers() {
     return [
       {
         source: '/(.*)',
         headers: [
-          {
-            key: 'X-Content-Type-Options',
-            value: 'nosniff',
-          },
-          {
-            key: 'X-Frame-Options',
-            value: 'DENY',
-          },
-          {
-            key: 'X-XSS-Protection',
-            value: '1; mode=block',
-          },
-          {
-            key: 'Referrer-Policy',
-            value: 'strict-origin-when-cross-origin',
-          },
-          {
-            key: 'Permissions-Policy',
-            value: 'camera=(), microphone=(), geolocation=()',
-          },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'X-Frame-Options', value: 'DENY' },
+          { key: 'X-XSS-Protection', value: '1; mode=block' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=()' },
         ],
       },
       {
         source: '/images/(.*)',
         headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-          {
-            key: 'Accept-Encoding',
-            value: 'gzip, deflate, br',
-          },
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+          { key: 'Accept-Encoding', value: 'gzip, deflate, br' },
         ],
       },
       {
         source: '/_next/static/(.*)',
         headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-          {
-            key: 'Accept-Encoding',
-            value: 'gzip, deflate, br',
-          },
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+          { key: 'Accept-Encoding', value: 'gzip, deflate, br' },
         ],
       },
       {
         source: '/_next/image/(.*)',
         headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=31536000, immutable',
-          },
-          {
-            key: 'Accept-Encoding',
-            value: 'gzip, deflate, br',
-          },
+          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
+          { key: 'Accept-Encoding', value: 'gzip, deflate, br' },
         ],
       },
       {
         source: '/sw.js',
         headers: [
-          {
-            key: 'Cache-Control',
-            value: 'no-cache, no-store, must-revalidate',
-          },
-          {
-            key: 'Pragma',
-            value: 'no-cache',
-          },
-          {
-            key: 'Expires',
-            value: '0',
-          },
+          { key: 'Cache-Control', value: 'no-cache, no-store, must-revalidate' },
+          { key: 'Pragma', value: 'no-cache' },
+          { key: 'Expires', value: '0' },
         ],
       },
     ];
   },
-  // Advanced performance optimizations
+
   async rewrites() {
-    return [
-      {
-        source: '/api/health',
-        destination: '/api/healthz',
-      },
-    ];
+    return [{ source: '/api/health', destination: '/api/healthz' }];
   },
 };
 

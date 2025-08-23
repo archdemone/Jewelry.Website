@@ -36,9 +36,9 @@ export function EnhancedProductGallery({
     setCurrentImageIndex(index);
   };
 
-  const handleZoomToggle = () => {
+  const handleZoomToggle = useCallback(() => {
     setIsZoomed(!isZoomed);
-  };
+  }, [isZoomed]);
 
   const handleRotate = () => {
     setRotationAngle((prev) => prev + 90);
@@ -84,7 +84,7 @@ export function EnhancedProductGallery({
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isLightboxOpen, handlePreviousImage, handleNextImage]);
+  }, [isLightboxOpen, handlePreviousImage, handleNextImage, handleZoomToggle]);
 
   // Touch/swipe support for mobile
   const [touchStart, setTouchStart] = useState<number | null>(null);
@@ -129,10 +129,16 @@ export function EnhancedProductGallery({
       <div className="space-y-4">
         {/* Main Image */}
         <div className="relative aspect-square bg-white rounded-lg overflow-hidden border">
-              <div className={`relative w-full h-full cursor-zoom-in transition-all duration-300 ${ isZoomed ? 'cursor-zoom-out' : '' }`}
+              <div className={`relative w-full h-full cursor-zoom-in transition-all duration-300 ${
+ isZoomed ? 'cursor-zoom-out' : ''
+ }`}
             onTouchStart={handleTouchStart}
-            onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
-              <ProductImage              src={images[currentImageIndex]}              alt={`${productName} - Image ${currentImageIndex + 1}`}              className={`w-full h-full object-cover transition-transform duration-300 ${ isZoomed ? 'scale-200' : '' }`}              productSlug={productSlug}              categorySlug={categorySlug}              productName={productName}
+            onTouchMove={handleTouchMove}
+ onTouchEnd={handleTouchEnd}
+>
+              <ProductImage              src={images[currentImageIndex]}              alt={`${productName} - Image ${currentImageIndex + 1}`}              className={`w-full h-full object-cover transition-transform duration-300 ${
+ isZoomed ? 'scale-200' : ''
+ }`}              productSlug={productSlug}              categorySlug={categorySlug}              productName={productName}
              />
 
             {/* Image Counter */}
@@ -144,11 +150,15 @@ export function EnhancedProductGallery({
             {images.length > 1 && (
               <>
               <button onClick={handlePreviousImage}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all" aria-label="Previous image">
+                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all"
+ aria-label="Previous image"
+>
               <ChevronLeft className="h-5 w-5" />
               </button>
               <button onClick={handleNextImage}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all" aria-label="Next image">
+                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all"
+ aria-label="Next image"
+>
               <ChevronRight className="h-5 w-5" />
               </button>
               </>
@@ -157,15 +167,21 @@ export function EnhancedProductGallery({
             {/* Action Buttons */}
             <div className="absolute bottom-4 left-4 flex gap-2">
               <button onClick={handleZoomToggle}
-                className="bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all" aria-label={isZoomed ? 'Zoom out' : 'Zoom in'}>
+                className="bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all"
+ aria-label={isZoomed ? 'Zoom out' : 'Zoom in'}
+>
                 {isZoomed ? <ZoomOut className="h-4 w-4" /> : <ZoomIn className="h-4 w-4" />}
               </button>
               <button onClick={handleRotate}
-                className="bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all" aria-label="Rotate image">
+                className="bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all"
+ aria-label="Rotate image"
+>
               <RotateCw className="h-4 w-4" />
               </button>
               <button onClick={handleLightboxOpen}
-                className="bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all" aria-label="Open lightbox">
+                className="bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all"
+ aria-label="Open lightbox"
+>
               <Move className="h-4 w-4" />
               </button>
               </div>
@@ -178,7 +194,9 @@ export function EnhancedProductGallery({
             {images.map((image, index) => (
               <button              key={index}              onClick={() => handleThumbnailClick(index)}              className={`flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all ${
                   index === currentImageIndex
-                    ? 'border-gold-500 ring-2 ring-gold-200' : 'border-gray-200 hover:border-gray-300' }`}
+                    ? 'border-gold-500 ring-2 ring-gold-200'
+ : 'border-gray-200 hover:border-gray-300'
+ }`}
                 aria-label={`View image ${index + 1}`}
               >
               <ProductImage              src={image}              alt={`${productName} thumbnail ${index + 1}`}
@@ -196,29 +214,39 @@ export function EnhancedProductGallery({
           <motion.div initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 lightbox-backdrop" onClick={handleLightboxClose}>
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-90 lightbox-backdrop"
+ onClick={handleLightboxClose}
+>
               <div className="relative max-w-4xl max-h-full p-4">
               {/* Close Button */}
               <button onClick={handleLightboxClose}
-                className="absolute top-4 right-4 z-10 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all" aria-label="Close lightbox">
+                className="absolute top-4 right-4 z-10 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-70 transition-all"
+ aria-label="Close lightbox"
+>
               <X className="h-6 w-6" />
               </button>
 
               {/* Main Image */}
               <div className="relative cursor-zoom-in"              onClick={(e) => e.stopPropagation()}              onTouchStart={handleTouchStart}              onTouchMove={handleTouchMove}              onTouchEnd={handleTouchEnd}
               >
-              <ProductImage              src={images[currentImageIndex]}              alt={`${productName} - Image ${currentImageIndex + 1}`}              className={`max-w-full max-h-[80vh] object-contain transition-transform duration-300 ${ isZoomed ? 'scale-150' : '' }`}              productSlug={productSlug}              categorySlug={categorySlug}              productName={productName}
+              <ProductImage              src={images[currentImageIndex]}              alt={`${productName} - Image ${currentImageIndex + 1}`}              className={`max-w-full max-h-[80vh] object-contain transition-transform duration-300 ${
+ isZoomed ? 'scale-150' : ''
+ }`}              productSlug={productSlug}              categorySlug={categorySlug}              productName={productName}
                  />
 
                 {/* Navigation Arrows */}
                 {images.length > 1 && (
                   <>
               <button onClick={handlePreviousImage}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition-all" aria-label="Previous image">
+                      className="absolute left-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition-all"
+ aria-label="Previous image"
+>
               <ChevronLeft className="h-6 w-6" />
               </button>
               <button onClick={handleNextImage}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition-all" aria-label="Next image">
+                      className="absolute right-4 top-1/2 -translate-y-1/2 bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition-all"
+ aria-label="Next image"
+>
               <ChevronRight className="h-6 w-6" />
               </button>
               </>
@@ -227,11 +255,15 @@ export function EnhancedProductGallery({
                 {/* Action Buttons */}
                 <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
               <button onClick={handleZoomToggle}
-                    className="bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition-all" aria-label={isZoomed ? 'Zoom out' : 'Zoom in'}>
+                    className="bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition-all"
+ aria-label={isZoomed ? 'Zoom out' : 'Zoom in'}
+>
                     {isZoomed ? <ZoomOut className="h-5 w-5" /> : <ZoomIn className="h-5 w-5" />}
                   </button>
               <button onClick={handleRotate}
-                    className="bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition-all" aria-label="Rotate image">
+                    className="bg-black bg-opacity-50 text-white p-3 rounded-full hover:bg-opacity-70 transition-all"
+ aria-label="Rotate image"
+>
               <RotateCw className="h-5 w-5" />
               </button>
               </div>
@@ -248,7 +280,9 @@ export function EnhancedProductGallery({
                   {images.map((image, index) => (
                     <button              key={index}              onClick={() => handleThumbnailClick(index)}              className={`w-16 h-16 rounded-lg overflow-hidden border-2 transition-all ${
                         index === currentImageIndex
-                          ? 'border-gold-500 ring-2 ring-gold-200' : 'border-gray-300 hover:border-gray-400' }`}
+                          ? 'border-gold-500 ring-2 ring-gold-200'
+ : 'border-gray-300 hover:border-gray-400'
+ }`}
                       aria-label={`View image ${index + 1}`}
                     >
               <ProductImage              src={image}              alt={`${productName} thumbnail ${index + 1}`}
