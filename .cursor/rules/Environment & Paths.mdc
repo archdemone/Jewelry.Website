@@ -1,5 +1,23 @@
+<<<<<<< HEAD
 # Environment & Ports
 - Node 20 LTS required; `npm ci` for installs.
 - Always run `npm run kill-ports` before starting anything.
 - Baseline: 3000 (read-only). Sandbox: 3001 (SANDBOX=1). Do not use other ports.
 - Use static PWA manifest at `public/manifest.webmanifest` and `/public/icons/*.png`. Never create `app/manifest.*`.
+=======
+---
+alwaysApply: true
+---
+
+Memory 1 — Environment & Paths:
+
+OS/Shell/Node: Windows + PowerShell, Node v20 LTS. Use npm ci (deterministic).
+
+Baseline (main): http://localhost:3000 — read-only by default.
+
+Sandbox (worktree): C:\Users\dimam\OneDrive\Desktop\Jewelry.Website\sandbox-20250820-183517 → http://localhost:3001 (start with SANDBOX=1).
+
+Ports: Only 3000/3001. Before starting: npm run stop. Non-interactive commands only.
+
+Scope: Work only in the sandbox unless I say “promote/apply patch.” If sandbox path is missing, STOP and report (do not create new folders).
+>>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f

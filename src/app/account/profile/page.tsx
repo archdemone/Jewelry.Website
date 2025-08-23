@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 'use client';
 
 import React, { useState } from 'react';
@@ -135,6 +136,145 @@ export default function ProfilePage() {
   };
 
   return (
+=======
+'use client';
+
+import React, { useState } from 'react';
+import { AuthGuard } from '@/components/auth/AuthGuard';
+import { Card } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import {
+  User,
+  Mail,
+  Lock,
+  Save,
+  Eye,
+  EyeOff,
+  CheckCircle,
+  AlertCircle,
+  Loader2,
+} from 'lucide-react';
+import { useSession } from 'next-auth/react';
+
+interface ProfileFormData {
+  name: string;
+  email: string;
+  phone: string;
+}
+
+interface PasswordFormData {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+}
+
+
+
+export default function ProfilePage() {
+  const { data: session, update } = useSession();
+  const [profileData, setProfileData] = useState<ProfileFormData>({
+    name: session?.user?.name || '',
+    email: session?.user?.email || '',
+    phone: '',
+  });
+
+  const [passwordData, setPasswordData] = useState<PasswordFormData>({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: '',
+  });
+
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
+  const [isChangingPassword, setIsChangingPassword] = useState(false);
+  const [profileMessage, setProfileMessage] = useState<{
+    type: 'success' | 'error';
+    text: string;
+  } | null>(null);
+  const [passwordMessage, setPasswordMessage] = useState<{
+    type: 'success' | 'error';
+    text: string;
+  } | null>(null);
+
+  const handleProfileUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsUpdatingProfile(true);
+    setProfileMessage(null);
+
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      // Update session
+      await update({
+        ...session,
+        user: {
+          ...session?.user,
+          name: profileData.name,
+          email: profileData.email,
+        },
+      });
+
+      setProfileMessage({ type: 'success', text: 'Profile updated successfully!' });
+    } catch (error) {
+      console.error('Profile update error:', error);
+      setProfileMessage({ type: 'error', text: 'Failed to update profile. Please try again.' });
+    } finally {
+      setIsUpdatingProfile(false);
+    }
+  };
+
+  const handlePasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsChangingPassword(true);
+    setPasswordMessage(null);
+
+    // Validate passwords
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      setPasswordMessage({ type: 'error', text: 'New passwords do not match.' });
+      setIsChangingPassword(false);
+      return;
+    }
+
+    if (passwordData.newPassword.length < 8) {
+      setPasswordMessage({
+        type: 'error',
+        text: 'New password must be at least 8 characters long.',
+      });
+      setIsChangingPassword(false);
+      return;
+    }
+
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      setPasswordMessage({ type: 'success', text: 'Password changed successfully!' });
+
+      // Clear password fields
+      setPasswordData({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: '',
+      });
+    } catch (error) {
+      console.error('Password change error:', error);
+      setPasswordMessage({
+        type: 'error',
+        text: 'Failed to change password. Please check your current password and try again.',
+      });
+    } finally {
+      setIsChangingPassword(false);
+    }
+  };
+
+  return (
+>>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f
     <AuthGuard>
               <div className="mx-auto max-w-4xl px-4 py-8">
               <div className="mb-8">

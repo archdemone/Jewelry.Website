@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 9) Fast commands you'll actually use
 
 **Primary Commands:**
@@ -27,3 +28,31 @@ smoke:all: npm run smoke:all (agent:status + health:check + console:check:sandbo
 - Print exit codes for all commands
 - Never start hidden extra servers/ports
 
+=======
+9\) Fast commands you’ll actually use
+
+
+
+Start dev safe: npm run dev:safe
+
+
+
+Start prod both: npm run run:both
+
+
+
+Sandbox dev only: npm run dev:sandbox
+
+
+
+Stop servers: npm run stop
+
+
+
+Status: npm run status
+
+
+
+Promote: npm run sandbox:patch → npm run sandbox:apply
+
+>>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f

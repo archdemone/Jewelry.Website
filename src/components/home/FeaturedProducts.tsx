@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 'use client';
 
 import React, { useState } from 'react';
@@ -56,6 +57,148 @@ const FeaturedProducts = () => {
             whileInView={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }} className="text-lg text-gray-600 max-w-2xl mx-auto">
             Discover our most popular handcrafted pieces, each telling a unique story of artistry and passion.
+=======
+'use client';
+
+import { motion } from 'framer-motion';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useState, useEffect } from 'react';
+import { Heart, ShoppingBag } from 'lucide-react';
+import { getFeaturedProducts, type FeaturedProduct } from '@/lib/featured-products';
+import { useCartStore } from '@/store/cart';
+import { showToast } from '@/components/ui/SimpleToast';
+
+const FeaturedProducts = () => {
+  const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
+  const [featuredRings, setFeaturedRings] = useState<FeaturedProduct[]>([]);
+  const [wishlist, setWishlist] = useState<Set<string>>(new Set());
+  const [mounted, setMounted] = useState(false);
+  const { addItem, items, isHydrated } = useCartStore();
+
+  useEffect(() => {
+    setMounted(true);
+    // Load featured products immediately after mounting
+    setFeaturedRings(getFeaturedProducts());
+    
+    // Only access localStorage in browser environment
+    if (typeof window !== 'undefined') {
+      // Load wishlist from localStorage
+      const savedWishlist = localStorage.getItem('wishlist');
+      if (savedWishlist) {
+        setWishlist(new Set(JSON.parse(savedWishlist)));
+      }
+      
+      // Listen for storage changes to refresh the data
+      const handleStorageChange = () => {
+        setFeaturedRings(getFeaturedProducts());
+      };
+      
+      window.addEventListener('storage', handleStorageChange);
+      
+      // Also listen for custom events (for same-tab updates)
+      window.addEventListener('featuredProductsUpdated', handleStorageChange);
+      
+      return () => {
+        window.removeEventListener('storage', handleStorageChange);
+        window.removeEventListener('featuredProductsUpdated', handleStorageChange);
+      };
+    }
+  }, []);
+
+  const handleWishlistToggle = (productId: string) => {
+    const newWishlist = new Set(wishlist);
+    const product = featuredRings.find(ring => ring.id === productId);
+    
+    if (newWishlist.has(productId)) {
+      newWishlist.delete(productId);
+      showToast(`${product?.name} removed from wishlist`, 'info');
+    } else {
+      newWishlist.add(productId);
+      showToast(`${product?.name} added to wishlist!`, 'success');
+    }
+    setWishlist(newWishlist);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('wishlist', JSON.stringify([...newWishlist]));
+    }
+  };
+
+  const handleAddToCart = (ring: FeaturedProduct) => {
+    if (!isHydrated) {
+      showToast('Cart is still loading, please try again', 'error');
+      return;
+    }
+    
+    addItem({
+      productId: ring.id,
+      name: ring.name,
+      price: ring.price,
+      image: ring.image,
+      material: ring.material,
+      gemColor: ring.gemColor,
+      gemDensity: ring.gemDensity,
+      gemVariation: ring.gemVariation,
+      ringSize: ring.ringSizes.us[0]?.toString() || '7',
+      ringWidth: ring.ringWidth[0]?.toString() || '6'
+    });
+    
+    // Show success toast
+    showToast(`${ring.name} added to cart!`, 'success');
+  };
+
+  // Show 6 products for better engagement and variety
+  const initialProducts = featuredRings.slice(0, 6);
+
+  // Show loading state only if not mounted or no products loaded
+  if (!mounted || featuredRings.length === 0) {
+    return (
+      <section className="py-16 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl heading-primary text-charcoal-900 mb-4">
+              Featured Rings
+            </h2>
+            <p className="text-xl body-text text-gray-600 max-w-2xl mx-auto">
+              Discover our most popular handcrafted pieces, each telling a unique story of craftsmanship and beauty.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[...Array(6)].map((_, i) => (
+              <div key={i} className="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div className="aspect-square bg-gray-200 animate-pulse"></div>
+                <div className="p-4">
+                  <div className="h-4 bg-gray-200 rounded animate-pulse mb-2"></div>
+                  <div className="h-6 bg-gray-200 rounded animate-pulse mb-2"></div>
+                  <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  return (
+    <section className="py-16 bg-white" data-testid="featured-products">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-12">
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-4xl md:text-5xl heading-primary text-charcoal-900 mb-4"
+          >
+            Featured Rings
+          </motion.h2>
+          <motion.p 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-xl body-text text-gray-600 max-w-2xl mx-auto"
+          >
+            Discover our most popular handcrafted pieces, each telling a unique story of craftsmanship and beauty.
+>>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f
           </motion.p>
               </motion.div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" data-testid="featured-products-grid">

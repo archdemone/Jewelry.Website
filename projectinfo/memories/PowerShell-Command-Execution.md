@@ -15,7 +15,7 @@ PowerShell commands with pipes, redirections, or complex syntax often hang or fa
 # Direct npm commands
 npm run dev:precheck:build
 
-# Direct node script execution  
+# Direct node script execution
 node scripts/dev-error-helper.js --with-build
 
 # Simple git commands

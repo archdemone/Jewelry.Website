@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 'use client';
 
 import { motion } from 'framer-motion';
@@ -170,6 +171,180 @@ Please let me know if you can accommodate these customizations and what the esti
   ];
 
   return (
+=======
+'use client';
+
+import { motion } from 'framer-motion';
+import { useState, type FormEvent, type ChangeEvent, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
+import {
+  Mail,
+  Phone,
+  MapPin,
+  Clock,
+  Send,
+  MessageSquare,
+  Instagram,
+  Facebook,
+  Twitter,
+  ArrowRight,
+  CheckCircle,
+  Loader2,
+  Calendar,
+  Info,
+  Image as ImageIcon,
+  Heart,
+  Settings,
+} from 'lucide-react';
+
+type ContactFormData = {
+  name: string;
+  email: string;
+  phone: string;
+  subject: 'general' | 'custom' | 'order' | 'repair' | 'other';
+  message: string;
+  file: File | null;
+};
+
+type CustomizationData = {
+  productName: string;
+  originalPrice: number;
+  customization: {
+    material: string;
+    gemColor: string;
+    gemDensity: string;
+    gemVariation: string;
+    ringSize: string;
+    ringWidth: string;
+    mixColors: string[];
+  };
+};
+
+export default function ContactPage() {
+  const searchParams = useSearchParams();
+  const [formData, setFormData] = useState<ContactFormData>({
+    name: '',
+    email: '',
+    phone: '',
+    subject: 'general',
+    message: '',
+    file: null,
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'success' | 'error' | null>(null);
+  const [customizationData, setCustomizationData] = useState<CustomizationData | null>(null);
+
+  // Handle customization data from URL parameters
+  useEffect(() => {
+    const customizationParam = searchParams?.get('customization');
+    if (customizationParam) {
+      try {
+        const decodedData = JSON.parse(decodeURIComponent(customizationParam));
+        setCustomizationData(decodedData);
+
+        // Auto-populate form with customization details
+        const customizationMessage = `I'm interested in customizing the following ring:
+
+Product: ${decodedData.productName}
+Original Price: £${decodedData.originalPrice}
+
+My Customization Preferences:
+• Material: ${decodedData.customization.material}
+• Gem Color: ${decodedData.customization.gemColor}
+• Gem Density: ${decodedData.customization.gemDensity}
+• Gem Variation: ${decodedData.customization.gemVariation}
+• Ring Size: ${decodedData.customization.ringSize}
+• Ring Width: ${decodedData.customization.ringWidth}
+${decodedData.customization.mixColors.length > 0 ? `• Mix Colors: ${decodedData.customization.mixColors.join(', ')}` : ''}
+
+Please let me know if you can accommodate these customizations and what the estimated timeline and pricing would be. I'm also open to suggestions and recommendations based on your expertise.`;
+
+        setFormData((prev) => ({
+          ...prev,
+          subject: 'custom',
+          message: customizationMessage,
+        }));
+      } catch (error) {
+        console.error('Error parsing customization data:', error);
+      }
+    }
+  }, [searchParams]);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus(null);
+
+    try {
+      const formData = new FormData(e.currentTarget);
+      
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (data.ok) {
+        setSubmitStatus('success');
+        // Reset form on success
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          subject: 'general',
+          message: '',
+          file: null,
+        });
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch (error) {
+      console.error('Contact form error:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const contactMethods = [
+    {
+      icon: Mail,
+      title: 'Email',
+      value: 'artisan@rings.com',
+      description: 'Best for detailed inquiries',
+      color: 'blue',
+      bgGradient: 'from-blue-50 to-indigo-50',
+      iconBg: 'bg-blue-100',
+      iconColor: 'text-blue-600',
+      hoverBg: 'hover:from-blue-100 hover:to-indigo-100',
+    },
+    {
+      icon: MessageSquare,
+      title: 'Live Chat',
+      value: 'Available 9am-6pm',
+      description: 'Quick questions & support',
+      color: 'green',
+      bgGradient: 'from-green-50 to-emerald-50',
+      iconBg: 'bg-green-100',
+      iconColor: 'text-green-600',
+      hoverBg: 'hover:from-green-100 hover:to-emerald-100',
+    },
+    {
+      icon: Phone,
+      title: 'Phone',
+      value: '+44 123 456 7890',
+      description: 'Mon-Fri, 10am-5pm',
+      color: 'purple',
+      bgGradient: 'from-purple-50 to-pink-50',
+      iconBg: 'bg-purple-100',
+      iconColor: 'text-purple-600',
+      hoverBg: 'hover:from-purple-100 hover:to-pink-100',
+    },
+  ];
+
+  return (
+>>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f
     <main>
               <div className="min-h-screen bg-white">
         {/* Hero Section with Gradient Background */}

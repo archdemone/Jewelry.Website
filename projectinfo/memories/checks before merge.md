@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 8) Must-have checks before merge
 
 **Core Quality Checks:**
@@ -23,3 +24,23 @@ No accessibility issues created.
 If any check fails, investigate root cause - never disable tests to pass.
 Report exact error details with commands run and exit codes.
 Retry failed installations once before reporting.
+=======
+8\) Must-have checks before merge
+
+
+
+npm run type-check:strict passes.
+
+
+
+npm run lint passes (no disabled rules added).
+
+
+
+npm run build passes.
+
+
+
+Local smoke (sandbox prod on :3001): / and /api/healthz return 200; logs show no Error/Unhandled/TypeError.
+
+>>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f

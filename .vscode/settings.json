@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "files.autoSave": "onFocusChange",
   "editor.formatOnSave": true,
   "editor.codeActionsOnSave": {
@@ -56,3 +57,7 @@
     "javascriptreact": "html"
   }
 }
+=======
+    "json.schemaDownload.enable": true
+}
+>>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f

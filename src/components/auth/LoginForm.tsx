@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 'use client';
 
 import React, { useEffect, useState, type FormEvent } from 'react';
@@ -85,6 +86,82 @@ export default function LoginForm() {
   };
 
   return (
+=======
+'use client';
+
+import React, { useEffect, useState, type FormEvent } from 'react';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+import { Eye, EyeOff, Mail, Lock, Loader2 } from 'lucide-react';
+
+export default function LoginForm() {
+  const router = useRouter();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [tsToken, setTsToken] = useState<string | undefined>(undefined);
+  const [requireCaptcha, setRequireCaptcha] = useState<boolean>(false);
+
+  useEffect(() => {
+    // If Turnstile key is configured, we can render widget when backend indicates needed
+    if (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) {
+      // Always render; backend will enforce after too many failures
+      setRequireCaptcha(true);
+    }
+  }, []);
+
+  async function onSubmit(e: FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+
+    try {
+      const res = await signIn('credentials', {
+        redirect: false,
+        email,
+        password,
+        turnstileToken: tsToken,
+      });
+
+      if (res?.error) {
+        setError('Invalid email or password.');
+        setLoading(false);
+        return;
+      }
+
+      if (res?.ok) {
+        // Successful login
+        router.push('/account');
+      } else {
+        setError('Login failed. Please try again.');
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      setError('An unexpected error occurred. Please try again.');
+      setLoading(false);
+    }
+  }
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+    // Clear any previous errors when user starts typing
+    if (error) setError(null);
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+    // Clear any previous errors when user starts typing
+    if (error) setError(null);
+  };
+
+  return (
+>>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f
     <Card className="p-6 shadow-lg">
               <form onSubmit={onSubmit} className="space-y-4">
               <div>
