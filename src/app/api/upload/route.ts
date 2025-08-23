@@ -2,7 +2,14 @@ import { requireAdminApi } from '@/lib/admin/admin-auth';
 import { randomBytes } from 'crypto';
 import { promises as fs } from 'fs';
 import path from 'path';
-import sharp from 'sharp';
+// Conditional import to avoid build-time issues
+let sharp: any;
+try {
+  sharp = require('sharp');
+} catch (error) {
+  // sharp not available during build time
+  sharp = null;
+}
 
 const MAX_SIZE = 5 * 1024 * 1024;
 const MAX_DIM = 2000;
@@ -75,6 +82,14 @@ export async function POST(req: Request) {
   const id = randomBytes(16).toString('hex');
   const uploadRoot = process.env.UPLOADS_DEST === 's3' ? null : path.join(process.cwd(), 'uploads');
   if (uploadRoot) await fs.mkdir(uploadRoot, { recursive: true });
+  // Check if sharp is available
+  if (!sharp) {
+    return new Response(JSON.stringify({ error: 'Image processing not available' }), {
+      status: 503,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   // Process with sharp: strip metadata, limit size, output webp/avif
   const image = sharp(buf, { failOn: 'none' }).rotate();
   const meta = await image.metadata();
