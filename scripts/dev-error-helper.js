@@ -58,7 +58,7 @@ const checks = [
   { name: 'TypeScript Check', command: 'npm run type-check:strict', required: true },
   { name: 'ESLint Check', command: 'npm run lint', required: true },
   ...(WITH_BUILD ? [{ name: 'Build Check', command: 'npm run build', required: true }] : []),
-  { name: 'Health Check (Sandbox)', command: 'npm run health:check:sandbox', required: false },
+  { name: 'Health Check (Both)', command: 'npm run health:check', required: false },
   { name: 'Console Error Check (Sandbox)', command: 'npm run console:check:sandbox', required: false },
 ];
 
