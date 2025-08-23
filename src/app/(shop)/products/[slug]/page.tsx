@@ -8,6 +8,7 @@ import { EnhancedProductGallery } from '@/components/product-detail/EnhancedProd
 import { ProductTabs } from '@/components/product-detail/ProductTabs';
 import RelatedProducts from '@/components/product-detail/RelatedProducts';
 import { AddToCartButton } from '@/components/products/AddToCartButton';
+import { ReviewSystem } from '@/components/reviews/ReviewSystem';
 import { WishlistButton } from '@/components/wishlist/WishlistButton';
 import { getProductImageFallback } from '@/lib/assets/images';
 import { db } from '@/lib/db';
@@ -86,7 +87,7 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
 
       {/* Reviews Section */}
       <div className="mt-12 pt-8 border-t border-gray-200">
-        {/* Reviews feature coming soon */}
+        <ReviewSystem productId={product.id} />
       </div>
       <RelatedProducts products={related} />
     </div>
