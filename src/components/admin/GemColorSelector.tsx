@@ -37,8 +37,7 @@ export function GemColorSelector({ selectedColor, onColorChange }: GemColorSelec
         >
           <div className="flex flex-col items-center gap-2">
             <div
-              className="h-8 w-8 rounded-full border-2 border-gray-200"
-              style={{ backgroundColor: gem.color }}
+              className="h-8 w-8 rounded-full border-2 border-gray-200"              style={{ backgroundColor: gem.color }}
             />
             <span className="text-sm font-medium">{gem.name}</span>
           </div>
@@ -47,12 +46,8 @@ export function GemColorSelector({ selectedColor, onColorChange }: GemColorSelec
           {hoveredColor === gem.name && gem.image && (
             <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
               <div className="rounded-lg border bg-white p-2 shadow-lg">
-                <Image
-                  src={gem.image}
-                  alt={`${gem.name} gem`}
-                  width={80}
-                  height={80}
-                  className="rounded object-cover"
+                <Image              src={gem.image}              alt={`${gem.name} gem`}              width={80}              height={80}
+                  className="rounded object-cover"              style={{ minWidth: '80px', minHeight: '80px' }}
                 />
               </div>
             </div>

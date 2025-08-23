@@ -48,15 +48,10 @@ const TrustSignals = () => {
       <div className="container mx-auto px-4 py-6">
         <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
           {trustItems.map((item, index) => (
-            <motion.div
-              key={item.text}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
+            <motion.div              key={item.text}              initial={{ opacity: 0, y: 20 }}              animate={{ opacity: 1, y: 0 }}              transition={{ duration: 0.5, delay: index * 0.1 }}
               className="group flex flex-col items-center text-center"
             >
-              <div
-                className={`rounded-full p-3 ${item.bgColor} mb-2 transition-transform duration-200 group-hover:scale-110`}
+              <div              className={`rounded-full p-3 ${item.bgColor} mb-2 transition-transform duration-200 group-hover:scale-110`}
               >
                 <item.icon className={`h-5 w-5 ${item.color}`} />
               </div>

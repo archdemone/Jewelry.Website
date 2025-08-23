@@ -45,9 +45,7 @@ const NewsletterSection = () => {
               className="flex-1 rounded-full border border-gray-300 px-6 py-4 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-primary"
               autoComplete="email"
             />
-            <motion.button
-              whileHover={{ scale: 1.05, backgroundColor: '#EA580C' }}
-              whileTap={{ scale: 0.95 }}
+            <motion.button              whileHover={{ scale: 1.05, backgroundColor: '#EA580C' }}              whileTap={{ scale: 0.95 }}
               className="flex items-center justify-center gap-2 rounded-full bg-gradient-to-r from-primary to-orange-500 px-8 py-4 font-medium text-white shadow-lg transition-all duration-300 hover:shadow-xl"
             >
               <Sparkles className="h-5 w-5" />

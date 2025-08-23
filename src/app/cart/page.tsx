@@ -47,19 +47,7 @@ export default function CartPage() {
                   {/* Cart Items */}
                   <div className="space-y-6">
                     {items.map((i) => (
-                      <CartItem
-                        key={i.productId}
-                        id={i.productId}
-                        name={i.name}
-                        price={i.price}
-                        image={i.image}
-                        quantity={i.quantity}
-                        material={i.material}
-                        gemColor={i.gemColor}
-                        gemDensity={i.gemDensity}
-                        gemVariation={i.gemVariation}
-                        ringSize={i.ringSize}
-                        ringWidth={i.ringWidth}
+                      <CartItem              key={i.productId}              id={i.productId}              name={i.name}              price={i.price}              image={i.image}              quantity={i.quantity}              material={i.material}              gemColor={i.gemColor}              gemDensity={i.gemDensity}              gemVariation={i.gemVariation}              ringSize={i.ringSize}              ringWidth={i.ringWidth}
                       />
                     ))}
                   </div>

@@ -49,9 +49,7 @@ export default function BlogPostPage({ params }: Params) {
         <article className="mx-auto max-w-3xl">
           {post.image && (
             <div className="relative h-64 w-full">
-              <Image
-                src={post.image}
-                alt={post.title}
+              <Image              src={post.image}              alt={post.title}
                 fill
                 className="rounded-md object-cover"
                 sizes="100vw"

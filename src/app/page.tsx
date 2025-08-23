@@ -2,6 +2,7 @@ import HeroCarousel from '@/components/home/HeroCarousel';
 import TrustSignals from '@/components/home/TrustSignals';
 import FeaturedProducts from '@/components/home/FeaturedProducts';
 import SocialProof from '@/components/home/SocialProof';
+import CategoryShowcase from '@/components/home/CategoryShowcase';
 
 // Static generation for better performance
 export const revalidate = 3600; // Revalidate every hour
@@ -55,6 +56,9 @@ export default function Home() {
       <HeroCarousel />
       <section className="section-below-fold">
         <TrustSignals />
+      </section>
+      <section className="section-below-fold">
+        <CategoryShowcase />
       </section>
       <section className="section-below-fold">
         <FeaturedProducts />

@@ -318,9 +318,7 @@ export default function CategoryPage({
             <div className="flex items-center justify-between gap-4">
               {/* Left: Filter Toggle */}
               <div className="flex items-center gap-3">
-                <motion.button
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setShowFilters(!showFilters)}
+                <motion.button              whileTap={{ scale: 0.95 }}              onClick={() => setShowFilters(!showFilters)}
                   className="flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2 transition-colors hover:bg-gray-200"
                 >
                   <SlidersHorizontal className="h-4 w-4" />
@@ -344,9 +342,7 @@ export default function CategoryPage({
                   <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                   <input
                     type="text"
-                    placeholder="Search rings..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search rings..."              value={searchQuery}              onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full rounded-full border border-gray-200 bg-white px-10 py-2 text-sm focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20"
                   />
                 </div>
@@ -356,9 +352,7 @@ export default function CategoryPage({
               <div className="flex items-center gap-3">
                 {/* View Mode Toggle */}
                 <div className="flex rounded-lg border border-gray-200 bg-white p-1">
-                  <button
-                    onClick={() => setViewMode('grid')}
-                    className={`rounded-md p-2 transition-colors ${
+                  <button              onClick={() => setViewMode('grid')}              className={`rounded-md p-2 transition-colors ${
                       viewMode === 'grid'
                         ? 'bg-gold-500 text-white'
                         : 'text-gray-600 hover:text-gray-900'
@@ -368,9 +362,7 @@ export default function CategoryPage({
                   >
                     <Grid3x3 className="h-4 w-4" aria-hidden="true" />
                   </button>
-                  <button
-                    onClick={() => setViewMode('list')}
-                    className={`rounded-md p-2 transition-colors ${
+                  <button              onClick={() => setViewMode('list')}              className={`rounded-md p-2 transition-colors ${
                       viewMode === 'list'
                         ? 'bg-gold-500 text-white'
                         : 'text-gray-600 hover:text-gray-900'
@@ -384,9 +376,7 @@ export default function CategoryPage({
 
                 {/* Sort Dropdown */}
                 <div className="relative">
-                  <select
-                    value={sortBy}
-                    onChange={(e) => setSortBy(e.target.value)}
+                  <select              value={sortBy}              onChange={(e) => setSortBy(e.target.value)}
                     className="appearance-none rounded-lg border border-gray-200 bg-white px-4 py-2 pr-8 text-sm focus:border-gold-500 focus:outline-none focus:ring-2 focus:ring-gold-500/20"
                     aria-label="Sort products by"
                   >
@@ -412,27 +402,18 @@ export default function CategoryPage({
           {/* Products Grid */}
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {sortedProducts.map((product) => (
-              <motion.div
-                key={product.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                whileHover={{ y: -4 }}
-                className="group relative overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:shadow-lg"
-                onMouseEnter={() => setHoveredProduct(product.id)}
-                onMouseLeave={() => setHoveredProduct(null)}
+              <motion.div              key={product.id}              initial={{ opacity: 0, y: 20 }}              animate={{ opacity: 1, y: 0 }}              whileHover={{ y: -4 }}
+                className="group relative overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm transition-all duration-300 hover:shadow-lg"              onMouseEnter={() => setHoveredProduct(product.id)}              onMouseLeave={() => setHoveredProduct(null)}
               >
                 {/* Product Image */}
                 <div className="relative aspect-square overflow-hidden border-2 border-black">
-                  <Image
-                    src={Array.isArray(product.images) && product.images.length > 0 
+                  <Image              src={Array.isArray(product.images) && product.images.length > 0 
                       ? product.images[0] 
-                      : getProductImageFallback({ productSlug: product.slug, name: product.name })[0] || ''}
-                    alt={product.name}
+                      : getProductImageFallback({ productSlug: product.slug, name: product.name })[0] || ''}              alt={product.name}
                     fill
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                    loading="lazy"
-                    quality={75}
+                    loading="lazy"              quality={75}
                     placeholder="blur"
                     blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                   />
@@ -447,8 +428,7 @@ export default function CategoryPage({
                   )}
 
                   {/* Wishlist Button */}
-                  <button
-                    onClick={() => handleWishlistToggle(product.id)}
+                  <button              onClick={() => handleWishlistToggle(product.id)}
                     className="absolute right-2 top-2 rounded-full bg-white/90 p-2 text-red-500 transition-colors hover:bg-white"
                     aria-label={wishlistItems.has(product.id) ? 'Remove from wishlist' : 'Add to wishlist'}
                   >
@@ -458,15 +438,13 @@ export default function CategoryPage({
                   {/* Quick Actions */}
                   <div className="absolute inset-0 flex items-center justify-center bg-black/50 opacity-0 transition-opacity group-hover:opacity-100">
                     <div className="flex gap-2">
-                      <button
-                        onClick={() => handleAddToCart(product)}
+                      <button              onClick={() => handleAddToCart(product)}
                         className="rounded-full bg-white p-3 text-gray-900 transition-colors hover:bg-gray-100"
                         aria-label={`Add ${product.name} to cart`}
                       >
                         <ShoppingBag className="h-5 w-5" aria-hidden="true" />
                       </button>
-                      <Link
-                        href={`/products/${product.slug}`}
+                      <Link              href={`/products/${product.slug}`}
                         className="rounded-full bg-white p-3 text-gray-900 transition-colors hover:bg-gray-100"
                         aria-label={`View details for ${product.name}`}
                       >
@@ -508,9 +486,7 @@ export default function CategoryPage({
                     <div className="mb-2 flex items-center gap-1">
                       <div className="flex" role="img" aria-label={`${product.rating} out of 5 stars`}>
                         {[...Array(5)].map((_, i) => (
-                          <Star
-                            key={i}
-                            className={`h-4 w-4 ${
+                          <Star              key={i}              className={`h-4 w-4 ${
                               i < Math.floor(product.rating!)
                                 ? 'fill-yellow-400 text-yellow-400'
                                 : 'text-gray-300'
@@ -575,8 +551,7 @@ export default function CategoryPage({
                   <p className="text-sm font-medium text-gray-900">Added to Cart!</p>
                   <p className="truncate text-sm text-gray-600">{addedProduct.name}</p>
                 </div>
-                <button
-                  onClick={() => setShowAddToCartToast(false)}
+                <button              onClick={() => setShowAddToCartToast(false)}
                   className="flex-shrink-0 text-gray-400 transition-colors hover:text-gray-600"
                 >
                   <X className="h-5 w-5" />
@@ -584,10 +559,7 @@ export default function CategoryPage({
               </div>
               <div className="mt-3">
                 <div className="h-1 w-full rounded-full bg-gray-200">
-                  <motion.div
-                    initial={{ width: '100%' }}
-                    animate={{ width: '0%' }}
-                    transition={{ duration: 3, ease: 'linear' }}
+                  <motion.div              initial={{ width: '100%' }}              animate={{ width: '0%' }}              transition={{ duration: 3, ease: 'linear' }}
                     className="h-1 rounded-full bg-green-500"
                   />
                 </div>
@@ -610,8 +582,7 @@ export default function CategoryPage({
             <div className="w-full max-w-sm rounded-xl border border-gray-200 bg-white p-4 shadow-2xl">
               <div className="flex items-center gap-3">
                 <div className="flex-shrink-0">
-                  <div
-                    className={`flex h-10 w-10 items-center justify-center rounded-full ${
+                  <div              className={`flex h-10 w-10 items-center justify-center rounded-full ${
                       wishlistAction.action === 'added' ? 'bg-red-100' : 'bg-gray-100'
                     }`}
                   >
@@ -630,8 +601,7 @@ export default function CategoryPage({
                   </p>
                   <p className="truncate text-sm text-gray-600">{wishlistAction.product.name}</p>
                 </div>
-                <button
-                  onClick={() => {
+                <button              onClick={() => {
                     setShowWishlistToast(false);
                     setWishlistAction({ action: 'added', product: null });
                   }}
@@ -642,11 +612,7 @@ export default function CategoryPage({
               </div>
               <div className="mt-3">
                 <div className="h-1 w-full rounded-full bg-gray-200">
-                  <motion.div
-                    initial={{ width: '100%' }}
-                    animate={{ width: '0%' }}
-                    transition={{ duration: 3, ease: 'linear' }}
-                    className={`h-1 rounded-full ${
+                  <motion.div              initial={{ width: '100%' }}              animate={{ width: '0%' }}              transition={{ duration: 3, ease: 'linear' }}              className={`h-1 rounded-full ${
                       wishlistAction.action === 'added' ? 'bg-red-500' : 'bg-gray-500'
                     }`}
                   />

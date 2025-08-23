@@ -43,20 +43,15 @@ function ResetPasswordInner() {
             <label className="mb-1 block text-sm font-medium">New password</label>
             <input
               type="password"
-              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-900"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              minLength={8}
+              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-900"              value={password}              onChange={(e) => setPassword(e.target.value)}
+              required              minLength={8}
             />
           </div>
           <div>
             <label className="mb-1 block text-sm font-medium">Confirm password</label>
             <input
               type="password"
-              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-900"
-              value={confirm}
-              onChange={(e) => setConfirm(e.target.value)}
+              className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-gray-900"              value={confirm}              onChange={(e) => setConfirm(e.target.value)}
               required
             />
           </div>

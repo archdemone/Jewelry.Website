@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, type FormEvent } from 'react';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -10,6 +10,7 @@ import { Eye, EyeOff, Mail, Lock, Loader2 } from 'lucide-react';
 
 export default function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -23,6 +24,13 @@ export default function LoginForm() {
     if (process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY) {
       // Always render; backend will enforce after too many failures
       setRequireCaptcha(true);
+    }
+
+    // Development auto-login: Auto-fill admin credentials
+    if (process.env.NODE_ENV !== 'production' && process.env.NEXT_PUBLIC_SANDBOX === '1') {
+      console.log('🛠️  Development mode detected - auto-filling admin credentials');
+      setEmail('admin@jewelry.com');
+      setPassword('boberpoper34');
     }
   }, []);
 
@@ -41,15 +49,25 @@ export default function LoginForm() {
 
       if (res?.error) {
         setError('Invalid email or password.');
+        setLoading(false);
         return;
       }
 
-      // Successful login
-      router.push('/account');
+      if (res?.ok) {
+        // Successful login - check for callback URL
+        const callbackUrl = searchParams?.get('callbackUrl');
+        if (callbackUrl) {
+          router.push(callbackUrl);
+        } else {
+          router.push('/account');
+        }
+      } else {
+        setError('Login failed. Please try again.');
+        setLoading(false);
+      }
     } catch (err) {
       console.error('Login error:', err);
       setError('An unexpected error occurred. Please try again.');
-    } finally {
       setLoading(false);
     }
   }
@@ -79,11 +97,8 @@ export default function LoginForm() {
               id="email"
               type="email"
               placeholder="Enter your email"
-              className="pl-10 text-gray-900"
-              value={email}
-              onChange={handleEmailChange}
-              required
-              disabled={loading}
+              className="pl-10 text-gray-900"              value={email}              onChange={handleEmailChange}
+              required              disabled={loading}
               autoComplete="email"
             />
           </div>
@@ -96,21 +111,15 @@ export default function LoginForm() {
           <div className="relative">
             <Lock className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-400" />
             <Input
-              id="password"
-              type={showPassword ? 'text' : 'password'}
+              id="password"              type={showPassword ? 'text' : 'password'}
               placeholder="Enter your password"
-              className="pl-10 pr-10 text-gray-900"
-              value={password}
-              onChange={handlePasswordChange}
-              required
-              disabled={loading}
+              className="pl-10 pr-10 text-gray-900"              value={password}              onChange={handlePasswordChange}
+              required              disabled={loading}
               autoComplete="current-password"
             />
             <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400 hover:text-gray-600"
-              disabled={loading}
+              type="button"              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400 hover:text-gray-600"              disabled={loading}
             >
               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
@@ -124,10 +133,7 @@ export default function LoginForm() {
             </label>
             <Input
               type="text"
-              placeholder="Turnstile token (if required)"
-              value={tsToken || ''}
-              onChange={(e) => setTsToken(e.target.value)}
-              disabled={loading}
+              placeholder="Turnstile token (if required)"              value={tsToken || ''}              onChange={(e) => setTsToken(e.target.value)}              disabled={loading}
             />
           </div>
         )}
@@ -189,6 +195,66 @@ export default function LoginForm() {
           </svg>
           Continue with Google
         </Button>
+
+        {/* Development Auto-Login Button */}
+        {process.env.NODE_ENV !== 'production' && process.env.NEXT_PUBLIC_SANDBOX === '1' && (
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full bg-green-50 border-green-300 text-green-700 hover:bg-green-100"
+            onClick={async () => {
+              setEmail('admin@jewelry.com');
+              setPassword('boberpoper34');
+              setError(null);
+              setLoading(true);
+
+              try {
+                const res = await signIn('credentials', {
+                  redirect: false,
+                  email: 'admin@jewelry.com',
+                  password: 'boberpoper34',
+                  turnstileToken: tsToken,
+                });
+
+                if (res?.error) {
+                  setError('Auto-login failed. Please try manual login.');
+                  setLoading(false);
+                  return;
+                }
+
+                if (res?.ok) {
+                  const callbackUrl = searchParams?.get('callbackUrl') || '/admin';
+                  router.push(callbackUrl);
+                } else {
+                  setError('Auto-login failed. Please try manual login.');
+                  setLoading(false);
+                }
+              } catch (err) {
+                console.error('Auto-login error:', err);
+                setError('Auto-login failed. Please try manual login.');
+                setLoading(false);
+              }
+            }}
+            disabled={loading}
+          >
+            🚀 Quick Admin Login (Dev Only)
+          </Button>
+        )}
+
+        {/* Development Info */}
+        {process.env.NODE_ENV !== 'production' && process.env.NEXT_PUBLIC_SANDBOX === '1' && (
+          <div className="rounded-md border border-blue-200 bg-blue-50 p-3">
+            <p className="text-xs text-blue-600">
+              <strong>Development Mode:</strong> Admin credentials are auto-filled.
+              <br />
+              Email: admin@jewelry.com
+              <br />
+              Password: boberpoper34
+              <br />
+              Use "Quick Admin Login" button for instant access.
+            </p>
+          </div>
+        )}
       </form>
     </Card>
   );

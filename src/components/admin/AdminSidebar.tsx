@@ -55,14 +55,10 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
                 (item.href !== '/admin' && pathname.startsWith(`${item.href}/`))
               );
             return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={clsx(
+              <Link              key={item.href}              href={item.href}              className={clsx(
                   'flex items-center gap-3 rounded-md px-3 py-2 text-sm w-full max-w-full',
                   active ? 'bg-amber-100 text-amber-900' : 'text-gray-700 hover:bg-gray-100',
-                )}
-                onClick={onNavigate}
+                )}              onClick={onNavigate}
               >
                 <Icon className="h-4 w-4 flex-shrink-0" />
                 <span className="truncate min-w-0">{item.label}</span>

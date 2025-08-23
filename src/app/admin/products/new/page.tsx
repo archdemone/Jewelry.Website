@@ -227,9 +227,7 @@ export default function AddNewRingPage() {
                     Ring Name *
                   </label>
                   <Input
-                    required
-                    value={formData.name}
-                    onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
+                    required              value={formData.name}              onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
                     placeholder="e.g., Women's Silver Inlay Ring - Dark Red"
                   />
                 </div>
@@ -237,9 +235,7 @@ export default function AddNewRingPage() {
                 <div>
                   <label className="mb-2 block text-sm font-medium text-gray-700">SKU *</label>
                   <Input
-                    required
-                    value={formData.sku}
-                    onChange={(e) => setFormData((prev) => ({ ...prev, sku: e.target.value }))}
+                    required              value={formData.sku}              onChange={(e) => setFormData((prev) => ({ ...prev, sku: e.target.value }))}
                     placeholder="e.g., RNG-W-SIL-RED-001"
                   />
                 </div>
@@ -247,9 +243,7 @@ export default function AddNewRingPage() {
                 <div>
                   <label className="mb-2 block text-sm font-medium text-gray-700">Category *</label>
                   <select
-                    required
-                    value={formData.category}
-                    onChange={(e) => setFormData((prev) => ({ ...prev, category: e.target.value }))}
+                    required              value={formData.category}              onChange={(e) => setFormData((prev) => ({ ...prev, category: e.target.value }))}
                     className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-gold-500"
                   >
                     <option value="">Select category</option>
@@ -265,9 +259,7 @@ export default function AddNewRingPage() {
                   <label className="mb-2 block text-sm font-medium text-gray-700">
                     Sub Category
                   </label>
-                  <Input
-                    value={formData.subCategory}
-                    onChange={(e) =>
+                  <Input              value={formData.subCategory}              onChange={(e) =>
                       setFormData((prev) => ({ ...prev, subCategory: e.target.value }))
                     }
                     placeholder="e.g., Inlay Ring, Wedding Band"
@@ -282,9 +274,7 @@ export default function AddNewRingPage() {
                     required
                     type="number"
                     min="0"
-                    step="0.01"
-                    value={formData.price}
-                    onChange={(e) =>
+                    step="0.01"              value={formData.price}              onChange={(e) =>
                       setFormData((prev) => ({ ...prev, price: parseFloat(e.target.value) || 0 }))
                     }
                     placeholder="299.00"
@@ -298,9 +288,7 @@ export default function AddNewRingPage() {
                   <Input
                     type="number"
                     min="0"
-                    step="0.01"
-                    value={formData.originalPrice || ''}
-                    onChange={(e) =>
+                    step="0.01"              value={formData.originalPrice || ''}              onChange={(e) =>
                       setFormData((prev) => ({
                         ...prev,
                         originalPrice: e.target.value ? parseFloat(e.target.value) : undefined,
@@ -313,13 +301,10 @@ export default function AddNewRingPage() {
 
               <div className="mt-4">
                 <label className="mb-2 block text-sm font-medium text-gray-700">Description</label>
-                <Textarea
-                  value={formData.description}
-                  onChange={(e) =>
+                <Textarea              value={formData.description}              onChange={(e) =>
                     setFormData((prev) => ({ ...prev, description: e.target.value }))
                   }
-                  placeholder="Describe the ring's features, craftsmanship, and appeal..."
-                  rows={3}
+                  placeholder="Describe the ring's features, craftsmanship, and appeal..."              rows={3}
                 />
               </div>
             </Card>
@@ -335,9 +320,7 @@ export default function AddNewRingPage() {
                 <div>
                   <label className="mb-2 block text-sm font-medium text-gray-700">Material *</label>
                   <select
-                    required
-                    value={formData.material}
-                    onChange={(e) => setFormData((prev) => ({ ...prev, material: e.target.value }))}
+                    required              value={formData.material}              onChange={(e) => setFormData((prev) => ({ ...prev, material: e.target.value }))}
                     className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-transparent focus:ring-2 focus:ring-gold-500"
                   >
                     <option value="">Select material</option>
@@ -353,9 +336,7 @@ export default function AddNewRingPage() {
                   <label className="mb-2 block text-sm font-medium text-gray-700">
                     Gem Color *
                   </label>
-                  <GemColorSelector
-                    selectedColor={formData.gemColor}
-                    onColorChange={(color) => setFormData((prev) => ({ ...prev, gemColor: color }))}
+                  <GemColorSelector              selectedColor={formData.gemColor}              onColorChange={(color) => setFormData((prev) => ({ ...prev, gemColor: color }))}
                   />
                 </div>
 
@@ -365,11 +346,8 @@ export default function AddNewRingPage() {
                   </label>
                   <div className="grid grid-cols-3 gap-2">
                     {gemDensities.map((density) => (
-                      <button
-                        key={density}
-                        type="button"
-                        onClick={() => setFormData((prev) => ({ ...prev, gemDensity: density }))}
-                        className={`rounded-lg border-2 p-3 transition-all ${
+                      <button              key={density}
+                        type="button"              onClick={() => setFormData((prev) => ({ ...prev, gemDensity: density }))}              className={`rounded-lg border-2 p-3 transition-all ${
                           formData.gemDensity === density
                             ? 'border-gold-500 bg-gold-50'
                             : 'border-gray-300 hover:border-gray-400'
@@ -387,13 +365,10 @@ export default function AddNewRingPage() {
                   </label>
                   <div className="grid grid-cols-3 gap-2">
                     {gemVariations.map((variation) => (
-                      <button
-                        key={variation}
-                        type="button"
-                        onClick={() =>
+                      <button              key={variation}
+                        type="button"              onClick={() =>
                           setFormData((prev) => ({ ...prev, gemVariation: variation }))
-                        }
-                        className={`rounded-lg border-2 p-3 transition-all ${
+                        }              className={`rounded-lg border-2 p-3 transition-all ${
                           formData.gemVariation === variation
                             ? 'border-gold-500 bg-gold-50'
                             : 'border-gray-300 hover:border-gray-400'
@@ -415,14 +390,11 @@ export default function AddNewRingPage() {
                   {gemColors
                     .filter((color) => color !== 'Custom')
                     .map((color) => (
-                      <label
-                        key={color}
+                      <label              key={color}
                         className="flex items-center gap-2 rounded-lg border border-gray-300 p-2 hover:bg-gray-50"
                       >
                         <input
-                          type="checkbox"
-                          checked={formData.mixColors.includes(color)}
-                          onChange={() => toggleMixColor(color)}
+                          type="checkbox"              checked={formData.mixColors.includes(color)}              onChange={() => toggleMixColor(color)}
                           className="rounded"
                         />
                         <span className="text-sm">{color}</span>
@@ -446,11 +418,8 @@ export default function AddNewRingPage() {
                 </label>
                 <div className="grid grid-cols-6 gap-2">
                   {allRingSizes.us.map((size) => (
-                    <button
-                      key={size}
-                      type="button"
-                      onClick={() => toggleRingSize('us', size)}
-                      className={`rounded-lg border-2 p-2 transition-all ${
+                    <button              key={size}
+                      type="button"              onClick={() => toggleRingSize('us', size)}              className={`rounded-lg border-2 p-2 transition-all ${
                         formData.ringSizes.us.includes(size)
                           ? 'border-gold-500 bg-gold-50 text-gold-700'
                           : 'border-gray-300 hover:border-gray-400'
@@ -469,11 +438,8 @@ export default function AddNewRingPage() {
                 </label>
                 <div className="grid grid-cols-6 gap-2">
                   {allRingSizes.eu.map((size) => (
-                    <button
-                      key={size}
-                      type="button"
-                      onClick={() => toggleRingSize('eu', size)}
-                      className={`rounded-lg border-2 p-2 transition-all ${
+                    <button              key={size}
+                      type="button"              onClick={() => toggleRingSize('eu', size)}              className={`rounded-lg border-2 p-2 transition-all ${
                         formData.ringSizes.eu.includes(size)
                           ? 'border-gold-500 bg-gold-50 text-gold-700'
                           : 'border-gray-300 hover:border-gray-400'
@@ -492,11 +458,8 @@ export default function AddNewRingPage() {
                 </label>
                 <div className="grid grid-cols-6 gap-2">
                   {allRingWidths.map((width) => (
-                    <button
-                      key={width}
-                      type="button"
-                      onClick={() => toggleRingWidth(width)}
-                      className={`rounded-lg border-2 p-2 transition-all ${
+                    <button              key={width}
+                      type="button"              onClick={() => toggleRingWidth(width)}              className={`rounded-lg border-2 p-2 transition-all ${
                         formData.ringWidth.includes(width)
                           ? 'border-gold-500 bg-gold-50 text-gold-700'
                           : 'border-gray-300 hover:border-gray-400'
@@ -522,9 +485,7 @@ export default function AddNewRingPage() {
               <div className="space-y-4">
                 <div>
                   <label className="mb-2 block text-sm font-medium text-gray-700">Status</label>
-                  <select
-                    value={formData.status}
-                    onChange={(e) =>
+                  <select              value={formData.status}              onChange={(e) =>
                       setFormData((prev) => ({
                         ...prev,
                         status: e.target.value as 'active' | 'draft',
@@ -540,9 +501,7 @@ export default function AddNewRingPage() {
                 <div>
                   <label className="flex items-center gap-2">
                     <input
-                      type="checkbox"
-                      checked={formData.isReadyToShip}
-                      onChange={(e) =>
+                      type="checkbox"              checked={formData.isReadyToShip}              onChange={(e) =>
                         setFormData((prev) => ({ ...prev, isReadyToShip: e.target.checked }))
                       }
                       className="rounded"
@@ -563,9 +522,7 @@ export default function AddNewRingPage() {
                 <h2 className="text-xl font-semibold">Images</h2>
               </div>
 
-              <ImageUpload
-                images={formData.images}
-                onImagesChange={(images) => setFormData((prev) => ({ ...prev, images }))}
+              <ImageUpload              images={formData.images}              onImagesChange={(images) => setFormData((prev) => ({ ...prev, images }))}
               />
             </Card>
 
@@ -603,8 +560,7 @@ export default function AddNewRingPage() {
                 </div>
                 <div>
                   <span className="font-medium">Status:</span>
-                  <Badge
-                    className={
+                  <Badge              className={
                       formData.status === 'active'
                         ? 'bg-green-100 text-green-800'
                         : 'bg-yellow-100 text-yellow-800'
@@ -615,8 +571,7 @@ export default function AddNewRingPage() {
                 </div>
                 <div>
                   <span className="font-medium">Availability:</span>
-                  <Badge
-                    className={
+                  <Badge              className={
                       formData.isReadyToShip
                         ? 'bg-green-100 text-green-800'
                         : 'bg-blue-100 text-blue-800'

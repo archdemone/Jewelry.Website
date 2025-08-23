@@ -11,6 +11,6 @@ test('products page loads', async ({ page }) => {
 });
 
 test('about page loads', async ({ page }) => {
-  await page.goto('/about');
-  await expect(page).toHaveURL(/\/about/);
+  await page.goto('/about-artisan');
+  await expect(page).toHaveURL(/\/about-artisan/);
 });

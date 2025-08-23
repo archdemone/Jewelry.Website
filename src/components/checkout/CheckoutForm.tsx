@@ -106,17 +106,14 @@ export default function CheckoutForm() {
             <div className="flex items-center justify-between">
               <button
                 type="button"
-                className="text-sm underline"
-                onClick={back}
-                disabled={currentStep === 0}
+                className="text-sm underline"              onClick={back}              disabled={currentStep === 0}
               >
                 Back
               </button>
               <button
                 type="button"
                 data-testid="checkout-continue"
-                className="rounded-md bg-primary px-4 py-2 text-white hover:opacity-90"
-                onClick={next}
+                className="rounded-md bg-primary px-4 py-2 text-white hover:opacity-90"              onClick={next}
               >
                 {currentStep === steps.length - 1 ? 'Place order' : 'Continue'}
               </button>

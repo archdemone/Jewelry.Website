@@ -92,8 +92,7 @@ export function AdminHeader() {
       </div>
       <div className="flex items-center gap-2">
         <div className="relative" ref={dropdownRef}>
-          <button 
-            onClick={() => setShowNotifications(!showNotifications)}
+          <button              onClick={() => setShowNotifications(!showNotifications)}
             className={clsx(buttonVariants({ variant: 'ghost' }), 'relative')}
           >
             <Bell className="h-5 w-5" />
@@ -106,18 +105,14 @@ export function AdminHeader() {
 
           <AnimatePresence>
             {showNotifications && (
-              <motion.div
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
+              <motion.div              initial={{ opacity: 0, y: -10 }}              animate={{ opacity: 1, y: 0 }}              exit={{ opacity: 0, y: -10 }}
                 className="absolute right-0 mt-2 w-96 bg-white rounded-lg shadow-lg border z-50"
               >
                 <div className="p-4 border-b">
                   <div className="flex items-center justify-between">
                     <h3 className="font-semibold text-gray-900">Notifications</h3>
                     {unreadCount > 0 && (
-                      <button
-                        onClick={markAllAsRead}
+                      <button              onClick={markAllAsRead}
                         className="text-sm text-blue-600 hover:text-blue-700"
                       >
                         Mark all as read
@@ -134,12 +129,9 @@ export function AdminHeader() {
                     </div>
                   ) : (
                     notifications.map((notification) => (
-                      <div
-                        key={notification.id}
-                        className={`p-4 border-b hover:bg-gray-50 transition-colors ${
+                      <div              key={notification.id}              className={`p-4 border-b hover:bg-gray-50 transition-colors ${
                           !notification.read ? 'bg-blue-50' : ''
-                        }`}
-                        onClick={() => markAsRead(notification.id)}
+                        }`}              onClick={() => markAsRead(notification.id)}
                       >
                         <div className="flex items-start gap-3">
                           <div className={`p-2 rounded-lg ${getNotificationIcon(notification.type)}`}>
@@ -152,8 +144,7 @@ export function AdminHeader() {
                                 <p className="text-sm text-gray-600 mt-1">{notification.message}</p>
                                 <p className="text-xs text-gray-500 mt-1">{notification.time}</p>
                               </div>
-                              <button
-                                onClick={(e) => {
+                              <button              onClick={(e) => {
                                   e.stopPropagation();
                                   deleteNotification(notification.id);
                                 }}
@@ -173,8 +164,7 @@ export function AdminHeader() {
                   <div className="p-3 border-t">
                     <Link
                       href="/admin/notifications"
-                      className="block text-center text-sm text-blue-600 hover:text-blue-700"
-                      onClick={() => setShowNotifications(false)}
+                      className="block text-center text-sm text-blue-600 hover:text-blue-700"              onClick={() => setShowNotifications(false)}
                     >
                       View all notifications
                     </Link>

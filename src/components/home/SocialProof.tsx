@@ -54,11 +54,7 @@ const SocialProof = () => {
 
           <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
             {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, scale: 0.8 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
+              <motion.div              key={stat.label}              initial={{ opacity: 0, scale: 0.8 }}              whileInView={{ opacity: 1, scale: 1 }}              transition={{ duration: 0.5, delay: index * 0.1 }}
                 className="text-center"
               >
                 <div className="mb-2 text-3xl font-bold text-gold-600 md:text-4xl">
@@ -84,11 +80,7 @@ const SocialProof = () => {
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {testimonials.map((testimonial, index) => (
-            <motion.div
-              key={testimonial.name}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
+            <motion.div              key={testimonial.name}              initial={{ opacity: 0, y: 20 }}              whileInView={{ opacity: 1, y: 0 }}              transition={{ duration: 0.6, delay: index * 0.2 }}
               className="rounded-lg bg-white p-6 shadow-lg transition-shadow duration-300 hover:shadow-xl"
             >
               <div className="mb-4 flex items-center">

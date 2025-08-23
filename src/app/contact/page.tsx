@@ -99,10 +99,38 @@ Please let me know if you can accommodate these customizations and what the esti
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setTimeout(() => {
+    setSubmitStatus(null);
+
+    try {
+      const formData = new FormData(e.currentTarget);
+      
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (data.ok) {
+        setSubmitStatus('success');
+        // Reset form on success
+        setFormData({
+          name: '',
+          email: '',
+          phone: '',
+          subject: 'general',
+          message: '',
+          file: null,
+        });
+      } else {
+        setSubmitStatus('error');
+      }
+    } catch (error) {
+      console.error('Contact form error:', error);
+      setSubmitStatus('error');
+    } finally {
       setIsSubmitting(false);
-      setSubmitStatus('success');
-    }, 2000);
+    }
   };
 
   const contactMethods = [
@@ -149,17 +177,14 @@ Please let me know if you can accommodate these customizations and what the esti
           {/* Animated Background Gradient */}
           <div className="absolute inset-0">
             <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50" />
-            <motion.div
-              animate={{
+            <motion.div              animate={{
                 backgroundPosition: ['0% 0%', '100% 100%'],
-              }}
-              transition={{
+              }}              transition={{
                 duration: 20,
                 repeat: Infinity,
                 repeatType: 'reverse',
               }}
-              className="absolute inset-0 opacity-50"
-              style={{
+              className="absolute inset-0 opacity-50"              style={{
                 backgroundImage:
                   'radial-gradient(circle at 20% 80%, rgba(212, 175, 55, 0.3) 0%, transparent 50%), radial-gradient(circle at 80% 20%, rgba(251, 191, 36, 0.3) 0%, transparent 50%)',
                 backgroundSize: '100% 100%',
@@ -184,16 +209,10 @@ Please let me know if you can accommodate these customizations and what the esti
           </motion.div>
 
           <div className="container relative z-10 py-20">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
+            <motion.div              initial={{ opacity: 0, y: 30 }}              animate={{ opacity: 1, y: 0 }}              transition={{ duration: 0.8 }}
               className="mx-auto max-w-3xl text-center"
             >
-              <motion.div
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ duration: 0.5 }}
+              <motion.div              initial={{ scale: 0 }}              animate={{ scale: 1 }}              transition={{ duration: 0.5 }}
                 className="mb-6 inline-flex h-20 w-20 items-center justify-center rounded-full bg-white shadow-lg"
               >
                 <MessageSquare className="h-10 w-10 text-primary" />
@@ -210,28 +229,19 @@ Please let me know if you can accommodate these customizations and what the esti
 
               {/* Quick Stats */}
               <div className="mt-10 flex justify-center gap-8">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.2 }}
+                <motion.div              initial={{ opacity: 0, y: 20 }}              animate={{ opacity: 1, y: 0 }}              transition={{ delay: 0.2 }}
                   className="text-center"
                 >
                   <div className="text-3xl font-bold text-primary">24hr</div>
                   <div className="text-sm text-gray-600">Response Time</div>
                 </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.3 }}
+                <motion.div              initial={{ opacity: 0, y: 20 }}              animate={{ opacity: 1, y: 0 }}              transition={{ delay: 0.3 }}
                   className="text-center"
                 >
                   <div className="text-3xl font-bold text-primary">100%</div>
                   <div className="text-sm text-gray-600">Satisfaction</div>
                 </motion.div>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
+                <motion.div              initial={{ opacity: 0, y: 20 }}              animate={{ opacity: 1, y: 0 }}              transition={{ delay: 0.4 }}
                   className="text-center"
                 >
                   <div className="text-3xl font-bold text-primary">1-on-1</div>
@@ -245,10 +255,7 @@ Please let me know if you can accommodate these customizations and what the esti
         {/* Contact Methods Cards */}
         <section className="bg-gradient-to-b from-gray-50 to-white py-16">
           <div className="container max-w-5xl">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+            <motion.h2              initial={{ opacity: 0, y: 20 }}              whileInView={{ opacity: 1, y: 0 }}              viewport={{ once: true }}
               className="mb-12 text-center font-serif text-3xl text-orange-600"
             >
               Choose Your Preferred Way to Connect
@@ -256,20 +263,12 @@ Please let me know if you can accommodate these customizations and what the esti
 
             <div className="grid gap-6 md:grid-cols-3">
               {contactMethods.map((method, index) => (
-                <motion.div
-                  key={method.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                  className={`group relative bg-gradient-to-br ${method.bgGradient} ${method.hoverBg} cursor-pointer overflow-hidden rounded-2xl p-6 transition-all duration-300`}
+                <motion.div              key={method.title}              initial={{ opacity: 0, y: 20 }}              whileInView={{ opacity: 1, y: 0 }}              viewport={{ once: true }}              transition={{ delay: index * 0.1 }}              whileHover={{ y: -5, transition: { duration: 0.2 } }}              className={`group relative bg-gradient-to-br ${method.bgGradient} ${method.hoverBg} cursor-pointer overflow-hidden rounded-2xl p-6 transition-all duration-300`}
                 >
                   {/* Decorative Corner Element */}
                   <div className="absolute -right-2 -top-2 h-20 w-20 rounded-full bg-white/30 blur-2xl transition-transform duration-500 group-hover:scale-150" />
 
-                  <div
-                    className={`${method.iconBg} mb-4 flex h-14 w-14 items-center justify-center rounded-xl transition-transform group-hover:scale-110`}
+                  <div              className={`${method.iconBg} mb-4 flex h-14 w-14 items-center justify-center rounded-xl transition-transform group-hover:scale-110`}
                   >
                     <method.icon className={`h-7 w-7 ${method.iconColor}`} />
                   </div>
@@ -292,10 +291,7 @@ Please let me know if you can accommodate these customizations and what the esti
           <div className="container max-w-6xl">
             <div className="grid gap-12 lg:grid-cols-2">
               {/* Left Column - Form */}
-              <motion.div
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
+              <motion.div              initial={{ opacity: 0, x: -30 }}              whileInView={{ opacity: 1, x: 0 }}              viewport={{ once: true }}
               >
                 <div className="rounded-2xl border border-gray-100 bg-white p-8 shadow-xl">
                   <div className="mb-6 flex items-center gap-3">
@@ -309,9 +305,7 @@ Please let me know if you can accommodate these customizations and what the esti
 
                   {/* Customization Summary */}
                   {customizationData && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
+                    <motion.div              initial={{ opacity: 0, y: 20 }}              animate={{ opacity: 1, y: 0 }}
                       className="mb-6 rounded-xl border border-gold-200 bg-gradient-to-r from-gold-50 to-amber-50 p-4"
                     >
                       <div className="mb-3 flex items-center gap-3">
@@ -364,23 +358,17 @@ Please let me know if you can accommodate these customizations and what the esti
                   )}
 
                   {submitStatus === 'success' ? (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.9 }}
-                      animate={{ opacity: 1, scale: 1 }}
+                    <motion.div              initial={{ opacity: 0, scale: 0.9 }}              animate={{ opacity: 1, scale: 1 }}
                       className="py-12 text-center"
                     >
-                      <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ type: 'spring', duration: 0.5 }}
+                      <motion.div              initial={{ scale: 0 }}              animate={{ scale: 1 }}              transition={{ type: 'spring', duration: 0.5 }}
                         className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-green-100"
                       >
                         <CheckCircle className="h-10 w-10 text-green-600" />
                       </motion.div>
                       <h3 className="mb-2 text-2xl font-semibold">Message Sent!</h3>
                       <p className="text-gray-600">I'll get back to you within 24 hours.</p>
-                      <button
-                        onClick={() => setSubmitStatus(null)}
+                      <button              onClick={() => setSubmitStatus(null)}
                         className="mt-6 font-medium text-primary hover:opacity-80"
                       >
                         Send Another Message
@@ -395,9 +383,7 @@ Please let me know if you can accommodate these customizations and what the esti
                           </label>
                           <input
                             type="text"
-                            required
-                            value={formData.name}
-                            onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                            required              value={formData.name}              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                             className="w-full rounded-xl border border-gray-200 px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-primary"
                             placeholder="John Smith"
                           />
@@ -409,9 +395,7 @@ Please let me know if you can accommodate these customizations and what the esti
                           </label>
                           <input
                             type="email"
-                            required
-                            value={formData.email}
-                            onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                            required              value={formData.email}              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                             className="w-full rounded-xl border border-gray-200 px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-primary"
                             placeholder="john@example.com"
                           />
@@ -424,9 +408,7 @@ Please let me know if you can accommodate these customizations and what the esti
                             Phone (Optional)
                           </label>
                           <input
-                            type="tel"
-                            value={formData.phone}
-                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                            type="tel"              value={formData.phone}              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                             className="w-full rounded-xl border border-gray-200 px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-primary"
                             placeholder="+44 123 456 7890"
                           />
@@ -437,9 +419,7 @@ Please let me know if you can accommodate these customizations and what the esti
                             Subject *
                           </label>
                           <select
-                            required
-                            value={formData.subject}
-                            onChange={(e) =>
+                            required              value={formData.subject}              onChange={(e) =>
                               setFormData({
                                 ...formData,
                                 subject: e.target.value as ContactFormData['subject'],
@@ -461,10 +441,7 @@ Please let me know if you can accommodate these customizations and what the esti
                           Message *
                         </label>
                         <textarea
-                          required
-                          rows={5}
-                          value={formData.message}
-                          onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                          required              rows={5}              value={formData.message}              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                           className="w-full resize-none rounded-xl border border-gray-200 px-4 py-3 transition-all focus:border-transparent focus:ring-2 focus:ring-primary"
                           placeholder="Tell me about your dream ring..."
                         />
@@ -475,8 +452,7 @@ Please let me know if you can accommodate these customizations and what the esti
                           <input
                             type="file"
                             className="hidden"
-                            accept="image/*"
-                            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                            accept="image/*"              onChange={(e: ChangeEvent<HTMLInputElement>) =>
                               setFormData({ ...formData, file: e.target.files?.[0] ?? null })
                             }
                           />
@@ -497,10 +473,7 @@ Please let me know if you can accommodate these customizations and what the esti
                       </div>
 
                       <motion.button
-                        type="submit"
-                        disabled={isSubmitting}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
+                        type="submit"              disabled={isSubmitting}              whileHover={{ scale: 1.02 }}              whileTap={{ scale: 0.98 }}
                         className="flex w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary to-orange-500 py-4 font-medium text-gray-900 shadow-lg transition-all hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         {isSubmitting ? (
@@ -521,10 +494,7 @@ Please let me know if you can accommodate these customizations and what the esti
               </motion.div>
 
               {/* Right Column - Additional Info */}
-              <motion.div
-                initial={{ opacity: 0, x: 30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
+              <motion.div              initial={{ opacity: 0, x: 30 }}              whileInView={{ opacity: 1, x: 0 }}              viewport={{ once: true }}
                 className="space-y-6"
               >
                 {/* Workshop Location Card */}
@@ -590,25 +560,19 @@ Please let me know if you can accommodate these customizations and what the esti
                     </p>
                     <div className="flex gap-3">
                       <motion.a
-                        href="#"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
+                        href="#"              whileHover={{ scale: 1.1 }}              whileTap={{ scale: 0.9 }}
                         className="flex h-10 w-10 items-center justify-center rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg"
                       >
                         <Instagram className="h-5 w-5 text-gray-700" />
                       </motion.a>
                       <motion.a
-                        href="#"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
+                        href="#"              whileHover={{ scale: 1.1 }}              whileTap={{ scale: 0.9 }}
                         className="flex h-10 w-10 items-center justify-center rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg"
                       >
                         <Facebook className="h-5 w-5 text-gray-700" />
                       </motion.a>
                       <motion.a
-                        href="#"
-                        whileHover={{ scale: 1.1 }}
-                        whileTap={{ scale: 0.9 }}
+                        href="#"              whileHover={{ scale: 1.1 }}              whileTap={{ scale: 0.9 }}
                         className="flex h-10 w-10 items-center justify-center rounded-lg bg-white shadow-md transition-shadow hover:shadow-lg"
                       >
                         <Twitter className="h-5 w-5 text-gray-700" />
@@ -639,10 +603,7 @@ Please let me know if you can accommodate these customizations and what the esti
         {/* FAQ Quick Links */}
         <section className="bg-gradient-to-b from-gray-50 to-white py-16">
           <div className="container max-w-4xl">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+            <motion.div              initial={{ opacity: 0, y: 20 }}              whileInView={{ opacity: 1, y: 0 }}              viewport={{ once: true }}
               className="text-center"
             >
               <h2 className="mb-6 font-serif text-3xl">Common Questions</h2>
@@ -657,14 +618,8 @@ Please let me know if you can accommodate these customizations and what the esti
                   'Can I see samples before ordering?',
                   'Do you ship internationally?',
                 ].map((question, index) => (
-                  <motion.a
-                    key={index}
-                    href="/faq"
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                    whileHover={{ x: 5 }}
+                  <motion.a              key={index}
+                    href="/faq"              initial={{ opacity: 0, y: 20 }}              whileInView={{ opacity: 1, y: 0 }}              viewport={{ once: true }}              transition={{ delay: index * 0.1 }}              whileHover={{ x: 5 }}
                     className="group flex items-center justify-between rounded-xl border border-gray-200 bg-white p-4 transition-all hover:border-primary hover:shadow-md"
                   >
                     <span className="text-gray-700">{question}</span>
@@ -688,10 +643,7 @@ Please let me know if you can accommodate these customizations and what the esti
           </motion.div>
 
           <div className="container relative z-10">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+            <motion.div              initial={{ opacity: 0, y: 20 }}              whileInView={{ opacity: 1, y: 0 }}              viewport={{ once: true }}
               className="text-center"
             >
               <h2 className="mb-4 font-serif text-4xl text-gray-900">
@@ -701,9 +653,7 @@ Please let me know if you can accommodate these customizations and what the esti
                 Every great ring begins with a conversation. I'm here to listen, advise, and bring
                 your vision to life.
               </p>
-              <motion.button
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+              <motion.button              whileHover={{ scale: 1.05 }}              whileTap={{ scale: 0.95 }}
                 className="inline-flex items-center gap-2 rounded-full bg-orange-600 px-8 py-4 font-medium text-white shadow-xl transition-all hover:bg-orange-700 hover:shadow-2xl"
               >
                 <Calendar className="h-5 w-5" />

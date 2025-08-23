@@ -74,17 +74,13 @@ export default function CookieBanner() {
             <div className="flex items-center justify-between py-1">
               <span>Analytics</span>
               <input
-                type="checkbox"
-                checked={prefs.analytics}
-                onChange={(e) => setPrefs((p) => ({ ...p, analytics: e.target.checked }))}
+                type="checkbox"              checked={prefs.analytics}              onChange={(e) => setPrefs((p) => ({ ...p, analytics: e.target.checked }))}
               />
             </div>
             <div className="flex items-center justify-between py-1">
               <span>Marketing</span>
               <input
-                type="checkbox"
-                checked={prefs.marketing}
-                onChange={(e) => setPrefs((p) => ({ ...p, marketing: e.target.checked }))}
+                type="checkbox"              checked={prefs.marketing}              onChange={(e) => setPrefs((p) => ({ ...p, marketing: e.target.checked }))}
               />
             </div>
             <div className="mt-2 flex justify-end gap-2">

@@ -59,34 +59,25 @@ export function SalesChart() {
         <div className="flex items-center gap-2 text-sm">
           <div className="rounded border p-1">
             {(['7d', '30d', '90d', '1y'] as PresetRange[]).map((p) => (
-              <button
-                key={p}
-                onClick={() => setPreset(p)}
-                className={`px-2 py-1 ${preset === p ? 'rounded bg-amber-100 text-amber-900' : 'text-gray-600'}`}
+              <button              key={p}              onClick={() => setPreset(p)}              className={`px-2 py-1 ${preset === p ? 'rounded bg-amber-100 text-amber-900' : 'text-gray-600'}`}
               >
                 {p}
               </button>
             ))}
           </div>
           <div className="rounded border p-1">
-            <button
-              onClick={() => setMode('line')}
-              className={`px-2 py-1 ${mode === 'line' ? 'rounded bg-amber-100 text-amber-900' : 'text-gray-600'}`}
+            <button              onClick={() => setMode('line')}              className={`px-2 py-1 ${mode === 'line' ? 'rounded bg-amber-100 text-amber-900' : 'text-gray-600'}`}
             >
               Line
             </button>
-            <button
-              onClick={() => setMode('bar')}
-              className={`px-2 py-1 ${mode === 'bar' ? 'rounded bg-amber-100 text-amber-900' : 'text-gray-600'}`}
+            <button              onClick={() => setMode('bar')}              className={`px-2 py-1 ${mode === 'bar' ? 'rounded bg-amber-100 text-amber-900' : 'text-gray-600'}`}
             >
               Bar
             </button>
           </div>
           <label className="flex items-center gap-2">
             <input
-              type="checkbox"
-              checked={compare}
-              onChange={(e) => setCompare(e.target.checked)}
+              type="checkbox"              checked={compare}              onChange={(e) => setCompare(e.target.checked)}
             />
             <span>Compare previous period</span>
           </label>
@@ -110,29 +101,23 @@ export function SalesChart() {
                   yAxisId="left"
                   type="monotone"
                   dataKey="revenue"
-                  stroke="#f59e0b"
-                  strokeWidth={2}
-                  dot={false}
+                  stroke="#f59e0b"              strokeWidth={2}              dot={false}
                   name="Revenue"
                 />
                 <Line
                   yAxisId="right"
                   type="monotone"
                   dataKey="orders"
-                  stroke="#3b82f6"
-                  strokeWidth={2}
-                  dot={false}
+                  stroke="#3b82f6"              strokeWidth={2}              dot={false}
                   name="Orders"
                 />
                 {compare && (
                   <Line
                     yAxisId="left"
                     type="monotone"
-                    dataKey="revenue"
-                    data={comparison}
+                    dataKey="revenue"              data={comparison}
                     stroke="#f59e0b"
-                    strokeDasharray="4 4"
-                    dot={false}
+                    strokeDasharray="4 4"              dot={false}
                     name="Revenue (prev)"
                   />
                 )}

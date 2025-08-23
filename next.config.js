@@ -77,6 +77,7 @@ const nextConfig = {
   },
   // Enable static optimization
   output: 'standalone',
+
   // Advanced performance settings
   generateEtags: false, // Disable ETags for better caching
   onDemandEntries: {
@@ -133,10 +134,11 @@ const nextConfig = {
       };
     }
     
-    // Ensure react-is is properly resolved
+    // Ensure react-is is properly resolved and add path aliases
     config.resolve.alias = {
       ...config.resolve.alias,
       'react-is': require.resolve('react-is'),
+      '@': require('path').resolve(__dirname, 'src'),
     };
     
     // Add react-is to the module resolution

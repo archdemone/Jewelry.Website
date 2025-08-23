@@ -22,12 +22,6 @@ export default function manifest(): MetadataRoute.Manifest {
         type: 'image/x-icon',
       },
       {
-        src: '/images/MyImages/category-engagement-rings.jpg',
-        type: 'image/jpeg',
-        sizes: '800x600',
-        purpose: 'maskable',
-      },
-      {
         src: '/images/MyImages/IMG-20250816-WA0000.jpg',
         type: 'image/jpeg',
         sizes: '600x600',

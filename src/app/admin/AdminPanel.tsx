@@ -13,7 +13,15 @@ import {
   Settings,
   Package,
   Image as ImageIcon,
+  DollarSign,
+  Users,
+  TrendingUp,
+  BarChart3,
+  Activity,
+  AlertTriangle,
 } from 'lucide-react';
+import { Card } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 
 interface Product {
   id: string | number;
@@ -33,6 +41,7 @@ interface Product {
   ringSizes: { us: number[]; eu: number[] };
   ringWidth: number[];
   isReadyToShip: boolean;
+  isInStock?: boolean;
   status?: 'active' | 'draft' | 'archived' | 'out_of_stock';
   currency?: 'GBP' | 'USD';
   rating?: number;
@@ -40,6 +49,8 @@ interface Product {
   badge?: string;
   slug: string;
   description?: string;
+  isFeatured?: boolean;
+  featuredOrder?: number;
 }
 
 interface ImageFile {
@@ -59,6 +70,18 @@ export default function AdminPanel() {
   const [hoveredGemColor2, setHoveredGemColor2] = useState<string | null>(null);
   const [hoveredMixColor, setHoveredMixColor] = useState<string | null>(null);
   const [hoveredMixColor2, setHoveredMixColor2] = useState<string | null>(null);
+
+  // Dashboard state variables
+  const [showDashboard, setShowDashboard] = useState(true);
+  const [dashboardStats, setDashboardStats] = useState({
+    totalRevenue: '£45,231.89',
+    totalOrders: '145',
+    totalCustomers: '1,234',
+    conversionRate: '3.2%',
+    activeProducts: '0',
+    lowStockProducts: '0',
+    pendingOrders: '0',
+  });
 
   const categories = [
     { id: 'all', name: 'All Products' },
@@ -104,11 +127,43 @@ export default function AdminPanel() {
     return imageMap[color] || '/images/gems/colour/custom.jpg';
   };
 
+  // Dashboard helper functions
+  const calculateDashboardStats = () => {
+    const activeProducts = products.filter(p => p.status === 'active').length;
+    const lowStockProducts = products.filter(p => !p.isReadyToShip).length;
+    
+    setDashboardStats(prev => ({
+      ...prev,
+      activeProducts: activeProducts.toString(),
+      lowStockProducts: lowStockProducts.toString(),
+    }));
+  };
+
+  const getRecentProducts = () => {
+    return products.slice(0, 5); // Get last 5 products
+  };
+
+  const getLowStockProducts = () => {
+    return products.filter(p => !p.isReadyToShip).slice(0, 3);
+  };
+
   // Load products and images on mount
   useEffect(() => {
     loadProducts();
     loadAvailableImages();
   }, []);
+
+  // Cleanup scroll when component unmounts
+  useEffect(() => {
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
+
+  // Calculate dashboard stats when products change
+  useEffect(() => {
+    calculateDashboardStats();
+  }, [products]);
 
   const loadProducts = async () => {
     try {
@@ -160,17 +215,22 @@ export default function AdminPanel() {
       ringSizes: { us: [], eu: [] },
       ringWidth: [],
       isReadyToShip: true,
+      isInStock: true,
       currency: 'GBP',
       slug: `product-${Date.now()}`,
       description: '',
     };
     setEditingProduct(newProduct);
     setIsAddingProduct(true);
+    // Prevent body scroll when modal opens
+    document.body.style.overflow = 'hidden';
   };
 
   const handleEditProduct = (product: Product) => {
     setEditingProduct({ ...product });
     setIsAddingProduct(false);
+    // Prevent body scroll when modal opens
+    document.body.style.overflow = 'hidden';
   };
 
   const handleDeleteProduct = async (productId: string | number) => {
@@ -216,6 +276,9 @@ export default function AdminPanel() {
         setEditingProduct(null);
         setIsAddingProduct(false);
         
+        // Restore body scroll when modal closes
+        document.body.style.overflow = 'unset';
+        
         alert(isAddingProduct ? 'Product added successfully!' : 'Product updated successfully!');
       } else {
         console.error('Failed to save product');
@@ -230,6 +293,8 @@ export default function AdminPanel() {
   const handleCancelEdit = () => {
     setEditingProduct(null);
     setIsAddingProduct(false);
+    // Restore body scroll when modal closes
+    document.body.style.overflow = 'unset';
   };
 
   if (loading) {
@@ -249,8 +314,170 @@ export default function AdminPanel() {
             <h1 className="text-3xl font-bold text-gray-900">Product Management</h1>
             <p className="text-gray-600">Manage your jewelry products</p>
           </div>
+          <div className="flex items-center gap-4">
+            <Button              variant={showDashboard ? "default" : "outline"}              onClick={() => setShowDashboard(!showDashboard)}
+              className="flex items-center gap-2"
+            >
+              <BarChart3 className="w-4 h-4" />
+              {showDashboard ? 'Hide Dashboard' : 'Show Dashboard'}
+            </Button>
+          </div>
         </div>
       </div>
+
+      {/* Enhanced Dashboard Section */}
+      {showDashboard && (
+        <>
+          {/* Enhanced Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <Card className="flex items-center gap-4 p-4 shadow-sm">
+              <div className="flex h-10 w-10 items-center justify-center rounded bg-blue-100 text-blue-600">
+                <DollarSign className="h-5 w-5" />
+              </div>
+              <div>
+                <div className="text-sm text-gray-500">Total Revenue</div>
+                <div className="text-2xl font-bold">{dashboardStats.totalRevenue}</div>
+                <div className="text-xs text-gray-500">+20.1% from last month</div>
+              </div>
+            </Card>
+
+            <Card className="flex items-center gap-4 p-4 shadow-sm">
+              <div className="flex h-10 w-10 items-center justify-center rounded bg-green-100 text-green-600">
+                <ShoppingBag className="h-5 w-5" />
+              </div>
+              <div>
+                <div className="text-sm text-gray-500">Orders</div>
+                <div className="text-2xl font-bold">{dashboardStats.totalOrders}</div>
+                <div className="text-xs text-gray-500">+12% from last month</div>
+              </div>
+            </Card>
+
+            <Card className="flex items-center gap-4 p-4 shadow-sm">
+              <div className="flex h-10 w-10 items-center justify-center rounded bg-purple-100 text-purple-600">
+                <Users className="h-5 w-5" />
+              </div>
+              <div>
+                <div className="text-sm text-gray-500">Customers</div>
+                <div className="text-2xl font-bold">{dashboardStats.totalCustomers}</div>
+                <div className="text-xs text-gray-500">+19% from last month</div>
+              </div>
+            </Card>
+
+            <Card className="flex items-center gap-4 p-4 shadow-sm">
+              <div className="flex h-10 w-10 items-center justify-center rounded bg-orange-100 text-orange-600">
+                <TrendingUp className="h-5 w-5" />
+              </div>
+              <div>
+                <div className="text-sm text-gray-500">Conversion Rate</div>
+                <div className="text-2xl font-bold">{dashboardStats.conversionRate}</div>
+                <div className="text-xs text-gray-500">+2% from last month</div>
+              </div>
+            </Card>
+          </div>
+
+          {/* Dashboard Content Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Recent Products */}
+            <Card className="p-4">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold text-gray-900">Recent Products</h3>
+                <Button variant="outline" size="sm" onClick={() => setSelectedCategory('all')}>
+                  View All
+                </Button>
+              </div>
+              <div className="space-y-3">
+                {getRecentProducts().map((product) => (
+                  <div key={product.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50">
+                    <div className="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center">
+                      <Package className="w-5 h-5 text-gray-500" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900 truncate">{product.name}</p>
+                      <p className="text-xs text-gray-500">£{product.price}</p>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"              onClick={() => handleEditProduct(product)}
+                    >
+                      <Edit className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ))}
+                {getRecentProducts().length === 0 && (
+                  <p className="text-sm text-gray-500 text-center py-4">No products yet</p>
+                )}
+              </div>
+            </Card>
+
+            {/* Low Stock Alerts */}
+            <Card className="p-4">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="font-semibold text-gray-900">Low Stock Alerts</h3>
+                <div className="flex h-6 w-6 items-center justify-center rounded bg-red-100">
+                  <AlertTriangle className="h-4 w-4 text-red-600" />
+                </div>
+              </div>
+              <div className="space-y-3">
+                {getLowStockProducts().map((product) => (
+                  <div key={product.id} className="flex items-center gap-3 p-2 rounded-lg bg-red-50 border border-red-200">
+                    <div className="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center">
+                      <Package className="w-5 h-5 text-red-600" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900 truncate">{product.name}</p>
+                      <p className="text-xs text-red-600">Out of stock</p>
+                    </div>
+                    <Button
+                      variant="ghost"
+                      size="sm"              onClick={() => handleEditProduct(product)}
+                    >
+                      <Edit className="w-4 h-4" />
+                    </Button>
+                  </div>
+                ))}
+                {getLowStockProducts().length === 0 && (
+                  <p className="text-sm text-gray-500 text-center py-4">All products in stock</p>
+                )}
+              </div>
+            </Card>
+
+            {/* Quick Actions */}
+            <Card className="p-4">
+              <h3 className="font-semibold text-gray-900 mb-4">Quick Actions</h3>
+              <div className="space-y-3">
+                <Button              onClick={handleAddProduct}
+                  className="w-full justify-start"
+                  variant="outline"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add New Product
+                </Button>
+                <Button              onClick={() => setSelectedCategory('all')}
+                  className="w-full justify-start"
+                  variant="outline"
+                >
+                  <Package className="w-4 h-4 mr-2" />
+                  View All Products
+                </Button>
+                <Button              onClick={() => setSelectedCategory('inlay')}
+                  className="w-full justify-start"
+                  variant="outline"
+                >
+                  <ImageIcon className="w-4 h-4 mr-2" />
+                  Manage Inlay Rings
+                </Button>
+                <Button              onClick={() => window.open('/admin/analytics', '_blank')}
+                  className="w-full justify-start"
+                  variant="outline"
+                >
+                  <Activity className="w-4 h-4 mr-2" />
+                  View Analytics
+                </Button>
+              </div>
+            </Card>
+          </div>
+        </>
+      )}
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -319,10 +546,7 @@ export default function AdminPanel() {
         {/* Category Filter */}
         <div className="flex space-x-2 mb-6">
           {categories.map((cat) => (
-            <button
-              key={cat.id}
-              onClick={() => setSelectedCategory(cat.id)}
-              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+            <button              key={cat.id}              onClick={() => setSelectedCategory(cat.id)}              className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                 selectedCategory === cat.id
                   ? 'bg-gold-500 text-white'
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
@@ -336,15 +560,12 @@ export default function AdminPanel() {
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredProducts.map((product) => (
-            <div
-              key={product.id}
+            <div              key={product.id}
               className="bg-white rounded-lg shadow-sm border hover:shadow-md transition-shadow"
             >
               <div className="relative h-48 bg-gray-100 rounded-t-lg overflow-hidden">
                 {product.images && product.images[0] ? (
-                  <Image
-                    src={product.images[0]}
-                    alt={product.name}
+                  <Image              src={product.images[0]}              alt={product.name}
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
@@ -355,8 +576,7 @@ export default function AdminPanel() {
                   </div>
                 )}
                 <div className="absolute top-2 right-2 flex space-x-1">
-                  <button
-                    onClick={() => {
+                  <button              onClick={() => {
                       if (product.slug) {
                         window.open(`/products/${product.slug}`, '_blank');
                       } else {
@@ -368,15 +588,13 @@ export default function AdminPanel() {
                   >
                     <Eye className="w-4 h-4 text-blue-600" />
                   </button>
-                  <button
-                    onClick={() => handleEditProduct(product)}
+                  <button              onClick={() => handleEditProduct(product)}
                     className="p-1 bg-white rounded shadow-sm hover:bg-gray-50"
                     title="Edit Product"
                   >
                     <Edit className="w-4 h-4 text-gray-600" />
                   </button>
-                  <button
-                    onClick={() => handleDeleteProduct(product.id)}
+                  <button              onClick={() => handleDeleteProduct(product.id)}
                     className="p-1 bg-white rounded shadow-sm hover:bg-gray-50"
                     title="Delete Product"
                   >
@@ -404,15 +622,14 @@ export default function AdminPanel() {
 
       {/* Edit/Add Product Modal */}
       {editingProduct && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-start justify-center p-4 z-50 overflow-y-auto">
           <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b">
               <h2 className="text-2xl font-bold text-gray-900">
                 {isAddingProduct ? 'Add New Product' : 'Edit Product'}
               </h2>
-              <button
-                onClick={handleCancelEdit}
+              <button              onClick={handleCancelEdit}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
               >
                 <X className="w-5 h-5" />
@@ -429,9 +646,7 @@ export default function AdminPanel() {
                 <div className="mb-6">
                   <div className="relative aspect-square bg-white rounded-lg border-2 border-dashed border-gray-300 overflow-hidden">
                     {editingProduct.images && editingProduct.images[0] ? (
-                      <Image
-                        src={editingProduct.images[0]}
-                        alt={editingProduct.name}
+                      <Image              src={editingProduct.images[0]}              alt={editingProduct.name}
                         fill
                         className="object-cover"
                         sizes="(max-width: 768px) 100vw, 50vw"
@@ -470,23 +685,18 @@ export default function AdminPanel() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">Available Images</label>
                   <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto">
                     {availableImages.map((image) => (
-                      <button
-                        key={image.path}
-                        onClick={() => {
+                      <button              key={image.path}              onClick={() => {
                           const newImages = editingProduct.images?.includes(image.path)
                             ? editingProduct.images.filter(img => img !== image.path)
                             : [...(editingProduct.images || []), image.path];
                           setEditingProduct({ ...editingProduct, images: newImages });
-                        }}
-                        className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-colors ${
+                        }}              className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-colors ${
                           editingProduct.images?.includes(image.path)
                             ? 'border-gold-500 ring-2 ring-gold-200'
                             : 'border-gray-200 hover:border-gray-300'
                         }`}
                       >
-                        <Image
-                          src={image.url}
-                          alt={image.name}
+                        <Image              src={image.url}              alt={image.name}
                           fill
                           className="object-cover"
                           sizes="(max-width: 768px) 100vw, 200px"
@@ -507,21 +717,28 @@ export default function AdminPanel() {
                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Product Details</h3>
                 
                 <div className="grid grid-cols-2 gap-4">
+                  {/* Product Name & SKU - Side by Side */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
                     <input
-                      type="text"
-                      value={editingProduct.name}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
+                      type="text"              value={editingProduct.name}              onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                     />
                   </div>
 
                   <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Product Slug</label>
+                    <input
+                      type="text"              value={editingProduct.slug}              onChange={(e) => setEditingProduct({ ...editingProduct, slug: e.target.value })}
+                      placeholder="e.g., gold-ring-rose"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                    />
+                  </div>
+
+                  {/* Category & Sub Category - Side by Side */}
+                  <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                    <select
-                      value={editingProduct.category}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value as any })}
+                    <select              value={editingProduct.category}              onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value as any })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                     >
                       <option value="Wedding">Wedding Rings</option>
@@ -538,30 +755,33 @@ export default function AdminPanel() {
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Sub Category</label>
                     <input
-                      type="text"
-                      value={editingProduct.subCategory || ''}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, subCategory: e.target.value })}
+                      type="text"              value={editingProduct.subCategory || ''}              onChange={(e) => setEditingProduct({ ...editingProduct, subCategory: e.target.value })}
                       placeholder="e.g., Engagement, Anniversary"
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                     />
                   </div>
 
+                  {/* Price & Original Price - Side by Side */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Product Slug</label>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Price (£)</label>
                     <input
-                      type="text"
-                      value={editingProduct.slug}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, slug: e.target.value })}
-                      placeholder="e.g., gold-ring-rose"
+                      type="number"              value={editingProduct.price}              onChange={(e) => setEditingProduct({ ...editingProduct, price: parseFloat(e.target.value) || 0 })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                     />
                   </div>
 
                   <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Original Price (£)</label>
+                    <input
+                      type="number"              value={editingProduct.originalPrice || ''}              onChange={(e) => setEditingProduct({ ...editingProduct, originalPrice: parseFloat(e.target.value) || undefined })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                    />
+                  </div>
+
+                  {/* Material - Full Width */}
+                  <div className="col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-1">Material</label>
-                    <select
-                      value={editingProduct.material}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, material: e.target.value as any })}
+                    <select              value={editingProduct.material}              onChange={(e) => setEditingProduct({ ...editingProduct, material: e.target.value as any })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                     >
                       {materials.map((material) => (
@@ -570,108 +790,188 @@ export default function AdminPanel() {
                     </select>
                   </div>
 
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Primary Gem Color</label>
-                    <div className="grid grid-cols-3 gap-2">
-                      {gemColors.map((color) => (
-                        <button
-                          key={color}
-                          type="button"
-                          onClick={() => setEditingProduct({ ...editingProduct, gemColor: color as any })}
-                          onMouseEnter={() => setHoveredGemColor(color)}
-                          onMouseLeave={() => setHoveredGemColor(null)}
-                          className={`relative rounded-lg border-2 p-3 transition-all ${
-                            editingProduct.gemColor === color
-                              ? 'border-gold-500 bg-gold-50'
-                              : 'border-gray-300 hover:border-gray-400'
-                          }`}
-                        >
-                          <div className="flex flex-col items-center gap-2">
-                            <div
-                              className="h-8 w-8 rounded-full border-2 border-gray-200"
-                              style={{ backgroundColor: getGemColorHex(color) }}
-                            />
-                            <span className="text-sm font-medium">{color}</span>
-                          </div>
-
-                          {/* Gem Color Popup */}
-                          {hoveredGemColor === color && (
-                            <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
-                              <div className="rounded-lg border bg-white p-2 shadow-lg">
-                                <Image
-                                  src={getGemColorImage(color)}
-                                  alt={`${color} gem`}
-                                  width={128}
-                                  height={128}
-                                  className="rounded object-cover"
+                  {/* Primary Gem Color & Mix Colors - Side by Side */}
+                  <div className="col-span-2">
+                    <div className="grid grid-cols-2 gap-6">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">Primary Gem Color</label>
+                        <div className="grid grid-cols-3 gap-2">
+                          {gemColors.map((color) => (
+                            <button              key={color}
+                              type="button"              onClick={() => setEditingProduct({ ...editingProduct, gemColor: color as any })}              onMouseEnter={() => setHoveredGemColor(color)}              onMouseLeave={() => setHoveredGemColor(null)}              className={`relative rounded-lg border-2 p-3 transition-all ${
+                                editingProduct.gemColor === color
+                                  ? 'border-gold-500 bg-gold-50'
+                                  : 'border-gray-300 hover:border-gray-400'
+                              }`}
+                            >
+                              <div className="flex flex-col items-center gap-2">
+                                <div
+                                  className="w-4 h-4 rounded-full border-2 border-gray-200 flex-shrink-0"              style={{ 
+                                    backgroundColor: getGemColorHex(color),
+                                    aspectRatio: '1 / 1',
+                                    minWidth: '16px',
+                                    minHeight: '16px'
+                                  }}
                                 />
+                                <span className="text-sm font-medium">{color}</span>
                               </div>
-                            </div>
-                          )}
-                        </button>
-                      ))}
+
+                              {/* Gem Color Popup */}
+                              {hoveredGemColor === color && (
+                                <div className="absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 transform">
+                                  <div className="rounded-lg border bg-white p-4 shadow-lg">
+                                    <Image              src={getGemColorImage(color)}              alt={`${color} gem`}              width={200}              height={200}
+                                      className="rounded object-cover"              style={{ minWidth: '200px', minHeight: '200px' }}
+                                    />
+                                  </div>
+                                </div>
+                              )}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">Mix Colors (for Custom option)</label>
+                        <div className="grid grid-cols-3 gap-2">
+                          {['Red', 'Green', 'Blue', 'Purple', 'Yellow', 'Black', 'White', 'Pink', 'Orange', 'Turquoise'].map((color) => (
+                            <label              key={color} 
+                              className="relative flex items-center p-2 rounded border hover:bg-gray-50 cursor-pointer"              onMouseEnter={() => setHoveredMixColor(color)}              onMouseLeave={() => setHoveredMixColor(null)}
+                            >
+                              <input
+                                type="checkbox"              checked={editingProduct.mixColors?.includes(color) || false}              onChange={(e) => {
+                                  const newMixColors = e.target.checked
+                                    ? [...(editingProduct.mixColors || []), color]
+                                    : (editingProduct.mixColors || []).filter(c => c !== color);
+                                  setEditingProduct({ ...editingProduct, mixColors: newMixColors });
+                                }}
+                                className="mr-2"
+                              />
+                              <div className="flex items-center gap-2 min-w-0">
+                                <div
+                                  className="w-4 h-4 rounded-full border border-gray-200 flex-shrink-0"              style={{ 
+                                    backgroundColor: getGemColorHex(color),
+                                    aspectRatio: '1 / 1',
+                                    minWidth: '16px',
+                                    minHeight: '16px'
+                                  }}
+                                />
+                                <span className="text-sm truncate">{color}</span>
+                              </div>
+
+                              {/* Mix Color Popup */}
+                              {hoveredMixColor === color && (
+                                <div className="absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 transform">
+                                  <div className="rounded-lg border bg-white p-4 shadow-lg">
+                                    <Image              src={getGemColorImage(color)}              alt={`${color} gem`}              width={200}              height={200}
+                                      className="rounded object-cover"              style={{ minWidth: '200px', minHeight: '200px' }}
+                                    />
+                                  </div>
+                                </div>
+                              )}
+                            </label>
+                          ))}
+                        </div>
+                      </div>
                     </div>
                   </div>
 
-                  {/* Second Gem Color for Couple Rings */}
+                  {/* Second Gem Color & Mix Colors for Couple Rings - Side by Side */}
                   {editingProduct.category === 'Couple Ring Set' && (
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Second Gem Color (Ring 2)</label>
-                      <div className="grid grid-cols-3 gap-2">
-                        {gemColors.map((color) => (
-                          <button
-                            key={color}
-                            type="button"
-                            onClick={() => setEditingProduct({ ...editingProduct, gemColor2: color as any })}
-                            onMouseEnter={() => setHoveredGemColor2(color)}
-                            onMouseLeave={() => setHoveredGemColor2(null)}
-                            className={`relative rounded-lg border-2 p-3 transition-all ${
-                              editingProduct.gemColor2 === color
-                                ? 'border-gold-500 bg-gold-50'
-                                : 'border-gray-300 hover:border-gray-400'
-                            }`}
-                          >
-                            <div className="flex flex-col items-center gap-2">
-                              <div
-                                className="h-8 w-8 rounded-full border-2 border-gray-200"
-                                style={{ backgroundColor: getGemColorHex(color) }}
-                              />
-                              <span className="text-sm font-medium">{color}</span>
-                            </div>
-
-                            {/* Gem Color Popup */}
-                            {hoveredGemColor2 === color && (
-                              <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
-                                <div className="rounded-lg border bg-white p-2 shadow-lg">
-                                  <Image
-                                    src={getGemColorImage(color)}
-                                    alt={`${color} gem`}
-                                    width={128}
-                                    height={128}
-                                    className="rounded object-cover"
+                    <div className="col-span-2">
+                      <div className="grid grid-cols-2 gap-6">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-1">Second Gem Color (Ring 2)</label>
+                          <div className="grid grid-cols-3 gap-2">
+                            {gemColors.map((color) => (
+                              <button              key={color}
+                                type="button"              onClick={() => setEditingProduct({ ...editingProduct, gemColor2: color as any })}              onMouseEnter={() => setHoveredGemColor2(color)}              onMouseLeave={() => setHoveredGemColor2(null)}              className={`relative rounded-lg border-2 p-3 transition-all ${
+                                  editingProduct.gemColor2 === color
+                                    ? 'border-gold-500 bg-gold-50'
+                                    : 'border-gray-300 hover:border-gray-400'
+                                }`}
+                              >
+                                <div className="flex flex-col items-center gap-2">
+                                  <div
+                                    className="w-4 h-4 rounded-full border-2 border-gray-200 flex-shrink-0"              style={{ 
+                                      backgroundColor: getGemColorHex(color),
+                                      aspectRatio: '1 / 1',
+                                      minWidth: '16px',
+                                      minHeight: '16px'
+                                    }}
                                   />
+                                  <span className="text-sm font-medium">{color}</span>
                                 </div>
-                              </div>
-                            )}
-                          </button>
-                        ))}
+
+                                {/* Gem Color Popup */}
+                                {hoveredGemColor2 === color && (
+                                  <div className="absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 transform">
+                                    <div className="rounded-lg border bg-white p-4 shadow-lg">
+                                      <Image              src={getGemColorImage(color)}              alt={`${color} gem`}              width={300}              height={300}
+                                        className="rounded object-cover"
+                                      />
+                                    </div>
+                                  </div>
+                                )}
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">Mix Colors for Ring 2 (Custom option)</label>
+                          <div className="grid grid-cols-3 gap-2">
+                            {['Red', 'Green', 'Blue', 'Purple', 'Yellow', 'Black', 'White', 'Pink', 'Orange', 'Turquoise'].map((color) => (
+                              <label              key={color} 
+                                className="relative flex items-center p-2 rounded border hover:bg-gray-50 cursor-pointer"              onMouseEnter={() => setHoveredMixColor2(color)}              onMouseLeave={() => setHoveredMixColor2(null)}
+                              >
+                                <input
+                                  type="checkbox"              checked={editingProduct.mixColors2?.includes(color) || false}              onChange={(e) => {
+                                    const newMixColors2 = e.target.checked
+                                      ? [...(editingProduct.mixColors2 || []), color]
+                                      : (editingProduct.mixColors2 || []).filter(c => c !== color);
+                                    setEditingProduct({ ...editingProduct, mixColors2: newMixColors2 });
+                                  }}
+                                  className="mr-2"
+                                />
+                                <div className="flex items-center gap-2 min-w-0">
+                                  <div
+                                    className="w-4 h-4 rounded-full border border-gray-200 flex-shrink-0"              style={{ 
+                                      backgroundColor: getGemColorHex(color),
+                                      aspectRatio: '1 / 1',
+                                      minWidth: '16px',
+                                      minHeight: '16px'
+                                    }}
+                                  />
+                                  <span className="text-sm truncate">{color}</span>
+                                </div>
+
+                                {/* Mix Color Popup */}
+                                {hoveredMixColor2 === color && (
+                                  <div className="absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 transform">
+                                    <div className="rounded-lg border bg-white p-4 shadow-lg">
+                                      <Image              src={getGemColorImage(color)}              alt={`${color} gem`}              width={300}              height={300}
+                                        className="rounded object-cover"              style={{ minWidth: '300px', minHeight: '300px' }}
+                                      />
+                                    </div>
+                                  </div>
+                                )}
+                              </label>
+                            ))}
+                          </div>
+                        </div>
                       </div>
                     </div>
                   )}
 
                   {/* Second Gem Color for Double Inlay */}
                   {editingProduct.category === 'Double Inlay' && (
-                    <div>
+                    <div className="col-span-2">
                       <label className="block text-sm font-medium text-gray-700 mb-1">Second Gem Color (Inlay 2)</label>
                       <div className="grid grid-cols-3 gap-2">
                         {gemColors.map((color) => (
-                          <button
-                            key={color}
-                            type="button"
-                            onClick={() => setEditingProduct({ ...editingProduct, gemColor2: color as any })}
-                            onMouseEnter={() => setHoveredGemColor2(color)}
-                            onMouseLeave={() => setHoveredGemColor2(null)}
-                            className={`relative rounded-lg border-2 p-3 transition-all ${
+                          <button              key={color}
+                            type="button"              onClick={() => setEditingProduct({ ...editingProduct, gemColor2: color as any })}              onMouseEnter={() => setHoveredGemColor2(color)}              onMouseLeave={() => setHoveredGemColor2(null)}              className={`relative rounded-lg border-2 p-3 transition-all ${
                               editingProduct.gemColor2 === color
                                 ? 'border-gold-500 bg-gold-50'
                                 : 'border-gray-300 hover:border-gray-400'
@@ -679,8 +979,7 @@ export default function AdminPanel() {
                           >
                             <div className="flex flex-col items-center gap-2">
                               <div
-                                className="h-8 w-8 rounded-full border-2 border-gray-200"
-                                style={{ backgroundColor: getGemColorHex(color) }}
+                                className="h-8 w-8 rounded-full border-2 border-gray-200"              style={{ backgroundColor: getGemColorHex(color) }}
                               />
                               <span className="text-sm font-medium">{color}</span>
                             </div>
@@ -688,13 +987,9 @@ export default function AdminPanel() {
                             {/* Gem Color Popup */}
                             {hoveredGemColor2 === color && (
                               <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
-                                <div className="rounded-lg border bg-white p-2 shadow-lg">
-                                  <Image
-                                    src={getGemColorImage(color)}
-                                    alt={`${color} gem`}
-                                    width={128}
-                                    height={128}
-                                    className="rounded object-cover"
+                                <div className="rounded-lg border bg-white p-4 shadow-lg">
+                                  <Image              src={getGemColorImage(color)}              alt={`${color} gem`}              width={300}              height={300}
+                                    className="rounded object-cover"              style={{ minWidth: '300px', minHeight: '300px' }}
                                   />
                                 </div>
                               </div>
@@ -705,11 +1000,10 @@ export default function AdminPanel() {
                     </div>
                   )}
 
+                  {/* Gem Density & Gem Variation - Side by Side */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Gem Density</label>
-                    <select
-                      value={editingProduct.gemDensity}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, gemDensity: e.target.value as any })}
+                    <select              value={editingProduct.gemDensity}              onChange={(e) => setEditingProduct({ ...editingProduct, gemDensity: e.target.value as any })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                     >
                       {gemDensities.map((density) => (
@@ -720,9 +1014,7 @@ export default function AdminPanel() {
 
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Gem Variation</label>
-                    <select
-                      value={editingProduct.gemVariation}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, gemVariation: e.target.value as any })}
+                    <select              value={editingProduct.gemVariation}              onChange={(e) => setEditingProduct({ ...editingProduct, gemVariation: e.target.value as any })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                     >
                       {gemVariations.map((variation) => (
@@ -731,246 +1023,41 @@ export default function AdminPanel() {
                     </select>
                   </div>
 
+                  {/* Ring Sizes & Ring Width - Side by Side */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">Mix Colors (for Custom option)</label>
-                    <div className="grid grid-cols-2 gap-2">
-                      {['Red', 'Green', 'Blue', 'Purple', 'Yellow', 'Black', 'White', 'Pink', 'Orange', 'Turquoise'].map((color) => (
-                        <label 
-                          key={color} 
-                          className="relative flex items-center p-2 rounded border hover:bg-gray-50 cursor-pointer"
-                          onMouseEnter={() => setHoveredMixColor(color)}
-                          onMouseLeave={() => setHoveredMixColor(null)}
-                        >
-                          <input
-                            type="checkbox"
-                            checked={editingProduct.mixColors?.includes(color) || false}
-                            onChange={(e) => {
-                              const newMixColors = e.target.checked
-                                ? [...(editingProduct.mixColors || []), color]
-                                : (editingProduct.mixColors || []).filter(c => c !== color);
-                              setEditingProduct({ ...editingProduct, mixColors: newMixColors });
-                            }}
-                            className="mr-2"
-                          />
-                          <div className="flex items-center gap-2">
-                            <div
-                              className="h-4 w-4 rounded-full border border-gray-200"
-                              style={{ backgroundColor: getGemColorHex(color) }}
-                            />
-                            <span className="text-sm">{color}</span>
-                          </div>
-
-                          {/* Mix Color Popup */}
-                          {hoveredMixColor === color && (
-                            <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
-                              <div className="rounded-lg border bg-white p-2 shadow-lg">
-                                <Image
-                                  src={getGemColorImage(color)}
-                                  alt={`${color} gem`}
-                                  width={128}
-                                  height={128}
-                                  className="rounded object-cover"
-                                />
-                              </div>
-                            </div>
-                          )}
-                        </label>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Second Mix Colors for Couple Rings */}
-                  {editingProduct.category === 'Couple Ring Set' && (
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Mix Colors for Ring 2 (Custom option)</label>
-                      <div className="grid grid-cols-2 gap-2">
-                        {['Red', 'Green', 'Blue', 'Purple', 'Yellow', 'Black', 'White', 'Pink', 'Orange', 'Turquoise'].map((color) => (
-                          <label 
-                            key={color} 
-                            className="relative flex items-center p-2 rounded border hover:bg-gray-50 cursor-pointer"
-                            onMouseEnter={() => setHoveredMixColor2(color)}
-                            onMouseLeave={() => setHoveredMixColor2(null)}
-                          >
-                            <input
-                              type="checkbox"
-                              checked={editingProduct.mixColors2?.includes(color) || false}
-                              onChange={(e) => {
-                                const newMixColors2 = e.target.checked
-                                  ? [...(editingProduct.mixColors2 || []), color]
-                                  : (editingProduct.mixColors2 || []).filter(c => c !== color);
-                                setEditingProduct({ ...editingProduct, mixColors2: newMixColors2 });
-                              }}
-                              className="mr-2"
-                            />
-                            <div className="flex items-center gap-2">
-                              <div
-                                className="h-4 w-4 rounded-full border border-gray-200"
-                                style={{ backgroundColor: getGemColorHex(color) }}
-                              />
-                              <span className="text-sm">{color}</span>
-                            </div>
-
-                            {/* Mix Color Popup */}
-                            {hoveredMixColor2 === color && (
-                              <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
-                                <div className="rounded-lg border bg-white p-2 shadow-lg">
-                                  <Image
-                                    src={getGemColorImage(color)}
-                                    alt={`${color} gem`}
-                                    width={128}
-                                    height={128}
-                                    className="rounded object-cover"
-                                  />
-                                </div>
-                              </div>
-                            )}
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Second Mix Colors for Double Inlay */}
-                  {editingProduct.category === 'Double Inlay' && (
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">Mix Colors for Inlay 2 (Custom option)</label>
-                      <div className="grid grid-cols-2 gap-2">
-                        {['Red', 'Green', 'Blue', 'Purple', 'Yellow', 'Black', 'White', 'Pink', 'Orange', 'Turquoise'].map((color) => (
-                          <label 
-                            key={color} 
-                            className="relative flex items-center p-2 rounded border hover:bg-gray-50 cursor-pointer"
-                            onMouseEnter={() => setHoveredMixColor2(color)}
-                            onMouseLeave={() => setHoveredMixColor2(null)}
-                          >
-                            <input
-                              type="checkbox"
-                              checked={editingProduct.mixColors2?.includes(color) || false}
-                              onChange={(e) => {
-                                const newMixColors2 = e.target.checked
-                                  ? [...(editingProduct.mixColors2 || []), color]
-                                  : (editingProduct.mixColors2 || []).filter(c => c !== color);
-                                setEditingProduct({ ...editingProduct, mixColors2: newMixColors2 });
-                              }}
-                              className="mr-2"
-                            />
-                            <div className="flex items-center gap-2">
-                              <div
-                                className="h-4 w-4 rounded-full border border-gray-200"
-                                style={{ backgroundColor: getGemColorHex(color) }}
-                              />
-                              <span className="text-sm">{color}</span>
-                            </div>
-
-                            {/* Mix Color Popup */}
-                            {hoveredMixColor2 === color && (
-                              <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
-                                <div className="rounded-lg border bg-white p-2 shadow-lg">
-                                  <Image
-                                    src={getGemColorImage(color)}
-                                    alt={`${color} gem`}
-                                    width={128}
-                                    height={128}
-                                    className="rounded object-cover"
-                                  />
-                                </div>
-                              </div>
-                            )}
-                          </label>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Price ({editingProduct.currency === 'USD' ? '$' : '£'})</label>
-                    <input
-                      type="number"
-                      value={editingProduct.price}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, price: Number(e.target.value) })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Sale Price ({editingProduct.currency === 'USD' ? '$' : '£'})</label>
-                    <input
-                      type="number"
-                      value={editingProduct.originalPrice || ''}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        const numValue = value === '' ? null : Number(value);
-                        setEditingProduct({ ...editingProduct, originalPrice: numValue });
-                      }}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                    <select
-                      value={editingProduct.status || 'draft'}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, status: e.target.value as any })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                    >
-                      <option value="active">Active</option>
-                      <option value="draft">Draft</option>
-                      <option value="archived">Archived</option>
-                      <option value="out_of_stock">Out of Stock</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Currency</label>
-                    <select
-                      value={editingProduct.currency || 'GBP'}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, currency: e.target.value as any })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                    >
-                      <option value="GBP">£ GBP</option>
-                      <option value="USD">$ USD</option>
-                    </select>
-                  </div>
-
-                  <div className="col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-1">Ring Sizes (US)</label>
                     <input
-                      type="text"
-                      value={editingProduct.ringSizes?.us?.join(', ') || ''}
-                      onChange={(e) => {
+                      type="text"              value={editingProduct.ringSizes?.us?.join(', ') || ''}              onChange={(e) => {
                         const sizes = e.target.value.split(',').map(s => s.trim()).filter(s => s).map(Number);
                         setEditingProduct({ 
                           ...editingProduct, 
                           ringSizes: { ...editingProduct.ringSizes, us: sizes }
                         });
                       }}
-                      placeholder="e.g., 6, 7, 8, 9"
+                      placeholder="e.g., 5, 6, 7, 8, 9"
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                     />
                   </div>
 
-                  <div className="col-span-2">
+                  <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Ring Sizes (EU)</label>
                     <input
-                      type="text"
-                      value={editingProduct.ringSizes?.eu?.join(', ') || ''}
-                      onChange={(e) => {
+                      type="text"              value={editingProduct.ringSizes?.eu?.join(', ') || ''}              onChange={(e) => {
                         const sizes = e.target.value.split(',').map(s => s.trim()).filter(s => s).map(Number);
                         setEditingProduct({ 
                           ...editingProduct, 
                           ringSizes: { ...editingProduct.ringSizes, eu: sizes }
                         });
                       }}
-                      placeholder="e.g., 52, 54, 56, 58"
+                      placeholder="e.g., 49, 52, 54, 57, 59"
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                     />
                   </div>
 
-                  <div className="col-span-2">
+                  <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Ring Width (mm)</label>
                     <input
-                      type="text"
-                      value={editingProduct.ringWidth?.join(', ') || ''}
-                      onChange={(e) => {
+                      type="text"              value={editingProduct.ringWidth?.join(', ') || ''}              onChange={(e) => {
                         const widths = e.target.value.split(',').map(s => s.trim()).filter(s => s).map(Number);
                         setEditingProduct({ ...editingProduct, ringWidth: widths });
                       }}
@@ -979,63 +1066,134 @@ export default function AdminPanel() {
                     />
                   </div>
 
-                  <div className="col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                    <textarea
-                      value={editingProduct.description || ''}
-                      onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}
-                      rows={4}
+                  {/* Status - Side by Side with Ring Width */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                    <select              value={editingProduct.status}              onChange={(e) => setEditingProduct({ ...editingProduct, status: e.target.value as any })}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                    >
+                      <option value="draft">Draft</option>
+                      <option value="active">Active</option>
+                      <option value="archived">Archived</option>
+                    </select>
+                  </div>
+
+                  {/* Ready to Ship & In Stock - Side by Side */}
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        id="readyToShip"              checked={editingProduct.isReadyToShip}              onChange={(e) => setEditingProduct({ ...editingProduct, isReadyToShip: e.target.checked })}
+                        className="rounded"
+                      />
+                      <label htmlFor="readyToShip" className="text-sm font-medium text-gray-700">Ready to Ship</label>
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        id="isInStock"              checked={editingProduct.isInStock ?? true}              onChange={(e) => setEditingProduct({ ...editingProduct, isInStock: e.target.checked })}
+                        className="rounded"
+                      />
+                      <label htmlFor="isInStock" className="text-sm font-medium text-gray-700">In Stock</label>
+                    </div>
+                  </div>
+
+                  {/* Ready to Ship & Featured - Side by Side */}
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        id="isFeatured"              checked={editingProduct.isFeatured || false}              onChange={(e) => setEditingProduct({ 
+                          ...editingProduct, 
+                          isFeatured: e.target.checked,
+                          featuredOrder: e.target.checked ? (editingProduct.featuredOrder || 1) : undefined
+                        })}
+                        className="rounded"
+                      />
+                      <label htmlFor="isFeatured" className="text-sm font-medium text-gray-700">Featured Product</label>
+                    </div>
+                  </div>
+
+                  {/* Featured Order - Manual Input */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Featured Order</label>
+                    <input
+                      type="number"              value={editingProduct.featuredOrder || ''}              onChange={(e) => setEditingProduct({ 
+                        ...editingProduct, 
+                        featuredOrder: e.target.value ? parseInt(e.target.value) : undefined 
+                      })}
+                      placeholder="e.g., 1, 2, 3"
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                     />
                   </div>
 
-                                     <div className="col-span-2">
-                     <div className="flex items-center gap-2">
-                       <input
-                         type="checkbox"
-                         id="readyToShip"
-                         checked={editingProduct.isReadyToShip}
-                         onChange={(e) => setEditingProduct({ ...editingProduct, isReadyToShip: e.target.checked })}
-                         className="rounded"
-                       />
-                       <label htmlFor="readyToShip" className="text-sm font-medium text-gray-700">Ready to Ship</label>
-                     </div>
-                   </div>
+                  {/* Description - Full Width */}
+                  <div className="col-span-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                    <textarea              value={editingProduct.description || ''}              onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}              rows={4}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
+                    />
+                  </div>
 
-                   {/* Status Badge Preview */}
-                   <div className="col-span-2 mt-6 p-4 bg-gray-50 rounded-lg">
-                     <h4 className="text-sm font-medium text-gray-700 mb-2">Status Preview</h4>
-                     <div className="flex items-center gap-2">
-                       <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                         editingProduct.status === 'active' ? 'bg-green-100 text-green-800' :
-                         editingProduct.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
-                         editingProduct.status === 'archived' ? 'bg-gray-100 text-gray-800' :
-                         'bg-red-100 text-red-800'
-                       }`}>
-                         {editingProduct.status === 'active' ? 'Active' :
-                          editingProduct.status === 'draft' ? 'Draft' :
-                          editingProduct.status === 'archived' ? 'Archived' :
-                          'Out of Stock'}
-                       </span>
-                       {editingProduct.isReadyToShip && (
-                         <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
-                           Ready to Ship
-                         </span>
-                       )}
-                     </div>
-                   </div>
-                 </div>
+                  {/* Status Badge Preview - Full Width */}
+                  <div className="col-span-2 mt-6 p-4 bg-gray-50 rounded-lg">
+                    <h4 className="text-sm font-medium text-gray-700 mb-2">Status Preview</h4>
+                    <div className="flex items-center gap-2">
+                      {/* Status Badge - Only show non-stock statuses */}
+                      {editingProduct.status !== 'out_of_stock' && (
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          editingProduct.status === 'active' ? 'bg-green-100 text-green-800' :
+                          editingProduct.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
+                          editingProduct.status === 'archived' ? 'bg-gray-100 text-gray-800' :
+                          'bg-gray-100 text-gray-800'
+                        }`}>
+                          {editingProduct.status === 'active' ? 'Active' :
+                           editingProduct.status === 'draft' ? 'Draft' :
+                           editingProduct.status === 'archived' ? 'Archived' :
+                           'Unknown'}
+                        </span>
+                      )}
+                      
+                      {/* Stock Status - Based on isInStock property */}
+                      {editingProduct.isInStock !== false && (
+                        <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
+                          In Stock
+                        </span>
+                      )}
+                      {editingProduct.isInStock === false && (
+                        <span className="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs font-medium">
+                          Out of Stock
+                        </span>
+                      )}
+                      
+                      {/* Ready to Ship */}
+                      {editingProduct.isReadyToShip && (
+                        <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
+                          Ready to Ship
+                        </span>
+                      )}
+                      
+                      {/* Featured */}
+                      {editingProduct.isFeatured && (
+                        <span className="px-2 py-1 bg-gold-100 text-gold-800 rounded-full text-xs font-medium">
+                          Featured
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </div>
 
                  {/* Save/Cancel Buttons */}
                 <div className="flex justify-end space-x-3 pt-6 mt-6 border-t">
-                  <button
-                    onClick={handleCancelEdit}
+                  <button              onClick={handleCancelEdit}
                     className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                   >
                     Cancel
                   </button>
-                  <button
-                    onClick={handleSaveProduct}
+                  <button              onClick={handleSaveProduct}
                     className="px-4 py-2 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition-colors flex items-center"
                   >
                     <Save className="w-4 h-4 mr-2" />

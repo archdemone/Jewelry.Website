@@ -38,13 +38,7 @@ const WorkshopSection = () => {
               icon: '🤝',
             },
           ].map((item, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.2 }}
-              whileHover={{ y: -10 }}
+            <motion.div              key={index}              initial={{ opacity: 0, y: 20 }}              whileInView={{ opacity: 1, y: 0 }}              viewport={{ once: true }}              transition={{ delay: index * 0.2 }}              whileHover={{ y: -10 }}
               className="rounded-xl bg-white p-8 shadow-lg"
             >
               <div className="mb-4 text-4xl">{item.icon}</div>

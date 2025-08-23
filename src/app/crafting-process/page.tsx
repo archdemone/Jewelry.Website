@@ -95,9 +95,7 @@ export default function CraftingProcessPage() {
           <div className="absolute inset-0">
             <Image
               src="/images/process/workshop-hero.jpg"
-              alt="Artisan crafting a ring"
-              width={1200}
-              height={600}
+              alt="Artisan crafting a ring"              width={1200}              height={600}
               className="absolute inset-0 h-full w-full object-cover opacity-60"
               sizes="100vw"
             />
@@ -106,18 +104,12 @@ export default function CraftingProcessPage() {
 
           <div className="relative z-10 flex h-full items-center justify-center">
             <div className="text-center text-white">
-              <motion.h1
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
+              <motion.h1              initial={{ opacity: 0, y: 30 }}              animate={{ opacity: 1, y: 0 }}              transition={{ duration: 0.8 }}
                 className="mb-6 font-serif text-5xl font-bold md:text-6xl"
               >
                 Our Crafting Process
               </motion.h1>
-              <motion.p
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
+              <motion.p              initial={{ opacity: 0, y: 30 }}              animate={{ opacity: 1, y: 0 }}              transition={{ duration: 0.8, delay: 0.2 }}
                 className="mx-auto max-w-2xl text-xl text-orange-400"
               >
                 Discover how each ring is carefully crafted from raw materials to finished
@@ -130,10 +122,7 @@ export default function CraftingProcessPage() {
         {/* Process Timeline */}
         <section className="bg-white py-16">
           <div className="container max-w-6xl">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+            <motion.div              initial={{ opacity: 0, y: 20 }}              whileInView={{ opacity: 1, y: 0 }}              viewport={{ once: true }}
               className="mb-12 text-center"
             >
               <h2 className="mb-4 font-serif text-3xl">The Creation Journey</h2>
@@ -150,43 +139,32 @@ export default function CraftingProcessPage() {
               {/* Steps */}
               <div className="relative grid grid-cols-6 gap-4">
                 {processSteps.map((step, index) => (
-                  <motion.div
-                    key={step.number}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
+                  <motion.div              key={step.number}              initial={{ opacity: 0, y: 20 }}              whileInView={{ opacity: 1, y: 0 }}              viewport={{ once: true }}              transition={{ delay: index * 0.1 }}
                     className="relative"
                   >
-                    <button
-                      onClick={() => setActiveStep(step.number)}
-                      className={`w-full transition-all ${
+                    <button              onClick={() => setActiveStep(step.number)}              className={`w-full transition-all ${
                         activeStep === step.number ? 'scale-110' : ''
                       }`}
                     >
-                      <div
-                        className={`mx-auto flex h-32 w-32 items-center justify-center rounded-full ${
+                      <div              className={`mx-auto flex h-32 w-32 items-center justify-center rounded-full ${
                           activeStep === step.number
                             ? `bg-${step.color}-100 border-4 border-${step.color}-400`
                             : 'border-2 border-gray-200 bg-gray-50 hover:border-gray-300'
                         } cursor-pointer transition-all`}
                       >
-                        <step.icon
-                          className={`h-12 w-12 ${
+                        <step.icon              className={`h-12 w-12 ${
                             activeStep === step.number ? `text-${step.color}-600` : 'text-gray-400'
                           }`}
                         />
                       </div>
                       <div className="mt-4">
-                        <div
-                          className={`text-sm font-bold ${
+                        <div              className={`text-sm font-bold ${
                             activeStep === step.number ? 'text-gray-900' : 'text-gray-500'
                           }`}
                         >
                           Step {step.number}
                         </div>
-                        <div
-                          className={`mt-1 text-sm font-medium ${
+                        <div              className={`mt-1 text-sm font-medium ${
                             activeStep === step.number ? 'text-gray-800' : 'text-gray-600'
                           }`}
                         >
@@ -202,28 +180,19 @@ export default function CraftingProcessPage() {
             {/* Mobile Timeline */}
             <div className="space-y-6 md:hidden">
               {processSteps.map((step, index) => (
-                <motion.button
-                  key={step.number}
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1 }}
-                  onClick={() => setActiveStep(step.number)}
-                  className={`flex w-full items-center gap-4 rounded-xl p-4 transition-all ${
+                <motion.button              key={step.number}              initial={{ opacity: 0, x: -20 }}              whileInView={{ opacity: 1, x: 0 }}              viewport={{ once: true }}              transition={{ delay: index * 0.1 }}              onClick={() => setActiveStep(step.number)}              className={`flex w-full items-center gap-4 rounded-xl p-4 transition-all ${
                     activeStep === step.number
                       ? 'bg-gradient-to-r from-orange-50 to-amber-50 shadow-lg'
                       : 'bg-gray-50 hover:bg-gray-100'
                   }`}
                 >
-                  <div
-                    className={`flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full ${
+                  <div              className={`flex h-16 w-16 flex-shrink-0 items-center justify-center rounded-full ${
                       activeStep === step.number
                         ? `bg-${step.color}-100 border-2 border-${step.color}-400`
                         : 'border-2 border-gray-200 bg-white'
                     } `}
                   >
-                    <step.icon
-                      className={`h-8 w-8 ${
+                    <step.icon              className={`h-8 w-8 ${
                         activeStep === step.number ? `text-${step.color}-600` : 'text-gray-400'
                       }`}
                     />
@@ -239,16 +208,11 @@ export default function CraftingProcessPage() {
             </div>
 
             {/* Active Step Details */}
-            <motion.div
-              key={activeStep}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
+            <motion.div              key={activeStep}              initial={{ opacity: 0, y: 20 }}              animate={{ opacity: 1, y: 0 }}              transition={{ duration: 0.3 }}
               className="mt-12 rounded-2xl bg-gradient-to-br from-gray-50 to-white p-8 shadow-lg"
             >
               <div className="flex items-start gap-6">
-                <div
-                  className={`flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-xl bg-${processSteps[activeStep - 1].color}-100 `}
+                <div              className={`flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-xl bg-${processSteps[activeStep - 1].color}-100 `}
                 >
                   {createElement(processSteps[activeStep - 1].icon, {
                     className: `w-10 h-10 text-${processSteps[activeStep - 1].color}-600`,
@@ -393,28 +357,19 @@ export default function CraftingProcessPage() {
         {/* Visual Process Gallery */}
         <section className="bg-gray-50 py-16">
           <div className="container max-w-6xl">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+            <motion.h2              initial={{ opacity: 0, y: 20 }}              whileInView={{ opacity: 1, y: 0 }}              viewport={{ once: true }}
               className="mb-12 text-center font-serif text-3xl text-orange-600"
             >
               The Craft in Action
             </motion.h2>
 
             <div className="grid gap-6 md:grid-cols-3">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.1 }}
+              <motion.div              initial={{ opacity: 0, y: 20 }}              whileInView={{ opacity: 1, y: 0 }}              viewport={{ once: true }}              transition={{ delay: 0.1 }}
                 className="group relative overflow-hidden rounded-xl"
               >
                 <Image
                   src="/images/process/material-selection.jpg"
-                  alt="Material Selection - Choosing the perfect materials for your ring"
-                  width={400}
-                  height={300}
+                  alt="Material Selection - Choosing the perfect materials for your ring"              width={400}              height={300}
                   className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-110"
                   sizes="(max-width: 768px) 100vw, 400px"
                 />
@@ -428,18 +383,12 @@ export default function CraftingProcessPage() {
                 </div>
               </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 }}
+              <motion.div              initial={{ opacity: 0, y: 20 }}              whileInView={{ opacity: 1, y: 0 }}              viewport={{ once: true }}              transition={{ delay: 0.2 }}
                 className="group relative overflow-hidden rounded-xl"
               >
                 <Image
                   src="/images/process/crafting-action.jpg"
-                  alt="Precision Crafting - Every detail carefully shaped by hand"
-                  width={400}
-                  height={300}
+                  alt="Precision Crafting - Every detail carefully shaped by hand"              width={400}              height={300}
                   className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-110"
                   sizes="(max-width: 768px) 100vw, 400px"
                 />
@@ -451,18 +400,12 @@ export default function CraftingProcessPage() {
                 </div>
               </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.3 }}
+              <motion.div              initial={{ opacity: 0, y: 20 }}              whileInView={{ opacity: 1, y: 0 }}              viewport={{ once: true }}              transition={{ delay: 0.3 }}
                 className="group relative overflow-hidden rounded-xl"
               >
                 <Image
                   src="/images/process/final-polish.jpg"
-                  alt="Perfect Finish - The final polish that makes it shine"
-                  width={400}
-                  height={300}
+                  alt="Perfect Finish - The final polish that makes it shine"              width={400}              height={300}
                   className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-110"
                   sizes="(max-width: 768px) 100vw, 400px"
                 />
@@ -480,20 +423,14 @@ export default function CraftingProcessPage() {
         {/* FAQ Section */}
         <section className="bg-white py-16">
           <div className="container max-w-4xl">
-            <motion.h2
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+            <motion.h2              initial={{ opacity: 0, y: 20 }}              whileInView={{ opacity: 1, y: 0 }}              viewport={{ once: true }}
               className="mb-12 text-center font-serif text-3xl text-gray-900"
             >
               Common Questions About the Process
             </motion.h2>
 
             <div className="space-y-6">
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+              <motion.div              initial={{ opacity: 0, y: 20 }}              whileInView={{ opacity: 1, y: 0 }}              viewport={{ once: true }}
                 className="rounded-xl bg-gray-50 p-6"
               >
                 <h3 className="mb-2 text-lg font-semibold">
@@ -506,10 +443,7 @@ export default function CraftingProcessPage() {
                 </p>
               </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+              <motion.div              initial={{ opacity: 0, y: 20 }}              whileInView={{ opacity: 1, y: 0 }}              viewport={{ once: true }}
                 className="rounded-xl bg-gray-50 p-6"
               >
                 <h3 className="mb-2 text-lg font-semibold text-orange-600">
@@ -521,10 +455,7 @@ export default function CraftingProcessPage() {
                 </p>
               </motion.div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
+              <motion.div              initial={{ opacity: 0, y: 20 }}              whileInView={{ opacity: 1, y: 0 }}              viewport={{ once: true }}
                 className="rounded-xl bg-gray-50 p-6"
               >
                 <h3 className="mb-2 text-lg font-semibold text-orange-600">
@@ -543,10 +474,7 @@ export default function CraftingProcessPage() {
         {/* Special Offer Banner - First 100 Customers */}
         <section className="bg-gradient-to-r from-orange-500 to-amber-500 py-8">
           <div className="container max-w-4xl">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
+            <motion.div              initial={{ opacity: 0, scale: 0.95 }}              whileInView={{ opacity: 1, scale: 1 }}              viewport={{ once: true }}
               className="rounded-2xl bg-white/95 p-8 shadow-2xl backdrop-blur"
             >
               <div className="mb-4 flex items-center justify-center">
@@ -579,10 +507,7 @@ export default function CraftingProcessPage() {
         {/* Call to Action */}
         <section className="bg-gray-50 py-16">
           <div className="container max-w-4xl text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
+            <motion.div              initial={{ opacity: 0, y: 20 }}              whileInView={{ opacity: 1, y: 0 }}              viewport={{ once: true }}
             >
               <h2 className="mb-6 font-serif text-3xl text-orange-600">
                 Ready to Begin Your Ring Journey?
@@ -592,9 +517,7 @@ export default function CraftingProcessPage() {
               </p>
               <div className="flex flex-col justify-center gap-4 sm:flex-row">
                 <Link href="/products">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                  <motion.button              whileHover={{ scale: 1.05 }}              whileTap={{ scale: 0.95 }}
                     className="inline-flex items-center gap-2 rounded-full bg-primary px-8 py-4 font-medium text-white shadow-lg transition-all hover:opacity-90"
                   >
                     <ShoppingCart className="h-5 w-5" />
@@ -602,9 +525,7 @@ export default function CraftingProcessPage() {
                   </motion.button>
                 </Link>
                 <Link href="/custom-design">
-                  <motion.button
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                  <motion.button              whileHover={{ scale: 1.05 }}              whileTap={{ scale: 0.95 }}
                     className="inline-flex items-center gap-2 rounded-full border-2 border-primary px-8 py-4 font-medium text-primary transition-all hover:bg-primary/5"
                   >
                     <Hammer className="h-5 w-5" />

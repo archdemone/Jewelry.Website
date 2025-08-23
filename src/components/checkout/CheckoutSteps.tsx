@@ -32,8 +32,7 @@ export function CheckoutSteps({
               if (onStepClick && isCompleted) onStepClick(step);
             }}
           >
-            <span
-              className={cn(
+            <span              className={cn(
                 'flex h-6 w-6 items-center justify-center rounded-full border',
                 isCompleted
                   ? 'border-green-500 bg-green-500 text-white'

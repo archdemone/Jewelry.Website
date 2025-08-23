@@ -127,9 +127,7 @@ export default function NewsletterPopup({
                 <Input
                   id="newsletter-email"
                   type="email"
-                  placeholder="Enter your email address"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email address"              value={email}              onChange={(e) => setEmail(e.target.value)}
                   className="w-full"
                   required
                 />
@@ -137,8 +135,7 @@ export default function NewsletterPopup({
 
               <div className="flex flex-col gap-2">
                 <Button
-                  type="submit"
-                  disabled={isSubmitting}
+                  type="submit"              disabled={isSubmitting}
                   className="w-full bg-gradient-to-r from-primary to-orange-500 text-white hover:opacity-90"
                 >
                   {isSubmitting ? (
@@ -156,8 +153,7 @@ export default function NewsletterPopup({
 
                 <Button
                   type="button"
-                  variant="outline"
-                  onClick={() => setOpen(false)}
+                  variant="outline"              onClick={() => setOpen(false)}
                   className="w-full border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
                 >
                   Maybe Later

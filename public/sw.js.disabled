@@ -1,0 +1,19 @@
+// Minimal service worker - does absolutely nothing
+console.log('SW: Minimal worker loaded - doing nothing');
+
+// Install - do nothing
+self.addEventListener('install', () => {
+  console.log('SW: Install - doing nothing');
+  self.skipWaiting();
+});
+
+// Activate - do nothing  
+self.addEventListener('activate', () => {
+  console.log('SW: Activate - doing nothing');
+  self.clients.claim();
+});
+
+// Fetch - do nothing, let all requests pass through
+self.addEventListener('fetch', () => {
+  // Do absolutely nothing
+});

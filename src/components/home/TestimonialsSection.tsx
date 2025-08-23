@@ -45,19 +45,11 @@ const TestimonialsSection = () => {
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {testimonials.map((testimonial, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.2 }}
-              whileHover={{ y: -5 }}
+            <motion.div              key={index}              initial={{ opacity: 0, y: 20 }}              whileInView={{ opacity: 1, y: 0 }}              viewport={{ once: true }}              transition={{ delay: index * 0.2 }}              whileHover={{ y: -5 }}
               className="relative rounded-xl bg-gray-50 p-8"
             >
               {/* Quote Icon */}
-              <motion.div
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.6 }}
+              <motion.div              whileHover={{ rotate: 360 }}              transition={{ duration: 0.6 }}
                 className="absolute -top-4 left-8 flex h-8 w-8 items-center justify-center rounded-full bg-primary"
               >
                 <Quote className="h-4 w-4 text-white" />
@@ -97,9 +89,7 @@ const TestimonialsSection = () => {
               Every ring tells a story. Let us help you create yours with a handcrafted piece that
               will become part of your family's legacy.
             </p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+            <motion.button              whileHover={{ scale: 1.05 }}              whileTap={{ scale: 0.95 }}
               className="rounded-full bg-primary px-8 py-4 font-medium text-white shadow-lg transition-all duration-300 hover:shadow-xl"
             >
               Start Your Ring Journey

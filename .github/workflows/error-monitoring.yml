@@ -1,0 +1,101 @@
+name: Error Monitoring & Quality Checks
+
+on:
+  push:
+    branches: [main, sandbox]
+  pull_request:
+    branches: [main, sandbox]
+
+jobs:
+  error-monitoring:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [20]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Setup Playwright
+      run: npx playwright install --with-deps
+
+    - name: Generate Prisma client
+      run: npx prisma generate
+
+    - name: TypeScript Type Check
+      run: npm run type-check:strict
+
+    - name: ESLint Check
+      run: npm run lint
+
+    - name: Build Check
+      run: npm run build
+
+    - name: Pre-commit Error Check
+      run: node scripts/pre-commit-error-check.js
+
+    - name: Start Development Server
+      run: |
+        npm run dev:safe &
+        sleep 10
+
+    - name: Health Check
+      run: npm run health:check
+
+    - name: Console Error Check (Baseline)
+      run: npm run console:check:baseline
+      continue-on-error: false
+
+    - name: Console Error Check (Sandbox)
+      run: npm run console:check:sandbox
+      continue-on-error: false
+
+    - name: Accessibility Check
+      run: |
+        npx playwright test --grep "comprehensive accessibility"
+      continue-on-error: true
+
+    - name: React Warnings Check
+      run: |
+        npx playwright test --grep "React warnings in admin panel"
+      continue-on-error: false
+
+    - name: Performance Check
+      run: |
+        npx lighthouse http://localhost:3000 --output=json --output-path=./lighthouse-results.json --only-categories=performance,accessibility,best-practices,seo --chrome-flags="--headless --no-sandbox --disable-dev-shm-usage"
+      continue-on-error: true
+
+    - name: Upload Lighthouse Results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: lighthouse-results
+        path: ./lighthouse-results.json
+
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Security Scan
+      run: |
+        npm audit --audit-level high
+      continue-on-error: true
+
+    - name: Check for Secrets
+      run: |
+        # Check for common secret patterns
+        if grep -r "API_KEY\|SECRET\|PASSWORD\|TOKEN" src/ --include="*.ts" --include="*.tsx" --include="*.js" --include="*.jsx" | grep -v "example\|test\|mock"; then
+          echo "Potential secrets found in source code!"
+          exit 1
+        fi

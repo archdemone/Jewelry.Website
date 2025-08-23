@@ -126,20 +126,16 @@ export default function CustomDesignPage() {
         <div className="mb-8">
           <div className="flex items-center justify-between">
             {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className={`flex items-center ${i < 3 ? 'flex-1' : ''}`}
+              <div              key={i}              className={`flex items-center ${i < 3 ? 'flex-1' : ''}`}
               >
-                <div
-                  className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${
+                <div              className={`w-10 h-10 rounded-full flex items-center justify-center font-semibold ${
                     step >= i ? 'bg-gold-500 text-white' : 'bg-gray-200 text-gray-600'
                   }`}
                 >
                   {i}
                 </div>
                 {i < 3 && (
-                  <div
-                    className={`flex-1 h-1 mx-2 ${
+                  <div              className={`flex-1 h-1 mx-2 ${
                       step > i ? 'bg-gold-500' : 'bg-gray-200'
                     }`}
                   />
@@ -158,9 +154,7 @@ export default function CustomDesignPage() {
         <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6">
           {/* Step 1: Contact Information */}
           {step === 1 && (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
+            <motion.div              initial={{ opacity: 0, x: 20 }}              animate={{ opacity: 1, x: 0 }}
               className="space-y-6"
             >
               <h2 className="text-xl font-semibold text-gray-900 mb-4">Contact Information</h2>
@@ -171,9 +165,7 @@ export default function CustomDesignPage() {
                 </label>
                 <input
                   type="text"
-                  required
-                  value={formData.name}
-                  onChange={(e) => handleInputChange('name', e.target.value)}
+                  required              value={formData.name}              onChange={(e) => handleInputChange('name', e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                 />
               </div>
@@ -184,9 +176,7 @@ export default function CustomDesignPage() {
                 </label>
                 <input
                   type="email"
-                  required
-                  value={formData.email}
-                  onChange={(e) => handleInputChange('email', e.target.value)}
+                  required              value={formData.email}              onChange={(e) => handleInputChange('email', e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                 />
               </div>
@@ -196,18 +186,14 @@ export default function CustomDesignPage() {
                   Phone Number
                 </label>
                 <input
-                  type="tel"
-                  value={formData.phone}
-                  onChange={(e) => handleInputChange('phone', e.target.value)}
+                  type="tel"              value={formData.phone}              onChange={(e) => handleInputChange('phone', e.target.value)}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                 />
               </div>
 
               <div className="flex justify-end">
                 <button
-                  type="button"
-                  onClick={nextStep}
-                  disabled={!formData.name || !formData.email}
+                  type="button"              onClick={nextStep}              disabled={!formData.name || !formData.email}
                   className="px-6 py-2 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Next Step
@@ -218,9 +204,7 @@ export default function CustomDesignPage() {
 
           {/* Step 2: Design Details */}
           {step === 2 && (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
+            <motion.div              initial={{ opacity: 0, x: 20 }}              animate={{ opacity: 1, x: 0 }}
               className="space-y-6"
             >
               <h2 className="text-xl font-semibold text-gray-900 mb-4">Design Details</h2>
@@ -232,9 +216,7 @@ export default function CustomDesignPage() {
                     Ring Type *
                   </label>
                   <select
-                    required
-                    value={formData.ringType}
-                    onChange={(e) => handleInputChange('ringType', e.target.value)}
+                    required              value={formData.ringType}              onChange={(e) => handleInputChange('ringType', e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                   >
                     <option value="">Select ring type</option>
@@ -250,9 +232,7 @@ export default function CustomDesignPage() {
                     Material *
                   </label>
                   <select
-                    required
-                    value={formData.material}
-                    onChange={(e) => handleInputChange('material', e.target.value)}
+                    required              value={formData.material}              onChange={(e) => handleInputChange('material', e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                   >
                     <option value="">Select material</option>
@@ -267,9 +247,7 @@ export default function CustomDesignPage() {
                     <Gem className="inline h-4 w-4 mr-1" />
                     Gem Color
                   </label>
-                  <select
-                    value={formData.gemColor}
-                    onChange={(e) => handleInputChange('gemColor', e.target.value)}
+                  <select              value={formData.gemColor}              onChange={(e) => handleInputChange('gemColor', e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                   >
                     <option value="">No gems / Select color</option>
@@ -283,11 +261,8 @@ export default function CustomDesignPage() {
                   <label className="block text-sm font-medium text-gray-700 mb-1">
                     Gem Density
                   </label>
-                  <select
-                    value={formData.gemDensity}
-                    onChange={(e) => handleInputChange('gemDensity', e.target.value)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                    disabled={!formData.gemColor}
+                  <select              value={formData.gemDensity}              onChange={(e) => handleInputChange('gemDensity', e.target.value)}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"              disabled={!formData.gemColor}
                   >
                     <option value="">Select density</option>
                     {gemDensities.map(density => (
@@ -303,9 +278,7 @@ export default function CustomDesignPage() {
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g., 7, 8.5"
-                    value={formData.ringSize}
-                    onChange={(e) => handleInputChange('ringSize', e.target.value)}
+                    placeholder="e.g., 7, 8.5"              value={formData.ringSize}              onChange={(e) => handleInputChange('ringSize', e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                   />
                 </div>
@@ -316,9 +289,7 @@ export default function CustomDesignPage() {
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g., 6, 8"
-                    value={formData.ringWidth}
-                    onChange={(e) => handleInputChange('ringWidth', e.target.value)}
+                    placeholder="e.g., 6, 8"              value={formData.ringWidth}              onChange={(e) => handleInputChange('ringWidth', e.target.value)}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                   />
                 </div>
@@ -329,10 +300,7 @@ export default function CustomDesignPage() {
                   Design Description *
                 </label>
                 <textarea
-                  required
-                  rows={4}
-                  value={formData.description}
-                  onChange={(e) => handleInputChange('description', e.target.value)}
+                  required              rows={4}              value={formData.description}              onChange={(e) => handleInputChange('description', e.target.value)}
                   placeholder="Please describe your vision for the custom ring design..."
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                 />
@@ -346,8 +314,7 @@ export default function CustomDesignPage() {
                 <input
                   type="file"
                   multiple
-                  accept="image/*"
-                  onChange={handleFileUpload}
+                  accept="image/*"              onChange={handleFileUpload}
                   className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                 />
                 {formData.referenceImages.length > 0 && (
@@ -359,16 +326,13 @@ export default function CustomDesignPage() {
 
               <div className="flex justify-between">
                 <button
-                  type="button"
-                  onClick={prevStep}
+                  type="button"              onClick={prevStep}
                   className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
                 >
                   Previous
                 </button>
                 <button
-                  type="button"
-                  onClick={nextStep}
-                  disabled={!formData.ringType || !formData.material || !formData.description}
+                  type="button"              onClick={nextStep}              disabled={!formData.ringType || !formData.material || !formData.description}
                   className="px-6 py-2 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Review Order
@@ -379,9 +343,7 @@ export default function CustomDesignPage() {
 
           {/* Step 3: Review */}
           {step === 3 && (
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
+            <motion.div              initial={{ opacity: 0, x: 20 }}              animate={{ opacity: 1, x: 0 }}
               className="space-y-6"
             >
               <h2 className="text-xl font-semibold text-gray-900 mb-4">Review Your Request</h2>
@@ -463,15 +425,13 @@ export default function CustomDesignPage() {
 
               <div className="flex justify-between">
                 <button
-                  type="button"
-                  onClick={prevStep}
+                  type="button"              onClick={prevStep}
                   className="px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors"
                 >
                   Edit Details
                 </button>
                 <button
-                  type="submit"
-                  disabled={isSubmitting}
+                  type="submit"              disabled={isSubmitting}
                   className="px-6 py-3 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
                 >
                   {isSubmitting ? (

@@ -11,7 +11,7 @@ const CategoryShowcase = () => {
       name: "Women's Rings",
       description: 'Elegant silver inlay rings with precious gems',
       image: '/images/MyImages/IMG-20250816-WA0000.jpg',
-      href: '/products/womens#products',
+      href: '/products/womens#products-section',
       featured: true,
     },
     {
@@ -19,7 +19,7 @@ const CategoryShowcase = () => {
       name: "Men's Rings",
       description: 'Stunning Damascus steel wedding bands',
       image: '/images/MyImages/IMG-20250816-WA0001.jpg',
-      href: '/products/mens#products',
+      href: '/products/mens#products-section',
       featured: false,
     },
     {
@@ -27,7 +27,7 @@ const CategoryShowcase = () => {
       name: 'Unisex Rings',
       description: 'Lightweight carbon rings for active lifestyles',
       image: '/images/MyImages/IMG-20250816-WA0002.jpg',
-      href: '/products/unisex#products',
+      href: '/products/unisex#products-section',
       featured: false,
     },
     {
@@ -35,7 +35,7 @@ const CategoryShowcase = () => {
       name: 'Inlay Rings',
       description: 'Handcrafted rings with gemstone inlays',
       image: '/images/MyImages/IMG-20250816-WA0000.jpg',
-      href: '/products/inlay#products',
+      href: '/products/inlay#products-section',
       featured: false,
     },
     {
@@ -43,7 +43,7 @@ const CategoryShowcase = () => {
       name: 'Wedding Rings',
       description: 'Timeless wedding bands and engagement rings',
       image: '/images/MyImages/IMG-20250816-WA0001.jpg',
-      href: '/products/wedding#products',
+      href: '/products/wedding#products-section',
       featured: false,
     },
     {
@@ -51,74 +51,69 @@ const CategoryShowcase = () => {
       name: 'All Rings',
       description: 'Complete collection of handcrafted rings',
       image: '/images/MyImages/IMG-20250816-WA0000.jpg',
-      href: '/products#products',
+      href: '/products#products-section',
       featured: false,
     },
   ];
 
   return (
-    <section className="bg-gray-50 py-20">
-      <div className="container">
+    <section className="bg-gradient-to-br from-gray-50 to-white py-24">
+      <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          className="mb-12 text-center"
+          className="mb-16 text-center"
         >
-          <h2 className="mb-4 font-serif text-4xl text-orange-600">Explore Our Collections</h2>
-          <p className="text-xl text-gray-600">
-            Discover handcrafted rings for every occasion and style
+          <h2 className="mb-6 font-serif text-5xl font-bold text-gray-900">
+            Explore Our Collections
+          </h2>
+          <p className="mx-auto max-w-2xl text-xl text-gray-600">
+            Discover handcrafted rings for every occasion and style. Each piece tells a unique story of craftsmanship and beauty.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {categories.map((category, index) => (
-            <motion.div
-              key={category.id}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              whileHover={{ y: -8 }}
-              className="group relative h-full overflow-hidden rounded-lg bg-white shadow-lg transition-all duration-300 hover:shadow-xl"
+            <motion.div key={category.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} whileHover={{ y: -8 }}
+              className="group relative h-full overflow-hidden rounded-2xl bg-white shadow-lg transition-all duration-300 hover:shadow-2xl"
             >
               <Link href={category.href} className="block h-full">
                 <div className="relative aspect-[4/3] overflow-hidden">
-                  <Image
-                    src={category.image}
-                    alt={category.name}
+                  <Image src={category.image} alt={category.name}
                     fill
-                    className="object-cover transition-transform duration-300 group-hover:scale-110"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     placeholder="blur"
                     blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
                   />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                   {category.featured && (
                     <div className="absolute left-4 top-4">
-                      <span className="rounded-full bg-primary px-3 py-1 text-sm font-medium text-white">
+                      <span className="rounded-full bg-gradient-to-r from-orange-500 to-red-500 px-4 py-2 text-sm font-semibold text-white shadow-lg">
                         Featured
                       </span>
                     </div>
                   )}
                 </div>
-                {/* Fixed height container for content to prevent layout shifts */}
-                <div className="flex h-[120px] flex-col justify-between p-6">
+                <div className="flex h-[140px] flex-col justify-between p-8">
                   <div>
-                    <h3 className="mb-2 text-xl font-semibold text-gray-900">{category.name}</h3>
-                    <p className="text-gray-600">{category.description}</p>
+                    <h3 className="mb-3 text-2xl font-bold text-gray-900 group-hover:text-orange-600 transition-colors">
+                      {category.name}
+                    </h3>
+                    <p className="text-gray-600 leading-relaxed">{category.description}</p>
                   </div>
-                  <div className="mt-4 flex items-center text-primary group-hover:opacity-80">
-                    <span className="font-medium">Explore Collection</span>
+                  <div className="mt-6 flex items-center text-orange-600 group-hover:text-orange-700 transition-colors">
+                    <span className="font-semibold">Explore Collection</span>
                     <svg
-                      className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
+                      className="ml-3 h-5 w-5 transition-transform duration-300 group-hover:translate-x-2"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
                     >
                       <path
                         strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
+                        strokeLinejoin="round" strokeWidth={2}
                         d="M9 5l7 7-7 7"
                       />
                     </svg>

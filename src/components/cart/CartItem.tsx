@@ -64,12 +64,8 @@ export default function CartItem({
         {/* Product Image */}
         <div className="relative flex-shrink-0">
           <div className="h-32 w-32 overflow-hidden rounded-lg bg-gray-100">
-            <SmartImage
-              srcs={image ? [image, ...fallbacks] : fallbacks}
-              alt={name}
-              className="h-full w-full object-cover"
-              width={128}
-              height={128}
+            <SmartImage              srcs={image ? [image, ...fallbacks] : fallbacks}              alt={name}
+              className="h-full w-full object-cover"              width={128}              height={128}
             />
           </div>
           {/* Discount Badge */}
@@ -155,9 +151,7 @@ export default function CartItem({
               <div className="flex items-center gap-2">
                 <Button
                   variant="outline"
-                  size="sm"
-                  onClick={() => handleQuantityChange(quantity - 1)}
-                  disabled={isUpdating || quantity <= 1}
+                  size="sm"              onClick={() => handleQuantityChange(quantity - 1)}              disabled={isUpdating || quantity <= 1}
                   className="h-8 w-8 p-0"
                 >
                   <Minus className="h-3 w-3" />
@@ -165,9 +159,7 @@ export default function CartItem({
                 <span className="w-8 text-center text-sm font-medium">{quantity}</span>
                 <Button
                   variant="outline"
-                  size="sm"
-                  onClick={() => handleQuantityChange(quantity + 1)}
-                  disabled={isUpdating}
+                  size="sm"              onClick={() => handleQuantityChange(quantity + 1)}              disabled={isUpdating}
                   className="h-8 w-8 p-0"
                 >
                   <Plus className="h-3 w-3" />

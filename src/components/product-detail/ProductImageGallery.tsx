@@ -39,22 +39,14 @@ export default function ProductImageGallery({ images, productName }: ProductImag
         <div className="lg:col-span-4">
           <div className="grid grid-cols-4 gap-2">
             {displayImages.map((image, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedImage(index)}
-                className={`aspect-square overflow-hidden rounded-lg border-2 transition-colors ${
+              <button              key={index}              onClick={() => setSelectedImage(index)}              className={`aspect-square overflow-hidden rounded-lg border-2 transition-colors ${
                   selectedImage === index
                     ? 'border-primary'
                     : 'border-gray-200 hover:border-gray-300'
                 }`}
               >
-                <SmartImage
-                  srcs={[image]}
-                  alt={`${safeProductName} - Thumbnail ${index + 1}`}
-                  className="h-full w-full"
-                  width={240}
-                  height={240}
-                  quality={90}
+                <SmartImage              srcs={[image]}              alt={`${safeProductName} - Thumbnail ${index + 1}`}
+                  className="h-full w-full"              width={240}              height={240}              quality={90}
                 />
               </button>
             ))}

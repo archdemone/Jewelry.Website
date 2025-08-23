@@ -8,15 +8,9 @@ import { ConditionalFooter } from '@/components/layout/ConditionalFooter';
 import { AuthSessionProvider } from '@/lib/auth/session-provider';
 import { CartProvider } from '@/components/providers/CartProvider';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
-// import { Toaster } from 'react-hot-toast';
-import dynamic from 'next/dynamic';
-import { ServiceWorkerRegistration } from '@/components/ServiceWorkerRegistration';
 import { SimpleToastContainer } from '@/components/ui/SimpleToast';
-import NewsletterPopup from '@/components/features/NewsletterPopup';
+// import NewsletterPopup from '@/components/features/NewsletterPopup';
 import CookieBanner from '@/components/features/CookieBanner';
-
-// Export Web Vitals reporting function
-export { reportWebVitals } from './vitals';
 
 // Optimize font loading
 const inter = Inter({
@@ -36,48 +30,6 @@ const playfair = Playfair_Display({
   fallback: ['Georgia', 'serif'],
   adjustFontFallback: false,
 });
-
-// Dynamic imports for non-critical components with defer loading
-// const NewsletterPopup = dynamic(() => import('@/components/features/NewsletterPopup'), {
-//   ssr: false,
-//   loading: () => null,
-// });
-
-// const CookieBanner = dynamic(() => import('@/components/features/CookieBanner'), {
-//   ssr: false,
-//   loading: () => null
-// });
-
-// const Toaster = dynamic(() => import('react-hot-toast').then(mod => ({ default: mod.Toaster })), {
-//   ssr: false,
-//   loading: () => null,
-// });
-
-// const LiveChat = dynamic(() => import('@/components/features/LiveChat'), {
-//   ssr: false,
-//   loading: () => null,
-// });
-
-// const ExitIntentPopup = dynamic(() => import('@/components/features/ExitIntentPopup'), {
-//   ssr: false,
-//   loading: () => null,
-// });
-
-// Development helper - only load in development
-// const DevReloadHelper = dynamic(
-//   () =>
-//     import('@/components/dev/DevReloadHelper').then((mod) => ({ default: mod.DevReloadHelper })),
-//   {
-//     ssr: false,
-//     loading: () => null,
-//   },
-// );
-
-// Defer non-critical components until after page load
-// const DeferredComponents = dynamic(() => import('@/components/DeferredComponents'), {
-//   ssr: false,
-//   loading: () => null,
-// });
 
 export const metadata: Metadata = {
   title: {
@@ -161,43 +113,50 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="//fonts.googleapis.com" />
         <link rel="dns-prefetch" href="//fonts.gstatic.com" />
         
-        {/* Preload critical images */}
-        <link rel="preload" as="image" href="/images/header/hero-1.jpg" type="image/webp" />
-        
-
-        
-        {/* Preload service worker */}
-        <link rel="preload" href="/sw.js" as="script" />
+        {/* Preload critical images - removed to avoid duplicate preload warning */}
+        {/* Preload service worker - removed to avoid duplicate preload warning */}
         
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="theme-color" content="#d4af37" />
+        <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="J&M Jewelry" />
         <link rel="apple-touch-icon" href="/images/icon-192x192.png" />
         <link rel="manifest" href="/manifest.webmanifest" />
+        {/* Force cache invalidation with cache-busting query parameter */}
+        <meta name="cache-control" content="no-cache, no-store, must-revalidate" />
+        <meta name="pragma" content="no-cache" />
+        <meta name="expires" content="0" />
+        {/* Manifest and SW disabled to avoid errors */}
       </head>
       <body className={`${inter.className} antialiased`}>
-        {/* Temporarily simplified layout to identify the issue */}
-        <div className="min-h-screen">
-          <ErrorBoundary>
-            <AuthSessionProvider>
-              <CartProvider>
-                <Header />
-                <main>{children}</main>
-                <ConditionalFooter />
-                <SimpleToastContainer />
-                <ServiceWorkerRegistration />
-                <NewsletterPopup />
-                <CookieBanner />
-                {/* <LiveChat /> */}
-                {/* <ExitIntentPopup /> */}
-                {/* <DevReloadHelper /> */}
-                {/* <DeferredComponents /> */}
-              </CartProvider>
-            </AuthSessionProvider>
-          </ErrorBoundary>
-        </div>
+        {/* Skip Links for Accessibility */}
+        <a 
+          href="#main-content" 
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-black text-white px-4 py-2 rounded z-50"
+        >
+          Skip to main content
+        </a>
+        <a 
+          href="#navigation" 
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-black text-white px-4 py-2 rounded z-50 mt-12"
+        >
+          Skip to navigation
+        </a>
+        
+        <AuthSessionProvider>
+          <CartProvider>
+            <ErrorBoundary>
+              <Header />
+              <main id="main-content" role="main">{children}</main>
+              <ConditionalFooter />
+              <SimpleToastContainer />
+              {/* <NewsletterPopup /> */}
+              <CookieBanner />
+            </ErrorBoundary>
+          </CartProvider>
+        </AuthSessionProvider>
       </body>
     </html>
   );

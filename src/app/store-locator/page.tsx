@@ -48,9 +48,7 @@ export default function StoreLocatorPage() {
           <aside className="md:col-span-1">
             <div className="flex gap-2">
               <Input
-                placeholder="Search by city or ZIP"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search by city or ZIP"              value={query}              onChange={(e) => setQuery(e.target.value)}
               />
               <Button variant="outline" onClick={useMyLocation}>
                 Use my location
@@ -66,8 +64,7 @@ export default function StoreLocatorPage() {
                   <div className="mt-1 text-xs text-gray-500">
                     Services: {s.services.join(', ')}
                   </div>
-                  <a
-                    href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(s.address)}`}
+                  <a              href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(s.address)}`}
                     className="mt-2 inline-block text-secondary underline"
                   >
                     Directions

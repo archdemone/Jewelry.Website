@@ -40,11 +40,15 @@
       8
     ],
     "isReadyToShip": true,
+    "isInStock": true,
     "rating": 4.8,
     "reviews": 24,
+    "status": "active",
     "badge": "Ready to Ship",
     "slug": "womens-silver-inlay-ring-dark-red",
-    "description": "Beautiful handcrafted silver set of rings with Mixed Red gem inlay and other with Mixed Blue . Perfect for couples in 'Opposites Attract' mind set."
+    "description": "Beautiful handcrafted silver set of rings with Mixed Red gem inlay and other with Mixed Blue . Perfect for couples in 'Opposites Attract' mind set.",
+    "isFeatured": true,
+    "featuredOrder": 1
   },
   {
     "id": 2,
@@ -52,10 +56,10 @@
     "price": 95,
     "originalPrice": 110,
     "images": [
-      "/images/MyImages/IMG-20250816-WA0000.jpg"
+      "/images/products/IMG-20250816-WA0013.jpg"
     ],
     "material": "Gold",
-    "gemColor": "Purple",
+    "gemColor": "Green",
     "gemDensity": "large",
     "gemVariation": "Bright",
     "mixColors": [],
@@ -83,11 +87,15 @@
       10
     ],
     "isReadyToShip": true,
+    "isInStock": true,
     "rating": 4.9,
     "reviews": 15,
+    "status": "active",
     "badge": "Ready to Ship",
     "slug": "womens-gold-statement-ring-bright-purple",
-    "description": "Elegant gold statement ring with bright purple gemstone. A stunning piece for special occasions."
+    "description": "Elegant gold statement ring with bright green gemstone. A stunning piece for special occasions.",
+    "isFeatured": true,
+    "featuredOrder": 2
   },
   {
     "id": 3,
@@ -95,7 +103,7 @@
     "price": 55,
     "originalPrice": null,
     "images": [
-      "/images/MyImages/IMG-20250816-WA0000.jpg"
+      "/images/MyImages/IMG-20250816-WA0017.jpg"
     ],
     "material": "Silver",
     "gemColor": "Blue",
@@ -141,13 +149,15 @@
     "price": 85,
     "originalPrice": null,
     "images": [
-      "/images/MyImages/IMG-20250816-WA0001.jpg"
+      "/images/MyImages/IMG-20250816-WA0020.jpg"
     ],
     "material": "Gold",
-    "gemColor": "Custom",
+    "gemColor": "Red",
     "gemDensity": "medium",
     "gemVariation": "Bright",
-    "mixColors": [],
+    "mixColors": [
+      "Yellow"
+    ],
     "category": "Womens",
     "subCategory": "Wedding",
     "ringSizes": {
@@ -176,20 +186,20 @@
     "reviews": 42,
     "badge": "Ready to Ship",
     "slug": "womens-gold-wedding-band-classic",
-    "description": "Timeless gold wedding band with classic elegance. Perfect for your special day."
+    "description": "Timeless gold wedding band with Red and mixed Yellow, classic elegance. Perfect for your special day."
   },
   {
     "id": 5,
-    "name": "Men's Damascus Wedding Ring - Bright Blue",
+    "name": "Men's Damascus Wedding Ring - Blue",
     "price": 75,
     "originalPrice": null,
     "images": [
-      "/images/MyImages/IMG-20250816-WA0001.jpg"
+      "/images/MyImages/IMG-20250816-WA0029.jpg"
     ],
     "material": "Damascus",
     "gemColor": "Blue",
     "gemDensity": "large",
-    "gemVariation": "Bright",
+    "gemVariation": "Dark",
     "mixColors": [],
     "category": "Mens",
     "subCategory": "Wedding",
@@ -219,7 +229,7 @@
     "reviews": 18,
     "badge": "Ready to Ship",
     "slug": "mens-damascus-wedding-ring-bright-blue",
-    "description": "Stunning Damascus steel wedding ring with bright blue gem inlay. A unique and durable choice for your special day."
+    "description": "Stunning Damascus steel wedding ring with Dark blue gem inlay. A unique and durable choice for your special day."
   },
   {
     "id": 6,
@@ -227,13 +237,15 @@
     "price": 70,
     "originalPrice": 80,
     "images": [
-      "/images/MyImages/IMG-20250816-WA0001.jpg"
+      "/images/MyImages/category-statement-rings.jpg"
     ],
     "material": "Titanium",
     "gemColor": "Green",
     "gemDensity": "medium",
     "gemVariation": "Dark",
-    "mixColors": [],
+    "mixColors": [
+      "Black"
+    ],
     "category": "Mens",
     "subCategory": "Signet Ring",
     "ringSizes": {
@@ -262,7 +274,7 @@
     "reviews": 22,
     "badge": "Ready to Ship",
     "slug": "mens-titanium-signet-ring-dark-green",
-    "description": "Classic titanium signet ring with dark green gemstone. Perfect for the modern gentleman."
+    "description": "Classic titanium signet ring with dark green centre gemstone inlay. Perfect for the modern gentleman."
   },
   {
     "id": 7,
@@ -270,7 +282,7 @@
     "price": 65,
     "originalPrice": null,
     "images": [
-      "/images/MyImages/IMG-20250816-WA0001.jpg"
+      "/images/MyImages/category-stackable-rings.jpg"
     ],
     "material": "Carbon",
     "gemColor": "Red",
@@ -316,13 +328,15 @@
     "price": 105,
     "originalPrice": 120,
     "images": [
-      "/images/MyImages/IMG-20250816-WA0001.jpg"
+      "/images/MyImages/category-engagement-rings.jpg"
     ],
     "material": "Stainless Steel",
-    "gemColor": "Custom",
-    "gemDensity": "large",
+    "gemColor": "Green",
+    "gemDensity": "small",
     "gemVariation": "Bright",
-    "mixColors": [],
+    "mixColors": [
+      "Green"
+    ],
     "category": "Mens",
     "subCategory": "Wedding",
     "ringSizes": {
@@ -351,7 +365,7 @@
     "reviews": 38,
     "badge": "Ready to Ship",
     "slug": "mens-platinum-wedding-ring-modern",
-    "description": "Modern platinum wedding ring with contemporary design. A symbol of lasting love."
+    "description": "Modern platinum Bright green wedding ring with contemporary design. A symbol of lasting love."
   },
   {
     "id": 9,
@@ -359,7 +373,7 @@
     "price": 60,
     "originalPrice": 70,
     "images": [
-      "/images/MyImages/IMG-20250816-WA0002.jpg"
+      "/images/MyImages/category-wedding-bands.jpg"
     ],
     "material": "Carbon",
     "gemColor": "Green",
@@ -367,7 +381,8 @@
     "gemVariation": "Mixed",
     "mixColors": [
       "Green",
-      "Blue"
+      "Blue",
+      "Red"
     ],
     "category": "Unisex",
     "subCategory": "Inlay Ring",
@@ -396,7 +411,7 @@
     "reviews": 31,
     "badge": "Ready to Ship",
     "slug": "unisex-carbon-inlay-ring-mixed-green",
-    "description": "Lightweight carbon ring with mixed green and blue gem inlay. Perfect for active lifestyles."
+    "description": "Lightweight carbon ring with mixed green, red and blue gem inlay. Perfect for active lifestyles."
   },
   {
     "id": 10,
@@ -447,7 +462,8 @@
     "price": 70,
     "originalPrice": null,
     "images": [
-      "/images/MyImages/IMG-20250816-WA0002.jpg"
+      "/images/MyImages/IMG-20250816-WA0002.jpg",
+      "/images/MyImages/IMG-20250816-WA0024.jpg"
     ],
     "material": "Tungsten",
     "gemColor": "Blue",

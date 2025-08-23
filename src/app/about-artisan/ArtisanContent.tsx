@@ -97,10 +97,7 @@ export default function ArtisanContent() {
 
           <div className="space-y-10">
             {/* 2015 - The Beginning */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+            <motion.div              initial={{ opacity: 0, x: -30 }}              whileInView={{ opacity: 1, x: 0 }}              viewport={{ once: true }}
               className="flex items-start gap-6"
             >
               <div className="w-24 flex-shrink-0 text-right">
@@ -119,8 +116,7 @@ export default function ArtisanContent() {
                       alt="Early jewelry experiments from 2015"
                       fill
                       className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 400px"
-                      priority={false}
+                      sizes="(max-width: 768px) 100vw, 400px"              priority={false}
                     />
                   </div>
                 </div>
@@ -128,10 +124,7 @@ export default function ArtisanContent() {
             </motion.div>
 
             {/* 2020 - First Success */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+            <motion.div              initial={{ opacity: 0, x: 30 }}              whileInView={{ opacity: 1, x: 0 }}              viewport={{ once: true }}
               className="flex items-start gap-6"
             >
               <div className="w-24 flex-shrink-0 text-right">
@@ -152,8 +145,7 @@ export default function ArtisanContent() {
                       alt="First gem inlay rings with carbon fiber"
                       fill
                       className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 400px"
-                      priority={false}
+                      sizes="(max-width: 768px) 100vw, 400px"              priority={false}
                     />
                   </div>
                 </div>
@@ -161,10 +153,7 @@ export default function ArtisanContent() {
             </motion.div>
 
             {/* 2023-2025 - The Challenge */}
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+            <motion.div              initial={{ opacity: 0, x: -30 }}              whileInView={{ opacity: 1, x: 0 }}              viewport={{ once: true }}
               className="flex items-start gap-6"
             >
               <div className="w-24 flex-shrink-0 text-right">
@@ -191,10 +180,7 @@ export default function ArtisanContent() {
             </motion.div>
 
             {/* 2025 - New Beginning */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+            <motion.div              initial={{ opacity: 0, x: 30 }}              whileInView={{ opacity: 1, x: 0 }}              viewport={{ once: true }}
               className="flex items-start gap-6"
             >
               <div className="w-24 flex-shrink-0 text-right">
@@ -237,10 +223,7 @@ export default function ArtisanContent() {
           </motion.div>
 
           <div className="grid gap-6 md:grid-cols-2">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+            <motion.div              initial={{ opacity: 0, x: -20 }}              whileInView={{ opacity: 1, x: 0 }}              viewport={{ once: true }}
             >
               <div className="relative h-64 w-full overflow-hidden rounded-lg shadow-lg">
                 <Image
@@ -248,8 +231,7 @@ export default function ArtisanContent() {
                   alt="My bedroom workshop setup"
                   fill
                   className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 600px"
-                  priority={false}
+                  sizes="(max-width: 768px) 100vw, 600px"              priority={false}
                 />
               </div>
               <p className="mt-2 text-center text-sm text-gray-500">
@@ -257,10 +239,7 @@ export default function ArtisanContent() {
               </p>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
+            <motion.div              initial={{ opacity: 0, x: 20 }}              whileInView={{ opacity: 1, x: 0 }}              viewport={{ once: true }}
             >
               <div className="relative h-64 w-full overflow-hidden rounded-lg shadow-lg">
                 <Image
@@ -268,8 +247,7 @@ export default function ArtisanContent() {
                   alt="Ring making tools and materials"
                   fill
                   className="object-cover"
-                  sizes="(max-width: 768px) 100vw, 600px"
-                  priority={false}
+                  sizes="(max-width: 768px) 100vw, 600px"              priority={false}
                 />
               </div>
               <p className="mt-2 text-center text-sm text-gray-500">
@@ -306,11 +284,7 @@ export default function ArtisanContent() {
 
           <div className="grid gap-6 md:grid-cols-3">
             {/* Affordable Pricing */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
+            <motion.div              initial={{ opacity: 0, y: 20 }}              whileInView={{ opacity: 1, y: 0 }}              viewport={{ once: true }}              transition={{ delay: 0.1 }}
               className="rounded-xl bg-white p-6 shadow-md"
             >
               <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
@@ -325,11 +299,7 @@ export default function ArtisanContent() {
             </motion.div>
 
             {/* Local & Transparent */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
+            <motion.div              initial={{ opacity: 0, y: 20 }}              whileInView={{ opacity: 1, y: 0 }}              viewport={{ once: true }}              transition={{ delay: 0.2 }}
               className="rounded-xl bg-white p-6 shadow-md"
             >
               <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-100">
@@ -344,11 +314,7 @@ export default function ArtisanContent() {
             </motion.div>
 
             {/* Growing & Learning */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.3 }}
+            <motion.div              initial={{ opacity: 0, y: 20 }}              whileInView={{ opacity: 1, y: 0 }}              viewport={{ once: true }}              transition={{ delay: 0.3 }}
               className="rounded-xl bg-white p-6 shadow-md"
             >
               <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-purple-100">
@@ -457,18 +423,14 @@ export default function ArtisanContent() {
             </p>
             <div className="flex flex-col justify-center gap-4 sm:flex-row">
               <Link href="/products">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                <motion.button              whileHover={{ scale: 1.05 }}              whileTap={{ scale: 0.95 }}
                   className="rounded-full bg-primary px-8 py-4 font-medium text-white shadow-lg transition-all hover:bg-primary/90"
                 >
                   View Ring Collection
                 </motion.button>
               </Link>
               <Link href="/contact">
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                <motion.button              whileHover={{ scale: 1.05 }}              whileTap={{ scale: 0.95 }}
                   className="rounded-full border-2 border-primary px-8 py-4 font-medium text-primary transition-all hover:bg-accent"
                 >
                   Get in Touch

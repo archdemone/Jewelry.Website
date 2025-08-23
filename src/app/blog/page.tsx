@@ -50,17 +50,12 @@ export default function BlogIndexPage() {
           </h1>
           <div className="mt-4 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
             <Input
-              placeholder="Search articles"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search articles"              value={query}              onChange={(e) => setQuery(e.target.value)}
               className="md:max-w-sm"
             />
             <div className="flex flex-wrap gap-2">
               {categories.map((c) => (
-                <button
-                  key={c}
-                  onClick={() => setCat(c)}
-                  className={`rounded-full border px-3 py-1 text-sm ${cat === c ? 'bg-black text-white' : ''}`}
+                <button              key={c}              onClick={() => setCat(c)}              className={`rounded-full border px-3 py-1 text-sm ${cat === c ? 'bg-black text-white' : ''}`}
                 >
                   {c}
                 </button>

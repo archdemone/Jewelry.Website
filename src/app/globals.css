@@ -284,3 +284,60 @@ nav {
 .hero-section {
   min-height: 50vh; /* Instead of 100vh */
 }
+
+/* Enhanced Gallery Styles */
+.scale-200 {
+  transform: scale(2);
+}
+
+.cursor-zoom-in {
+  cursor: zoom-in;
+}
+
+.cursor-zoom-out {
+  cursor: zoom-out;
+}
+
+.cursor-move {
+  cursor: move;
+}
+
+/* Hide scrollbars for gallery thumbnails */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Smooth transitions for gallery */
+.gallery-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Lightbox styles */
+.lightbox-backdrop {
+  backdrop-filter: blur(8px);
+}
+
+/* Zoom container styles */
+.zoom-container {
+  position: relative;
+  overflow: hidden;
+  cursor: zoom-in;
+}
+
+.zoom-container.zoomed {
+  cursor: zoom-out;
+}
+
+.zoom-container img {
+  transition: transform 0.3s ease;
+}
+
+.zoom-container.zoomed img {
+  transform: scale(2);
+  cursor: move;
+}

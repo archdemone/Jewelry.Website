@@ -26,6 +26,7 @@ async function loadProducts() {
       {
         id: 1,
         name: "Women's Silver Inlay Ring - Dark Red",
+        sku: 'RNG-W-SIL-RED-001',
         price: 299,
         originalPrice: 349,
         images: ['/images/MyImages/IMG-20250816-WA0000.jpg'],
@@ -41,9 +42,12 @@ async function loadProducts() {
         isReadyToShip: true,
         rating: 4.8,
         reviews: 24,
+        status: 'active',
         badge: 'Ready to Ship',
         slug: 'womens-silver-inlay-ring-dark-red',
         description: 'Beautiful handcrafted silver ring with dark red gem inlay.',
+        isFeatured: true,
+        featuredOrder: 1,
       },
     ];
   }

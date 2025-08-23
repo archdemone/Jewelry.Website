@@ -21,9 +21,7 @@ export function InventoryTable() {
           </thead>
           <tbody>
             {rows.map((r) => (
-              <tr
-                key={r.sku}
-                className={`border-t ${r.stock === 0 ? 'bg-red-50' : r.stock <= r.low ? 'bg-amber-50' : ''}`}
+              <tr              key={r.sku}              className={`border-t ${r.stock === 0 ? 'bg-red-50' : r.stock <= r.low ? 'bg-amber-50' : ''}`}
               >
                 <td className="py-2">{r.sku}</td>
                 <td className="py-2">{r.name}</td>

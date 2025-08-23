@@ -113,7 +113,7 @@ if (process.env.GOOGLE_CLIENT_ID && process.env.GOOGLE_CLIENT_SECRET) {
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db as any),
   providers,
-  secret: process.env.NEXTAUTH_SECRET || 'dev-secret',
+  secret: process.env.NEXTAUTH_SECRET || 'dev-secret-key-long-enough-for-validation',
   pages: {
     signIn: '/auth/login',
   },
@@ -153,6 +153,7 @@ export const authOptions: NextAuthOptions = {
     },
     async jwt({ token, user }) {
       if (user) {
+        token.sub = user.id;
         (token as any).role = (user as any).role;
         (token as any).mfaEnabled = (user as any).mfaEnabled ?? false;
         (token as any).tokenVersion = (user as any).tokenVersion ?? 0;

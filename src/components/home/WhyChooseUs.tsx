@@ -61,17 +61,10 @@ const WhyChooseUs = () => {
 
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {reasons.map((reason, index) => (
-            <motion.div
-              key={index}
-              initial={false}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              whileHover={{ y: -5 }}
+            <motion.div              key={index}              initial={false}              whileInView={{ opacity: 1, y: 0 }}              viewport={{ once: true }}              transition={{ delay: index * 0.1 }}              whileHover={{ y: -5 }}
               className="rounded-xl bg-gray-50 p-6 text-center transition-all duration-300 hover:bg-white hover:shadow-lg"
             >
-              <motion.div
-                whileHover={{ scale: 1.05 }}
+              <motion.div              whileHover={{ scale: 1.05 }}
                 className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-r from-primary to-orange-500"
               >
                 <reason.icon className="h-8 w-8 text-white" />

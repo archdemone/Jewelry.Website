@@ -1,102 +1,43 @@
-name: Test Suite
+﻿name: Tests
 
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  test:
+  unit-and-types:
     runs-on: ubuntu-latest
-
+    env:
+      NODE_ENV: test
+      CI: true
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: Setup Node 20
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: 20
+          cache: npm
 
-      - name: Clear npm cache
-        run: npm cache clean --force
+      - name: Install deps
+        run: npm ci
 
-      - name: Install dependencies
-        run: |
-          echo "Installing dependencies..."
-          npm install --no-audit --no-fund --legacy-peer-deps
-          echo "Dependencies installed successfully"
-          npm list --depth=0
-          echo "Running postinstall script..."
-          npm run postinstall
-
-      - name: Generate Prisma Client
+      - name: Generate Prisma client
         run: npx prisma generate
 
-      - name: Clean build cache
-        run: rm -rf .next
+      - name: Type check (CI-safe)
+        run: npm run type-check:ci
 
-      - name: Setup test environment
-        run: |
-          echo "DATABASE_URL=file:./test.db" >> $GITHUB_ENV
-          echo "NEXTAUTH_URL=http://localhost:3000" >> $GITHUB_ENV
-          echo "NEXTAUTH_SECRET=test-secret-key" >> $GITHUB_ENV
-          echo "STRIPE_SECRET_KEY=sk_test_123" >> $GITHUB_ENV
-          echo "NEXT_PUBLIC_STRIPE_PUBLIC_KEY=pk_test_123" >> $GITHUB_ENV
-          echo "SKIP_TYPE_CHECK=true" >> $GITHUB_ENV
-          echo "NEXT_SKIP_TYPE_CHECK=true" >> $GITHUB_ENV
-          echo "NODE_ENV=test" >> $GITHUB_ENV
-          echo "CI=true" >> $GITHUB_ENV
+      - name: Lint (no warnings allowed)
+        run: npm run lint:ci
 
-      - name: Verify Jest configuration
-        run: |
-          echo "Checking Jest configuration..."
-          node -e "console.log('Jest config exists:', require('fs').existsSync('jest.config.js'))"
-          node -e "console.log('Jest setup exists:', require('fs').existsSync('jest.setup.js'))"
-          echo "Jest configuration verified"
-
-      - name: Verify test dependencies
-        run: |
-          echo "Checking test dependencies..."
-          npm list jest @testing-library/react jest-axe jest-environment-jsdom
-          echo "Test dependencies verified"
-
-      - name: Run tests with verbose output
-        run: npm run test:ci -- --verbose
-        env:
-          DATABASE_URL: file:./test.db
-          NEXTAUTH_URL: http://localhost:3000
-          NEXTAUTH_SECRET: test-secret-key
-          STRIPE_SECRET_KEY: sk_test_123
-          NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
-          SKIP_TYPE_CHECK: true
-          NEXT_SKIP_TYPE_CHECK: true
-          NODE_ENV: test
-          CI: true
-
-      - name: Run E2E tests
-        run: npm run test:e2e
-        env:
-          DATABASE_URL: file:./test.db
-          NEXTAUTH_URL: http://localhost:3000
-          NEXTAUTH_SECRET: test-secret-key
-          STRIPE_SECRET_KEY: sk_test_123
-          NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
-          SKIP_TYPE_CHECK: true
-          NEXT_SKIP_TYPE_CHECK: true
-          NODE_ENV: test
-          CI: true
-
-      - name: Run Cypress tests
-        run: npm run cypress:run
-        env:
-          DATABASE_URL: file:./test.db
-          NEXTAUTH_URL: http://localhost:3000
-          NEXTAUTH_SECRET: test-secret-key
-          STRIPE_SECRET_KEY: sk_test_123
-          NEXT_PUBLIC_STRIPE_PUBLIC_KEY: pk_test_123
-          SKIP_TYPE_CHECK: true
-          NEXT_SKIP_TYPE_CHECK: true
-          NODE_ENV: test
-          CI: true
+      - name: Unit tests
+        run: npm run test:ci

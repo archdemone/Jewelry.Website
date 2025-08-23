@@ -161,8 +161,7 @@ export default function ProductForm({
             </div>
             <div className="flex gap-2">
               <Input
-                placeholder="Add tag"
-                onKeyDown={(e) => {
+                placeholder="Add tag"              onKeyDown={(e) => {
                   if (e.key === 'Enter') {
                     addTag((e.target as HTMLInputElement).value.trim());
                     (e.target as HTMLInputElement).value = '';
@@ -170,8 +169,7 @@ export default function ProductForm({
                 }}
               />
               <Button
-                type="button"
-                onClick={() => {
+                type="button"              onClick={() => {
                   const input = document.activeElement as HTMLInputElement;
                   if (input?.value) {
                     addTag(input.value.trim());
@@ -201,9 +199,7 @@ export default function ProductForm({
             {images.map((img, idx) => (
               <div key={img.id} className="relative rounded border p-2">
                 <div className="relative h-32 w-full">
-                  <Image
-                    src={img.url}
-                    alt={img.alt}
+                  <Image              src={img.url}              alt={img.alt}
                     fill
                     className="rounded object-cover"
                     sizes="(max-width: 768px) 50vw, 25vw"
@@ -221,9 +217,7 @@ export default function ProductForm({
                   <label className="flex items-center gap-1">
                     <input
                       type="radio"
-                      name="primary"
-                      checked={!!img.primary}
-                      onChange={() => setPrimary(img.id)}
+                      name="primary"              checked={!!img.primary}              onChange={() => setPrimary(img.id)}
                     />{' '}
                     Primary
                   </label>
@@ -319,9 +313,7 @@ export default function ProductForm({
           />
           <label className="flex items-center gap-2 text-sm">
             <input
-              type="checkbox"
-              checked={taxable}
-              onChange={(e) => setTaxable(e.target.checked)}
+              type="checkbox"              checked={taxable}              onChange={(e) => setTaxable(e.target.checked)}
             />
             Taxable
           </label>
@@ -337,9 +329,7 @@ export default function ProductForm({
           />
           <label className="flex items-center gap-2 text-sm">
             <input
-              type="checkbox"
-              checked={trackQty}
-              onChange={(e) => setTrackQty(e.target.checked)}
+              type="checkbox"              checked={trackQty}              onChange={(e) => setTrackQty(e.target.checked)}
             />
             Track quantity
           </label>
@@ -355,9 +345,7 @@ export default function ProductForm({
           />
           <label className="flex items-center gap-2 text-sm">
             <input
-              type="checkbox"
-              checked={continueWhenOOS}
-              onChange={(e) => setContinueWhenOOS(e.target.checked)}
+              type="checkbox"              checked={continueWhenOOS}              onChange={(e) => setContinueWhenOOS(e.target.checked)}
             />
             Continue selling when out of stock
           </label>

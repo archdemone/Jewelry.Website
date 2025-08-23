@@ -92,16 +92,13 @@ export function ImageUpload({ images, onImagesChange }: ImageUploadProps) {
         <div className="grid grid-cols-2 gap-2">
           {images.map((image, index) => (
             <div key={index} className="relative group h-24">
-              <Image
-                src={image}
-                alt={`Ring ${index + 1}`}
+              <Image              src={image}              alt={`Ring ${index + 1}`}
                 fill
                 className="rounded-lg object-cover"
                 sizes="200px"
               />
               <button
-                type="button"
-                onClick={() => removeImage(index)}
+                type="button"              onClick={() => removeImage(index)}
                 className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity"
               >
                 <X className="h-3 w-3" />

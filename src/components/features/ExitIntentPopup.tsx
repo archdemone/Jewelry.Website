@@ -55,8 +55,7 @@ const ExitIntentPopup = () => {
             className="relative mx-4 w-full max-w-md overflow-hidden rounded-lg bg-white shadow-2xl"
           >
             {/* Close Button */}
-            <button
-              onClick={handleClose}
+            <button              onClick={handleClose}
               className="absolute right-4 top-4 z-10 text-gray-400 transition-colors hover:text-gray-600"
             >
               <X className="h-6 w-6" />
@@ -99,14 +98,12 @@ const ExitIntentPopup = () => {
               {/* CTA Buttons */}
               <div className="space-y-3">
                 <Link
-                  href="/products"
-                  onClick={handleClose}
+                  href="/products"              onClick={handleClose}
                   className="block w-full rounded-lg bg-gold-600 px-6 py-3 font-semibold text-white transition-colors duration-200 hover:bg-gold-700"
                 >
                   Shop Now & Save 10%
                 </Link>
-                <button
-                  onClick={handleClose}
+                <button              onClick={handleClose}
                   className="block w-full rounded-lg px-6 py-2 text-gray-500 transition-colors duration-200 hover:text-gray-700"
                 >
                   Maybe Later

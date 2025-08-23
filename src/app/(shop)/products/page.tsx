@@ -35,28 +35,28 @@ interface Product {
   originalPrice?: number | null;
   images?: string[];
   material:
-    | 'Silver'
-    | 'Damascus'
-    | 'Ceramic(white)'
-    | 'Ceramic(black)'
-    | 'Carbon'
-    | 'Tungsten'
-    | 'Titanium'
-    | 'Stainless Steel'
-    | 'Gold';
+  | 'Silver'
+  | 'Damascus'
+  | 'Ceramic(white)'
+  | 'Ceramic(black)'
+  | 'Carbon'
+  | 'Tungsten'
+  | 'Titanium'
+  | 'Stainless Steel'
+  | 'Gold';
   gemColor: 'Red' | 'Green' | 'Blue' | 'Purple' | 'Yellow' | 'Custom';
   gemDensity: 'small' | 'medium' | 'large';
   gemVariation: 'Dark' | 'Mixed' | 'Bright';
   mixColors: string[];
   category:
-    | 'Wedding'
-    | 'Inlay Ring'
-    | 'Couple Ring Set'
-    | 'Mens'
-    | 'Womens'
-    | 'Unisex'
-    | 'Single Inlay'
-    | 'Double Inlay';
+  | 'Wedding'
+  | 'Inlay Ring'
+  | 'Couple Ring Set'
+  | 'Mens'
+  | 'Womens'
+  | 'Unisex'
+  | 'Single Inlay'
+  | 'Double Inlay';
   subCategory?: string;
   ringSizes: {
     us: number[];
@@ -136,14 +136,14 @@ export default function ProductsPage() {
 
   // Cart store - always call the hook
   const addItem = useCartStore((state) => state.addItem);
-  
+
   // Safely get cart store values - moved outside component to prevent recreation
   const getCartStore = useCallback(() => {
     try {
       return useCartStore.getState();
     } catch (error) {
       console.warn('Cart store not available:', error);
-      return { addItem: () => {} };
+      return { addItem: () => { } };
     }
   }, []);
 
@@ -154,7 +154,7 @@ export default function ProductsPage() {
         // Load all products from API
         const response = await fetch('/api/admin/products');
         let loadedProducts: Product[] = [];
-        
+
         if (response.ok) {
           const allProducts = await response.json();
           setProducts(allProducts);
@@ -208,26 +208,26 @@ export default function ProductsPage() {
               slug: 'mens-damascus-wedding-ring-bright-blue',
               description:
                 'Stunning Damascus steel wedding ring with bright blue gem inlay. A unique and durable choice for your special day.',
-          },
-        ];
-        setProducts(sampleProducts);
-        loadedProducts = sampleProducts;
-      }
-      
-      // Set categories based on loaded products
-      const uniqueCategories = new Set();
-      loadedProducts.forEach((product: Product) => {
-        if (product.category) uniqueCategories.add(product.category);
-        if (product.subCategory) uniqueCategories.add(product.subCategory);
-      });
-      
-      const categoryList = Array.from(uniqueCategories).map((cat, index) => ({
-        id: index + 1,
-        name: cat as string,
-        slug: (cat as string).toLowerCase().replace(/\s+/g, '-'),
-      }));
-      
-      setCategories(categoryList);
+            },
+          ];
+          setProducts(sampleProducts);
+          loadedProducts = sampleProducts;
+        }
+
+        // Set categories based on loaded products
+        const uniqueCategories = new Set();
+        loadedProducts.forEach((product: Product) => {
+          if (product.category) uniqueCategories.add(product.category);
+          if (product.subCategory) uniqueCategories.add(product.subCategory);
+        });
+
+        const categoryList = Array.from(uniqueCategories).map((cat, index) => ({
+          id: index + 1,
+          name: cat as string,
+          slug: (cat as string).toLowerCase().replace(/\s+/g, '-'),
+        }));
+
+        setCategories(categoryList);
       } catch (error) {
         console.error('Error loading products:', error);
         setProducts([]);
@@ -242,11 +242,11 @@ export default function ProductsPage() {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const hash = window.location.hash;
-      if (hash === '#products') {
+      if (hash === '#products' || hash === '#products-section') {
         const productsSection = document.getElementById('products-section');
         if (productsSection) {
           setTimeout(() => {
-            productsSection.scrollIntoView({ 
+            productsSection.scrollIntoView({
               behavior: 'smooth',
               block: 'start'
             });
@@ -505,9 +505,7 @@ export default function ProductsPage() {
             <div className="flex items-center justify-between gap-4">
               {/* Left: Filter Toggle */}
               <div className="flex items-center gap-3">
-                <motion.button
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setShowFilters(!showFilters)}
+                <motion.button whileTap={{ scale: 0.95 }} onClick={() => setShowFilters(!showFilters)}
                   className="flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2 transition-colors hover:bg-gray-200"
                 >
                   <SlidersHorizontal className="h-4 w-4" />
@@ -516,12 +514,12 @@ export default function ProductsPage() {
                     (selectedFilters?.material?.length || 0) +
                     (selectedFilters?.gemstone?.length || 0) >
                     0 && (
-                    <span className="rounded-full bg-gold-500 px-2 py-0.5 text-xs text-white">
-                      {(selectedFilters?.category?.length || 0) +
-                        (selectedFilters?.material?.length || 0) +
-                        (selectedFilters?.gemstone?.length || 0)}
-                    </span>
-                  )}
+                      <span className="rounded-full bg-gold-500 px-2 py-0.5 text-xs text-white">
+                        {(selectedFilters?.category?.length || 0) +
+                          (selectedFilters?.material?.length || 0) +
+                          (selectedFilters?.gemstone?.length || 0)}
+                      </span>
+                    )}
                 </motion.button>
               </div>
 
@@ -531,9 +529,7 @@ export default function ProductsPage() {
                   <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
                   <input
                     type="text"
-                    placeholder="Search rings..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search rings..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
                     className="w-full rounded-full border border-gray-200 py-2 pl-10 pr-4 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-gold-500"
                   />
                 </div>
@@ -541,9 +537,7 @@ export default function ProductsPage() {
 
               {/* Right: Sort & View Options */}
               <div className="flex items-center gap-2">
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
+                <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}
                   className="rounded-lg border border-gray-200 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gold-500"
                 >
                   <option value="featured">Featured</option>
@@ -554,15 +548,11 @@ export default function ProductsPage() {
                 </select>
 
                 <div className="flex items-center rounded-lg bg-gray-100 p-1">
-                  <button
-                    onClick={() => setViewMode('grid')}
-                    className={`rounded p-1.5 ${viewMode === 'grid' ? 'bg-white shadow-sm' : ''}`}
+                  <button onClick={() => setViewMode('grid')} className={`rounded p-1.5 ${viewMode === 'grid' ? 'bg-white shadow-sm' : ''}`}
                   >
                     <Grid3x3 className="h-4 w-4" />
                   </button>
-                  <button
-                    onClick={() => setViewMode('list')}
-                    className={`rounded p-1.5 ${viewMode === 'list' ? 'bg-white shadow-sm' : ''}`}
+                  <button onClick={() => setViewMode('list')} className={`rounded p-1.5 ${viewMode === 'list' ? 'bg-white shadow-sm' : ''}`}
                   >
                     <Square className="h-4 w-4" />
                   </button>
@@ -575,11 +565,7 @@ export default function ProductsPage() {
             {/* Filters Sidebar */}
             <AnimatePresence>
               {showFilters && (
-                <motion.aside
-                  initial={{ width: 0, opacity: 0 }}
-                  animate={{ width: 280, opacity: 1 }}
-                  exit={{ width: 0, opacity: 0 }}
-                  transition={{ duration: 0.3 }}
+                <motion.aside initial={{ width: 0, opacity: 0 }} animate={{ width: 280, opacity: 1 }} exit={{ width: 0, opacity: 0 }} transition={{ duration: 0.3 }}
                   className="overflow-hidden"
                 >
                   <div className="w-[280px] space-y-6">
@@ -590,15 +576,12 @@ export default function ProductsPage() {
                       </h3>
                       <div className="space-y-2">
                         {(categories || []).map((cat) => (
-                          <label
-                            key={cat.id}
+                          <label key={cat.id}
                             className="flex cursor-pointer items-center gap-3 rounded-lg p-2 hover:bg-gray-50"
                           >
                             <input
                               type="checkbox"
-                              className="rounded border-gray-300 text-gold-500 focus:ring-gold-500"
-                              checked={selectedFilters?.category?.includes(cat.slug) || false}
-                              onChange={() => toggleFilter('category', cat.slug)}
+                              className="rounded border-gray-300 text-gold-500 focus:ring-gold-500" checked={selectedFilters?.category?.includes(cat.slug) || false} onChange={() => toggleFilter('category', cat.slug)}
                             />
                             <span className="text-sm">{cat.name}</span>
                           </label>
@@ -613,15 +596,12 @@ export default function ProductsPage() {
                       </h3>
                       <div className="space-y-2">
                         {availableMaterials.map((material) => (
-                          <label
-                            key={material}
+                          <label key={material}
                             className="flex cursor-pointer items-center gap-3 rounded-lg p-2 hover:bg-gray-50"
                           >
                             <input
                               type="checkbox"
-                              className="rounded border-gray-300 text-gold-500 focus:ring-gold-500"
-                              checked={selectedFilters?.material?.includes(material) || false}
-                              onChange={() => toggleFilter('material', material)}
+                              className="rounded border-gray-300 text-gold-500 focus:ring-gold-500" checked={selectedFilters?.material?.includes(material) || false} onChange={() => toggleFilter('material', material)}
                             />
                             <span className="text-sm">{material}</span>
                           </label>
@@ -630,8 +610,7 @@ export default function ProductsPage() {
                     </div>
 
                     {/* Clear Filters */}
-                    <button
-                      onClick={clearAllFilters}
+                    <button onClick={clearAllFilters}
                       className="w-full py-2 text-sm text-gray-600 transition-colors hover:text-gray-900"
                     >
                       Clear All Filters
@@ -648,36 +627,26 @@ export default function ProductsPage() {
                   <Diamond className="mx-auto mb-4 h-16 w-16 text-gray-300" />
                   <h3 className="mb-2 text-xl font-semibold text-gray-900">No Products Found</h3>
                   <p className="mb-6 text-gray-600">Try adjusting your filters or search terms</p>
-                  <button
-                    onClick={clearAllFilters}
+                  <button onClick={clearAllFilters}
                     className="rounded-lg bg-gold-500 px-6 py-2 text-white transition-colors hover:bg-gold-600"
                   >
                     Clear Filters
                   </button>
                 </div>
               ) : (
-                <div
-                  className={
-                    viewMode === 'grid'
-                      ? 'grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'
-                      : 'space-y-4'
-                  }
+                <div className={
+                  viewMode === 'grid'
+                    ? 'grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3'
+                    : 'space-y-4'
+                }
                 >
                   {(products || []).map((product) => (
-                    <motion.div
-                      key={product.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      whileHover={{ y: -5 }}
-                      className={`overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm transition-all ${
-                        viewMode === 'list' ? 'flex' : ''
+                    <motion.div key={product.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} whileHover={{ y: -5 }} className={`overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm transition-all ${viewMode === 'list' ? 'flex' : ''
                       }`}
                     >
                       {/* Product Image */}
                       <div className={`relative ${viewMode === 'list' ? 'h-48 w-48' : 'h-64'}`}>
-                        <Image
-                          src={getProductImage(product)}
-                          alt={product.name}
+                        <Image src={getProductImage(product)} alt={product.name}
                           fill
                           className="object-cover"
                         />
@@ -690,13 +659,10 @@ export default function ProductsPage() {
                         )}
 
                         {/* Quick View Button */}
-                        <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          onClick={() => {
-                            setQuickViewProduct(product);
-                            initializeCustomization(product);
-                          }}
+                        <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => {
+                          setQuickViewProduct(product);
+                          initializeCustomization(product);
+                        }}
                           className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur transition-colors hover:bg-white"
                         >
                           <Eye className="h-4 w-4" />
@@ -712,9 +678,7 @@ export default function ProductsPage() {
                         <div className="mb-2 flex items-center gap-2">
                           <div className="flex items-center gap-1">
                             {[...Array(5)].map((_, i) => (
-                              <Star
-                                key={i}
-                                className={`h-3 w-3 ${i < Math.floor(product.rating || 4.5) ? 'fill-gold-400 text-gold-400' : 'text-gray-300'}`}
+                              <Star key={i} className={`h-3 w-3 ${i < Math.floor(product.rating || 4.5) ? 'fill-gold-400 text-gold-400' : 'text-gray-300'}`}
                               />
                             ))}
                           </div>
@@ -737,13 +701,10 @@ export default function ProductsPage() {
                           </button>
                         </div>
 
-                        <motion.button
-                          whileHover={{ scale: 1.02 }}
-                          whileTap={{ scale: 0.98 }}
-                          onClick={() => {
-                            setQuickViewProduct(product);
-                            initializeCustomization(product);
-                          }}
+                        <motion.button whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={() => {
+                          setQuickViewProduct(product);
+                          initializeCustomization(product);
+                        }}
                           className="w-full rounded-lg bg-gold-500 py-2 font-medium text-white transition-colors hover:bg-gold-600"
                         >
                           Customize This Ring
@@ -768,24 +729,17 @@ export default function ProductsPage() {
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
             onClick={() => setQuickViewProduct(null)}
           >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              onClick={(e) => e.stopPropagation()}
+            <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} onClick={(e) => e.stopPropagation()}
               className="max-h-[85vh] w-full max-w-3xl overflow-auto rounded-2xl bg-white shadow-2xl"
             >
               <div className="grid lg:grid-cols-3">
                 {/* Image Gallery */}
                 <div className="relative h-96 bg-gradient-to-br from-gray-50 to-gray-100 lg:col-span-1 lg:h-full">
-                  <Image
-                    src={getProductImage(quickViewProduct)}
-                    alt={quickViewProduct.name}
+                  <Image src={getProductImage(quickViewProduct)} alt={quickViewProduct.name}
                     fill
                     className="object-cover"
                   />
-                  <button
-                    onClick={() => setQuickViewProduct(null)}
+                  <button onClick={() => setQuickViewProduct(null)}
                     className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur"
                   >
                     <X className="h-5 w-5" />
@@ -809,9 +763,7 @@ export default function ProductsPage() {
                   <div className="mb-3 flex items-center gap-4">
                     <div className="flex items-center gap-1">
                       {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`h-3 w-3 ${i < Math.floor(quickViewProduct.rating || 4.5) ? 'fill-gold-400 text-gold-400' : 'text-gray-300'}`}
+                        <Star key={i} className={`h-3 w-3 ${i < Math.floor(quickViewProduct.rating || 4.5) ? 'fill-gold-400 text-gold-400' : 'text-gray-300'}`}
                         />
                       ))}
                     </div>
@@ -847,11 +799,9 @@ export default function ProductsPage() {
                       <label className="mb-1 block text-sm font-medium text-gray-700">
                         Material
                       </label>
-                      <select
-                        value={customization.material}
-                        onChange={(e) =>
-                          setCustomization((prev) => ({ ...prev, material: e.target.value }))
-                        }
+                      <select value={customization.material} onChange={(e) =>
+                        setCustomization((prev) => ({ ...prev, material: e.target.value }))
+                      }
                         className="w-full rounded-lg border border-gray-300 p-2 text-sm text-gray-900 focus:border-transparent focus:ring-2 focus:ring-gold-500"
                       >
                         {availableMaterials.map((material) => (
@@ -870,14 +820,11 @@ export default function ProductsPage() {
                       <div className="grid grid-cols-3 gap-1">
                         {availableGemColors.map((color) => (
                           <div key={color} className="group relative">
-                            <button
-                              onClick={() =>
-                                setCustomization((prev) => ({ ...prev, gemColor: color }))
-                              }
-                              className={`w-full rounded-lg border-2 p-2 text-sm transition-all ${
-                                customization.gemColor === color
-                                  ? 'border-green-500 bg-green-100 shadow-md ring-2 ring-green-200'
-                                  : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+                            <button onClick={() =>
+                              setCustomization((prev) => ({ ...prev, gemColor: color }))
+                            } className={`w-full rounded-lg border-2 p-2 text-sm transition-all ${customization.gemColor === color
+                                ? 'border-green-500 bg-green-100 shadow-md ring-2 ring-green-200'
+                                : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
                               }`}
                             >
                               <span className="font-medium text-gray-900">{color}</span>
@@ -887,9 +834,7 @@ export default function ProductsPage() {
                             <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                               <div className="rounded-lg border border-gray-200 bg-white p-3 shadow-lg">
                                 <div className="relative h-32 w-32 overflow-hidden rounded">
-                                  <Image
-                                    src={`/images/gems/colour/${color.toLowerCase()}.jpg`}
-                                    alt={`${color} gem`}
+                                  <Image src={`/images/gems/colour/${color.toLowerCase()}.jpg`} alt={`${color} gem`}
                                     fill
                                     className="object-cover"
                                     sizes="128px"
@@ -910,19 +855,14 @@ export default function ProductsPage() {
                       </label>
                       <div className="grid grid-cols-3 gap-1">
                         {availableGemDensities.map((density) => (
-                          <button
-                            key={density}
-                            onClick={() =>
-                              setCustomization((prev) => ({ ...prev, gemDensity: density }))
-                            }
-                            className={`rounded-lg border-2 p-2 text-sm transition-all ${
-                              customization.gemDensity === density
-                                ? 'border-green-500 bg-green-100 shadow-md ring-2 ring-green-200'
-                                : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+                          <button key={density} onClick={() =>
+                            setCustomization((prev) => ({ ...prev, gemDensity: density }))
+                          } className={`rounded-lg border-2 p-2 text-sm transition-all ${customization.gemDensity === density
+                              ? 'border-green-500 bg-green-100 shadow-md ring-2 ring-green-200'
+                              : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
                             }`}
                           >
-                            <span
-                              className={`font-medium capitalize ${customization.gemDensity === density ? 'text-gray-900' : 'text-gray-900'}`}
+                            <span className={`font-medium capitalize ${customization.gemDensity === density ? 'text-gray-900' : 'text-gray-900'}`}
                             >
                               {density}
                             </span>
@@ -938,19 +878,14 @@ export default function ProductsPage() {
                       </label>
                       <div className="grid grid-cols-3 gap-1">
                         {availableGemVariations.map((variation) => (
-                          <button
-                            key={variation}
-                            onClick={() =>
-                              setCustomization((prev) => ({ ...prev, gemVariation: variation }))
-                            }
-                            className={`rounded-lg border-2 p-2 text-sm transition-all ${
-                              customization.gemVariation === variation
-                                ? 'border-green-500 bg-green-100 shadow-md ring-2 ring-green-200'
-                                : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+                          <button key={variation} onClick={() =>
+                            setCustomization((prev) => ({ ...prev, gemVariation: variation }))
+                          } className={`rounded-lg border-2 p-2 text-sm transition-all ${customization.gemVariation === variation
+                              ? 'border-green-500 bg-green-100 shadow-md ring-2 ring-green-200'
+                              : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
                             }`}
                           >
-                            <span
-                              className={`font-medium ${customization.gemVariation === variation ? 'text-gray-900' : 'text-gray-900'}`}
+                            <span className={`font-medium ${customization.gemVariation === variation ? 'text-gray-900' : 'text-gray-900'}`}
                             >
                               {variation}
                             </span>
@@ -967,9 +902,7 @@ export default function ProductsPage() {
                       <div className="mb-1 flex gap-3">
                         <label className="flex cursor-pointer items-center gap-2 rounded-lg border-2 p-1 transition-all hover:bg-gray-50">
                           <input
-                            type="radio"
-                            checked={customization.sizeType === 'us'}
-                            onChange={() =>
+                            type="radio" checked={customization.sizeType === 'us'} onChange={() =>
                               setCustomization((prev) => ({ ...prev, sizeType: 'us' }))
                             }
                             className="text-gold-500 focus:ring-gold-500"
@@ -978,9 +911,7 @@ export default function ProductsPage() {
                         </label>
                         <label className="flex cursor-pointer items-center gap-2 rounded-lg border-2 p-1 transition-all hover:bg-gray-50">
                           <input
-                            type="radio"
-                            checked={customization.sizeType === 'eu'}
-                            onChange={() =>
+                            type="radio" checked={customization.sizeType === 'eu'} onChange={() =>
                               setCustomization((prev) => ({ ...prev, sizeType: 'eu' }))
                             }
                             className="text-gold-500 focus:ring-gold-500"
@@ -988,11 +919,9 @@ export default function ProductsPage() {
                           <span className="text-xs font-medium text-gray-900">EU</span>
                         </label>
                       </div>
-                      <select
-                        value={customization.ringSize}
-                        onChange={(e) =>
-                          setCustomization((prev) => ({ ...prev, ringSize: e.target.value }))
-                        }
+                      <select value={customization.ringSize} onChange={(e) =>
+                        setCustomization((prev) => ({ ...prev, ringSize: e.target.value }))
+                      }
                         className="w-full rounded-lg border border-gray-300 p-2 text-sm text-gray-900 focus:border-transparent focus:ring-2 focus:ring-gold-500"
                       >
                         <option value="">Select size</option>
@@ -1009,11 +938,9 @@ export default function ProductsPage() {
                       <label className="mb-1 block text-sm font-medium text-gray-700">
                         Ring Width (mm)
                       </label>
-                      <select
-                        value={customization.ringWidth}
-                        onChange={(e) =>
-                          setCustomization((prev) => ({ ...prev, ringWidth: e.target.value }))
-                        }
+                      <select value={customization.ringWidth} onChange={(e) =>
+                        setCustomization((prev) => ({ ...prev, ringWidth: e.target.value }))
+                      }
                         className="w-full rounded-lg border border-gray-300 p-2 text-sm text-gray-900 focus:border-transparent focus:ring-2 focus:ring-gold-500"
                       >
                         <option value="">Select width</option>
@@ -1029,52 +956,35 @@ export default function ProductsPage() {
                   {/* Action Buttons */}
                   <div className="mt-6 flex gap-3">
                     {hasCustomizationChanged() ? (
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={handleCustomizeClick}
+                      <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleCustomizeClick}
                         className="flex-1 rounded-lg bg-gradient-to-r from-orange-500 to-amber-500 py-2 font-medium text-white shadow-md transition-all hover:from-orange-600 hover:to-amber-600 hover:shadow-lg"
                       >
                         Customize This Ring
                       </motion.button>
                     ) : quickViewProduct.isReadyToShip ? (
                       <>
-                        <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          onClick={() => (window.location.href = '/cart')}
+                        <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={() => (window.location.href = '/cart')}
                           className="flex-1 rounded-lg bg-gradient-to-r from-orange-500 to-amber-500 py-2 font-medium text-white shadow-md transition-all duration-200 hover:from-orange-600 hover:to-amber-600 hover:shadow-lg"
                         >
                           Purchase
                         </motion.button>
-                        <motion.button
-                          whileHover={{ scale: 1.05 }}
-                          whileTap={{ scale: 0.95 }}
-                          onClick={handleAddToCart}
+                        <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleAddToCart}
                           className="flex-1 rounded-lg bg-green-500 py-2 font-medium text-white transition-colors hover:bg-green-600"
                         >
                           Add to Cart
                         </motion.button>
                       </>
                     ) : (
-                      <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={handleCustomizeClick}
+                      <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleCustomizeClick}
                         className="flex-1 rounded-lg bg-gradient-to-r from-orange-500 to-amber-500 py-2 font-medium text-white shadow-md transition-all hover:from-orange-600 hover:to-amber-600 hover:shadow-lg"
                       >
                         Customize This Ring
                       </motion.button>
                     )}
 
-                    <motion.button
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      onClick={handleWishlistClick}
-                      className={`flex h-10 w-20 items-center justify-center gap-1 rounded-lg border transition-colors ${
-                        wishlistItems.has(quickViewProduct.id)
-                          ? 'border-red-500 bg-red-50 text-red-600'
-                          : 'border-gray-300 text-gray-900 hover:border-red-400 hover:bg-red-50'
+                    <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleWishlistClick} className={`flex h-10 w-20 items-center justify-center gap-1 rounded-lg border transition-colors ${wishlistItems.has(quickViewProduct.id)
+                        ? 'border-red-500 bg-red-50 text-red-600'
+                        : 'border-gray-300 text-gray-900 hover:border-red-400 hover:bg-red-50'
                       }`}
                     >
                       <span className="text-sm">❤️</span>
@@ -1084,8 +994,7 @@ export default function ProductsPage() {
                     </motion.button>
                   </div>
 
-                  <Link
-                    href={`/products/${quickViewProduct.slug}`}
+                  <Link href={`/products/${quickViewProduct.slug}`}
                     className="mt-3 block text-center text-sm font-medium text-gold-600 hover:text-gold-700"
                   >
                     View Full Details →
@@ -1120,8 +1029,7 @@ export default function ProductsPage() {
                     >
                       <path
                         strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
+                        strokeLinejoin="round" strokeWidth={2}
                         d="M5 13l4 4L19 7"
                       />
                     </svg>
@@ -1139,18 +1047,16 @@ export default function ProductsPage() {
                 </div>
 
                 {/* Close Button */}
-                <button
-                  onClick={() => {
-                    setShowAddToCartToast(false);
-                    setAddedProduct(null);
-                  }}
+                <button onClick={() => {
+                  setShowAddToCartToast(false);
+                  setAddedProduct(null);
+                }}
                   className="flex-shrink-0 text-gray-400 transition-colors hover:text-gray-600"
                 >
                   <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
+                      strokeLinejoin="round" strokeWidth={2}
                       d="M6 18L18 6M6 6l12 12"
                     />
                   </svg>
@@ -1160,10 +1066,7 @@ export default function ProductsPage() {
               {/* Progress Bar */}
               <div className="mt-3">
                 <div className="h-1 w-full rounded-full bg-gray-200">
-                  <motion.div
-                    initial={{ width: '100%' }}
-                    animate={{ width: '0%' }}
-                    transition={{ duration: 3, ease: 'linear' }}
+                  <motion.div initial={{ width: '100%' }} animate={{ width: '0%' }} transition={{ duration: 3, ease: 'linear' }}
                     className="h-1 rounded-full bg-green-500"
                   />
                 </div>
@@ -1187,9 +1090,7 @@ export default function ProductsPage() {
               <div className="flex items-center gap-3">
                 {/* Icon */}
                 <div className="flex-shrink-0">
-                  <div
-                    className={`flex h-10 w-10 items-center justify-center rounded-full ${
-                      wishlistAction.action === 'added' ? 'bg-red-100' : 'bg-gray-100'
+                  <div className={`flex h-10 w-10 items-center justify-center rounded-full ${wishlistAction.action === 'added' ? 'bg-red-100' : 'bg-gray-100'
                     }`}
                   >
                     {wishlistAction.action === 'added' ? (
@@ -1205,8 +1106,7 @@ export default function ProductsPage() {
                       >
                         <path
                           strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
+                          strokeLinejoin="round" strokeWidth={2}
                           d="M6 18L18 6M6 6l12 12"
                         />
                       </svg>
@@ -1225,18 +1125,16 @@ export default function ProductsPage() {
                 </div>
 
                 {/* Close Button */}
-                <button
-                  onClick={() => {
-                    setShowWishlistToast(false);
-                    setWishlistAction({ action: 'added', product: null });
-                  }}
+                <button onClick={() => {
+                  setShowWishlistToast(false);
+                  setWishlistAction({ action: 'added', product: null });
+                }}
                   className="flex-shrink-0 text-gray-400 transition-colors hover:text-gray-600"
                 >
                   <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
+                      strokeLinejoin="round" strokeWidth={2}
                       d="M6 18L18 6M6 6l12 12"
                     />
                   </svg>
@@ -1246,12 +1144,7 @@ export default function ProductsPage() {
               {/* Progress Bar */}
               <div className="mt-3">
                 <div className="h-1 w-full rounded-full bg-gray-200">
-                  <motion.div
-                    initial={{ width: '100%' }}
-                    animate={{ width: '0%' }}
-                    transition={{ duration: 3, ease: 'linear' }}
-                    className={`h-1 rounded-full ${
-                      wishlistAction.action === 'added' ? 'bg-red-500' : 'bg-gray-500'
+                  <motion.div initial={{ width: '100%' }} animate={{ width: '0%' }} transition={{ duration: 3, ease: 'linear' }} className={`h-1 rounded-full ${wishlistAction.action === 'added' ? 'bg-red-500' : 'bg-gray-500'
                     }`}
                   />
                 </div>

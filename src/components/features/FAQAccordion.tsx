@@ -44,10 +44,7 @@ export default function FAQAccordion({ items, categories }: FAQAccordionProps) {
         />
         <div className="flex flex-wrap gap-2">
           {cats.map((c) => (
-            <button
-              key={c}
-              onClick={() => setCategory(c)}
-              className={`rounded-full border px-3 py-1 text-sm ${category === c ? 'bg-black text-white' : 'bg-white text-gray-700'}`}
+            <button              key={c}              onClick={() => setCategory(c)}              className={`rounded-full border px-3 py-1 text-sm ${category === c ? 'bg-black text-white' : 'bg-white text-gray-700'}`}
             >
               {c}
             </button>
@@ -59,8 +56,7 @@ export default function FAQAccordion({ items, categories }: FAQAccordionProps) {
         {filtered.map((i) => (
           <div key={i.id} className="p-3">
             <button
-              className="flex w-full items-center justify-between text-left"
-              onClick={() => setOpenId((prev) => (prev === i.id ? null : i.id))}
+              className="flex w-full items-center justify-between text-left"              onClick={() => setOpenId((prev) => (prev === i.id ? null : i.id))}
               aria-expanded={openId === i.id}
             >
               <span className="font-medium">{i.question}</span>
@@ -68,16 +64,11 @@ export default function FAQAccordion({ items, categories }: FAQAccordionProps) {
             </button>
             <AnimatePresence initial={false}>
               {openId === i.id && (
-                <motion.div
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: 'auto', opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.25 }}
+                <motion.div              initial={{ height: 0, opacity: 0 }}              animate={{ height: 'auto', opacity: 1 }}              exit={{ height: 0, opacity: 0 }}              transition={{ duration: 0.25 }}
                   className="overflow-hidden"
                 >
                   <div
-                    className="prose prose-sm mt-2 text-gray-700"
-                    dangerouslySetInnerHTML={{ __html: i.answer }}
+                    className="prose prose-sm mt-2 text-gray-700"              dangerouslySetInnerHTML={{ __html: i.answer }}
                   />
                   <div className="mt-2 flex items-center gap-2 text-xs text-gray-500">
                     <span>Was this helpful?</span>

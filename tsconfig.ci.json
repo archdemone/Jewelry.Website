@@ -1,0 +1,25 @@
+﻿{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": []
+  },
+  "exclude": [
+    "node_modules",
+    ".next",
+    ".next/**/*",
+    "cypress",
+    "**/cypress/**",
+    "cypress.config.ts",
+    "**/*.cy.ts",
+    "**/*.cy.tsx",
+    "playwright.config.ts",
+    "**/playwright/**",
+    "backup-*",
+    "**/backup-*/**",
+    "__tests__/**/*",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.spec.ts",
+    "**/*.spec.tsx"
+  ]
+}

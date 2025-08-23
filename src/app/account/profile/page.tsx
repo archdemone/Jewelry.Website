@@ -31,6 +31,8 @@ interface PasswordFormData {
   confirmPassword: string;
 }
 
+
+
 export default function ProfilePage() {
   const { data: session, update } = useSession();
   const [profileData, setProfileData] = useState<ProfileFormData>({
@@ -155,9 +157,7 @@ export default function ProfilePage() {
                 </label>
                 <Input
                   id="name"
-                  type="text"
-                  value={profileData.name}
-                  onChange={(e) => setProfileData((prev) => ({ ...prev, name: e.target.value }))}
+                  type="text"              value={profileData.name}              onChange={(e) => setProfileData((prev) => ({ ...prev, name: e.target.value }))}
                   placeholder="Enter your full name"
                   required
                 />
@@ -169,9 +169,7 @@ export default function ProfilePage() {
                 </label>
                 <Input
                   id="email"
-                  type="email"
-                  value={profileData.email}
-                  onChange={(e) => setProfileData((prev) => ({ ...prev, email: e.target.value }))}
+                  type="email"              value={profileData.email}              onChange={(e) => setProfileData((prev) => ({ ...prev, email: e.target.value }))}
                   placeholder="Enter your email"
                   required
                 />
@@ -183,16 +181,13 @@ export default function ProfilePage() {
                 </label>
                 <Input
                   id="phone"
-                  type="tel"
-                  value={profileData.phone}
-                  onChange={(e) => setProfileData((prev) => ({ ...prev, phone: e.target.value }))}
+                  type="tel"              value={profileData.phone}              onChange={(e) => setProfileData((prev) => ({ ...prev, phone: e.target.value }))}
                   placeholder="Enter your phone number"
                 />
               </div>
 
               {profileMessage && (
-                <div
-                  className={`rounded-md p-3 ${
+                <div              className={`rounded-md p-3 ${
                     profileMessage.type === 'success'
                       ? 'border border-green-200 bg-green-50'
                       : 'border border-red-200 bg-red-50'
@@ -204,8 +199,7 @@ export default function ProfilePage() {
                     ) : (
                       <AlertCircle className="h-4 w-4 text-red-600" />
                     )}
-                    <p
-                      className={`text-sm ${
+                    <p              className={`text-sm ${
                         profileMessage.type === 'success' ? 'text-green-600' : 'text-red-600'
                       }`}
                     >
@@ -217,8 +211,7 @@ export default function ProfilePage() {
 
               <Button
                 type="submit"
-                className="w-full bg-gold-500 font-medium text-gray-900 hover:bg-gold-600"
-                disabled={isUpdatingProfile}
+                className="w-full bg-gold-500 font-medium text-gray-900 hover:bg-gold-600"              disabled={isUpdatingProfile}
               >
                 {isUpdatingProfile ? (
                   <>
@@ -252,10 +245,7 @@ export default function ProfilePage() {
                 </label>
                 <div className="relative">
                   <Input
-                    id="currentPassword"
-                    type={showCurrentPassword ? 'text' : 'password'}
-                    value={passwordData.currentPassword}
-                    onChange={(e) =>
+                    id="currentPassword"              type={showCurrentPassword ? 'text' : 'password'}              value={passwordData.currentPassword}              onChange={(e) =>
                       setPasswordData((prev) => ({ ...prev, currentPassword: e.target.value }))
                     }
                     placeholder="Enter current password"
@@ -263,8 +253,7 @@ export default function ProfilePage() {
                     className="pr-10"
                   />
                   <button
-                    type="button"
-                    onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                    type="button"              onClick={() => setShowCurrentPassword(!showCurrentPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400 hover:text-gray-600"
                   >
                     {showCurrentPassword ? (
@@ -285,10 +274,7 @@ export default function ProfilePage() {
                 </label>
                 <div className="relative">
                   <Input
-                    id="newPassword"
-                    type={showNewPassword ? 'text' : 'password'}
-                    value={passwordData.newPassword}
-                    onChange={(e) =>
+                    id="newPassword"              type={showNewPassword ? 'text' : 'password'}              value={passwordData.newPassword}              onChange={(e) =>
                       setPasswordData((prev) => ({ ...prev, newPassword: e.target.value }))
                     }
                     placeholder="Enter new password"
@@ -296,8 +282,7 @@ export default function ProfilePage() {
                     className="pr-10"
                   />
                   <button
-                    type="button"
-                    onClick={() => setShowNewPassword(!showNewPassword)}
+                    type="button"              onClick={() => setShowNewPassword(!showNewPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400 hover:text-gray-600"
                   >
                     {showNewPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
@@ -314,10 +299,7 @@ export default function ProfilePage() {
                 </label>
                 <div className="relative">
                   <Input
-                    id="confirmPassword"
-                    type={showConfirmPassword ? 'text' : 'password'}
-                    value={passwordData.confirmPassword}
-                    onChange={(e) =>
+                    id="confirmPassword"              type={showConfirmPassword ? 'text' : 'password'}              value={passwordData.confirmPassword}              onChange={(e) =>
                       setPasswordData((prev) => ({ ...prev, confirmPassword: e.target.value }))
                     }
                     placeholder="Confirm new password"
@@ -325,8 +307,7 @@ export default function ProfilePage() {
                     className="pr-10"
                   />
                   <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    type="button"              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 transform text-gray-400 hover:text-gray-600"
                   >
                     {showConfirmPassword ? (
@@ -339,8 +320,7 @@ export default function ProfilePage() {
               </div>
 
               {passwordMessage && (
-                <div
-                  className={`rounded-md p-3 ${
+                <div              className={`rounded-md p-3 ${
                     passwordMessage.type === 'success'
                       ? 'border border-green-200 bg-green-50'
                       : 'border border-red-200 bg-red-50'
@@ -352,8 +332,7 @@ export default function ProfilePage() {
                     ) : (
                       <AlertCircle className="h-4 w-4 text-red-600" />
                     )}
-                    <p
-                      className={`text-sm ${
+                    <p              className={`text-sm ${
                         passwordMessage.type === 'success' ? 'text-green-600' : 'text-red-600'
                       }`}
                     >
@@ -365,8 +344,7 @@ export default function ProfilePage() {
 
               <Button
                 type="submit"
-                className="w-full bg-gold-500 font-medium text-gray-900 hover:bg-gold-600"
-                disabled={isChangingPassword}
+                className="w-full bg-gold-500 font-medium text-gray-900 hover:bg-gold-600"              disabled={isChangingPassword}
               >
                 {isChangingPassword ? (
                   <>

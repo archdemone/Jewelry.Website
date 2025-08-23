@@ -36,10 +36,7 @@ export default function GiftCardForm() {
         <div className="text-sm font-medium">Choose amount</div>
         <div className="mt-2 flex flex-wrap gap-2">
           {PRESETS.map((p) => (
-            <button
-              key={p}
-              onClick={() => setAmount(p)}
-              className={`rounded-md border px-3 py-2 text-sm ${amount === p ? 'bg-black text-white' : ''}`}
+            <button              key={p}              onClick={() => setAmount(p)}              className={`rounded-md border px-3 py-2 text-sm ${amount === p ? 'bg-black text-white' : ''}`}
             >
               ${p}
             </button>

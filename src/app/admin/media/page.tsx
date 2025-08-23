@@ -137,22 +137,16 @@ export default function AdminMediaPage() {
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             <input
               type="text"
-              placeholder="Search files..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search files..."              value={searchQuery}              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
             />
           </div>
           <div className="flex border border-gray-300 rounded-lg">
-            <button
-              onClick={() => setViewMode('grid')}
-              className={`p-2 ${viewMode === 'grid' ? 'bg-gray-100' : ''}`}
+            <button              onClick={() => setViewMode('grid')}              className={`p-2 ${viewMode === 'grid' ? 'bg-gray-100' : ''}`}
             >
               <Grid className="h-4 w-4" />
             </button>
-            <button
-              onClick={() => setViewMode('list')}
-              className={`p-2 ${viewMode === 'list' ? 'bg-gray-100' : ''}`}
+            <button              onClick={() => setViewMode('list')}              className={`p-2 ${viewMode === 'list' ? 'bg-gray-100' : ''}`}
             >
               <List className="h-4 w-4" />
             </button>
@@ -172,32 +166,25 @@ export default function AdminMediaPage() {
       {viewMode === 'grid' ? (
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {filteredFiles.map((file) => (
-            <motion.div
-              key={file.path}
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
+            <motion.div              key={file.path}              initial={{ opacity: 0, scale: 0.9 }}              animate={{ opacity: 1, scale: 1 }}
               className="relative group"
             >
               <div className="border-2 border-gray-200 rounded-lg overflow-hidden">
                 <div className="aspect-square bg-gray-100 relative cursor-pointer" onClick={() => setPreviewFile(file)}>
-                  <Image
-                    src={file.url}
-                    alt={file.name}
+                  <Image              src={file.url}              alt={file.name}
                     fill
                     className="object-cover"
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                   />
                   <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <div className="flex justify-between items-center">
-                      <button
-                        onClick={() => copyToClipboard(file.path)}
+                      <button              onClick={() => copyToClipboard(file.path)}
                         className="p-1 bg-white/20 rounded hover:bg-white/30 text-white"
                         title="Copy path"
                       >
                         <Copy className="h-4 w-4" />
                       </button>
-                      <button
-                        onClick={() => handleDelete(file.path)}
+                      <button              onClick={() => handleDelete(file.path)}
                         className="p-1 bg-white/20 rounded hover:bg-white/30 text-white"
                         title="Delete"
                       >
@@ -231,9 +218,7 @@ export default function AdminMediaPage() {
                   <td className="p-4">
                     <div className="flex items-center">
                       <div className="relative w-10 h-10 mr-3">
-                        <Image
-                          src={file.url}
-                          alt={file.name}
+                        <Image              src={file.url}              alt={file.name}
                           fill
                           className="object-cover rounded"
                           sizes="40px"
@@ -246,22 +231,19 @@ export default function AdminMediaPage() {
                   <td className="p-4 text-gray-600">{new Date(file.modifiedDate).toLocaleDateString()}</td>
                   <td className="p-4">
                     <div className="flex gap-2">
-                      <button
-                        onClick={() => setPreviewFile(file)}
+                      <button              onClick={() => setPreviewFile(file)}
                         className="p-1 hover:bg-gray-100 rounded"
                         title="Preview"
                       >
                         <Eye className="h-4 w-4" />
                       </button>
-                      <button
-                        onClick={() => copyToClipboard(file.path)}
+                      <button              onClick={() => copyToClipboard(file.path)}
                         className="p-1 hover:bg-gray-100 rounded"
                         title="Copy path"
                       >
                         <Copy className="h-4 w-4" />
                       </button>
-                      <button
-                        onClick={() => handleDelete(file.path)}
+                      <button              onClick={() => handleDelete(file.path)}
                         className="p-1 hover:bg-gray-100 rounded text-red-600"
                         title="Delete"
                       >
@@ -297,8 +279,7 @@ export default function AdminMediaPage() {
           >
             <div className="flex items-center justify-between p-4 border-b">
               <h3 className="font-semibold text-gray-900">{previewFile.name}</h3>
-              <button
-                onClick={() => setPreviewFile(null)}
+              <button              onClick={() => setPreviewFile(null)}
                 className="p-2 hover:bg-gray-100 rounded-lg"
               >
                 <X className="h-5 w-5" />
@@ -306,11 +287,7 @@ export default function AdminMediaPage() {
             </div>
             <div className="p-4">
               <div className="relative flex justify-center items-center" style={{ maxHeight: '70vh' }}>
-                <Image
-                  src={previewFile.url}
-                  alt={previewFile.name}
-                  width={800}
-                  height={600}
+                <Image              src={previewFile.url}              alt={previewFile.name}              width={800}              height={600}
                   className="max-w-full max-h-[70vh] object-contain"
                   sizes="(max-width: 768px) 100vw, 800px"
                 />
@@ -320,15 +297,13 @@ export default function AdminMediaPage() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <code className="text-sm bg-gray-200 px-2 py-1 rounded">{previewFile.path}</code>
-                  <button
-                    onClick={() => copyToClipboard(previewFile.path)}
+                  <button              onClick={() => copyToClipboard(previewFile.path)}
                     className="p-1 hover:bg-gray-300 rounded"
                   >
                     <Copy className="h-4 w-4" />
                   </button>
                 </div>
-                <button
-                  onClick={() => {
+                <button              onClick={() => {
                     handleDelete(previewFile.path);
                     setPreviewFile(null);
                   }}

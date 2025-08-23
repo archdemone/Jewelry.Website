@@ -88,9 +88,7 @@ export default function OrderSummary({ selectedShippingId }: { selectedShippingI
         </button>
         {promoOpen && (
           <div className="mt-3 flex gap-2">
-            <input
-              value={promo}
-              onChange={(e) => setPromo(e.target.value)}
+            <input              value={promo}              onChange={(e) => setPromo(e.target.value)}
               placeholder="Enter code"
               className="flex-1 rounded-md border p-2 text-sm"
             />

@@ -45,9 +45,7 @@ export default function ShippingMethods({ value, onChange }: Props) {
           <label key={m.id} className="flex cursor-pointer items-start gap-3 rounded-md border p-4">
             <input
               type="radio"
-              name="shippingMethod"
-              checked={checked}
-              onChange={() => onChange?.(m.id)}
+              name="shippingMethod"              checked={checked}              onChange={() => onChange?.(m.id)}
               className="mt-1"
             />
             <div className="flex-1">

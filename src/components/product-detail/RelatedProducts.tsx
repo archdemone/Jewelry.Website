@@ -32,14 +32,9 @@ export default function RelatedProducts({ products }: RelatedProductsProps) {
             return (
               <Link key={product.id} href={`/products/${product.slug}`} className="group">
                 <div className="aspect-square overflow-hidden rounded-lg bg-gray-100">
-                  <SmartImage
-                    srcs={productImages}
-                    alt={product.name}
-                    className="h-full w-full object-cover transition-transform group-hover:scale-105"
-                    width={800}
-                    height={800}
-                    sizes="(min-width: 1280px) 300px, 50vw"
-                    quality={90}
+                  <SmartImage              srcs={productImages}              alt={product.name}
+                    className="h-full w-full object-cover transition-transform group-hover:scale-105"              width={800}              height={800}
+                    sizes="(min-width: 1280px) 300px, 50vw"              quality={90}
                   />
                 </div>
                 <div className="mt-3">
