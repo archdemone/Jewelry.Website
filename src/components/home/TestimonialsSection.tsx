@@ -30,29 +30,27 @@ const TestimonialsSection = () => {
 
   return (
     <section className="bg-white py-20">
-      <div className="container">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
+              <div className="container">
+              <motion.div initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mb-16 text-center"
-        >
-          <h2 className="mb-4 font-serif text-4xl">What Our Customers Say</h2>
-          <p className="text-xl text-gray-600">
+          viewport={{ once: true }} className="mb-16 text-center">
+              <h2 className="mb-4 font-serif text-4xl">What Our Customers Say</h2>
+              <p className="text-xl text-gray-600">
             Real stories from couples who chose handcrafted rings for their special moments
           </p>
-        </motion.div>
-
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
+              </motion.div>
+              <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {testimonials.map((testimonial, index) => (
-            <motion.div              key={index}              initial={{ opacity: 0, y: 20 }}              whileInView={{ opacity: 1, y: 0 }}              viewport={{ once: true }}              transition={{ delay: index * 0.2 }}              whileHover={{ y: -5 }}
-              className="relative rounded-xl bg-gray-50 p-8"
-            >
+            <motion.div key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: index * 0.2 }}
+              whileHover={{ y: -5 }} className="relative rounded-xl bg-gray-50 p-8">
               {/* Quote Icon */}
-              <motion.div              whileHover={{ rotate: 360 }}              transition={{ duration: 0.6 }}
-                className="absolute -top-4 left-8 flex h-8 w-8 items-center justify-center rounded-full bg-primary"
-              >
-                <Quote className="h-4 w-4 text-white" />
+              <motion.div whileHover={{ rotate: 360 }}
+                transition={{ duration: 0.6 }} className="absolute -top-4 left-8 flex h-8 w-8 items-center justify-center rounded-full bg-primary">
+              <Quote className="h-4 w-4 text-white" />
               </motion.div>
 
               {/* Rating */}
@@ -70,34 +68,29 @@ const TestimonialsSection = () => {
 
               {/* Customer Info */}
               <div>
-                <p className="font-semibold text-gray-900">{testimonial.name}</p>
-                <p className="text-sm text-gray-500">{testimonial.location}</p>
+              <p className="font-semibold text-gray-900">{testimonial.name}</p>
+              <p className="text-sm text-gray-500">{testimonial.location}</p>
               </div>
-            </motion.div>
+              </motion.div>
           ))}
         </div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
+              <motion.div initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="mt-12 text-center"
-        >
-          <div className="mx-auto max-w-2xl rounded-2xl bg-primary/5 p-8">
-            <h3 className="mb-4 font-serif text-2xl">Join Our Happy Customers</h3>
-            <p className="mb-6 text-gray-700">
+          viewport={{ once: true }} className="mt-12 text-center">
+              <div className="mx-auto max-w-2xl rounded-2xl bg-primary/5 p-8">
+              <h3 className="mb-4 font-serif text-2xl">Join Our Happy Customers</h3>
+              <p className="mb-6 text-gray-700">
               Every ring tells a story. Let us help you create yours with a handcrafted piece that
               will become part of your family's legacy.
             </p>
-            <motion.button              whileHover={{ scale: 1.05 }}              whileTap={{ scale: 0.95 }}
-              className="rounded-full bg-primary px-8 py-4 font-medium text-white shadow-lg transition-all duration-300 hover:shadow-xl"
-            >
+              <motion.button whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }} className="rounded-full bg-primary px-8 py-4 font-medium text-white shadow-lg transition-all duration-300 hover:shadow-xl">
               Start Your Ring Journey
             </motion.button>
-          </div>
-        </motion.div>
-      </div>
-    </section>
+              </div>
+              </motion.div>
+              </div>
+              </section>
   );
 };
 

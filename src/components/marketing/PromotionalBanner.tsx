@@ -92,45 +92,36 @@ export function PromotionalBanner({
   return (
     <AnimatePresence>
       {isVisible && (
-        <motion.div
-          initial={{ opacity: 0, y: -50 }}
+        <motion.div initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -50 }}
-          className={`${styles.bg} text-white py-3 px-4 relative overflow-hidden`}
-        >
+          exit={{ opacity: 0, y: -50 }} className={`${styles.bg} text-white py-3 px-4 relative overflow-hidden`}>
           {/* Background Pattern */}
           <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 left-0 w-full h-full bg-white transform rotate-12 scale-150"></div>
-          </div>
-
-          <div className="relative z-10 max-w-7xl mx-auto flex items-center justify-between">
-            <div className="flex items-center space-x-3">
+              <div className="absolute top-0 left-0 w-full h-full bg-white transform rotate-12 scale-150"></div>
+              </div>
+              <div className="relative z-10 max-w-7xl mx-auto flex items-center justify-between">
+              <div className="flex items-center space-x-3">
               <IconComponent className={`h-5 w-5 ${styles.iconColor}`} />
               <div>
-                <h3 className="font-semibold text-sm">{title}</h3>
-                <p className="text-xs opacity-90">{message}</p>
+              <h3 className="font-semibold text-sm">{title}</h3>
+              <p className="text-xs opacity-90">{message}</p>
               </div>
-            </div>
-
-            <div className="flex items-center space-x-3">
+              </div>
+              <div className="flex items-center space-x-3">
               {ctaText && ctaLink && (
-                <motion.button              whileHover={{ scale: 1.05 }}              whileTap={{ scale: 0.95 }}              onClick={handleCTAClick}
-                  className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white text-xs font-medium px-3 py-1 rounded-full transition-all duration-200"
-                >
+                <motion.button whileHover={{ scale: 1.05 }}              whileTap={{ scale: 0.95 }}              onClick={handleCTAClick} className="bg-white bg-opacity-20 hover:bg-opacity-30 text-white text-xs font-medium px-3 py-1 rounded-full transition-all duration-200">
                   {ctaText}
                 </motion.button>
               )}
 
               {dismissible && (
-                <motion.button              whileHover={{ scale: 1.1 }}              whileTap={{ scale: 0.9 }}              onClick={handleDismiss}
-                  className="text-white hover:text-gray-200 transition-colors"
-                >
-                  <X className="h-4 w-4" />
-                </motion.button>
+                <motion.button whileHover={{ scale: 1.1 }}              whileTap={{ scale: 0.9 }}              onClick={handleDismiss} className="text-white hover:text-gray-200 transition-colors">
+              <X className="h-4 w-4" />
+              </motion.button>
               )}
             </div>
-          </div>
-        </motion.div>
+              </div>
+              </motion.div>
       )}
     </AnimatePresence>
   );

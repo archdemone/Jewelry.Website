@@ -60,123 +60,121 @@ export default function CartItem({
 
   return (
     <div className="rounded-lg border border-gray-200 bg-white p-6">
-      <div className="flex gap-6">
+              <div className="flex gap-6">
         {/* Product Image */}
         <div className="relative flex-shrink-0">
-          <div className="h-32 w-32 overflow-hidden rounded-lg bg-gray-100">
-            <SmartImage              srcs={image ? [image, ...fallbacks] : fallbacks}              alt={name}
+              <div className="h-32 w-32 overflow-hidden rounded-lg bg-gray-100">
+              <SmartImage              srcs={image ? [image, ...fallbacks] : fallbacks}              alt={name}
               className="h-full w-full object-cover"              width={128}              height={128}
             />
-          </div>
+              </div>
           {/* Discount Badge */}
           <div className="absolute -left-2 -top-2 rounded bg-black px-2 py-1 text-xs font-bold text-green-400">
             -10%
           </div>
-        </div>
+              </div>
 
         {/* Product Details */}
         <div className="flex-1">
           {/* Product Header */}
           <div className="mb-4 flex items-start justify-between">
-            <div className="flex-1">
+              <div className="flex-1">
               <p className="mb-1 text-sm text-orange-500">#customring01</p>
               <h3 className="mb-2 text-lg font-semibold text-gray-900">{name}</h3>
-            </div>
-            <div className="flex items-center gap-2">
+              </div>
+              <div className="flex items-center gap-2">
               <Button variant="ghost" size="sm" className="p-2">
-                <Edit className="h-4 w-4" />
+              <Edit className="h-4 w-4" />
               </Button>
               <Button variant="ghost" size="sm" className="p-2" onClick={handleRemove}>
-                <Trash2 className="h-4 w-4" />
+              <Trash2 className="h-4 w-4" />
               </Button>
               <Button variant="outline" size="sm" className="text-sm">
                 View Details
               </Button>
-            </div>
-          </div>
+              </div>
+              </div>
 
           {/* Product Specifications */}
           <div className="mb-4 grid grid-cols-2 gap-4 text-sm">
-            <div className="space-y-2">
+              <div className="space-y-2">
               <div className="flex justify-between">
-                <span className="text-gray-600">Ring Size</span>
-                <span className="font-medium text-gray-900">{ringSize || 'N (Ø 17,1)'}</span>
+              <span className="text-gray-600">Ring Size</span>
+              <span className="font-medium text-gray-900">{ringSize || 'N (Ø 17,1)'}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Gem Color</span>
-                <span className="font-medium text-gray-900">{gemColor || 'Red'}</span>
+              <span className="text-gray-600">Gem Color</span>
+              <span className="font-medium text-gray-900">{gemColor || 'Red'}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Gem Density</span>
-                <span className="font-medium capitalize text-gray-900">
+              <span className="text-gray-600">Gem Density</span>
+              <span className="font-medium capitalize text-gray-900">
                   {gemDensity || 'medium'}
                 </span>
               </div>
-            </div>
-            <div className="space-y-2">
+              </div>
+              <div className="space-y-2">
               <div className="flex justify-between">
-                <span className="text-gray-600">Material</span>
-                <span className="font-medium text-gray-900">{material || '925 Silver'}</span>
+              <span className="text-gray-600">Material</span>
+              <span className="font-medium text-gray-900">{material || '925 Silver'}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Gem Variation</span>
-                <span className="font-medium text-gray-900">{gemVariation || 'Dark'}</span>
+              <span className="text-gray-600">Gem Variation</span>
+              <span className="font-medium text-gray-900">{gemVariation || 'Dark'}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Ring Width</span>
-                <span className="font-medium text-gray-900">
+              <span className="text-gray-600">Ring Width</span>
+              <span className="font-medium text-gray-900">
                   {ringWidth ? `${ringWidth}mm` : '6mm'}
                 </span>
               </div>
-            </div>
-          </div>
+              </div>
+              </div>
 
           {/* Additional Options */}
           <div className="mb-4 space-y-2">
-            <div className="cursor-pointer text-sm text-blue-600 hover:underline">
+              <div className="cursor-pointer text-sm text-blue-600 hover:underline">
               + Extended Protection Plan
             </div>
-            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
               <input type="checkbox" id="gift-wrapping" className="rounded" />
               <label htmlFor="gift-wrapping" className="text-sm text-gray-700">
                 Add free gift wrapping
               </label>
-            </div>
-          </div>
+              </div>
+              </div>
 
           {/* Quantity and Price */}
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-4">
               <span className="text-sm text-gray-600">Qty {quantity}</span>
               <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
+              <Button variant="outline"
                   size="sm"              onClick={() => handleQuantityChange(quantity - 1)}              disabled={isUpdating || quantity <= 1}
                   className="h-8 w-8 p-0"
                 >
-                  <Minus className="h-3 w-3" />
-                </Button>
-                <span className="w-8 text-center text-sm font-medium">{quantity}</span>
-                <Button
-                  variant="outline"
+              <Minus className="h-3 w-3" />
+              </Button>
+              <span className="w-8 text-center text-sm font-medium">{quantity}</span>
+              <Button variant="outline"
                   size="sm"              onClick={() => handleQuantityChange(quantity + 1)}              disabled={isUpdating}
                   className="h-8 w-8 p-0"
                 >
-                  <Plus className="h-3 w-3" />
-                </Button>
+              <Plus className="h-3 w-3" />
+              </Button>
               </div>
-            </div>
-            <div className="text-right">
+              </div>
+              <div className="text-right">
               <div className="flex items-center gap-2">
-                <span className="text-lg font-bold text-gray-900">£{safePrice.toFixed(2)}</span>
-                <span className="text-sm text-gray-400 line-through">
+              <span className="text-lg font-bold text-gray-900">£{safePrice.toFixed(2)}</span>
+              <span className="text-sm text-gray-400 line-through">
                   £{originalPrice.toFixed(2)}
                 </span>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+              </div>
+              </div>
+              </div>
+              </div>
+              </div>
   );
 }

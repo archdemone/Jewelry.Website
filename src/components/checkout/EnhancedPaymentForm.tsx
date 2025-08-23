@@ -113,81 +113,69 @@ export function EnhancedPaymentForm({
 
   return (
     <div className="space-y-6">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="space-y-4"
-      >
-        <div className="flex items-center gap-2">
-          <CreditCard className="h-5 w-5 text-gray-500" />
-          <h3 className="text-lg font-medium text-gray-900">Payment Method</h3>
-        </div>
-        
-        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-          <div className="flex items-center space-x-2">
-            <Lock className="h-5 w-5 text-blue-600" />
-            <span className="text-sm font-medium text-blue-800">
+              <motion.div initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }} className="space-y-4">
+              <div className="flex items-center gap-2">
+              <CreditCard className="h-5 w-5 text-gray-500" />
+              <h3 className="text-lg font-medium text-gray-900">Payment Method</h3>
+              </div>
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <div className="flex items-center space-x-2">
+              <Lock className="h-5 w-5 text-blue-600" />
+              <span className="text-sm font-medium text-blue-800">
               Secure Payment Processing
             </span>
-          </div>
-          <p className="text-sm text-blue-700 mt-2">
+              </div>
+              <p className="text-sm text-blue-700 mt-2">
             Your payment information is encrypted and secure. We use Stripe for secure payment processing.
           </p>
-        </div>
-
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+              </div>
+              <div className="space-y-4">
+              <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
               Payment Method
             </label>
-            <div className="space-y-3">
+              <div className="space-y-3">
               <label className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:border-blue-300 cursor-pointer">
-                <input
-                  type="radio"
+              <input type="radio"
                   value="stripe"              checked={paymentMethod === 'stripe'}              onChange={(e) => setPaymentMethod(e.target.value)}
                   className="text-blue-600 focus:ring-blue-500"
                 />
-                <div className="flex items-center space-x-2">
-                  <CreditCard className="h-4 w-4 text-gray-600" />
-                  <span className="text-sm font-medium">Credit/Debit Card (Stripe)</span>
-                </div>
+              <div className="flex items-center space-x-2">
+              <CreditCard className="h-4 w-4 text-gray-600" />
+              <span className="text-sm font-medium">Credit/Debit Card (Stripe)</span>
+              </div>
               </label>
-              
               <label className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:border-blue-300 cursor-pointer opacity-50">
-                <input
-                  type="radio"
+              <input type="radio"
                   value="paypal"
-                  disabled
-                  className="text-blue-600 focus:ring-blue-500"
+                  disabled className="text-blue-600 focus:ring-blue-500"
                 />
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm font-medium text-gray-500">PayPal</span>
-                  <span className="text-xs text-gray-400">(Coming Soon)</span>
-                </div>
+              <div className="flex items-center space-x-2">
+              <span className="text-sm font-medium text-gray-500">PayPal</span>
+              <span className="text-xs text-gray-400">(Coming Soon)</span>
+              </div>
               </label>
-              
               <label className="flex items-center space-x-3 p-3 border border-gray-200 rounded-lg hover:border-blue-300 cursor-pointer opacity-50">
-                <input
-                  type="radio"
+              <input type="radio"
                   value="apple-pay"
-                  disabled
-                  className="text-blue-600 focus:ring-blue-500"
+                  disabled className="text-blue-600 focus:ring-blue-500"
                 />
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm font-medium text-gray-500">Apple Pay</span>
-                  <span className="text-xs text-gray-400">(Coming Soon)</span>
-                </div>
+              <div className="flex items-center space-x-2">
+              <span className="text-sm font-medium text-gray-500">Apple Pay</span>
+              <span className="text-xs text-gray-400">(Coming Soon)</span>
+              </div>
               </label>
-            </div>
-          </div>
+              </div>
+              </div>
 
           {paymentMethod === 'stripe' && paymentElement && (
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                   Payment Details
                 </label>
-                <div              ref={(el) => {
+              <div              ref={(el) => {
                     if (el && paymentElement) {
                       paymentElement.mount(el);
                     }
@@ -195,52 +183,43 @@ export function EnhancedPaymentForm({
                   className="border border-gray-300 rounded-md p-3"
                 />
               </div>
-            </div>
+              </div>
           )}
 
           {error && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-3">
               <div className="flex items-center space-x-2">
-                <AlertCircle className="h-4 w-4 text-red-500" />
-                <p className="text-red-600 text-sm">{error}</p>
+              <AlertCircle className="h-4 w-4 text-red-500" />
+              <p className="text-red-600 text-sm">{error}</p>
               </div>
-            </div>
+              </div>
           )}
 
           {paymentMethod === 'stripe' && !paymentElement && totalAmount > 0 && (
             <div className="text-sm text-gray-600">
               <p>Loading payment form...</p>
-            </div>
+              </div>
           )}
         </div>
-      </motion.div>
+              </motion.div>
 
       {/* Shipping Method Selection */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
+      <motion.div initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="space-y-4"
-      >
-        <ShippingMethodSelector />
-      </motion.div>
+        transition={{ delay: 0.2 }} className="space-y-4">
+              <ShippingMethodSelector />
+              </motion.div>
 
       {/* Action Buttons */}
       {(onBack || onNext) && (
         <div className="flex justify-between">
           {onBack && (
-            <button
-              type="button"              onClick={onBack}              disabled={isLoading || isProcessing}
-              className="px-6 py-2 text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
+            <button type="button"              onClick={onBack}              disabled={isLoading || isProcessing} className="px-6 py-2 text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200 disabled:opacity-50 disabled:cursor-not-allowed">
               Back
             </button>
           )}
           {onNext && (
-            <button
-              type="button"              onClick={handlePaymentSubmit}              disabled={isLoading || isProcessing || !paymentElement}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
+            <button type="button"              onClick={handlePaymentSubmit}              disabled={isLoading || isProcessing || !paymentElement} className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed">
               {isLoading ? 'Processing Payment...' : isProcessing ? 'Processing...' : 'Continue to Review'}
             </button>
           )}

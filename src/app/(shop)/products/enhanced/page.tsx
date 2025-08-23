@@ -132,52 +132,46 @@ export default function EnhancedProductsPage() {
     <div className="container py-8">
       {/* Page Header */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Enhanced Products</h1>
-        <p className="text-gray-600">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Enhanced Products</h1>
+              <p className="text-gray-600">
           Discover our curated collection with advanced filtering and enhanced features.
         </p>
-      </div>
-
-      <div className="flex gap-8">
+              </div>
+              <div className="flex gap-8">
         {/* Filters Sidebar */}
         <div className="hidden lg:block w-80">
-          <div className="sticky top-4">
-            <AdvancedFilters              filters={filters}              onFiltersChange={handleFiltersChange}              onClearFilters={handleClearFilters}              isOpen={true}              onToggle={() => {}}
+              <div className="sticky top-4">
+              <AdvancedFilters              filters={filters}              onFiltersChange={handleFiltersChange}              onClearFilters={handleClearFilters}              isOpen={true}              onToggle={() => {}}
             />
-          </div>
-        </div>
+              </div>
+              </div>
 
         {/* Main Content */}
         <div className="flex-1">
           {/* Mobile Filters & View Controls */}
           <div className="flex items-center justify-between mb-6">
-            <div className="lg:hidden">
+              <div className="lg:hidden">
               <AdvancedFilters              filters={filters}              onFiltersChange={handleFiltersChange}              onClearFilters={handleClearFilters}              isOpen={isFiltersOpen}              onToggle={toggleFilters}
               />
-            </div>
-
-            <div className="hidden lg:block">
+              </div>
+              <div className="hidden lg:block">
               <p className="text-gray-600">
                 Showing {sortedProducts.length} of {mockProducts.length} products
               </p>
-            </div>
+              </div>
 
             {/* View Mode Toggle */}
             <div className="flex items-center gap-2 bg-gray-100 rounded-lg p-1">
-              <button              onClick={() => setViewMode('grid')}              className={`p-2 rounded ${
-                  viewMode === 'grid' ? 'bg-white shadow-sm' : 'hover:bg-gray-200'
-                }`}
+              <button              onClick={() => setViewMode('grid')}              className={`p-2 rounded ${ viewMode === 'grid' ? 'bg-white shadow-sm' : 'hover:bg-gray-200' }`}
               >
-                <Grid3x3 className="h-4 w-4" />
+              <Grid3x3 className="h-4 w-4" />
               </button>
-              <button              onClick={() => setViewMode('list')}              className={`p-2 rounded ${
-                  viewMode === 'list' ? 'bg-white shadow-sm' : 'hover:bg-gray-200'
-                }`}
+              <button              onClick={() => setViewMode('list')}              className={`p-2 rounded ${ viewMode === 'list' ? 'bg-white shadow-sm' : 'hover:bg-gray-200' }`}
               >
-                <Square className="h-4 w-4" />
+              <Square className="h-4 w-4" />
               </button>
-            </div>
-          </div>
+              </div>
+              </div>
 
           {/* Products Grid */}
           {sortedProducts.length === 0 ? (
@@ -186,28 +180,24 @@ export default function EnhancedProductsPage() {
               <p className="text-gray-600 mb-4">
                 Try adjusting your filters to see more results.
               </p>
-              <button              onClick={handleClearFilters}
-                className="px-6 py-2 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition-colors"
-              >
+              <button onClick={handleClearFilters} className="px-6 py-2 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition-colors">
                 Clear All Filters
               </button>
-            </div>
+              </div>
           ) : (
             <div className={`grid gap-6 ${
               viewMode === 'grid' 
-                ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3' 
-                : 'grid-cols-1'
-            }`}>
+                ? 'grid-cols-1 md:grid-cols-2 xl:grid-cols-3'  : 'grid-cols-1' }`}>
               {sortedProducts.map((product, index) => (
                 <motion.div              key={product.id}              initial={{ opacity: 0, y: 20 }}              animate={{ opacity: 1, y: 0 }}              transition={{ delay: index * 0.1 }}
                 >
-                  <ProductCard {...product} />
-                </motion.div>
+              <ProductCard {...product} />
+              </motion.div>
               ))}
             </div>
           )}
         </div>
-      </div>
-    </div>
+              </div>
+              </div>
   );
 }

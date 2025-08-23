@@ -73,23 +73,22 @@ export default function CheckoutForm() {
   if (!isHydrated) {
     return (
       <div className="space-y-6">
-        <div className="py-8 text-center">
-          <div className="mx-auto h-8 w-8 animate-spin rounded-full border-b-2 border-primary"></div>
-          <p className="mt-2 text-gray-600">Loading checkout...</p>
-        </div>
-      </div>
+              <div className="py-8 text-center">
+              <div className="mx-auto h-8 w-8 animate-spin rounded-full border-b-2 border-primary"></div>
+              <p className="mt-2 text-gray-600">Loading checkout...</p>
+              </div>
+              </div>
     );
   }
 
   return (
     <FormProvider {...methods}>
-      <div className="space-y-6">
-        <CheckoutSteps
-          currentStep={currentStep as 0 | 1 | 2 | 3}
+              <div className="space-y-6">
+              <CheckoutSteps currentStep={currentStep as 0 | 1 | 2 | 3}
           onStepClick={(s) => setCurrentStep(s)}
         />
-        <div className="grid gap-8 lg:grid-cols-3">
-          <div className="space-y-6 lg:col-span-2">
+              <div className="grid gap-8 lg:grid-cols-3">
+              <div className="space-y-6 lg:col-span-2">
             {currentStep === 0 && <ExpressCheckout />}
             <Current
               {...(steps[currentStep].id === 'shipping'
@@ -102,28 +101,21 @@ export default function CheckoutForm() {
                   }
                 : {})}
             />
-
-            <div className="flex items-center justify-between">
-              <button
-                type="button"
-                className="text-sm underline"              onClick={back}              disabled={currentStep === 0}
-              >
+              <div className="flex items-center justify-between">
+              <button type="button" className="text-sm underline"              onClick={back}              disabled={currentStep === 0}>
                 Back
               </button>
-              <button
-                type="button"
-                data-testid="checkout-continue"
-                className="rounded-md bg-primary px-4 py-2 text-white hover:opacity-90"              onClick={next}
-              >
+              <button type="button"
+                data-testid="checkout-continue" className="rounded-md bg-primary px-4 py-2 text-white hover:opacity-90"              onClick={next}>
                 {currentStep === steps.length - 1 ? 'Place order' : 'Continue'}
               </button>
-            </div>
-          </div>
-          <div>
-            <OrderSummary selectedShippingId={selectedShippingId} />
-          </div>
-        </div>
-      </div>
-    </FormProvider>
+              </div>
+              </div>
+              <div>
+              <OrderSummary selectedShippingId={selectedShippingId} />
+              </div>
+              </div>
+              </div>
+              </FormProvider>
   );
 }

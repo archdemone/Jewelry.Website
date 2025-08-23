@@ -66,17 +66,14 @@ export function SearchFilters({ query, category, minPrice, maxPrice, sort }: Sea
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6">
-      <div className="flex items-center justify-between mb-6">
-        <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-          <Filter className="w-5 h-5" />
+              <div className="flex items-center justify-between mb-6">
+              <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+              <Filter className="w-5 h-5" />
           Filters
         </h3>
         {hasActiveFilters && (
-          <button
-            onClick={clearFilters}
-            className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1"
-          >
-            <X className="w-4 h-4" />
+          <button onClick={clearFilters} className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1">
+              <X className="w-4 h-4" />
             Clear All
           </button>
         )}
@@ -84,12 +81,11 @@ export function SearchFilters({ query, category, minPrice, maxPrice, sort }: Sea
 
       {/* Category Filter */}
       <div className="mb-6">
-        <h4 className="text-sm font-medium text-gray-900 mb-3">Category</h4>
-        <div className="space-y-2">
+              <h4 className="text-sm font-medium text-gray-900 mb-3">Category</h4>
+              <div className="space-y-2">
           {categories.map((cat) => (
             <label key={cat.value} className="flex items-center">
-              <input
-                type="radio"
+              <input type="radio"
                 name="category"              value={cat.value}              checked={category === cat.value}              onChange={(e) => {
                   const params = new URLSearchParams(searchParams || '');
                   if (e.target.value) {
@@ -103,54 +99,48 @@ export function SearchFilters({ query, category, minPrice, maxPrice, sort }: Sea
                 className="w-4 h-4 text-gold-600 border-gray-300 focus:ring-gold-500"
               />
               <span className="ml-2 text-sm text-gray-700">{cat.label}</span>
-            </label>
+              </label>
           ))}
         </div>
-      </div>
+              </div>
 
       {/* Price Range Filter */}
       <div className="mb-6">
-        <h4 className="text-sm font-medium text-gray-900 mb-3">Price Range</h4>
-        <div className="space-y-3">
-          <div>
-            <label htmlFor="minPrice" className="block text-xs text-gray-600 mb-1">
+              <h4 className="text-sm font-medium text-gray-900 mb-3">Price Range</h4>
+              <div className="space-y-3">
+              <div>
+              <label htmlFor="minPrice" className="block text-xs text-gray-600 mb-1">
               Min Price (£)
             </label>
-            <input
-              type="number"
+              <input type="number"
               id="minPrice"              value={localMinPrice}              onChange={(e) => setLocalMinPrice(e.target.value)}
               placeholder="0"
               className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-transparent"
             />
-          </div>
-          <div>
-            <label htmlFor="maxPrice" className="block text-xs text-gray-600 mb-1">
+              </div>
+              <div>
+              <label htmlFor="maxPrice" className="block text-xs text-gray-600 mb-1">
               Max Price (£)
             </label>
-            <input
-              type="number"
+              <input type="number"
               id="maxPrice"              value={localMaxPrice}              onChange={(e) => setLocalMaxPrice(e.target.value)}
               placeholder="1000"
               className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-transparent"
             />
-          </div>
-          <button
-            onClick={updateFilters}
-            className="w-full px-4 py-2 bg-gold-600 text-white text-sm font-medium rounded-md hover:bg-gold-700 transition-colors"
-          >
+              </div>
+              <button onClick={updateFilters} className="w-full px-4 py-2 bg-gold-600 text-white text-sm font-medium rounded-md hover:bg-gold-700 transition-colors">
             Apply Price Filter
           </button>
-        </div>
-      </div>
+              </div>
+              </div>
 
       {/* Sort Options */}
       <div className="mb-6">
-        <h4 className="text-sm font-medium text-gray-900 mb-3">Sort By</h4>
-        <div className="space-y-2">
+              <h4 className="text-sm font-medium text-gray-900 mb-3">Sort By</h4>
+              <div className="space-y-2">
           {sortOptions.map((option) => (
             <label key={option.value} className="flex items-center">
-              <input
-                type="radio"
+              <input type="radio"
                 name="sort"              value={option.value}              checked={localSort === option.value}              onChange={(e) => {
                   setLocalSort(e.target.value as any);
                   const params = new URLSearchParams(searchParams || '');
@@ -165,20 +155,20 @@ export function SearchFilters({ query, category, minPrice, maxPrice, sort }: Sea
                 className="w-4 h-4 text-gold-600 border-gray-300 focus:ring-gold-500"
               />
               <span className="ml-2 text-sm text-gray-700">{option.label}</span>
-            </label>
+              </label>
           ))}
         </div>
-      </div>
+              </div>
 
       {/* Active Filters Summary */}
       {hasActiveFilters && (
         <div className="pt-4 border-t border-gray-200">
-          <h4 className="text-sm font-medium text-gray-900 mb-2">Active Filters</h4>
-          <div className="space-y-1">
+              <h4 className="text-sm font-medium text-gray-900 mb-2">Active Filters</h4>
+              <div className="space-y-1">
             {category && (
               <div className="flex items-center justify-between text-xs text-gray-600">
-                <span>Category: {categories.find(c => c.value === category)?.label}</span>
-                <button              onClick={() => {
+              <span>Category: {categories.find(c => c.value === category)?.label}</span>
+              <button              onClick={() => {
                     const params = new URLSearchParams(searchParams || '');
                     params.delete('category');
                     if (query) params.set('q', query);
@@ -186,14 +176,14 @@ export function SearchFilters({ query, category, minPrice, maxPrice, sort }: Sea
                   }}
                   className="text-red-500 hover:text-red-700"
                 >
-                  <X className="w-3 h-3" />
-                </button>
+              <X className="w-3 h-3" />
+              </button>
               </div>
             )}
             {minPrice && (
               <div className="flex items-center justify-between text-xs text-gray-600">
-                <span>Min Price: £{minPrice}</span>
-                <button              onClick={() => {
+              <span>Min Price: £{minPrice}</span>
+              <button              onClick={() => {
                     const params = new URLSearchParams(searchParams || '');
                     params.delete('minPrice');
                     if (query) params.set('q', query);
@@ -201,14 +191,14 @@ export function SearchFilters({ query, category, minPrice, maxPrice, sort }: Sea
                   }}
                   className="text-red-500 hover:text-red-700"
                 >
-                  <X className="w-3 h-3" />
-                </button>
+              <X className="w-3 h-3" />
+              </button>
               </div>
             )}
             {maxPrice && (
               <div className="flex items-center justify-between text-xs text-gray-600">
-                <span>Max Price: £{maxPrice}</span>
-                <button              onClick={() => {
+              <span>Max Price: £{maxPrice}</span>
+              <button              onClick={() => {
                     const params = new URLSearchParams(searchParams || '');
                     params.delete('maxPrice');
                     if (query) params.set('q', query);
@@ -216,14 +206,14 @@ export function SearchFilters({ query, category, minPrice, maxPrice, sort }: Sea
                   }}
                   className="text-red-500 hover:text-red-700"
                 >
-                  <X className="w-3 h-3" />
-                </button>
+              <X className="w-3 h-3" />
+              </button>
               </div>
             )}
             {sort && sort !== 'new' && (
               <div className="flex items-center justify-between text-xs text-gray-600">
-                <span>Sort: {sortOptions.find(s => s.value === sort)?.label}</span>
-                <button              onClick={() => {
+              <span>Sort: {sortOptions.find(s => s.value === sort)?.label}</span>
+              <button              onClick={() => {
                     const params = new URLSearchParams(searchParams || '');
                     params.delete('sort');
                     if (query) params.set('q', query);
@@ -231,12 +221,12 @@ export function SearchFilters({ query, category, minPrice, maxPrice, sort }: Sea
                   }}
                   className="text-red-500 hover:text-red-700"
                 >
-                  <X className="w-3 h-3" />
-                </button>
+              <X className="w-3 h-3" />
+              </button>
               </div>
             )}
           </div>
-        </div>
+              </div>
       )}
     </div>
   );

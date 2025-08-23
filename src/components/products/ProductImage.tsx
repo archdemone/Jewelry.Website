@@ -67,19 +67,15 @@ export function ProductImage({
   // If we've exhausted all fallbacks, show a styled placeholder
   if (hasError && imgSrc === '/images/MyImages/IMG-20250816-WA0000.jpg') {
     return (
-      <div
-        className={`relative flex items-center justify-center bg-gradient-to-br from-[#D4AF37] via-[#B8941F] to-[#8B6914] ${className}`}
+      <div className={`relative flex items-center justify-center bg-gradient-to-br from-[#D4AF37] via-[#B8941F] to-[#8B6914] ${className}`}
         style={{
           width: width ? `${width}px` : '100%',
           height: height ? `${height}px` : '100%',
         }}
-        role="img"
-        aria-label={`${alt} - Premium Jewelry`}
-      >
+        role="img" aria-label={`${alt} - Premium Jewelry`}>
         {/* Decorative pattern overlay */}
         <div className="absolute inset-0 opacity-10">
-          <div
-            className="absolute inset-0"
+              <div className="absolute inset-0"
             style={{
               backgroundImage: `
                 radial-gradient(circle at 25% 25%, rgba(255,255,255,0.3) 0, transparent 50%),
@@ -87,25 +83,24 @@ export function ProductImage({
               `,
             }}
           />
-        </div>
+              </div>
 
         {/* Main text */}
         <div className="relative z-10 text-center text-white">
-          <h3 className="text-lg font-semibold sm:text-xl md:text-2xl">{productName || 'Jewelry Item'}</h3>
-          <p className="mt-1 text-sm text-white/80 sm:text-base">Premium Jewelry</p>
-        </div>
+              <h3 className="text-lg font-semibold sm:text-xl md:text-2xl">{productName || 'Jewelry Item'}</h3>
+              <p className="mt-1 text-sm text-white/80 sm:text-base">Premium Jewelry</p>
+              </div>
 
         {/* Shimmer effect */}
         <div className="absolute inset-0 opacity-20">
-          <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-        </div>
-      </div>
+              <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+              </div>
+              </div>
     );
   }
 
   return (
-    <Image
-      src={imgSrc}
+    <Image src={imgSrc}
       alt={alt}
       width={width}
       height={height}

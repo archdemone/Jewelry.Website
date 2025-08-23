@@ -55,8 +55,7 @@ export function WishlistButton({
 
   if (variant === 'button') {
     return (
-      <motion.button
-        onClick={handleToggle}
+      <motion.button onClick={handleToggle}
         disabled={isAnimating}
         whileHover={{ scale: 1.02 }}
         whileTap={{ scale: 0.98 }}
@@ -68,35 +67,25 @@ export function WishlistButton({
             : 'bg-white text-gray-600 border-gray-300 hover:border-red-300 hover:text-red-600'
           }
           border rounded-lg transition-all duration-200
-          disabled:opacity-50 disabled:cursor-not-allowed
-          ${className}
-        `}
-        aria-label={localIsInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
-      >
-        <motion.div
-          animate={{
+          disabled:opacity-50 disabled:cursor-not-allowed ${className} `} aria-label={localIsInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}>
+              <motion.div animate={{
             scale: isAnimating ? [1, 1.3, 1] : 1,
             rotate: isAnimating ? [0, 15, 0] : 0,
-          }}
-          transition={{ duration: 0.3 }}
-        >
-          <Heart              className={`
+          }} transition={{ duration: 0.3 }}>
+              <Heart              className={`
               ${iconSizes[size]} 
-              ${localIsInWishlist ? 'fill-red-500 text-red-500' : ''}
-              transition-colors duration-200
-            `} 
+              ${localIsInWishlist ? 'fill-red-500 text-red-500' : ''} transition-colors duration-200 `} 
           />
-        </motion.div>
-        <span className="font-medium">
+              </motion.div>
+              <span className="font-medium">
           {localIsInWishlist ? 'In Wishlist' : 'Add to Wishlist'}
         </span>
-      </motion.button>
+              </motion.button>
     );
   }
 
   return (
-    <motion.button
-      onClick={handleToggle}
+    <motion.button onClick={handleToggle}
       disabled={isAnimating}
       whileHover={{ scale: 1.1 }}
       whileTap={{ scale: 0.9 }}
@@ -108,26 +97,16 @@ export function WishlistButton({
         }
         rounded-full border border-gray-200 hover:border-red-200
         transition-all duration-200 shadow-sm hover:shadow-md
-        disabled:opacity-50 disabled:cursor-not-allowed
-        ${className}
-      `}
-      aria-label={localIsInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}
-    >
-      <motion.div
-        animate={{
+        disabled:opacity-50 disabled:cursor-not-allowed ${className} `} aria-label={localIsInWishlist ? 'Remove from wishlist' : 'Add to wishlist'}>
+              <motion.div animate={{
           scale: isAnimating ? [1, 1.3, 1] : 1,
           rotate: isAnimating ? [0, 15, 0] : 0,
-        }}
-        transition={{ duration: 0.3 }}
-      >
-        <Heart 
-          className={`
+        }} transition={{ duration: 0.3 }}>
+              <Heart className={`
             ${iconSizes[size]} 
-            ${localIsInWishlist ? 'fill-red-500 text-red-500' : ''}
-            transition-colors duration-200
-          `} 
+            ${localIsInWishlist ? 'fill-red-500 text-red-500' : ''} transition-colors duration-200 `} 
         />
-      </motion.div>
-    </motion.button>
+              </motion.div>
+              </motion.button>
   );
 }

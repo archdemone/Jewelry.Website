@@ -25,8 +25,8 @@ export function AnalyticsProviders() {
 
   return (
     <Suspense fallback={null}>
-      <VercelAnalytics />
-      <SpeedInsights />
-    </Suspense>
+              <VercelAnalytics />
+              <SpeedInsights />
+              </Suspense>
   );
 }

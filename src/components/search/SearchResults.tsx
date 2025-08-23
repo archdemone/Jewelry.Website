@@ -105,13 +105,13 @@ export function SearchResults({ query, category, minPrice, maxPrice, sort }: Sea
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {[...Array(6)].map((_, i) => (
           <div key={i} className="bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="aspect-square bg-gray-200 animate-pulse"></div>
-            <div className="p-4">
+              <div className="aspect-square bg-gray-200 animate-pulse"></div>
+              <div className="p-4">
               <div className="h-4 bg-gray-200 rounded animate-pulse mb-2"></div>
               <div className="h-6 bg-gray-200 rounded animate-pulse mb-2"></div>
               <div className="h-4 bg-gray-200 rounded animate-pulse"></div>
-            </div>
-          </div>
+              </div>
+              </div>
         ))}
       </div>
     );
@@ -120,23 +120,20 @@ export function SearchResults({ query, category, minPrice, maxPrice, sort }: Sea
   if (results.length === 0) {
     return (
       <div className="text-center py-12">
-        <div className="text-6xl mb-4">🔍</div>
-        <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              <div className="text-6xl mb-4">🔍</div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
           No products found
         </h3>
-        <p className="text-gray-600 mb-6">
+              <p className="text-gray-600 mb-6">
           {query 
             ? `We couldn't find any products matching "${query}"`
             : 'Try adjusting your search criteria or browse our full collection'
           }
         </p>
-        <Link
-          href="/products"
-          className="inline-flex items-center px-6 py-3 bg-gold-600 text-white font-medium rounded-lg hover:bg-gold-700 transition-colors"
-        >
+              <Link href="/products" className="inline-flex items-center px-6 py-3 bg-gold-600 text-white font-medium rounded-lg hover:bg-gold-700 transition-colors">
           Browse All Products
         </Link>
-      </div>
+              </div>
     );
   }
 
@@ -144,11 +141,11 @@ export function SearchResults({ query, category, minPrice, maxPrice, sort }: Sea
     <div>
       {/* Results Summary */}
       <div className="mb-6 flex items-center justify-between">
-        <p className="text-gray-600">
+              <p className="text-gray-600">
           Showing {results.length} of {total} results
           {query && ` for "${query}"`}
         </p>
-      </div>
+              </div>
 
       {/* Results Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -157,20 +154,17 @@ export function SearchResults({ query, category, minPrice, maxPrice, sort }: Sea
             {/* Product Image */}
             <div className="relative aspect-square overflow-hidden">
               <Image              src={product.images?.[0] || '/images/placeholder.jpg'}              alt={product.name}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover hover:scale-105 transition-transform duration-300"
               />
               
               {/* Wishlist Button */}
               <button              onClick={() => handleWishlistToggle(product.id)}              className={`absolute top-3 right-3 p-2 rounded-full transition-all duration-200 ${
                   wishlist.has(product.id)
-                    ? 'bg-red-500 text-white'
-                    : 'bg-white/80 text-gray-600 hover:bg-white'
-                }`}
+                    ? 'bg-red-500 text-white' : 'bg-white/80 text-gray-600 hover:bg-white' }`}
                 aria-label={wishlist.has(product.id) ? 'Remove from wishlist' : 'Add to wishlist'}
               >
-                <Heart className={`w-5 h-5 ${wishlist.has(product.id) ? 'fill-current' : ''}`} />
+              <Heart className={`w-5 h-5 ${wishlist.has(product.id) ? 'fill-current' : ''}`} />
               </button>
 
               {/* Quick Add to Cart */}
@@ -178,10 +172,10 @@ export function SearchResults({ query, category, minPrice, maxPrice, sort }: Sea
                 className="absolute bottom-3 left-3 right-3 bg-white/90 backdrop-blur-sm text-gray-900 py-2 px-4 rounded-lg font-medium hover:bg-white transition-colors duration-200 flex items-center justify-center gap-2 opacity-0 group-hover:opacity-100"
                 aria-label={`Add ${product.name} to cart`}
               >
-                <ShoppingBag className="w-4 h-4" />
+              <ShoppingBag className="w-4 h-4" />
                 Add to Cart
               </button>
-            </div>
+              </div>
 
             {/* Product Info */}
             <div className="p-4">
@@ -189,7 +183,7 @@ export function SearchResults({ query, category, minPrice, maxPrice, sort }: Sea
                 {product.name}
               </h3>
               <div className="flex items-center justify-between mb-2">
-                <span className="text-2xl font-bold text-gray-900">
+              <span className="text-2xl font-bold text-gray-900">
                   £{product.price.toLocaleString()}
                 </span>
                 {product.originalPrice && product.originalPrice > product.price && (
@@ -198,21 +192,17 @@ export function SearchResults({ query, category, minPrice, maxPrice, sort }: Sea
                   </span>
                 )}
               </div>
-              
               <div className="flex items-center gap-2 mb-3">
-                <div className="flex text-yellow-400">
+              <div className="flex text-yellow-400">
                   {[...Array(5)].map((_, i) => (
-                    <svg              key={i}              className={`w-4 h-4 ${i < Math.floor(product.rating || 0) ? 'fill-current' : 'fill-gray-300'}`}
-                      viewBox="0 0 20 20"
-                      aria-hidden="true"
-                    >
-                      <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
-                    </svg>
+                    <svg key={i}              className={`w-4 h-4 ${i < Math.floor(product.rating || 0) ? 'fill-current' : 'fill-gray-300'}`}
+                      viewBox="0 0 20 20" aria-hidden="true">
+              <path d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+              </svg>
                   ))}
                 </div>
-                <span className="text-sm text-gray-600">({product.reviews || 0} reviews)</span>
+              <span className="text-sm text-gray-600">({product.reviews || 0} reviews)</span>
               </div>
-
               <div className="flex flex-wrap gap-1 mb-3">
                 {product.material && (
                   <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded border border-gray-300">
@@ -225,36 +215,33 @@ export function SearchResults({ query, category, minPrice, maxPrice, sort }: Sea
                   </span>
                 )}
               </div>
-
-              <Link              href={`/products/${product.slug}`}
-                className="block w-full text-center bg-gold-600 text-white py-3 px-4 rounded-lg hover:bg-gold-700 transition-all duration-300 transform hover:scale-105 font-medium"
-              >
+              <Link href={`/products/${product.slug}`} className="block w-full text-center bg-gold-600 text-white py-3 px-4 rounded-lg hover:bg-gold-700 transition-all duration-300 transform hover:scale-105 font-medium">
                 View Details
               </Link>
-            </div>
-          </div>
+              </div>
+              </div>
         ))}
       </div>
 
       {/* Pagination */}
       {total > 12 && (
         <div className="mt-8 flex justify-center">
-          <div className="flex items-center gap-2">
-            <button              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}              disabled={currentPage === 1}
+              <div className="flex items-center gap-2">
+              <button              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}              disabled={currentPage === 1}
               className="px-4 py-2 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Previous
             </button>
-            <span className="px-4 py-2 text-gray-700">
+              <span className="px-4 py-2 text-gray-700">
               Page {currentPage} of {Math.ceil(total / 12)}
             </span>
-            <button              onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(total / 12)))}              disabled={currentPage >= Math.ceil(total / 12)}
+              <button              onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(total / 12)))}              disabled={currentPage >= Math.ceil(total / 12)}
               className="px-4 py-2 text-gray-600 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Next
             </button>
-          </div>
-        </div>
+              </div>
+              </div>
       )}
     </div>
   );

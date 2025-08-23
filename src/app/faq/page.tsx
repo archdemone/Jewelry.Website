@@ -71,26 +71,26 @@ export const metadata: Metadata = {
 export default function FAQPage() {
   return (
     <>
-      <Header />
-      <main className="container py-10">
-        <FAQPageJsonLd faqs={FAQs.map((f) => ({ question: f.question, answer: f.answer }))} />
-        <section className="mx-auto max-w-3xl">
-          <h1 className="text-3xl font-[var(--font-serif)] font-semibold text-secondary">
+              <Header />
+              <main className="container py-10">
+              <FAQPageJsonLd faqs={FAQs.map((f) => ({ question: f.question, answer: f.answer }))} />
+              <section className="mx-auto max-w-3xl">
+              <h1 className="text-3xl font-[var(--font-serif)] font-semibold text-secondary">
             Frequently Asked Questions
           </h1>
-          <p className="mt-2 text-sm text-gray-600">
+              <p className="mt-2 text-sm text-gray-600">
             Find answers to common questions. Can’t find what you’re looking for?{' '}
             <a href="/contact" className="underline">
               Contact us
             </a>
             .
           </p>
-          <div className="mt-6">
-            <FAQAccordion items={FAQs} />
-          </div>
-        </section>
-      </main>
-      <Footer />
-    </>
+              <div className="mt-6">
+              <FAQAccordion items={FAQs} />
+              </div>
+              </section>
+              </main>
+              <Footer />
+              </>
   );
 }

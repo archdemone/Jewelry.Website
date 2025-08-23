@@ -163,87 +163,79 @@ export function SearchSuggestions({ query, onSelect, onSearch, className = '' }:
   if (!showSuggestions) return null;
 
   return (
-    <div 
-      ref={containerRef}
-      className={`absolute top-full left-0 right-0 z-50 bg-white border border-gray-200 rounded-lg shadow-lg ${className}`}
-      onKeyDown={handleKeyDown}
-    >
-      <AnimatePresence>
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
+    <div ref={containerRef}
+      className={`absolute top-full left-0 right-0 z-50 bg-white border border-gray-200 rounded-lg shadow-lg ${className}`} onKeyDown={handleKeyDown}>
+              <AnimatePresence>
+              <motion.div initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.2 }}
-        >
+          exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.2 }}>
           {/* Search Suggestions */}
           {query.trim() && suggestions.length > 0 && (
             <div className="p-3 border-b border-gray-100">
               <div className="flex items-center gap-2 mb-2">
-                <Search className="h-4 w-4 text-gray-400" />
-                <span className="text-sm font-medium text-gray-700">Suggestions</span>
+              <Search className="h-4 w-4 text-gray-400" />
+              <span className="text-sm font-medium text-gray-700">Suggestions</span>
               </div>
               <div className="space-y-1">
                 {suggestions.map((suggestion, index) => (
-                  <button              key={suggestion}              onClick={() => handleSuggestionClick(suggestion)}              className={`w-full text-left px-3 py-2 rounded-md text-sm hover:bg-gray-50 transition-colors flex items-center gap-2 ${
-                      index === selectedIndex ? 'bg-gray-50 text-gold-600' : 'text-gray-700'
-                    }`}
+                  <button              key={suggestion}              onClick={() => handleSuggestionClick(suggestion)}              className={`w-full text-left px-3 py-2 rounded-md text-sm hover:bg-gray-50 transition-colors flex items-center gap-2 ${ index === selectedIndex ? 'bg-gray-50 text-gold-600' : 'text-gray-700' }`}
                   >
-                    <Search className="h-3 w-3 text-gray-400" />
+              <Search className="h-3 w-3 text-gray-400" />
                     {suggestion}
                   </button>
                 ))}
               </div>
-            </div>
+              </div>
           )}
 
           {/* Recent Searches */}
           {!query.trim() && recentSearches.length > 0 && (
             <div className="p-3 border-b border-gray-100">
               <div className="flex items-center gap-2 mb-2">
-                <Clock className="h-4 w-4 text-gray-400" />
-                <span className="text-sm font-medium text-gray-700">Recent Searches</span>
+              <Clock className="h-4 w-4 text-gray-400" />
+              <span className="text-sm font-medium text-gray-700">Recent Searches</span>
               </div>
               <div className="space-y-1">
                 {recentSearches.map((search, index) => (
                   <button              key={search}              onClick={() => handleSearch(search)}
                     className="w-full text-left px-3 py-2 rounded-md text-sm text-gray-700 hover:bg-gray-50 transition-colors flex items-center gap-2"
                   >
-                    <Clock className="h-3 w-3 text-gray-400" />
+              <Clock className="h-3 w-3 text-gray-400" />
                     {search}
                   </button>
                 ))}
               </div>
-            </div>
+              </div>
           )}
 
           {/* Popular Searches */}
           {!query.trim() && (
             <div className="p-3">
               <div className="flex items-center gap-2 mb-2">
-                <TrendingUp className="h-4 w-4 text-gray-400" />
-                <span className="text-sm font-medium text-gray-700">Popular Searches</span>
+              <TrendingUp className="h-4 w-4 text-gray-400" />
+              <span className="text-sm font-medium text-gray-700">Popular Searches</span>
               </div>
               <div className="flex flex-wrap gap-2">
                 {popularSearches.slice(0, 6).map((search) => (
                   <button              key={search}              onClick={() => handleSearch(search)}
                     className="px-3 py-1 rounded-full bg-gray-100 text-sm text-gray-700 hover:bg-gold-100 hover:text-gold-700 transition-colors flex items-center gap-1"
                   >
-                    <Sparkles className="h-3 w-3" />
+              <Sparkles className="h-3 w-3" />
                     {search}
                   </button>
                 ))}
               </div>
-            </div>
+              </div>
           )}
 
           {/* Quick Actions */}
           <div className="p-3 bg-gray-50 border-t border-gray-100">
-            <div className="text-xs text-gray-500">
+              <div className="text-xs text-gray-500">
               Press <kbd className="px-1 py-0.5 bg-white border border-gray-300 rounded text-xs">Enter</kbd> to search, <kbd className="px-1 py-0.5 bg-white border border-gray-300 rounded text-xs">Esc</kbd> to close
             </div>
-          </div>
-        </motion.div>
-      </AnimatePresence>
-    </div>
+              </div>
+              </motion.div>
+              </AnimatePresence>
+              </div>
   );
 }

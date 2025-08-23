@@ -7,17 +7,16 @@ export default async function VerifyMfaPage() {
   await requireAdmin();
   return (
     <div className="max-w-md">
-      <h1 className="mb-4 text-2xl font-semibold">Verify MFA</h1>
-      <form action={verify} className="space-y-4">
-        <input
-          name="code"
+              <h1 className="mb-4 text-2xl font-semibold">Verify MFA</h1>
+              <form action={verify} className="space-y-4">
+              <input name="code"
           placeholder="Enter 6-digit code"
           className="w-full rounded-md border border-gray-300 px-3 py-2"
           required
         />
-        <button className="rounded-md bg-black px-4 py-2 font-medium text-white">Verify</button>
-      </form>
-    </div>
+              <button className="rounded-md bg-black px-4 py-2 font-medium text-white">Verify</button>
+              </form>
+              </div>
   );
 }
 

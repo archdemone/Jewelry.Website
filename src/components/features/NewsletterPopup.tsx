@@ -104,77 +104,65 @@ export default function NewsletterPopup({
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="newsletter-popup bg-gradient-to-br from-gray-100 via-gray-50 to-gray-200 sm:max-w-md border-2 border-black">
-        <DialogHeader>
-          <DialogTitle className="text-center text-2xl font-bold text-orange-400">
+              <DialogContent className="newsletter-popup bg-gradient-to-br from-gray-100 via-gray-50 to-gray-200 sm:max-w-md border-2 border-black">
+              <DialogHeader>
+              <DialogTitle className="text-center text-2xl font-bold text-orange-400">
             Join Our Artisan Community
           </DialogTitle>
-          <DialogDescription className="text-center text-gray-600">
+              <DialogDescription className="text-center text-gray-600">
             Be the first to see new designs and get 10% off your first purchase.
           </DialogDescription>
-        </DialogHeader>
-
-        <div className="space-y-4">
+              </DialogHeader>
+              <div className="space-y-4">
           {!isSuccess ? (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <label
-                  htmlFor="newsletter-email"
-                  className="block text-sm font-medium text-gray-700"
-                >
+              <label htmlFor="newsletter-email" className="block text-sm font-medium text-gray-700">
                   Email
                 </label>
-                <Input
-                  id="newsletter-email"
+              <Input id="newsletter-email"
                   type="email"
                   placeholder="Enter your email address"              value={email}              onChange={(e) => setEmail(e.target.value)}
                   className="w-full"
                   required
                 />
               </div>
-
               <div className="flex flex-col gap-2">
-                <Button
-                  type="submit"              disabled={isSubmitting}
-                  className="w-full bg-gradient-to-r from-primary to-orange-500 text-white hover:opacity-90"
-                >
+              <Button type="submit"              disabled={isSubmitting} className="w-full bg-gradient-to-r from-primary to-orange-500 text-white hover:opacity-90">
                   {isSubmitting ? (
                     <div className="flex items-center gap-2">
-                      <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                       Subscribing...
                     </div>
                   ) : (
                     <div className="flex items-center gap-2">
-                      <Mail className="h-4 w-4" />
+              <Mail className="h-4 w-4" />
                       Subscribe & Get 10% Off
                     </div>
                   )}
                 </Button>
-
-                <Button
-                  type="button"
+              <Button type="button"
                   variant="outline"              onClick={() => setOpen(false)}
                   className="w-full border-gray-300 bg-white text-gray-700 hover:bg-gray-50"
                 >
                   Maybe Later
                 </Button>
               </div>
-
               <div className="flex items-center justify-center gap-4 text-sm text-gray-500">
-                <div className="flex items-center gap-1">
-                  <Gift className="h-4 w-4 text-primary" />
-                  <span>10% off first purchase</span>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Sparkles className="h-4 w-4 text-primary" />
-                  <span>Exclusive updates</span>
-                </div>
+              <div className="flex items-center gap-1">
+              <Gift className="h-4 w-4 text-primary" />
+              <span>10% off first purchase</span>
               </div>
-            </form>
+              <div className="flex items-center gap-1">
+              <Sparkles className="h-4 w-4 text-primary" />
+              <span>Exclusive updates</span>
+              </div>
+              </div>
+              </form>
           ) : (
             <div className="space-y-4 text-center">
               <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
-                <CheckCircle className="h-8 w-8 text-green-600" />
+              <CheckCircle className="h-8 w-8 text-green-600" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900">
                 Welcome to Our Community!
@@ -182,10 +170,10 @@ export default function NewsletterPopup({
               <p className="text-gray-600">
                 Check your email for your exclusive 10% discount code.
               </p>
-            </div>
+              </div>
           )}
         </div>
-      </DialogContent>
-    </Dialog>
+              </DialogContent>
+              </Dialog>
   );
 }

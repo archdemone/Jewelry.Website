@@ -53,63 +53,62 @@ export default function ContactForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="grid gap-4">
-      <div className="grid gap-2">
-        <label htmlFor="name" className="text-sm font-medium text-secondary">
+              <div className="grid gap-2">
+              <label htmlFor="name" className="text-sm font-medium text-secondary">
           Name
         </label>
-        <Input id="name" placeholder="Your name" {...register('name')} />
+              <Input id="name" placeholder="Your name" {...register('name')} />
         {errors.name && <p className="text-xs text-red-600">{errors.name.message}</p>}
       </div>
-      <div className="grid gap-2">
-        <label htmlFor="email" className="text-sm font-medium text-secondary">
+              <div className="grid gap-2">
+              <label htmlFor="email" className="text-sm font-medium text-secondary">
           Email
         </label>
-        <Input id="email" type="email" placeholder="you@example.com" {...register('email')} />
+              <Input id="email" type="email" placeholder="you@example.com" {...register('email')} />
         {errors.email && <p className="text-xs text-red-600">{errors.email.message}</p>}
       </div>
-      <div className="grid gap-2">
-        <label htmlFor="phone" className="text-sm font-medium text-secondary">
+              <div className="grid gap-2">
+              <label htmlFor="phone" className="text-sm font-medium text-secondary">
           Phone (optional)
         </label>
-        <Input id="phone" placeholder="(555) 123-4567" {...register('phone')} />
-      </div>
-      <div className="grid gap-2">
-        <label htmlFor="subject" className="text-sm font-medium text-secondary">
+              <Input id="phone" placeholder="(555) 123-4567" {...register('phone')} />
+              </div>
+              <div className="grid gap-2">
+              <label htmlFor="subject" className="text-sm font-medium text-secondary">
           Subject
         </label>
-        <select id="subject" className="h-10 rounded-md border px-3" {...register('subject')}>
-          <option>General</option>
-          <option>Order</option>
-          <option>Custom Design</option>
-          <option>Wholesale</option>
-          <option>Other</option>
-        </select>
-      </div>
-      <div className="grid gap-2">
-        <label htmlFor="message" className="text-sm font-medium text-secondary">
+              <select id="subject" className="h-10 rounded-md border px-3" {...register('subject')}>
+              <option>General</option>
+              <option>Order</option>
+              <option>Custom Design</option>
+              <option>Wholesale</option>
+              <option>Other</option>
+              </select>
+              </div>
+              <div className="grid gap-2">
+              <label htmlFor="message" className="text-sm font-medium text-secondary">
           Message
         </label>
-        <Textarea id="message" rows={6} placeholder="How can we help?" {...register('message')} />
+              <Textarea id="message" rows={6} placeholder="How can we help?" {...register('message')} />
         {errors.message && <p className="text-xs text-red-600">{errors.message.message}</p>}
       </div>
-      <div className="grid gap-2">
-        <label htmlFor="file" className="text-sm font-medium text-secondary">
+              <div className="grid gap-2">
+              <label htmlFor="file" className="text-sm font-medium text-secondary">
           Attachment (custom orders)
         </label>
-        <input id="file" type="file" className="text-sm" {...register('file')} />
-      </div>
-      <input
-        type="text"
+              <input id="file" type="file" className="text-sm" {...register('file')} />
+              </div>
+              <input type="text"
         tabIndex={-1}
         autoComplete="off"
         className="hidden"
         aria-hidden
         {...register('hp')}
       />
-      <input type="hidden" {...register('recaptchaToken')} />
-      <Button type="submit" disabled={loading}>
+              <input type="hidden" {...register('recaptchaToken')} />
+              <Button type="submit" disabled={loading}>
         {loading ? 'Sending…' : 'Send message'}
       </Button>
-    </form>
+              </form>
   );
 }

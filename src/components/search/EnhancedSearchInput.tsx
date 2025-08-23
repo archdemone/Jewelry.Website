@@ -87,10 +87,9 @@ export function EnhancedSearchInput({
 
   return (
     <div ref={containerRef} className={`relative ${className}`}>
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
-        <input
-          ref={inputRef}
+              <div className="relative">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+              <input ref={inputRef}
           type="text"
           placeholder={placeholder}
           value={query}
@@ -98,26 +97,20 @@ export function EnhancedSearchInput({
           onFocus={handleInputFocus}
           onBlur={handleInputBlur}
           onKeyDown={handleKeyDown}
-          className={`w-full rounded-full border border-gray-300 bg-white px-10 py-2 text-sm focus:border-gold-500 focus:outline-none focus:ring-1 focus:ring-gold-500 transition-colors ${
-            isFocused ? 'border-gold-500' : ''
-          } ${showClearButton && query ? 'pr-10' : ''}`}
+          className={`w-full rounded-full border border-gray-300 bg-white px-10 py-2 text-sm focus:border-gold-500 focus:outline-none focus:ring-1 focus:ring-gold-500 transition-colors ${ isFocused ? 'border-gold-500' : '' } ${showClearButton && query ? 'pr-10' : ''}`}
           aria-label="Search products"
         />
         {showClearButton && query && (
-          <button
-            onClick={handleClear}
-            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 transition-colors"
-            aria-label="Clear search"
-          >
-            <X className="h-4 w-4" />
-          </button>
+          <button onClick={handleClear}
+            className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-600 transition-colors" aria-label="Clear search">
+              <X className="h-4 w-4" />
+              </button>
         )}
       </div>
 
       {/* Search Suggestions */}
       {showSuggestions && (
-        <SearchSuggestions
-          query={query}
+        <SearchSuggestions query={query}
           onSelect={handleSuggestionSelect}
           onSearch={handleSearchSubmit}
           className="mt-1"

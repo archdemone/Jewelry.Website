@@ -107,57 +107,50 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${inter.variable} ${playfair.variable}`}>
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="//fonts.googleapis.com" />
-        <link rel="dns-prefetch" href="//fonts.gstatic.com" />
+              <head>
+              <link rel="preconnect" href="https://fonts.googleapis.com" />
+              <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+              <link rel="dns-prefetch" href="//fonts.googleapis.com" />
+              <link rel="dns-prefetch" href="//fonts.gstatic.com" />
         
         {/* Preload critical images - removed to avoid duplicate preload warning */}
         {/* Preload service worker - removed to avoid duplicate preload warning */}
         
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-        <meta name="theme-color" content="#d4af37" />
-        <meta name="mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="J&M Jewelry" />
-        <link rel="apple-touch-icon" href="/images/icon-192x192.png" />
-        <link rel="manifest" href="/manifest.webmanifest" />
+              <meta name="theme-color" content="#d4af37" />
+              <meta name="mobile-web-app-capable" content="yes" />
+              <meta name="apple-mobile-web-app-capable" content="yes" />
+              <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+              <meta name="apple-mobile-web-app-title" content="J&M Jewelry" />
+              <link rel="apple-touch-icon" href="/images/icon-192x192.png" />
+              <link rel="manifest" href="/manifest.webmanifest" />
         {/* Force cache invalidation with cache-busting query parameter */}
         <meta name="cache-control" content="no-cache, no-store, must-revalidate" />
-        <meta name="pragma" content="no-cache" />
-        <meta name="expires" content="0" />
+              <meta name="pragma" content="no-cache" />
+              <meta name="expires" content="0" />
         {/* Manifest and SW disabled to avoid errors */}
       </head>
-      <body className={`${inter.className} antialiased`}>
+              <body className={`${inter.className} antialiased`}>
         {/* Skip Links for Accessibility */}
-        <a 
-          href="#main-content" 
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-black text-white px-4 py-2 rounded z-50"
-        >
+        <a href="#main-content"  className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-black text-white px-4 py-2 rounded z-50">
           Skip to main content
         </a>
-        <a 
-          href="#navigation" 
-          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-black text-white px-4 py-2 rounded z-50 mt-12"
-        >
+              <a href="#navigation"  className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 bg-black text-white px-4 py-2 rounded z-50 mt-12">
           Skip to navigation
         </a>
-        
-        <AuthSessionProvider>
-          <CartProvider>
-            <ErrorBoundary>
+              <AuthSessionProvider>
+              <CartProvider>
+              <ErrorBoundary>
               <Header />
               <main id="main-content" role="main">{children}</main>
               <ConditionalFooter />
               <SimpleToastContainer />
               {/* <NewsletterPopup /> */}
               <CookieBanner />
-            </ErrorBoundary>
-          </CartProvider>
-        </AuthSessionProvider>
-      </body>
-    </html>
+              </ErrorBoundary>
+              </CartProvider>
+              </AuthSessionProvider>
+              </body>
+              </html>
   );
 }

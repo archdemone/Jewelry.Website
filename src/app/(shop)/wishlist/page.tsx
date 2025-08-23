@@ -20,11 +20,10 @@ export default function WishlistPage() {
 
   return (
     <div className="container py-8">
-      <WishlistSystem
-        onRemoveItem={handleRemoveItem}
+              <WishlistSystem onRemoveItem={handleRemoveItem}
         onAddToCart={handleAddToCart}
         onShare={handleShare}
       />
-    </div>
+              </div>
   );
 }

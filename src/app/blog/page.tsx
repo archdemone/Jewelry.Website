@@ -42,18 +42,17 @@ export default function BlogIndexPage() {
   );
   return (
     <>
-      <Header />
-      <main className="container py-10">
-        <section>
-          <h1 className="text-3xl font-[var(--font-serif)] font-semibold text-secondary">
+              <Header />
+              <main className="container py-10">
+              <section>
+              <h1 className="text-3xl font-[var(--font-serif)] font-semibold text-secondary">
             Our Journal
           </h1>
-          <div className="mt-4 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-            <Input
-              placeholder="Search articles"              value={query}              onChange={(e) => setQuery(e.target.value)}
+              <div className="mt-4 flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
+              <Input placeholder="Search articles"              value={query}              onChange={(e) => setQuery(e.target.value)}
               className="md:max-w-sm"
             />
-            <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2">
               {categories.map((c) => (
                 <button              key={c}              onClick={() => setCat(c)}              className={`rounded-full border px-3 py-1 text-sm ${cat === c ? 'bg-black text-white' : ''}`}
                 >
@@ -61,15 +60,15 @@ export default function BlogIndexPage() {
                 </button>
               ))}
             </div>
-          </div>
-          <div className="mt-6 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+              </div>
+              <div className="mt-6 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
             {filtered.map((p) => (
               <BlogCard key={p.slug} {...p} />
             ))}
           </div>
-        </section>
-      </main>
-      <Footer />
-    </>
+              </section>
+              </main>
+              <Footer />
+              </>
   );
 }

@@ -318,7 +318,7 @@ export default function UnifiedAdminProductsPage() {
   const getFeaturedBadge = (isFeatured: boolean) => {
     return isFeatured ? (
       <Badge className="bg-gold-100 text-gold-800 flex items-center gap-1">
-        <Star className="w-3 h-3" />
+              <Star className="w-3 h-3" />
         Featured
       </Badge>
     ) : null;
@@ -327,8 +327,8 @@ export default function UnifiedAdminProductsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gold-500"></div>
-      </div>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gold-500"></div>
+              </div>
     );
   }
 
@@ -336,97 +336,91 @@ export default function UnifiedAdminProductsPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-gray-900">Product Management</h1>
-          <p className="text-gray-600">Manage all your jewelry products with advanced features</p>
-        </div>
-        <Button onClick={handleAddProduct} className="bg-gold-500 hover:bg-gold-600">
-          <Plus className="w-4 h-4 mr-2" />
+              <div>
+              <h1 className="text-2xl font-bold text-gray-900">Product Management</h1>
+              <p className="text-gray-600">Manage all your jewelry products with advanced features</p>
+              </div>
+              <Button onClick={handleAddProduct} className="bg-gold-500 hover:bg-gold-600">
+              <Plus className="w-4 h-4 mr-2" />
           Add Product
         </Button>
-      </div>
+              </div>
 
              {/* Tabs */}
        <div className="w-full">
-         <div className="inline-flex h-10 items-center justify-center rounded-md bg-gray-100 p-1 w-full">
-           <button              onClick={() => setActiveTab('all-products')}              className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all ${
+              <div className="inline-flex h-10 items-center justify-center rounded-md bg-gray-100 p-1 w-full">
+              <button              onClick={() => setActiveTab('all-products')}              className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all ${
                activeTab === 'all-products' 
-                 ? 'bg-white text-gray-900 shadow-sm' 
-                 : 'text-gray-600 hover:text-gray-900'
-             }`}
+                 ? 'bg-white text-gray-900 shadow-sm'  : 'text-gray-600 hover:text-gray-900' }`}
            >
-             <Package className="w-4 h-4 mr-2" />
+              <Package className="w-4 h-4 mr-2" />
              All Products ({products.length})
            </button>
-           <button              onClick={() => setActiveTab('featured')}              className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all ${
+              <button              onClick={() => setActiveTab('featured')}              className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all ${
                activeTab === 'featured' 
-                 ? 'bg-white text-gray-900 shadow-sm' 
-                 : 'text-gray-600 hover:text-gray-900'
-             }`}
+                 ? 'bg-white text-gray-900 shadow-sm'  : 'text-gray-600 hover:text-gray-900' }`}
            >
-             <Star className="w-4 h-4 mr-2" />
+              <Star className="w-4 h-4 mr-2" />
              Featured ({products.filter(p => p.isFeatured).length})
            </button>
-         </div>
+              </div>
 
                  {activeTab === 'all-products' && (
            <div className="space-y-4 mt-4">
           {/* Filters */}
           <Card className="p-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Search</label>
-                <Input
-                  placeholder="Search products..."              value={query}              onChange={(e) => setQuery(e.target.value)}
+              <label className="block text-sm font-medium text-gray-700 mb-1">Search</label>
+              <Input placeholder="Search products..."              value={query}              onChange={(e) => setQuery(e.target.value)}
                   className="w-full"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                <select              value={status}              onChange={(e) => setStatus(e.target.value)}
+              <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+              <select              value={status}              onChange={(e) => setStatus(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                 >
-                  <option value="all">All Status</option>
-                  <option value="active">Active</option>
-                  <option value="draft">Draft</option>
-                  <option value="archived">Archived</option>
-                </select>
+              <option value="all">All Status</option>
+              <option value="active">Active</option>
+              <option value="draft">Draft</option>
+              <option value="archived">Archived</option>
+              </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                <select              value={category}              onChange={(e) => setCategory(e.target.value)}
+              <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <select              value={category}              onChange={(e) => setCategory(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                 >
-                  <option value="all">All Categories</option>
+              <option value="all">All Categories</option>
                   {categories.map((cat) => (
                     <option key={cat} value={cat}>{cat}</option>
                   ))}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Material</label>
-                <select              value={material}              onChange={(e) => setMaterial(e.target.value)}
+              <label className="block text-sm font-medium text-gray-700 mb-1">Material</label>
+              <select              value={material}              onChange={(e) => setMaterial(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                 >
-                  <option value="all">All Materials</option>
+              <option value="all">All Materials</option>
                   {materials.map((mat) => (
                     <option key={mat} value={mat}>{mat}</option>
                   ))}
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Ready to Ship</label>
-                <select              value={readyToShip}              onChange={(e) => setReadyToShip(e.target.value)}
+              <label className="block text-sm font-medium text-gray-700 mb-1">Ready to Ship</label>
+              <select              value={readyToShip}              onChange={(e) => setReadyToShip(e.target.value)}
                   className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                 >
-                  <option value="all">All</option>
-                  <option value="ready">Ready</option>
-                  <option value="not-ready">Not Ready</option>
-                </select>
+              <option value="all">All</option>
+              <option value="ready">Ready</option>
+              <option value="not-ready">Not Ready</option>
+              </select>
               </div>
               <div className="flex items-end">
-                <Button
-                  variant="outline"              onClick={() => {
+              <Button variant="outline"              onClick={() => {
                     setQuery('');
                     setStatus('all');
                     setCategory('all');
@@ -435,255 +429,245 @@ export default function UnifiedAdminProductsPage() {
                   }}
                   className="w-full"
                 >
-                  <RotateCcw className="w-4 h-4 mr-2" />
+              <RotateCcw className="w-4 h-4 mr-2" />
                   Reset
                 </Button>
               </div>
-            </div>
-          </Card>
+              </div>
+              </Card>
 
           {/* View Mode Toggle */}
           <div className="flex justify-between items-center">
-            <div className="text-sm text-gray-600">
+              <div className="text-sm text-gray-600">
               {filteredProducts.length} product{filteredProducts.length !== 1 ? 's' : ''} found
             </div>
-            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
               <Button              variant={viewMode === 'grid' ? 'default' : 'outline'}
                 size="sm"              onClick={() => setViewMode('grid')}
               >
-                <Grid className="w-4 h-4" />
+              <Grid className="w-4 h-4" />
               </Button>
               <Button              variant={viewMode === 'list' ? 'default' : 'outline'}
                 size="sm"              onClick={() => setViewMode('list')}
               >
-                <List className="w-4 h-4" />
+              <List className="w-4 h-4" />
               </Button>
-            </div>
-          </div>
+              </div>
+              </div>
 
           {/* Products Grid/List */}
           {viewMode === 'grid' ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredProducts.map((product) => (
                 <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow">
-                  <div className="aspect-square bg-gray-100 relative">
+              <div className="aspect-square bg-gray-100 relative">
                     {product.images && product.images[0] ? (
                       <Image              src={product.images[0]}              alt={product.name}
-                        fill
-                        className="object-cover"
+                        fill className="object-cover"
                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                       />
                     ) : (
                       <div className="flex items-center justify-center h-full">
-                        <Package className="w-12 h-12 text-gray-400" />
-                      </div>
+              <Package className="w-12 h-12 text-gray-400" />
+              </div>
                     )}
                     <div className="absolute top-2 left-2 flex flex-col gap-1">
                       {getStatusBadge(product.status || 'draft')}
                       {getFeaturedBadge(product.isFeatured || false)}
                     </div>
-                    <div className="absolute top-2 right-2">
-                      <Button
-                        size="sm"
+              <div className="absolute top-2 right-2">
+              <Button size="sm"
                         variant="outline"              onClick={() => toggleFeatured(product)}
                         className="bg-white/90 hover:bg-white"
                       >
-                        <Star className={`w-4 h-4 ${product.isFeatured ? 'fill-yellow-400 text-yellow-600' : 'text-gray-400'}`} />
-                      </Button>
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-semibold text-gray-900 truncate">{product.name}</h3>
-                    <p className="text-sm text-gray-600 mb-2">{product.sku}</p>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="font-bold text-gold-600">£{product.price}</span>
+              <Star className={`w-4 h-4 ${product.isFeatured ? 'fill-yellow-400 text-yellow-600' : 'text-gray-400'}`} />
+              </Button>
+              </div>
+              </div>
+              <div className="p-4">
+              <h3 className="font-semibold text-gray-900 truncate">{product.name}</h3>
+              <p className="text-sm text-gray-600 mb-2">{product.sku}</p>
+              <div className="flex items-center justify-between mb-2">
+              <span className="font-bold text-gold-600">£{product.price}</span>
                       {product.rating && (
                         <div className="flex items-center gap-1">
-                          <Star className="w-4 h-4 fill-yellow-400 text-yellow-600" />
-                          <span className="text-sm">{product.rating}</span>
-                        </div>
+              <Star className="w-4 h-4 fill-yellow-400 text-yellow-600" />
+              <span className="text-sm">{product.rating}</span>
+              </div>
                       )}
                     </div>
-                    <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
-                      <span>{product.material}</span>
-                      <span>•</span>
-                      <span>{product.gemColor}</span>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button
-                        size="sm"
+              <div className="flex items-center gap-2 text-sm text-gray-600 mb-3">
+              <span>{product.material}</span>
+              <span>•</span>
+              <span>{product.gemColor}</span>
+              </div>
+              <div className="flex gap-2">
+              <Button size="sm"
                         variant="outline"              onClick={() => handleEditProduct(product)}
                         className="flex-1"
                       >
-                        <Edit className="w-4 h-4 mr-1" />
+              <Edit className="w-4 h-4 mr-1" />
                         Edit
                       </Button>
-                      <Button
-                        size="sm"
+              <Button size="sm"
                         variant="outline"              onClick={() => handleDeleteProduct(product.id)}
                         className="text-red-600 hover:text-red-700"
                       >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </Card>
+              <Trash2 className="w-4 h-4" />
+              </Button>
+              </div>
+              </div>
+              </Card>
               ))}
             </div>
           ) : (
             <Card>
               <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead className="bg-gray-50">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SKU</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Featured</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+              <table className="w-full">
+              <thead className="bg-gray-50">
+              <tr>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">SKU</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Featured</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              </tr>
+              </thead>
+              <tbody className="bg-white divide-y divide-gray-200">
                     {filteredProducts.map((product) => (
                       <tr key={product.id} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center">
-                            <div className="flex-shrink-0 h-10 w-10 relative">
+              <td className="px-6 py-4 whitespace-nowrap">
+              <div className="flex items-center">
+              <div className="flex-shrink-0 h-10 w-10 relative">
                               {product.images && product.images[0] ? (
                                 <Image              src={product.images[0]}              alt={product.name}
-                                  fill
-                                  className="rounded-full object-cover"
+                                  fill className="rounded-full object-cover"
                                   sizes="40px"
                                 />
                               ) : (
                                 <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
-                                  <Package className="w-5 h-5 text-gray-400" />
-                                </div>
+              <Package className="w-5 h-5 text-gray-400" />
+              </div>
                               )}
                             </div>
-                            <div className="ml-4">
-                              <div className="text-sm font-medium text-gray-900">{product.name}</div>
-                              <div className="text-sm text-gray-500">{product.material} • {product.gemColor}</div>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{product.sku}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{product.category}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gold-600">£{product.price}</td>
-                        <td className="px-6 py-4 whitespace-nowrap">{getStatusBadge(product.status || 'draft')}</td>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <Button
-                            size="sm"
+              <div className="ml-4">
+              <div className="text-sm font-medium text-gray-900">{product.name}</div>
+              <div className="text-sm text-gray-500">{product.material} • {product.gemColor}</div>
+              </div>
+              </div>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{product.sku}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{product.category}</td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gold-600">£{product.price}</td>
+              <td className="px-6 py-4 whitespace-nowrap">{getStatusBadge(product.status || 'draft')}</td>
+              <td className="px-6 py-4 whitespace-nowrap">
+              <Button size="sm"
                             variant="outline"              onClick={() => toggleFeatured(product)}
                           >
-                            <Star className={`w-4 h-4 ${product.isFeatured ? 'fill-yellow-400 text-yellow-600' : 'text-gray-400'}`} />
-                          </Button>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                          <div className="flex gap-2">
-                            <Button
-                              size="sm"
+              <Star className={`w-4 h-4 ${product.isFeatured ? 'fill-yellow-400 text-yellow-600' : 'text-gray-400'}`} />
+              </Button>
+              </td>
+              <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
+              <div className="flex gap-2">
+              <Button size="sm"
                               variant="outline"              onClick={() => handleEditProduct(product)}
                             >
-                              <Edit className="w-4 h-4 mr-1" />
+              <Edit className="w-4 h-4 mr-1" />
                               Edit
                             </Button>
-                            <Button
-                              size="sm"
+              <Button size="sm"
                               variant="outline"              onClick={() => handleDeleteProduct(product.id)}
                               className="text-red-600 hover:text-red-700"
                             >
-                              <Trash2 className="w-4 h-4" />
-                            </Button>
-                          </div>
-                        </td>
-                      </tr>
+              <Trash2 className="w-4 h-4" />
+              </Button>
+              </div>
+              </td>
+              </tr>
                     ))}
                   </tbody>
-                </table>
+              </table>
               </div>
-            </Card>
+              </Card>
                      )}
            </div>
          )}
  
          {activeTab === 'featured' && (
            <div className="space-y-4 mt-4">
-          <Card className="p-4">
-            <div className="flex items-center justify-between mb-4">
+              <Card className="p-4">
+              <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg font-semibold">Featured Products</h3>
               <p className="text-sm text-gray-600">Manage products that appear on the homepage</p>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {filteredProducts.map((product) => (
                 <Card key={product.id} className="p-4">
-                  <div className="flex items-start justify-between mb-3">
-                    <div className="flex-1">
-                      <h4 className="font-medium text-gray-900">{product.name}</h4>
-                      <p className="text-sm text-gray-600">{product.sku}</p>
-                    </div>
-                    <Button
-                      size="sm"
+              <div className="flex items-start justify-between mb-3">
+              <div className="flex-1">
+              <h4 className="font-medium text-gray-900">{product.name}</h4>
+              <p className="text-sm text-gray-600">{product.sku}</p>
+              </div>
+              <Button size="sm"
                       variant="outline"              onClick={() => toggleFeatured(product)}
                     >
-                      <Star className={`w-4 h-4 ${product.isFeatured ? 'fill-yellow-400 text-yellow-600' : 'text-gray-400'}`} />
-                    </Button>
-                  </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="font-medium text-gold-600">£{product.price}</span>
-                    <span className="text-gray-500">Order: {product.featuredOrder || 'N/A'}</span>
-                  </div>
-                </Card>
+              <Star className={`w-4 h-4 ${product.isFeatured ? 'fill-yellow-400 text-yellow-600' : 'text-gray-400'}`} />
+              </Button>
+              </div>
+              <div className="flex items-center justify-between text-sm">
+              <span className="font-medium text-gold-600">£{product.price}</span>
+              <span className="text-gray-500">Order: {product.featuredOrder || 'N/A'}</span>
+              </div>
+              </Card>
               ))}
                          </div>
-           </Card>
-         </div>
+              </Card>
+              </div>
        )}
        </div>
 
              {/* Advanced Edit Modal - Updated Layout */}
        {editingProduct && (
          <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-start justify-center p-4 z-50 overflow-y-auto">
-           <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
+              <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
              {/* Header */}
              <div className="flex items-center justify-between p-6 border-b">
-               <h2 className="text-2xl font-bold text-gray-900">
+              <h2 className="text-2xl font-bold text-gray-900">
                  {isAddingProduct ? 'Add New Product' : 'Edit Product'}
                </h2>
-               <button              onClick={() => {
+              <button              onClick={() => {
                    setEditingProduct(null);
                    setIsAddingProduct(false);
                  }}
                  className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
                >
-                 <X className="w-5 h-5" />
-               </button>
-             </div>
+              <X className="w-5 h-5" />
+              </button>
+              </div>
 
              {/* Content */}
              <div className="flex h-[calc(90vh-140px)] overflow-hidden">
                {/* Left Column - Product Images */}
                <div className="w-1/3 p-6 border-r bg-gray-50 overflow-y-auto">
-                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Product Images</h3>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Product Images</h3>
                  
                  {/* Main Image Preview */}
                  <div className="mb-6">
-                   <div className="relative aspect-square bg-white rounded-lg border-2 border-dashed border-gray-300 overflow-hidden">
+              <div className="relative aspect-square bg-white rounded-lg border-2 border-dashed border-gray-300 overflow-hidden">
                      {editingProduct.images && editingProduct.images[0] ? (
                        <Image              src={editingProduct.images[0]}              alt={editingProduct.name}
-                         fill
-                         className="object-cover"
+                         fill className="object-cover"
                          sizes="(max-width: 768px) 100vw, 50vw"
                        />
                      ) : (
                        <div className="flex items-center justify-center h-full">
-                         <div className="text-center">
-                           <Package className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                           <p className="text-sm text-gray-500">No image selected</p>
-                         </div>
-                       </div>
+              <div className="text-center">
+              <Package className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+              <p className="text-sm text-gray-500">No image selected</p>
+              </div>
+              </div>
                      )}
                      {editingProduct.isReadyToShip && (
                        <div className="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
@@ -694,9 +678,7 @@ export default function UnifiedAdminProductsPage() {
                        <div className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium ${
                          editingProduct.status === 'active' ? 'bg-green-100 text-green-800' :
                          editingProduct.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
-                         editingProduct.status === 'archived' ? 'bg-gray-100 text-gray-800' :
-                         'bg-red-100 text-red-800'
-                       }`}>
+                         editingProduct.status === 'archived' ? 'bg-gray-100 text-gray-800' : 'bg-red-100 text-red-800' }`}>
                          {editingProduct.status === 'active' ? 'Active' :
                           editingProduct.status === 'draft' ? 'Draft' :
                           editingProduct.status === 'archived' ? 'Archived' :
@@ -704,12 +686,12 @@ export default function UnifiedAdminProductsPage() {
                        </div>
                      )}
                    </div>
-                 </div>
+              </div>
 
                  {/* Selected Images Grid */}
                  <div>
-                   <label className="block text-sm font-medium text-gray-700 mb-2">Available Images</label>
-                   <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Available Images</label>
+              <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto">
                      {availableImages.map((image) => (
                        <button              key={image.url}              onClick={() => {
                            const newImages = editingProduct.images.includes(image.url)
@@ -718,148 +700,131 @@ export default function UnifiedAdminProductsPage() {
                            setEditingProduct({ ...editingProduct, images: newImages });
                          }}              className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-colors ${
                            editingProduct.images.includes(image.url)
-                             ? 'border-gold-500 ring-2 ring-gold-200'
-                             : 'border-gray-200 hover:border-gray-300'
-                         }`}
+                             ? 'border-gold-500 ring-2 ring-gold-200' : 'border-gray-200 hover:border-gray-300' }`}
                        >
-                         <Image              src={image.url}              alt={image.name}
-                           fill
-                           className="object-cover"
+              <Image              src={image.url}              alt={image.name}
+                           fill className="object-cover"
                            sizes="200px"
                          />
                          {editingProduct.images.includes(image.url) && (
                            <div className="absolute top-1 right-1 w-5 h-5 bg-gold-500 rounded-full flex items-center justify-center">
-                             <span className="text-white text-xs">✓</span>
-                           </div>
+              <span className="text-white text-xs">✓</span>
+              </div>
                          )}
                        </button>
                      ))}
                    </div>
-                 </div>
-               </div>
+              </div>
+              </div>
 
                {/* Right Column - Product Details */}
                <div className="w-2/3 p-6 overflow-y-auto">
-                 <h3 className="text-lg font-semibold text-gray-900 mb-4">Product Details</h3>
-                 
-                 <div className="grid grid-cols-2 gap-4">
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Product Details</h3>
+              <div className="grid grid-cols-2 gap-4">
                    {/* Product Name & SKU - Side by Side */}
                    <div>
-                     <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
-                     <input
-                       type="text"              value={editingProduct.name}              onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
+              <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
+              <input type="text"              value={editingProduct.name}              onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                      />
-                   </div>
-
-                   <div>
-                     <label className="block text-sm font-medium text-gray-700 mb-1">SKU</label>
-                     <input
-                       type="text"              value={editingProduct.sku}              onChange={(e) => setEditingProduct({ ...editingProduct, sku: e.target.value })}
+              </div>
+              <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">SKU</label>
+              <input type="text"              value={editingProduct.sku}              onChange={(e) => setEditingProduct({ ...editingProduct, sku: e.target.value })}
                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                      />
-                   </div>
+              </div>
 
                    {/* Category & Sub Category - Side by Side */}
                    <div>
-                     <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                     <select              value={editingProduct.category}              onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value })}
+              <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+              <select              value={editingProduct.category}              onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value })}
                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                      >
                        {categories.map((cat) => (
                          <option key={cat} value={cat}>{cat}</option>
                        ))}
                      </select>
-                   </div>
-
-                   <div>
-                     <label className="block text-sm font-medium text-gray-700 mb-1">Sub Category</label>
-                     <input
-                       type="text"              value={editingProduct.subCategory || ''}              onChange={(e) => setEditingProduct({ ...editingProduct, subCategory: e.target.value })}
+              </div>
+              <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Sub Category</label>
+              <input type="text"              value={editingProduct.subCategory || ''}              onChange={(e) => setEditingProduct({ ...editingProduct, subCategory: e.target.value })}
                        placeholder="e.g., Engagement, Anniversary"
                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                      />
-                   </div>
+              </div>
 
                    {/* Price & Original Price - Side by Side */}
                    <div>
-                     <label className="block text-sm font-medium text-gray-700 mb-1">Price (£)</label>
-                     <input
-                       type="number"              value={editingProduct.price}              onChange={(e) => setEditingProduct({ ...editingProduct, price: parseFloat(e.target.value) || 0 })}
+              <label className="block text-sm font-medium text-gray-700 mb-1">Price (£)</label>
+              <input type="number"              value={editingProduct.price}              onChange={(e) => setEditingProduct({ ...editingProduct, price: parseFloat(e.target.value) || 0 })}
                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                      />
-                   </div>
-
-                   <div>
-                     <label className="block text-sm font-medium text-gray-700 mb-1">Original Price (£)</label>
-                     <input
-                       type="number"              value={editingProduct.originalPrice || ''}              onChange={(e) => setEditingProduct({ ...editingProduct, originalPrice: parseFloat(e.target.value) || undefined })}
+              </div>
+              <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Original Price (£)</label>
+              <input type="number"              value={editingProduct.originalPrice || ''}              onChange={(e) => setEditingProduct({ ...editingProduct, originalPrice: parseFloat(e.target.value) || undefined })}
                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                      />
-                   </div>
+              </div>
 
                    {/* Material - Full Width */}
                    <div className="col-span-2">
-                     <label className="block text-sm font-medium text-gray-700 mb-1">Material</label>
-                     <select              value={editingProduct.material}              onChange={(e) => setEditingProduct({ ...editingProduct, material: e.target.value })}
+              <label className="block text-sm font-medium text-gray-700 mb-1">Material</label>
+              <select              value={editingProduct.material}              onChange={(e) => setEditingProduct({ ...editingProduct, material: e.target.value })}
                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                      >
                        {materials.map((material) => (
                          <option key={material} value={material}>{material}</option>
                        ))}
                      </select>
-                   </div>
+              </div>
 
                    {/* Primary Gem Color & Mix Colors - Side by Side */}
                    <div className="col-span-2">
-                     <div className="grid grid-cols-2 gap-6">
-                       <div>
-                         <label className="block text-sm font-medium text-gray-700 mb-1">Primary Gem Color</label>
-                         <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 gap-6">
+              <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Primary Gem Color</label>
+              <div className="grid grid-cols-3 gap-2">
                            {gemColors.map((color) => (
                              <button              key={color}
                                type="button"              onClick={() => setEditingProduct({ ...editingProduct, gemColor: color })}              onMouseEnter={() => setHoveredGemColor(color)}              onMouseLeave={() => setHoveredGemColor(null)}              className={`relative rounded-lg border-2 p-3 transition-all ${
                                  editingProduct.gemColor === color
-                                   ? 'border-gold-500 bg-gold-50'
-                                   : 'border-gray-300 hover:border-gray-400'
-                               }`}
+                                   ? 'border-gold-500 bg-gold-50' : 'border-gray-300 hover:border-gray-400' }`}
                              >
-                               <div className="flex flex-col items-center gap-2">
-                                 <div
-                                   className="w-4 h-4 rounded-full border-2 border-gray-200 flex-shrink-0"              style={{ 
+              <div className="flex flex-col items-center gap-2">
+              <div className="w-4 h-4 rounded-full border-2 border-gray-200 flex-shrink-0"              style={{ 
                                      backgroundColor: getGemColorHex(color),
                                      aspectRatio: '1 / 1',
                                      minWidth: '16px',
                                      minHeight: '16px'
                                    }}
                                  />
-                                 <span className="text-sm font-medium">{color}</span>
-                               </div>
+              <span className="text-sm font-medium">{color}</span>
+              </div>
 
                                {/* Gem Color Popup */}
                                {hoveredGemColor === color && (
                                  <div className="absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 transform">
-                                   <div className="rounded-lg border bg-white p-4 shadow-lg">
-                                     <Image              src={getGemColorImage(color)}              alt={`${color} gem`}              width={200}              height={200}
+              <div className="rounded-lg border bg-white p-4 shadow-lg">
+              <Image              src={getGemColorImage(color)}              alt={`${color} gem`}              width={200}              height={200}
                                        className="rounded object-cover"              style={{ minWidth: '200px', minHeight: '200px' }}
                                      />
-                                   </div>
-                                 </div>
+              </div>
+              </div>
                                )}
                              </button>
                            ))}
                          </div>
-                       </div>
-
-                       <div>
-                         <label className="block text-sm font-medium text-gray-700 mb-2">Mix Colors (for Custom option)</label>
-                         <div className="grid grid-cols-3 gap-2">
+              </div>
+              <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Mix Colors (for Custom option)</label>
+              <div className="grid grid-cols-3 gap-2">
                            {['Red', 'Green', 'Blue', 'Purple', 'Yellow', 'Black', 'White', 'Pink', 'Orange', 'Turquoise'].map((color) => (
                              <label              key={color} 
                                className="relative flex items-center p-2 rounded border hover:bg-gray-50 cursor-pointer"              onMouseEnter={() => setHoveredMixColor(color)}              onMouseLeave={() => setHoveredMixColor(null)}
                              >
-                               <input
-                                 type="checkbox"              checked={editingProduct.mixColors.includes(color)}              onChange={(e) => {
+              <input type="checkbox"              checked={editingProduct.mixColors.includes(color)}              onChange={(e) => {
                                    const newMixColors = e.target.checked
                                      ? [...editingProduct.mixColors, color]
                                      : editingProduct.mixColors.filter(c => c !== color);
@@ -867,86 +832,80 @@ export default function UnifiedAdminProductsPage() {
                                  }}
                                  className="mr-2"
                                />
-                               <div className="flex items-center gap-2 min-w-0">
-                                 <div
-                                   className="w-4 h-4 rounded-full border border-gray-200 flex-shrink-0"              style={{ 
+              <div className="flex items-center gap-2 min-w-0">
+              <div className="w-4 h-4 rounded-full border border-gray-200 flex-shrink-0"              style={{ 
                                      backgroundColor: getGemColorHex(color),
                                      aspectRatio: '1 / 1',
                                      minWidth: '16px',
                                      minHeight: '16px'
                                    }}
                                  />
-                                 <span className="text-sm truncate">{color}</span>
-                               </div>
+              <span className="text-sm truncate">{color}</span>
+              </div>
 
                                {/* Mix Color Popup */}
                                {hoveredMixColor === color && (
                                  <div className="absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 transform">
-                                   <div className="rounded-lg border bg-white p-4 shadow-lg">
-                                     <Image              src={getGemColorImage(color)}              alt={`${color} gem`}              width={200}              height={200}
+              <div className="rounded-lg border bg-white p-4 shadow-lg">
+              <Image              src={getGemColorImage(color)}              alt={`${color} gem`}              width={200}              height={200}
                                        className="rounded object-cover"              style={{ minWidth: '200px', minHeight: '200px' }}
                                      />
-                                   </div>
-                                 </div>
+              </div>
+              </div>
                                )}
                              </label>
                            ))}
                          </div>
-                       </div>
-                     </div>
-                   </div>
+              </div>
+              </div>
+              </div>
 
                    {/* Second Gem Color & Mix Colors for Couple Rings - Side by Side */}
                    {editingProduct.category === 'Couple Ring Set' && (
                      <div className="col-span-2">
-                       <div className="grid grid-cols-2 gap-6">
-                         <div>
-                           <label className="block text-sm font-medium text-gray-700 mb-1">Second Gem Color (Ring 2)</label>
-                           <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 gap-6">
+              <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Second Gem Color (Ring 2)</label>
+              <div className="grid grid-cols-3 gap-2">
                              {gemColors.map((color) => (
                                <button              key={color}
                                  type="button"              onClick={() => setEditingProduct({ ...editingProduct, gemColor2: color })}              onMouseEnter={() => setHoveredGemColor2(color)}              onMouseLeave={() => setHoveredGemColor2(null)}              className={`relative rounded-lg border-2 p-3 transition-all ${
                                    editingProduct.gemColor2 === color
-                                     ? 'border-gold-500 bg-gold-50'
-                                     : 'border-gray-300 hover:border-gray-400'
-                                 }`}
+                                     ? 'border-gold-500 bg-gold-50' : 'border-gray-300 hover:border-gray-400' }`}
                                >
-                                 <div className="flex flex-col items-center gap-2">
-                                   <div
-                                     className="w-4 h-4 rounded-full border-2 border-gray-200 flex-shrink-0"              style={{ 
+              <div className="flex flex-col items-center gap-2">
+              <div className="w-4 h-4 rounded-full border-2 border-gray-200 flex-shrink-0"              style={{ 
                                        backgroundColor: getGemColorHex(color),
                                        aspectRatio: '1 / 1',
                                        minWidth: '16px',
                                        minHeight: '16px'
                                      }}
                                    />
-                                   <span className="text-sm font-medium">{color}</span>
-                                 </div>
+              <span className="text-sm font-medium">{color}</span>
+              </div>
 
                                  {/* Gem Color Popup */}
                                  {hoveredGemColor2 === color && (
                                    <div className="absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 transform">
-                                     <div className="rounded-lg border bg-white p-4 shadow-lg">
-                                       <Image              src={getGemColorImage(color)}              alt={`${color} gem`}              width={200}              height={200}
+              <div className="rounded-lg border bg-white p-4 shadow-lg">
+              <Image              src={getGemColorImage(color)}              alt={`${color} gem`}              width={200}              height={200}
                                          className="rounded object-cover"              style={{ minWidth: '200px', minHeight: '200px' }}
                                        />
-                                     </div>
-                                   </div>
+              </div>
+              </div>
                                  )}
                                </button>
                              ))}
                            </div>
-                         </div>
-
-                         <div>
-                           <label className="block text-sm font-medium text-gray-700 mb-2">Mix Colors for Ring 2 (Custom option)</label>
-                           <div className="grid grid-cols-3 gap-2">
+              </div>
+              <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">Mix Colors for Ring 2 (Custom option)</label>
+              <div className="grid grid-cols-3 gap-2">
                              {['Red', 'Green', 'Blue', 'Purple', 'Yellow', 'Black', 'White', 'Pink', 'Orange', 'Turquoise'].map((color) => (
                                <label              key={color} 
                                  className="relative flex items-center p-2 rounded border hover:bg-gray-50 cursor-pointer"              onMouseEnter={() => setHoveredMixColor2(color)}              onMouseLeave={() => setHoveredMixColor2(null)}
                                >
-                                 <input
-                                   type="checkbox"              checked={editingProduct.mixColors2?.includes(color) || false}              onChange={(e) => {
+              <input type="checkbox"              checked={editingProduct.mixColors2?.includes(color) || false}              onChange={(e) => {
                                      const newMixColors2 = e.target.checked
                                        ? [...(editingProduct.mixColors2 || []), color]
                                        : (editingProduct.mixColors2 || []).filter(c => c !== color);
@@ -954,64 +913,61 @@ export default function UnifiedAdminProductsPage() {
                                    }}
                                    className="mr-2"
                                  />
-                                 <div className="flex items-center gap-2 min-w-0">
-                                   <div
-                                     className="w-4 h-4 rounded-full border border-gray-200 flex-shrink-0"              style={{ 
+              <div className="flex items-center gap-2 min-w-0">
+              <div className="w-4 h-4 rounded-full border border-gray-200 flex-shrink-0"              style={{ 
                                        backgroundColor: getGemColorHex(color),
                                        aspectRatio: '1 / 1',
                                        minWidth: '16px',
                                        minHeight: '16px'
                                      }}
                                    />
-                                   <span className="text-sm truncate">{color}</span>
-                                 </div>
+              <span className="text-sm truncate">{color}</span>
+              </div>
 
                                  {/* Mix Color Popup */}
                                  {hoveredMixColor2 === color && (
                                    <div className="absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 transform">
-                                     <div className="rounded-lg border bg-white p-4 shadow-lg">
-                                       <Image              src={getGemColorImage(color)}              alt={`${color} gem`}              width={200}              height={200}
+              <div className="rounded-lg border bg-white p-4 shadow-lg">
+              <Image              src={getGemColorImage(color)}              alt={`${color} gem`}              width={200}              height={200}
                                          className="rounded object-cover"              style={{ minWidth: '200px', minHeight: '200px' }}
                                        />
-                                     </div>
-                                   </div>
+              </div>
+              </div>
                                  )}
                                </label>
                              ))}
                            </div>
-                         </div>
-                       </div>
-                     </div>
+              </div>
+              </div>
+              </div>
                    )}
 
                    {/* Gem Density & Gem Variation - Side by Side */}
                    <div>
-                     <label className="block text-sm font-medium text-gray-700 mb-1">Gem Density</label>
-                     <select              value={editingProduct.gemDensity}              onChange={(e) => setEditingProduct({ ...editingProduct, gemDensity: e.target.value })}
+              <label className="block text-sm font-medium text-gray-700 mb-1">Gem Density</label>
+              <select              value={editingProduct.gemDensity}              onChange={(e) => setEditingProduct({ ...editingProduct, gemDensity: e.target.value })}
                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                      >
                        {gemDensities.map((density) => (
                          <option key={density} value={density}>{density}</option>
                        ))}
                      </select>
-                   </div>
-
-                   <div>
-                     <label className="block text-sm font-medium text-gray-700 mb-1">Gem Variation</label>
-                     <select              value={editingProduct.gemVariation}              onChange={(e) => setEditingProduct({ ...editingProduct, gemVariation: e.target.value })}
+              </div>
+              <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Gem Variation</label>
+              <select              value={editingProduct.gemVariation}              onChange={(e) => setEditingProduct({ ...editingProduct, gemVariation: e.target.value })}
                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                      >
                        {gemVariations.map((variation) => (
                          <option key={variation} value={variation}>{variation}</option>
                        ))}
                      </select>
-                   </div>
+              </div>
 
                    {/* Ring Sizes & Ring Width - Side by Side */}
                    <div>
-                     <label className="block text-sm font-medium text-gray-700 mb-1">Ring Sizes (US)</label>
-                     <input
-                       type="text"              value={editingProduct.ringSizes?.us?.join(', ') || ''}              onChange={(e) => {
+              <label className="block text-sm font-medium text-gray-700 mb-1">Ring Sizes (US)</label>
+              <input type="text"              value={editingProduct.ringSizes?.us?.join(', ') || ''}              onChange={(e) => {
                          const sizes = e.target.value.split(',').map(s => s.trim()).filter(s => s).map(Number);
                          setEditingProduct({ 
                            ...editingProduct, 
@@ -1021,12 +977,10 @@ export default function UnifiedAdminProductsPage() {
                        placeholder="e.g., 5, 6, 7, 8, 9"
                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                      />
-                   </div>
-
-                   <div>
-                     <label className="block text-sm font-medium text-gray-700 mb-1">Ring Sizes (EU)</label>
-                     <input
-                       type="text"              value={editingProduct.ringSizes?.eu?.join(', ') || ''}              onChange={(e) => {
+              </div>
+              <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Ring Sizes (EU)</label>
+              <input type="text"              value={editingProduct.ringSizes?.eu?.join(', ') || ''}              onChange={(e) => {
                          const sizes = e.target.value.split(',').map(s => s.trim()).filter(s => s).map(Number);
                          setEditingProduct({ 
                            ...editingProduct, 
@@ -1036,59 +990,52 @@ export default function UnifiedAdminProductsPage() {
                        placeholder="e.g., 49, 52, 54, 57, 59"
                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                      />
-                   </div>
-
-                   <div>
-                     <label className="block text-sm font-medium text-gray-700 mb-1">Ring Width (mm)</label>
-                     <input
-                       type="text"              value={editingProduct.ringWidth?.join(', ') || ''}              onChange={(e) => {
+              </div>
+              <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Ring Width (mm)</label>
+              <input type="text"              value={editingProduct.ringWidth?.join(', ') || ''}              onChange={(e) => {
                          const widths = e.target.value.split(',').map(s => s.trim()).filter(s => s).map(Number);
                          setEditingProduct({ ...editingProduct, ringWidth: widths });
                        }}
                        placeholder="e.g., 2, 3, 4"
                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                      />
-                   </div>
+              </div>
 
                    {/* Status - Side by Side with Ring Width */}
                    <div>
-                     <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                     <select              value={editingProduct.status}              onChange={(e) => setEditingProduct({ ...editingProduct, status: e.target.value as any })}
+              <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
+              <select              value={editingProduct.status}              onChange={(e) => setEditingProduct({ ...editingProduct, status: e.target.value as any })}
                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                      >
-                       <option value="draft">Draft</option>
-                       <option value="active">Active</option>
-                       <option value="archived">Archived</option>
-                     </select>
-                   </div>
+              <option value="draft">Draft</option>
+              <option value="active">Active</option>
+              <option value="archived">Archived</option>
+              </select>
+              </div>
 
                    {/* Ready to Ship & In Stock - Side by Side */}
                    <div>
-                     <div className="flex items-center gap-2">
-                       <input
-                         type="checkbox"
+              <div className="flex items-center gap-2">
+              <input type="checkbox"
                          id="readyToShip"              checked={editingProduct.isReadyToShip}              onChange={(e) => setEditingProduct({ ...editingProduct, isReadyToShip: e.target.checked })}
                          className="rounded"
                        />
-                       <label htmlFor="readyToShip" className="text-sm font-medium text-gray-700">Ready to Ship</label>
-                     </div>
-                   </div>
-
-                   <div>
-                     <div className="flex items-center gap-2">
-                       <input
-                         type="checkbox"
+              <label htmlFor="readyToShip" className="text-sm font-medium text-gray-700">Ready to Ship</label>
+              </div>
+              </div>
+              <div>
+              <div className="flex items-center gap-2">
+              <input type="checkbox"
                          id="isInStock"              checked={editingProduct.isInStock ?? true}              onChange={(e) => setEditingProduct({ ...editingProduct, isInStock: e.target.checked })}
                          className="rounded"
                        />
-                       <label htmlFor="isInStock" className="text-sm font-medium text-gray-700">In Stock</label>
-                     </div>
-                   </div>
-
-                   <div>
-                     <div className="flex items-center gap-2">
-                       <input
-                         type="checkbox"
+              <label htmlFor="isInStock" className="text-sm font-medium text-gray-700">In Stock</label>
+              </div>
+              </div>
+              <div>
+              <div className="flex items-center gap-2">
+              <input type="checkbox"
                          id="isFeatured"              checked={editingProduct.isFeatured || false}              onChange={(e) => setEditingProduct({ 
                            ...editingProduct, 
                            isFeatured: e.target.checked,
@@ -1096,43 +1043,40 @@ export default function UnifiedAdminProductsPage() {
                          })}
                          className="rounded"
                        />
-                       <label htmlFor="isFeatured" className="text-sm font-medium text-gray-700">Featured Product</label>
-                     </div>
-                   </div>
+              <label htmlFor="isFeatured" className="text-sm font-medium text-gray-700">Featured Product</label>
+              </div>
+              </div>
 
                    {/* Featured Order - Manual Input */}
                    <div>
-                     <label className="block text-sm font-medium text-gray-700 mb-1">Featured Order</label>
-                     <input
-                       type="number"              value={editingProduct.featuredOrder || ''}              onChange={(e) => setEditingProduct({ 
+              <label className="block text-sm font-medium text-gray-700 mb-1">Featured Order</label>
+              <input type="number"              value={editingProduct.featuredOrder || ''}              onChange={(e) => setEditingProduct({ 
                          ...editingProduct, 
                          featuredOrder: e.target.value ? parseInt(e.target.value) : null 
                        })}
                        placeholder="e.g., 1, 2, 3"
                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                      />
-                   </div>
+              </div>
 
                    {/* Description - Full Width */}
                    <div className="col-span-2">
-                     <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                     <textarea              value={editingProduct.description || ''}              onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}              rows={4}
+              <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+              <textarea              value={editingProduct.description || ''}              onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })}              rows={4}
                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                      />
-                   </div>
+              </div>
 
                    {/* Status Badge Preview - Full Width */}
                    <div className="col-span-2 mt-6 p-4 bg-gray-50 rounded-lg">
-                     <h4 className="text-sm font-medium text-gray-700 mb-2">Status Preview</h4>
-                     <div className="flex items-center gap-2">
+              <h4 className="text-sm font-medium text-gray-700 mb-2">Status Preview</h4>
+              <div className="flex items-center gap-2">
                        {/* Status Badge - Show for valid statuses */}
                        {editingProduct.status && (
                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                            editingProduct.status === 'active' ? 'bg-green-100 text-green-800' :
                            editingProduct.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
-                           editingProduct.status === 'archived' ? 'bg-gray-100 text-gray-800' :
-                           'bg-gray-100 text-gray-800'
-                         }`}>
+                           editingProduct.status === 'archived' ? 'bg-gray-100 text-gray-800' : 'bg-gray-100 text-gray-800' }`}>
                            {editingProduct.status === 'active' ? 'Active' :
                             editingProduct.status === 'draft' ? 'Draft' :
                             editingProduct.status === 'archived' ? 'Archived' :
@@ -1166,12 +1110,12 @@ export default function UnifiedAdminProductsPage() {
                          </span>
                        )}
                      </div>
-                   </div>
-                 </div>
+              </div>
+              </div>
 
                  {/* Save/Cancel Buttons */}
                  <div className="flex justify-end space-x-3 pt-6 mt-6 border-t">
-                   <button              onClick={() => {
+              <button              onClick={() => {
                        setEditingProduct(null);
                        setIsAddingProduct(false);
                      }}
@@ -1179,17 +1123,15 @@ export default function UnifiedAdminProductsPage() {
                    >
                      Cancel
                    </button>
-                   <button              onClick={handleSaveProduct}
-                     className="px-4 py-2 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition-colors flex items-center"
-                   >
-                     <Save className="w-4 h-4 mr-2" />
+              <button onClick={handleSaveProduct} className="px-4 py-2 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition-colors flex items-center">
+              <Save className="w-4 h-4 mr-2" />
                      {isAddingProduct ? 'Add Product' : 'Save Changes'}
                    </button>
-                 </div>
-               </div>
-             </div>
-           </div>
-         </div>
+              </div>
+              </div>
+              </div>
+              </div>
+              </div>
        )}
     </div>
   );

@@ -28,10 +28,9 @@ export default function BlogPostPage({ params }: Params) {
   if (!post) return notFound();
   return (
     <>
-      <Header />
-      <main className="container py-10">
-        <ArticleJsonLd
-          article={{
+              <Header />
+              <main className="container py-10">
+              <ArticleJsonLd article={{
             title: post.title,
             slug: params.slug,
             date: post.date,
@@ -39,43 +38,40 @@ export default function BlogPostPage({ params }: Params) {
             author: post.author,
           }}
         />
-        <BreadcrumbsJsonLd
-          items={[
+              <BreadcrumbsJsonLd items={[
             { name: 'Home', item: 'https://yourjewelrystore.com' },
             { name: 'Blog', item: 'https://yourjewelrystore.com/blog' },
             { name: post.title, item: `https://yourjewelrystore.com/blog/${params.slug}` },
           ]}
         />
-        <article className="mx-auto max-w-3xl">
+              <article className="mx-auto max-w-3xl">
           {post.image && (
             <div className="relative h-64 w-full">
               <Image              src={post.image}              alt={post.title}
-                fill
-                className="rounded-md object-cover"
+                fill className="rounded-md object-cover"
                 sizes="100vw"
                 priority
               />
-            </div>
+              </div>
           )}
           <h1 className="mt-4 text-3xl font-[var(--font-serif)] font-semibold text-secondary">
             {post.title}
           </h1>
-          <div className="mt-1 text-sm text-gray-500">
+              <div className="mt-1 text-sm text-gray-500">
             By {post.author} • {new Date(post.date).toLocaleDateString()}
           </div>
-          <div
-            className="prose prose-sm mt-6 max-w-none"
+              <div className="prose prose-sm mt-6 max-w-none"
             dangerouslySetInnerHTML={{ __html: post.content }}
           />
-          <div className="mt-8 rounded-md border p-4">
-            <p className="text-sm">Enjoyed this article? Subscribe to our newsletter for more.</p>
-            <a href="#" className="text-sm font-medium text-secondary underline">
+              <div className="mt-8 rounded-md border p-4">
+              <p className="text-sm">Enjoyed this article? Subscribe to our newsletter for more.</p>
+              <a href="#" className="text-sm font-medium text-secondary underline">
               Subscribe
             </a>
-          </div>
-        </article>
-      </main>
-      <Footer />
-    </>
+              </div>
+              </article>
+              </main>
+              <Footer />
+              </>
   );
 }

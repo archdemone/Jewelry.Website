@@ -91,60 +91,50 @@ export function EnhancedShippingForm() {
   return (
     <div className="space-y-6">
       {/* Email Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="space-y-4"
-      >
-        <div className="flex items-center gap-2">
-          <Mail className="h-5 w-5 text-gray-500" />
-          <h3 className="text-lg font-medium text-gray-900">Contact Information</h3>
-        </div>
-        
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+      <motion.div initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }} className="space-y-4">
+              <div className="flex items-center gap-2">
+              <Mail className="h-5 w-5 text-gray-500" />
+              <h3 className="text-lg font-medium text-gray-900">Contact Information</h3>
+              </div>
+              <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
             Email Address *
           </label>
-          <div className="relative">
-            <input
+              <div className="relative">
+              <input
               {...register('shipping.email')}
               type="email"
               placeholder="your@email.com"              className={getFieldClassName('email', 'w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-colors')}
                              data-error={!!(errors.shipping as any)?.email}
             />
-            <div className="absolute right-3 top-1/2 -translate-y-1/2">
+              <div className="absolute right-3 top-1/2 -translate-y-1/2">
               {getFieldIcon('email')}
             </div>
-          </div>
+              </div>
                      {(errors.shipping as any)?.email && (
-            <motion.p              initial={{ opacity: 0, y: -10 }}              animate={{ opacity: 1, y: 0 }}
-              className="mt-1 text-sm text-red-600 flex items-center gap-1"
-            >
+            <motion.p initial={{ opacity: 0, y: -10 }}              animate={{ opacity: 1, y: 0 }} className="mt-1 text-sm text-red-600 flex items-center gap-1">
               <AlertCircle className="h-4 w-4" />
                              {String((errors.shipping as any).email.message)}
             </motion.p>
           )}
         </div>
-      </motion.div>
+              </motion.div>
 
       {/* Personal Information */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
+      <motion.div initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
-        className="space-y-4"
-      >
-        <div className="flex items-center gap-2">
-          <User className="h-5 w-5 text-gray-500" />
-          <h3 className="text-lg font-medium text-gray-900">Personal Information</h3>
-        </div>
-        
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+        transition={{ delay: 0.1 }} className="space-y-4">
+              <div className="flex items-center gap-2">
+              <User className="h-5 w-5 text-gray-500" />
+              <h3 className="text-lg font-medium text-gray-900">Personal Information</h3>
+              </div>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
               First Name *
             </label>
-            <div className="relative">
+              <div className="relative">
               <input
                 {...register('shipping.firstName')}
                 placeholder="John"              className={getFieldClassName('firstName', 'w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-colors')}
@@ -153,22 +143,19 @@ export function EnhancedShippingForm() {
               <div className="absolute right-3 top-1/2 -translate-y-1/2">
                 {getFieldIcon('firstName')}
               </div>
-            </div>
+              </div>
                          {(errors.shipping as any)?.firstName && (
-              <motion.p              initial={{ opacity: 0, y: -10 }}              animate={{ opacity: 1, y: 0 }}
-                className="mt-1 text-sm text-red-600 flex items-center gap-1"
-              >
-                <AlertCircle className="h-4 w-4" />
+              <motion.p initial={{ opacity: 0, y: -10 }}              animate={{ opacity: 1, y: 0 }} className="mt-1 text-sm text-red-600 flex items-center gap-1">
+              <AlertCircle className="h-4 w-4" />
                                  {String((errors.shipping as any).firstName.message)}
               </motion.p>
             )}
           </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+              <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
               Last Name *
             </label>
-            <div className="relative">
+              <div className="relative">
               <input
                 {...register('shipping.lastName')}
                 placeholder="Doe"              className={getFieldClassName('lastName', 'w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-colors')}
@@ -177,86 +164,75 @@ export function EnhancedShippingForm() {
               <div className="absolute right-3 top-1/2 -translate-y-1/2">
                 {getFieldIcon('lastName')}
               </div>
-            </div>
+              </div>
                          {(errors.shipping as any)?.lastName && (
-              <motion.p              initial={{ opacity: 0, y: -10 }}              animate={{ opacity: 1, y: 0 }}
-                className="mt-1 text-sm text-red-600 flex items-center gap-1"
-              >
-                <AlertCircle className="h-4 w-4" />
+              <motion.p initial={{ opacity: 0, y: -10 }}              animate={{ opacity: 1, y: 0 }} className="mt-1 text-sm text-red-600 flex items-center gap-1">
+              <AlertCircle className="h-4 w-4" />
                                  {String((errors.shipping as any).lastName.message)}
               </motion.p>
             )}
           </div>
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+              </div>
+              <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
             Company (Optional)
           </label>
-          <div className="relative">
-            <input
+              <div className="relative">
+              <input
               {...register('shipping.company')}
               placeholder="Company Name"
               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500 transition-colors"
             />
-            <Building className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-          </div>
-        </div>
-      </motion.div>
+              <Building className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+              </div>
+              </div>
+              </motion.div>
 
       {/* Address Information */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
+      <motion.div initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-        className="space-y-4"
-      >
-        <div className="flex items-center gap-2">
-          <MapPin className="h-5 w-5 text-gray-500" />
-          <h3 className="text-lg font-medium text-gray-900">Shipping Address</h3>
-        </div>
-        
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+        transition={{ delay: 0.2 }} className="space-y-4">
+              <div className="flex items-center gap-2">
+              <MapPin className="h-5 w-5 text-gray-500" />
+              <h3 className="text-lg font-medium text-gray-900">Shipping Address</h3>
+              </div>
+              <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
             Street Address *
           </label>
-          <div className="relative">
-            <input
+              <div className="relative">
+              <input
               {...register('shipping.address1')}
               placeholder="123 Main Street"              className={getFieldClassName('address1', 'w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-colors')}
                              data-error={!!(errors.shipping as any)?.address1}
             />
-            <div className="absolute right-3 top-1/2 -translate-y-1/2">
+              <div className="absolute right-3 top-1/2 -translate-y-1/2">
               {getFieldIcon('address1')}
             </div>
-          </div>
+              </div>
                      {(errors.shipping as any)?.address1 && (
-            <motion.p              initial={{ opacity: 0, y: -10 }}              animate={{ opacity: 1, y: 0 }}
-              className="mt-1 text-sm text-red-600 flex items-center gap-1"
-            >
+            <motion.p initial={{ opacity: 0, y: -10 }}              animate={{ opacity: 1, y: 0 }} className="mt-1 text-sm text-red-600 flex items-center gap-1">
               <AlertCircle className="h-4 w-4" />
                              {String((errors.shipping as any).address1.message)}
             </motion.p>
           )}
         </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+              <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
             Apartment, suite, etc. (Optional)
           </label>
-          <input
+              <input
             {...register('shipping.address2')}
             placeholder="Apt 4B"
             className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500 transition-colors"
           />
-        </div>
-
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+              </div>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
               City *
             </label>
-            <div className="relative">
+              <div className="relative">
               <input
                 {...register('shipping.city')}
                 placeholder="London"              className={getFieldClassName('city', 'w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-colors')}
@@ -265,33 +241,29 @@ export function EnhancedShippingForm() {
               <div className="absolute right-3 top-1/2 -translate-y-1/2">
                 {getFieldIcon('city')}
               </div>
-            </div>
+              </div>
                          {(errors.shipping as any)?.city && (
-              <motion.p              initial={{ opacity: 0, y: -10 }}              animate={{ opacity: 1, y: 0 }}
-                className="mt-1 text-sm text-red-600 flex items-center gap-1"
-              >
-                <AlertCircle className="h-4 w-4" />
+              <motion.p initial={{ opacity: 0, y: -10 }}              animate={{ opacity: 1, y: 0 }} className="mt-1 text-sm text-red-600 flex items-center gap-1">
+              <AlertCircle className="h-4 w-4" />
                                  {String((errors.shipping as any).city.message)}
               </motion.p>
             )}
           </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+              <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
               State/Province *
             </label>
-            <input
+              <input
               {...register('shipping.state')}
               placeholder="England"
               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500 transition-colors"
             />
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+              </div>
+              <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
               Postal Code *
             </label>
-            <div className="relative">
+              <div className="relative">
               <input
                 {...register('shipping.postalCode')}
                 placeholder="SW1A 1AA"              className={getFieldClassName('postalCode', 'w-full px-4 py-3 rounded-lg border focus:outline-none focus:ring-2 transition-colors')}
@@ -300,27 +272,21 @@ export function EnhancedShippingForm() {
               <div className="absolute right-3 top-1/2 -translate-y-1/2">
                 {getFieldIcon('postalCode')}
               </div>
-            </div>
+              </div>
                          {(errors.shipping as any)?.postalCode && (
-              <motion.p              initial={{ opacity: 0, y: -10 }}              animate={{ opacity: 1, y: 0 }}
-                className="mt-1 text-sm text-red-600 flex items-center gap-1"
-              >
-                <AlertCircle className="h-4 w-4" />
+              <motion.p initial={{ opacity: 0, y: -10 }}              animate={{ opacity: 1, y: 0 }} className="mt-1 text-sm text-red-600 flex items-center gap-1">
+              <AlertCircle className="h-4 w-4" />
                                  {String((errors.shipping as any).postalCode.message)}
               </motion.p>
             )}
           </div>
-        </div>
-
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+              </div>
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
               Country *
             </label>
-            <select
-              {...register('shipping.country')}
-              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500 transition-colors"
-            >
+              <select {...register('shipping.country')} className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500 transition-colors">
               <option value="">Select Country</option>
               <option value="GB">United Kingdom</option>
               <option value="US">United States</option>
@@ -330,14 +296,13 @@ export function EnhancedShippingForm() {
               <option value="FR">France</option>
               <option value="IT">Italy</option>
               <option value="ES">Spain</option>
-            </select>
-          </div>
-          
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+              </select>
+              </div>
+              <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
               Phone Number
             </label>
-            <div className="relative">
+              <div className="relative">
               <input
                 {...register('shipping.phone')}
                 type="tel"
@@ -345,42 +310,38 @@ export function EnhancedShippingForm() {
                 className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gold-500 focus:border-gold-500 transition-colors"
               />
               <Phone className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-            </div>
-          </div>
-        </div>
-      </motion.div>
+              </div>
+              </div>
+              </div>
+              </motion.div>
 
       {/* Additional Options */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
+      <motion.div initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3 }}
-        className="space-y-4 pt-4 border-t"
-      >
-        <div className="flex items-start gap-3">
-          <input
+        transition={{ delay: 0.3 }} className="space-y-4 pt-4 border-t">
+              <div className="flex items-start gap-3">
+              <input
             {...register('shipping.saveAddressForFuture')}
             type="checkbox"
             id="saveAddress"
             className="mt-1 h-4 w-4 text-gold-600 focus:ring-gold-500 border-gray-300 rounded"
           />
-          <label htmlFor="saveAddress" className="text-sm text-gray-700">
+              <label htmlFor="saveAddress" className="text-sm text-gray-700">
             Save this address for future purchases
           </label>
-        </div>
-        
-        <div className="flex items-start gap-3">
-          <input
+              </div>
+              <div className="flex items-start gap-3">
+              <input
             {...register('shipping.newsletter')}
             type="checkbox"
             id="newsletter"
             className="mt-1 h-4 w-4 text-gold-600 focus:ring-gold-500 border-gray-300 rounded"
           />
-          <label htmlFor="newsletter" className="text-sm text-gray-700">
+              <label htmlFor="newsletter" className="text-sm text-gray-700">
             Subscribe to our newsletter for exclusive offers and updates
           </label>
-        </div>
-      </motion.div>
-    </div>
+              </div>
+              </motion.div>
+              </div>
   );
 }

@@ -17,22 +17,21 @@ export default function AddressSelector({ addresses = [], onSelect }: Props) {
   if (!addresses.length) return null;
   return (
     <div className="rounded-md border p-4">
-      <label className="mb-2 block text-sm font-medium">Saved addresses</label>
-      <select
-        value={selected ?? ''}
+              <label className="mb-2 block text-sm font-medium">Saved addresses</label>
+              <select value={selected ?? ''}
         onChange={(e) => {
           setSelected(e.target.value);
           onSelect?.(e.target.value);
         }}
         className="w-full rounded-md border p-2 text-sm"
       >
-        <option value="">Select an address…</option>
+              <option value="">Select an address…</option>
         {addresses.map((a) => (
           <option key={a.id} value={a.id}>
             {a.label}
           </option>
         ))}
       </select>
-    </div>
+              </div>
   );
 }
