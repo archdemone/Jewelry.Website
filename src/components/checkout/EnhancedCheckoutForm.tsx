@@ -93,7 +93,7 @@ export function EnhancedCheckoutForm() {
       default:
         return false;
     }
-  }, [currentStep, methods.formState.isValid, methods.getValues]);
+  }, [currentStep, methods]);
 
   const handleNext = async () => {
     const isValid = await methods.trigger();
@@ -202,7 +202,9 @@ export function EnhancedCheckoutForm() {
               <ShoppingCart className="mx-auto h-12 w-12 text-gray-400" />
               <h2 className="mt-4 text-xl font-semibold text-gray-900">Your cart is empty</h2>
               <p className="mt-2 text-gray-600">Add some items to your cart to continue</p>
-              <a href="/products"  className="mt-4 inline-block rounded-md bg-gold-500 px-6 py-3 text-white hover:bg-gold-600 transition-colors">
+              <a href="/products" 
+ className="mt-4 inline-block rounded-md bg-gold-500 px-6 py-3 text-white hover:bg-gold-600 transition-colors"
+>
             Continue Shopping
           </a>
               </div>
@@ -230,7 +232,9 @@ export function EnhancedCheckoutForm() {
               <FormProvider {...methods}>
               <div className="bg-white rounded-lg shadow-sm border">
               <AnimatePresence mode="wait">
-              <motion.div key={currentStep}              initial={{ opacity: 0, x: 20 }}              animate={{ opacity: 1, x: 0 }}              exit={{ opacity: 0, x: -20 }}              transition={{ duration: 0.3 }} className="p-6">
+              <motion.div key={currentStep}              initial={{ opacity: 0, x: 20 }}              animate={{ opacity: 1, x: 0 }}              exit={{ opacity: 0, x: -20 }}              transition={{ duration: 0.3 }}
+ className="p-6"
+>
               <div className="flex items-center gap-3 mb-6">
               <div className="p-2 rounded-full bg-gold-100">
                           {React.createElement(steps[currentStep].icon, { className: "h-5 w-5 text-gold-600" })}
@@ -248,10 +252,14 @@ export function EnhancedCheckoutForm() {
 
                       {/* Navigation */}
                       <div className="flex items-center justify-between pt-6 mt-6 border-t">
-              <button type="button"              onClick={handleBack}              disabled={currentStep === 0} className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+              <button type="button"              onClick={handleBack}              disabled={currentStep === 0}
+ className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+>
                           ← Back
                         </button>
-              <button type="button"              onClick={handleNext}              disabled={!canProceed || isSubmitting} className="flex items-center gap-2 px-6 py-3 bg-gold-500 text-white rounded-md hover:bg-gold-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors">
+              <button type="button"              onClick={handleNext}              disabled={!canProceed || isSubmitting}
+ className="flex items-center gap-2 px-6 py-3 bg-gold-500 text-white rounded-md hover:bg-gold-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+>
                           {isSubmitting ? (
                             <>
               <div className="h-4 w-4 animate-spin rounded-full border-b-2 border-white"></div>

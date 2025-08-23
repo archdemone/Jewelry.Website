@@ -24,9 +24,7 @@
       ]
     },
     "types": [
-      "jest",
-      "@testing-library/jest-dom",
-      "@types/jest-axe"
+      "jest"
     ],
     "plugins": [
       {
