@@ -1,0 +1,15 @@
+[
+  {
+    "url": "http://localhost:3000/",
+    "isRepresentativeRun": true,
+    "htmlPath": "/workspace/localhost-_-2025_08_24_07_40_22.report.html",
+    "jsonPath": "/workspace/localhost-_-2025_08_24_07_40_22.report.json",
+    "summary": {
+      "performance": 0.86,
+      "accessibility": 0.84,
+      "best-practices": 0.92,
+      "seo": 0.58,
+      "pwa": 0.11
+    }
+  }
+]
