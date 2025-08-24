@@ -61,7 +61,7 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            {/* Rings Dropdown */}
+            {/* Rings Dropdown - Updated */}
             <div className="relative group">
               <button 
                 className="flex items-center space-x-1 text-gray-700 hover:text-gold-600 transition-colors"

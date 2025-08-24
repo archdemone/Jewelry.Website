@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -25,12 +24,7 @@ export default function AboutPage() {
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
         </div>
         <div className="container relative z-10 flex h-full items-center">
-          <motion.div 
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="max-w-4xl"
-          >
+          <div className="max-w-4xl">
             <h1 className="mb-6 font-serif text-5xl font-bold text-gray-900 md:text-6xl">
               Crafting Timeless Elegance
             </h1>
@@ -38,19 +32,14 @@ export default function AboutPage() {
               Our jewelry is designed to celebrate life's most meaningful moments—crafted ethically
               with uncompromising quality.
             </p>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Our Story Section */}
       <section className="py-20 bg-white">
         <div className="container max-w-6xl">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="grid gap-12 md:grid-cols-2 items-center"
-          >
+          <div className="grid gap-12 md:grid-cols-2 items-center">
             <div>
               <h2 className="mb-6 font-serif text-4xl font-bold text-gray-900">Our Story</h2>
               <p className="mb-4 text-lg leading-relaxed text-gray-700">
@@ -82,19 +71,14 @@ export default function AboutPage() {
                 <span className="text-rose-600 font-medium">Quality</span>
               </div>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Mission, Values, Craftsmanship */}
       <section className="py-20 bg-gray-50">
         <div className="container max-w-6xl">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="grid gap-8 md:grid-cols-3"
-          >
+          <div className="grid gap-8 md:grid-cols-3">
             <div className="text-center p-8 bg-white rounded-lg shadow-sm">
               <h3 className="mb-4 font-serif text-2xl font-bold text-gray-900">Mission</h3>
               <p className="text-gray-700">
@@ -113,19 +97,14 @@ export default function AboutPage() {
                 Every piece passes through skilled hands and rigorous quality checks.
               </p>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Quality & Process */}
       <section className="py-20 bg-white">
         <div className="container max-w-6xl">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="grid gap-8 md:grid-cols-2"
-          >
+          <div className="grid gap-8 md:grid-cols-2">
             <div className="p-8 bg-gradient-to-br from-gold-50 to-gold-100 rounded-lg">
               <h2 className="mb-6 font-serif text-3xl font-bold text-gray-900">Quality & Process</h2>
               <ol className="space-y-3 text-gray-700">
@@ -168,45 +147,34 @@ export default function AboutPage() {
                 </li>
               </ul>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
       {/* Milestones */}
       <section className="py-20 bg-gray-50">
         <div className="container max-w-6xl">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="mb-12 text-center font-serif text-4xl font-bold text-gray-900">Our Milestones</h2>
-            <div className="grid gap-6 md:grid-cols-4">
-              {[
-                { year: '2010', text: 'J&M was founded' },
-                { year: '2015', text: 'Expanded to international shipping' },
-                { year: '2020', text: 'Launched flagship store' },
-                { year: '2024', text: 'Awarded for ethical sourcing' },
-              ].map((m) => (
-                <div key={m.year} className="text-center p-6 bg-white rounded-lg shadow-sm">
-                  <div className="text-3xl font-bold text-gold-600 mb-2">{m.year}</div>
-                  <div className="text-gray-700">{m.text}</div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
+          <h2 className="mb-12 text-center font-serif text-4xl font-bold text-gray-900">Our Milestones</h2>
+          <div className="grid gap-6 md:grid-cols-4">
+            {[
+              { year: '2010', text: 'J&M was founded' },
+              { year: '2015', text: 'Expanded to international shipping' },
+              { year: '2020', text: 'Launched flagship store' },
+              { year: '2024', text: 'Awarded for ethical sourcing' },
+            ].map((m) => (
+              <div key={m.year} className="text-center p-6 bg-white rounded-lg shadow-sm">
+                <div className="text-3xl font-bold text-gold-600 mb-2">{m.year}</div>
+                <div className="text-gray-700">{m.text}</div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* Stats */}
       <section className="py-20 bg-white">
         <div className="container max-w-4xl">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center"
-          >
+          <div className="text-center">
             <div className="grid grid-cols-3 gap-8">
               <div>
                 <div className="text-4xl font-bold text-gold-600 mb-2">15+</div>
@@ -229,7 +197,7 @@ export default function AboutPage() {
                 Shop the Collection
               </Link>
             </div>
-          </motion.div>
+          </div>
         </div>
       </section>
     </main>
