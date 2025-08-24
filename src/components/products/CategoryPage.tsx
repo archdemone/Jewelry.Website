@@ -174,7 +174,7 @@ export default function CategoryPage({
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const hash = window.location.hash;
-      if (hash === '#products') {
+      if (hash === '#products' || hash === '#products-section') {
         const productsSection = document.getElementById('products-section');
         if (productsSection) {
           setTimeout(() => {
@@ -182,11 +182,11 @@ export default function CategoryPage({
               behavior: 'smooth',
               block: 'start'
             });
-          }, 100);
+          }, 500); // Increased delay to ensure page is loaded
         }
       }
     }
-  }, []);
+  }, [loading]); // Added loading dependency
 
   // Filter and sort products - simplified for now
   const filteredProducts = products.filter((product) => {

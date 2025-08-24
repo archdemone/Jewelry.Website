@@ -250,11 +250,11 @@ export default function ProductsPage() {
               behavior: 'smooth',
               block: 'start'
             });
-          }, 100);
+          }, 500); // Increased delay to ensure page is loaded
         }
       }
     }
-  }, []);
+  }, [loading]); // Added loading dependency
 
   const toggleFilter = (type: 'category' | 'material' | 'gemstone', value: string) => {
     setSelectedFilters((prev) => ({
