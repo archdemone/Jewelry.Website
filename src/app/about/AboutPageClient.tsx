@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import {
   Heart,
@@ -140,10 +141,13 @@ export default function AboutPageClient() {
         {/* Hero Section */}
         <section className="relative h-[60vh] min-h-[500px] overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
           <div className="absolute inset-0">
-            <img 
+            <Image 
               src="/images/MyImages/ArtisanHeader.jpg"
               alt="Artisan workshop header"
-              className="absolute inset-0 h-full w-full object-cover"
+              fill
+              className="object-cover"
+              priority
+              sizes="100vw"
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
