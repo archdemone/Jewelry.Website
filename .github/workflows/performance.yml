@@ -22,15 +22,22 @@ jobs:
       - name: Install deps (lockfile exact, skip scripts)
         run: npm ci --ignore-scripts --legacy-peer-deps
 
+      - name: Generate Prisma client (if applicable)
+        run: npx prisma generate
+        continue-on-error: true
+
       - name: Build
         run: npm run build
 
       - name: Start server
         run: |
-          nohup npx serve -s out >/dev/null 2>&1 &
+          # Next.js builds to .next directory, not out
           if [ -d ".next" ]; then
-            # Start Next if not a static export
+            # Start Next.js server
             nohup npx next start >/dev/null 2>&1 &
+          else
+            # Fallback to serve if static export exists
+            nohup npx serve -s out >/dev/null 2>&1 &
           fi
 
       - name: Wait for server
