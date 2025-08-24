@@ -8,7 +8,7 @@ const CategoryShowcase = () => {
     {
       id: 'womens-rings',
       name: "Women's Rings",
-      description: 'Elegant silver inlay rings with precious gems',
+      description: 'Elegant rings crafted with precious metals and stunning gemstone inlays, perfect for every occasion.',
       image: '/images/categories/womensrings/womensrings.webp',
       href: '/products/womens#products-section',
       featured: true,
@@ -16,7 +16,7 @@ const CategoryShowcase = () => {
     {
       id: 'mens-rings',
       name: "Men's Rings",
-      description: 'Stunning Damascus steel wedding bands',
+      description: 'Bold and sophisticated rings featuring Damascus steel, titanium, and premium materials for the modern man.',
       image: '/images/categories/mensrings/mensrings.webp',
       href: '/products/mens#products-section',
       featured: false,
@@ -24,7 +24,7 @@ const CategoryShowcase = () => {
     {
       id: 'unisex-rings',
       name: 'Unisex Rings',
-      description: 'Lightweight carbon rings for active lifestyles',
+      description: 'Versatile designs in carbon, ceramic, and lightweight materials perfect for any style preference.',
       image: '/images/categories/unisexrings/unisexrings.webp',
       href: '/products/unisex#products-section',
       featured: false,
@@ -32,7 +32,7 @@ const CategoryShowcase = () => {
     {
       id: 'inlay-rings',
       name: 'Inlay Rings',
-      description: 'Handcrafted rings with gemstone inlays',
+      description: 'Handcrafted rings with beautiful gemstone inlays, each piece tells a unique story of craftsmanship.',
       image: '/images/categories/inlayrings/inlayrings.webp',
       href: '/products/inlay#products-section',
       featured: false,
@@ -40,7 +40,7 @@ const CategoryShowcase = () => {
     {
       id: 'wedding-rings',
       name: 'Wedding Rings',
-      description: 'Timeless wedding bands and engagement rings',
+      description: 'Timeless wedding bands and engagement rings, crafted with love for your most precious moments.',
       image: '/images/categories/weddingrings/weddingrings.webp',
       href: '/products/wedding#products-section',
       featured: false,
@@ -48,7 +48,7 @@ const CategoryShowcase = () => {
     {
       id: 'all-rings',
       name: 'All Rings',
-      description: 'Complete collection of handcrafted rings',
+      description: 'Complete collection of handcrafted rings, from classic designs to contemporary masterpieces.',
       image: '/images/categories/allrings/allrings.webp',
       href: '/products#products-section',
       featured: false,
