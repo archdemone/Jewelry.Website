@@ -319,7 +319,7 @@ const FeaturedProducts = () => {
                     setQuickViewProduct(ring);
                     initializeCustomization(ring);
                   }}
-                  className="w-full rounded-lg bg-white border-2 border-orange-500 text-orange-500 py-2 font-medium transition-colors hover:bg-orange-500 hover:text-white"
+                  className="w-full rounded-lg bg-white border-2 border-black text-white bg-black py-2 font-medium transition-colors hover:bg-orange-500 hover:text-white hover:border-orange-500"
                 >
                   Customize This Ring
                 </motion.button>
@@ -336,7 +336,7 @@ const FeaturedProducts = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 p-4 backdrop-blur-sm pt-20"
             onClick={() => setQuickViewProduct(null)}
           >
             <motion.div

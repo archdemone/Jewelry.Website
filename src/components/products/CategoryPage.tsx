@@ -250,6 +250,70 @@ export default function CategoryPage({
     setTimeout(() => setShowAddToCartToast(false), 3000);
   };
 
+  // Initialize customization
+  const initializeCustomization = (product: Product) => {
+    setCustomization({
+      material: product.material,
+      gemColor: product.gemColor,
+      gemDensity: product.gemDensity,
+      gemVariation: product.gemVariation,
+      ringSize: product.ringSizes?.us?.[0]?.toString() || '',
+      ringWidth: product.ringWidth?.[0]?.toString() || '',
+      mixColors: product.mixColors || [],
+      sizeType: 'us'
+    });
+    setOriginalCustomization({
+      material: product.material,
+      gemColor: product.gemColor,
+      gemDensity: product.gemDensity,
+      gemVariation: product.gemVariation,
+      ringSize: product.ringSizes?.us?.[0]?.toString() || '',
+      ringWidth: product.ringWidth?.[0]?.toString() || '',
+      mixColors: product.mixColors || [],
+      sizeType: 'us'
+    });
+  };
+
+  // Check if customization has changed
+  const hasCustomizationChanged = () => {
+    if (!originalCustomization) return false;
+    return (
+      customization.material !== originalCustomization.material ||
+      customization.gemColor !== originalCustomization.gemColor ||
+      customization.gemDensity !== originalCustomization.gemDensity ||
+      customization.gemVariation !== originalCustomization.gemVariation
+    );
+  };
+
+  // Handle customize click
+  const handleCustomizeClick = () => {
+    if (!quickViewProduct) return;
+    
+    const customName = `Custom ${quickViewProduct.name}`;
+    
+    addItem({
+      productId: `custom-${quickViewProduct.id}`,
+      name: customName,
+      price: quickViewProduct.price,
+      image: quickViewProduct.images?.[0] || '',
+      material: customization.material as any,
+      gemColor: customization.gemColor as any,
+      gemDensity: customization.gemDensity as any,
+      gemVariation: customization.gemVariation as any,
+      ringSize: customization.ringSize,
+      ringWidth: customization.ringWidth
+    });
+
+    setAddedProduct({ ...quickViewProduct, name: customName });
+    setShowAddToCartToast(true);
+    setQuickViewProduct(null);
+
+    setTimeout(() => {
+      setShowAddToCartToast(false);
+      setAddedProduct(null);
+    }, 3000);
+  };
+
   if (loading) {
     return (
       <main className="flex min-h-screen items-center justify-center bg-white">
@@ -438,12 +502,16 @@ export default function CategoryPage({
                       >
               <ShoppingBag className="h-5 w-5" aria-hidden="true" />
               </button>
-              <Link href={`/products/${product.slug}`}
-                        className="rounded-full bg-white p-3 text-gray-900 transition-colors hover:bg-gray-100"
- aria-label={`View details for ${product.name}`}
->
-              <Eye className="h-5 w-5" aria-hidden="true" />
-              </Link>
+              <button
+                onClick={() => {
+                  setQuickViewProduct(product);
+                  initializeCustomization(product);
+                }}
+                className="rounded-full bg-white p-3 text-gray-900 transition-colors hover:bg-gray-100"
+                aria-label={`Quick view ${product.name}`}
+              >
+                <Eye className="h-5 w-5" aria-hidden="true" />
+              </button>
               </div>
               </div>
               </div>
@@ -523,6 +591,327 @@ export default function CategoryPage({
           )}
         </div>
               </section>
+
+      {/* Quick View Modal */}
+      <AnimatePresence>
+        {quickViewProduct && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-start justify-center bg-black/50 p-4 backdrop-blur-sm pt-20"
+            onClick={() => setQuickViewProduct(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              onClick={(e) => e.stopPropagation()}
+              className="max-h-[85vh] w-full max-w-3xl overflow-auto rounded-2xl bg-white shadow-2xl"
+            >
+              <div className="grid lg:grid-cols-3">
+                {/* Image Gallery */}
+                <div className="relative h-96 bg-gradient-to-br from-gray-50 to-gray-100 lg:col-span-1 lg:h-full">
+                  <img
+                    src={Array.isArray(quickViewProduct.images) && quickViewProduct.images.length > 0 
+                      ? quickViewProduct.images[0] 
+                      : getProductImageFallback({ productSlug: quickViewProduct.slug, name: quickViewProduct.name })[0] || ''}
+                    alt={quickViewProduct.name}
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                  <button
+                    onClick={() => setQuickViewProduct(null)}
+                    className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur"
+                  >
+                    <X className="h-5 w-5" />
+                  </button>
+
+                  {/* Ready to Ship Badge */}
+                  {quickViewProduct.isReadyToShip && (
+                    <div className="absolute left-4 top-4 rounded-full bg-green-500 px-3 py-1 text-sm font-semibold text-white">
+                      ✓ Ready to Ship
+                    </div>
+                  )}
+                </div>
+
+                {/* Product Details & Customization */}
+                <div className="overflow-y-auto p-4 lg:col-span-2">
+                  <h2 className="mb-1 text-xl font-bold text-orange-600">
+                    {quickViewProduct.name}
+                  </h2>
+                  <p className="mb-3 text-sm text-gray-600">{quickViewProduct.description}</p>
+                  <div className="mb-3 flex items-center gap-4">
+                    <div className="flex items-center gap-1">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`h-3 w-3 ${i < Math.floor(quickViewProduct.rating || 4.5) ? 'fill-gold-400 text-gold-400' : 'text-gray-300'}`}
+                        />
+                      ))}
+                    </div>
+                    <span className="text-xs text-gray-600">
+                      ({quickViewProduct.reviews || 12} reviews)
+                    </span>
+                  </div>
+                  <div className="mb-4">
+                    <span className="text-2xl font-bold text-gray-900">
+                      £{quickViewProduct.price}
+                    </span>
+                    {quickViewProduct.originalPrice && (
+                      <span className="ml-2 text-base text-gray-400 line-through">
+                        £{quickViewProduct.originalPrice}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Customization Options */}
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <h3 className="text-base font-semibold text-gray-800">Customize Your Ring</h3>
+                      {hasCustomizationChanged() && (
+                        <span className="rounded-full bg-orange-100 px-2 py-1 text-xs font-medium text-orange-700">
+                          Customized
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Material Selection */}
+                    <div>
+                      <label className="mb-1 block text-sm font-medium text-gray-700">
+                        Material
+                      </label>
+                      <select
+                        value={customization.material}
+                        onChange={(e) =>
+                          setCustomization((prev) => ({ ...prev, material: e.target.value }))
+                        }
+                        className="w-full rounded-lg border border-gray-300 p-2 text-sm text-gray-900 focus:border-transparent focus:ring-2 focus:ring-gold-500"
+                      >
+                        {['Silver', 'Damascus', 'Ceramic(white)', 'Ceramic(black)', 'Carbon', 'Tungsten', 'Titanium', 'Stainless Steel', 'Gold'].map((material) => (
+                          <option key={material} value={material}>
+                            {material}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Gem Color Selection */}
+                    <div>
+                      <label className="mb-1 block text-sm font-medium text-gray-700">
+                        Gem Color
+                      </label>
+                      <div className="grid grid-cols-3 gap-1">
+                        {['Red', 'Green', 'Blue', 'Purple', 'Yellow', 'Custom'].map((color) => (
+                          <div key={color} className="group relative">
+                            <button
+                              onClick={() =>
+                                setCustomization((prev) => ({ ...prev, gemColor: color }))
+                              }
+                              className={`w-full rounded-lg border-2 p-2 text-sm transition-all ${
+                                customization.gemColor === color
+                                  ? 'border-green-500 bg-green-100 shadow-md ring-2 ring-green-200'
+                                  : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+                              }`}
+                            >
+                              <span className="font-medium text-gray-900">{color}</span>
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Gem Density */}
+                    <div>
+                      <label className="mb-1 block text-sm font-medium text-gray-700">
+                        Gem Density
+                      </label>
+                      <div className="grid grid-cols-3 gap-1">
+                        {['small', 'medium', 'large'].map((density) => (
+                          <button
+                            key={density}
+                            onClick={() =>
+                              setCustomization((prev) => ({ ...prev, gemDensity: density }))
+                            }
+                            className={`rounded-lg border-2 p-2 text-sm transition-all ${
+                              customization.gemDensity === density
+                                ? 'border-green-500 bg-green-100 shadow-md ring-2 ring-green-200'
+                                : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+                            }`}
+                          >
+                            <span className={`font-medium capitalize ${
+                              customization.gemDensity === density ? 'text-gray-900' : 'text-gray-900'
+                            }`}>
+                              {density}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Gem Variation */}
+                    <div>
+                      <label className="mb-1 block text-sm font-medium text-gray-700">
+                        Gem Variation
+                      </label>
+                      <div className="grid grid-cols-3 gap-1">
+                        {['Dark', 'Mixed', 'Bright'].map((variation) => (
+                          <button
+                            key={variation}
+                            onClick={() =>
+                              setCustomization((prev) => ({ ...prev, gemVariation: variation }))
+                            }
+                            className={`rounded-lg border-2 p-2 text-sm transition-all ${
+                              customization.gemVariation === variation
+                                ? 'border-green-500 bg-green-100 shadow-md ring-2 ring-green-200'
+                                : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+                            }`}
+                          >
+                            <span className={`font-medium ${
+                              customization.gemVariation === variation ? 'text-gray-900' : 'text-gray-900'
+                            }`}>
+                              {variation}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Ring Size */}
+                    <div>
+                      <label className="mb-1 block text-sm font-medium text-gray-700">
+                        Ring Size
+                      </label>
+                      <div className="mb-1 flex gap-3">
+                        <label className="flex cursor-pointer items-center gap-2 rounded-lg border-2 p-1 transition-all hover:bg-gray-50">
+                          <input
+                            type="radio"
+                            checked={customization.sizeType === 'us'}
+                            onChange={() =>
+                              setCustomization((prev) => ({ ...prev, sizeType: 'us' }))
+                            }
+                            className="text-gold-500 focus:ring-gold-500"
+                          />
+                          <span className="text-xs font-medium text-gray-900">US</span>
+                        </label>
+                        <label className="flex cursor-pointer items-center gap-2 rounded-lg border-2 p-1 transition-all hover:bg-gray-50">
+                          <input
+                            type="radio"
+                            checked={customization.sizeType === 'eu'}
+                            onChange={() =>
+                              setCustomization((prev) => ({ ...prev, sizeType: 'eu' }))
+                            }
+                            className="text-gold-500 focus:ring-gold-500"
+                          />
+                          <span className="text-xs font-medium text-gray-900">EU</span>
+                        </label>
+                      </div>
+                      <select
+                        value={customization.ringSize}
+                        onChange={(e) =>
+                          setCustomization((prev) => ({ ...prev, ringSize: e.target.value }))
+                        }
+                        className="w-full rounded-lg border border-gray-300 p-2 text-sm text-gray-900 focus:border-transparent focus:ring-2 focus:ring-gold-500"
+                      >
+                        <option value="">Select size</option>
+                        {quickViewProduct.ringSizes?.[customization.sizeType]?.map((size) => (
+                          <option key={size} value={size}>
+                            {size}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* Ring Width */}
+                    <div>
+                      <label className="mb-1 block text-sm font-medium text-gray-700">
+                        Ring Width (mm)
+                      </label>
+                      <select
+                        value={customization.ringWidth}
+                        onChange={(e) =>
+                          setCustomization((prev) => ({ ...prev, ringWidth: e.target.value }))
+                        }
+                        className="w-full rounded-lg border border-gray-300 p-2 text-sm text-gray-900 focus:border-transparent focus:ring-2 focus:ring-gold-500"
+                      >
+                        <option value="">Select width</option>
+                        {quickViewProduct.ringWidth?.map((width) => (
+                          <option key={width} value={width}>
+                            {width}mm
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="mt-6 flex gap-3">
+                    {hasCustomizationChanged() ? (
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={handleCustomizeClick}
+                        className="flex-1 rounded-lg bg-gradient-to-r from-orange-500 to-amber-500 py-2 font-medium text-white shadow-md transition-all hover:from-orange-600 hover:to-amber-600 hover:shadow-lg"
+                      >
+                        Customize This Ring
+                      </motion.button>
+                    ) : quickViewProduct.isReadyToShip ? (
+                      <>
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => (window.location.href = '/cart')}
+                          className="flex-1 rounded-lg bg-gradient-to-r from-orange-500 to-amber-500 py-2 font-medium text-white shadow-md transition-all duration-200 hover:from-orange-600 hover:to-amber-600 hover:shadow-lg"
+                        >
+                          Purchase
+                        </motion.button>
+                        <motion.button
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => handleAddToCart(quickViewProduct)}
+                          className="flex-1 rounded-lg bg-green-500 py-2 font-medium text-white transition-colors hover:bg-green-600"
+                        >
+                          Add to Cart
+                        </motion.button>
+                      </>
+                    ) : (
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={handleCustomizeClick}
+                        className="flex-1 rounded-lg bg-gradient-to-r from-orange-500 to-amber-500 py-2 font-medium text-white shadow-md transition-all hover:from-orange-600 hover:to-amber-600 hover:shadow-lg"
+                      >
+                        Customize This Ring
+                      </motion.button>
+                    )}
+
+                    <motion.button
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      onClick={() => handleWishlistToggle(quickViewProduct.id)}
+                      className={`flex h-10 w-20 items-center justify-center gap-1 rounded-lg border transition-colors ${
+                        wishlistItems.has(quickViewProduct.id)
+                          ? 'border-red-500 bg-red-50 text-red-600'
+                          : 'border-gray-300 text-gray-900 hover:border-red-400 hover:bg-red-50'
+                      }`}
+                    >
+                      <span className="text-sm">❤️</span>
+                      <span className="text-xs font-medium">
+                        {wishlistItems.has(quickViewProduct.id) ? 'Added!' : 'Save'}
+                      </span>
+                    </motion.button>
+                  </div>
+                  <Link
+                    href={`/products/${quickViewProduct.slug}`}
+                    className="mt-3 block text-center text-sm font-medium text-gold-600 hover:text-gold-700"
+                  >
+                    View Full Details →
+                  </Link>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Add to Cart Toast */}
       <AnimatePresence>
