@@ -48,10 +48,8 @@ jobs:
             npm install --ignore-scripts --legacy-peer-deps
           fi
 
-      - name: Install sharp for Linux
-        run: |
-          npm install --platform=linux --arch=x64 sharp
-          npm rebuild sharp
+      - name: Install sharp with optional dependencies
+        run: npm install --include=optional sharp
 
       - name: Generate Prisma client (if applicable)
         run: |
