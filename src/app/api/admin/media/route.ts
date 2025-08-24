@@ -16,7 +16,7 @@ async function isAdmin() {
 function isPathSafe(filePath: string): boolean {
   const normalized = path.normalize(filePath);
   const resolved = path.resolve(PUBLIC_DIR, normalized);
-  return resolved.startsWith(PUBLIC_DIR) && ALLOWED_DIRS.some(dir => 
+  return resolved.startsWith(PUBLIC_DIR) && ALLOWED_DIRS.some(dir =>
     normalized.startsWith(dir) || normalized.startsWith('/' + dir)
   );
 }
@@ -28,24 +28,24 @@ export async function GET() {
 
   try {
     const files: any[] = [];
-    
+
     for (const dir of ALLOWED_DIRS) {
       const dirPath = path.join(PUBLIC_DIR, dir);
-      
+
       try {
         await fs.access(dirPath);
         const items = await fs.readdir(dirPath, { withFileTypes: true });
-        
+
         for (const item of items) {
           if (item.isFile() && /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(item.name)) {
             const filePath = path.join(dir, item.name);
             const fullPath = path.join(dirPath, item.name);
             const stats = await fs.stat(fullPath);
-            
+
             files.push({
               name: item.name,
-              path: '/' + filePath.replace(/\\/g, '/'),
-              url: '/' + filePath.replace(/\\/g, '/'),
+              path: '/' + filePath.replace(/\\\\/g, '/'),
+              url: '/' + filePath.replace(/\\\\/g, '/'),
               size: stats.size,
               type: `image/${path.extname(item.name).slice(1).toLowerCase()}`,
               modifiedDate: stats.mtime.toISOString(),
@@ -56,7 +56,7 @@ export async function GET() {
         console.log(`Directory ${dirPath} not found, skipping...`);
       }
     }
-    
+
     return NextResponse.json(files);
   } catch (error) {
     console.error('Error reading media files:', error);
@@ -71,23 +71,23 @@ export async function DELETE(request: NextRequest) {
 
   try {
     const { path: filePath } = await request.json();
-    
+
     if (!filePath || !isPathSafe(filePath)) {
       return NextResponse.json({ error: 'Invalid file path' }, { status: 400 });
     }
-    
+
     const fullPath = path.join(PUBLIC_DIR, filePath);
-    
+
     // Check if file exists
     try {
       await fs.access(fullPath);
     } catch {
       return NextResponse.json({ error: 'File not found' }, { status: 404 });
     }
-    
+
     // Delete the file
     await fs.unlink(fullPath);
-    
+
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('Error deleting file:', error);

@@ -25,13 +25,6 @@ export default function LoginForm() {
       // Always render; backend will enforce after too many failures
       setRequireCaptcha(true);
     }
-
-    // Development auto-login: Auto-fill admin credentials
-    if (process.env.NODE_ENV !== 'production' && process.env.NEXT_PUBLIC_SANDBOX === '1') {
-      console.log('🛠️  Development mode detected - auto-filling admin credentials');
-      setEmail('admin@jewelry.com');
-      setPassword('boberpoper34');
-    }
   }, []);
 
   async function onSubmit(e: FormEvent) {
@@ -205,65 +198,7 @@ export default function LoginForm() {
           Continue with Google
         </Button>
 
-        {/* Development Auto-Login Button */}
-        {process.env.NODE_ENV !== 'production' && process.env.NEXT_PUBLIC_SANDBOX === '1' && (
-          <Button
-            type="button"
-            variant="outline"
-            className="w-full bg-green-50 border-green-300 text-green-700 hover:bg-green-100"
-            onClick={async () => {
-              setEmail('admin@jewelry.com');
-              setPassword('boberpoper34');
-              setError(null);
-              setLoading(true);
 
-              try {
-                const res = await signIn('credentials', {
-                  redirect: false,
-                  email: 'admin@jewelry.com',
-                  password: 'boberpoper34',
-                  turnstileToken: tsToken,
-                });
-
-                if (res?.error) {
-                  setError('Auto-login failed. Please try manual login.');
-                  setLoading(false);
-                  return;
-                }
-
-                if (res?.ok) {
-                  const callbackUrl = searchParams?.get('callbackUrl') || '/admin';
-                  router.push(callbackUrl);
-                } else {
-                  setError('Auto-login failed. Please try manual login.');
-                  setLoading(false);
-                }
-              } catch (err) {
-                console.error('Auto-login error:', err);
-                setError('Auto-login failed. Please try manual login.');
-                setLoading(false);
-              }
-            }}
-            disabled={loading}
-          >
-            🚀 Quick Admin Login (Dev Only)
-          </Button>
-        )}
-
-        {/* Development Info */}
-        {process.env.NODE_ENV !== 'production' && process.env.NEXT_PUBLIC_SANDBOX === '1' && (
-          <div className="rounded-md border border-blue-200 bg-blue-50 p-3">
-            <p className="text-xs text-blue-600">
-              <strong>Development Mode:</strong> Admin credentials are auto-filled.
-              <br />
-              Email: admin@jewelry.com
-              <br />
-              Password: boberpoper34
-              <br />
-              Use "Quick Admin Login" button for instant access.
-            </p>
-          </div>
-        )}
       </form>
     </Card>
   );

@@ -53,19 +53,19 @@ export const metadata = {
 export default function Home() {
   return (
     <main data-testid="homepage-main">
-              <HeroCarousel />
-              <section className="section-below-fold">
-              <TrustSignals />
-              </section>
-              <section className="section-below-fold">
-              <CategoryShowcase />
-              </section>
-              <section className="section-below-fold">
-              <FeaturedProducts />
-              </section>
-              <section className="section-below-fold">
-              <SocialProof />
-              </section>
-              </main>
+      <HeroCarousel />
+      <section className="section-below-fold">
+        <TrustSignals />
+      </section>
+      <section className="section-below-fold">
+        <CategoryShowcase />
+      </section>
+      <section className="section-below-fold">
+        <FeaturedProducts />
+      </section>
+      <section className="section-below-fold">
+        <SocialProof />
+      </section>
+    </main>
   );
 }
