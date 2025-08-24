@@ -9,7 +9,7 @@ import {
   Star,
   CheckCircle,
   ArrowRight,
-  Certificate,
+  Award,
   MessageSquare,
 } from 'lucide-react';
 
@@ -69,7 +69,7 @@ export default function AboutPage() {
     {
       id: 'approval',
       title: 'Council Approved',
-      icon: Certificate,
+      icon: Award,
       content: {
         subtitle: 'Local District Council Approved',
         description: 'Our business operates with full approval from the local district council, meeting all safety, environmental, and business standards.',

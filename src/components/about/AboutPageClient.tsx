@@ -16,7 +16,6 @@ import {
   ArrowRight,
   Calendar,
   Building,
-  Certificate,
   Sparkles,
   MessageSquare,
 } from 'lucide-react';
@@ -74,7 +73,7 @@ export function AboutPageClient() {
     {
       id: 'approval',
       title: 'Council Approved',
-      icon: Certificate,
+      icon: Award,
       content: {
         subtitle: 'Local District Council Approved',
         description: 'Our business operates with full approval from the local district council, meeting all safety, environmental, and business standards.',
