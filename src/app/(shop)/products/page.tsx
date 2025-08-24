@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import Image from 'next/image';
+
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import {
@@ -637,8 +637,8 @@ export default function ProductsPage() {
 >
                       {/* Product Image */}
                       <div className={`relative ${viewMode === 'list' ? 'h-48 w-48' : 'h-64'}`}>
-              <Image src={getProductImage(product)} alt={product.name}
-                          fill className="object-cover"
+              <img src={getProductImage(product)} alt={product.name}
+                          className="absolute inset-0 h-full w-full object-cover"
                         />
 
                         {/* Ready to Ship Badge */}
@@ -721,8 +721,8 @@ export default function ProductsPage() {
               <div className="grid lg:grid-cols-3">
                 {/* Image Gallery */}
                 <div className="relative h-96 bg-gradient-to-br from-gray-50 to-gray-100 lg:col-span-1 lg:h-full">
-              <Image src={getProductImage(quickViewProduct)} alt={quickViewProduct.name}
-                    fill className="object-cover"
+              <img src={getProductImage(quickViewProduct)} alt={quickViewProduct.name}
+                    className="absolute inset-0 h-full w-full object-cover"
                   />
               <button onClick={() => setQuickViewProduct(null)}
                     className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur"
@@ -817,9 +817,8 @@ export default function ProductsPage() {
                             <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform opacity-0 transition-opacity duration-200 group-hover:opacity-100">
               <div className="rounded-lg border border-gray-200 bg-white p-3 shadow-lg">
               <div className="relative h-32 w-32 overflow-hidden rounded">
-              <Image src={`/images/gems/colour/${color.toLowerCase()}.jpg`} alt={`${color} gem`}
-                                    fill className="object-cover"
-                                    sizes="128px"
+              <img src={`/images/gems/colour/${color.toLowerCase()}.jpg`} alt={`${color} gem`}
+                                    className="absolute inset-0 h-full w-full object-cover"
                                   />
               </div>
               <div className="absolute left-1/2 top-full h-2 w-2 -translate-x-1/2 rotate-45 transform border-b border-l border-gray-200 bg-white"></div>

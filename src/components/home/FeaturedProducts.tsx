@@ -2,7 +2,6 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { Heart, ShoppingBag } from 'lucide-react';
 import { getFeaturedProducts, type FeaturedProduct } from '@/lib/featured-products';
@@ -152,7 +151,7 @@ const FeaturedProducts = () => {
             >
               {/* Product Image */}
               <div className="relative aspect-square overflow-hidden">
-                <Image
+                <img
                   src={ring.image}
                   alt={ring.name}
                   className="w-full h-full group-hover:scale-105 transition-transform duration-300"
