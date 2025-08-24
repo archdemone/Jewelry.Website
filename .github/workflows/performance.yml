@@ -19,18 +19,30 @@ jobs:
           node-version: "20"
           cache: "npm"
 
-      - name: Install deps (lockfile exact, skip scripts)
-        run: npm ci --ignore-scripts --legacy-peer-deps
+      - name: Install dependencies
+        run: npm ci --legacy-peer-deps
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+        env:
+          DATABASE_URL: "file:./dev.db"
+
+      - name: Verify Prisma client generation
+        run: |
+          npm run debug:prisma
 
       - name: Build
         run: npm run build
 
       - name: Start server
         run: |
-          nohup npx serve -s out >/dev/null 2>&1 &
+          # Next.js builds to .next directory, not out
           if [ -d ".next" ]; then
-            # Start Next if not a static export
+            # Start Next.js server
             nohup npx next start >/dev/null 2>&1 &
+          else
+            # Fallback to serve if static export exists
+            nohup npx serve -s out >/dev/null 2>&1 &
           fi
 
       - name: Wait for server

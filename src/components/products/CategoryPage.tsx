@@ -23,7 +23,7 @@ import {
   TrendingUp,
   Award,
 } from 'lucide-react';
-import { getAllCategories, getPaginatedProducts } from '@/lib/queries';
+// Removed direct import of Prisma queries - now using API routes
 import { getProductImageFallback } from '@/lib/assets/images';
 import { useCartStore } from '@/store/cart';
 import CategoryShowcase from '@/components/home/CategoryShowcase';
@@ -267,12 +267,16 @@ export default function CategoryPage({
       <section className="relative overflow-hidden bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 py-16">
         {/* Animated Background Elements */}
         <motion.div animate={{ rotate: 360 }}
-          transition={{ duration: 50, repeat: Infinity, ease: 'linear' }} className="absolute -right-20 -top-20 h-64 w-64 opacity-10">
+          transition={{ duration: 50, repeat: Infinity, ease: 'linear' }}
+ className="absolute -right-20 -top-20 h-64 w-64 opacity-10"
+>
               <Diamond className="h-full w-full text-gold-500" />
               </motion.div>
               <div className="container relative z-10">
               <motion.div initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }} className="mx-auto max-w-3xl text-center">
+            animate={{ opacity: 1, y: 0 }}
+ className="mx-auto max-w-3xl text-center"
+>
               <h1 className="mb-4 text-4xl font-bold text-gray-900 md:text-5xl">
               {categoryTitle}
             </h1>
@@ -345,7 +349,9 @@ export default function CategoryPage({
                 <div className="flex rounded-lg border border-gray-200 bg-white p-1">
               <button              onClick={() => setViewMode('grid')}              className={`rounded-md p-2 transition-colors ${
                       viewMode === 'grid'
-                        ? 'bg-gold-500 text-white' : 'text-gray-600 hover:text-gray-900' }`}
+                        ? 'bg-gold-500 text-white'
+ : 'text-gray-600 hover:text-gray-900'
+ }`}
                     aria-label="Grid view"
                     aria-pressed={viewMode === 'grid'}
                   >
@@ -353,7 +359,9 @@ export default function CategoryPage({
               </button>
               <button              onClick={() => setViewMode('list')}              className={`rounded-md p-2 transition-colors ${
                       viewMode === 'list'
-                        ? 'bg-gold-500 text-white' : 'text-gray-600 hover:text-gray-900' }`}
+                        ? 'bg-gold-500 text-white'
+ : 'text-gray-600 hover:text-gray-900'
+ }`}
                     aria-label="List view"
                     aria-pressed={viewMode === 'list'}
                   >
@@ -431,7 +439,9 @@ export default function CategoryPage({
               <ShoppingBag className="h-5 w-5" aria-hidden="true" />
               </button>
               <Link href={`/products/${product.slug}`}
-                        className="rounded-full bg-white p-3 text-gray-900 transition-colors hover:bg-gray-100" aria-label={`View details for ${product.name}`}>
+                        className="rounded-full bg-white p-3 text-gray-900 transition-colors hover:bg-gray-100"
+ aria-label={`View details for ${product.name}`}
+>
               <Eye className="h-5 w-5" aria-hidden="true" />
               </Link>
               </div>
@@ -450,7 +460,9 @@ export default function CategoryPage({
                       product.gemColor === 'Blue' ? 'bg-blue-100 text-blue-800 border-blue-300' :
                       product.gemColor === 'Green' ? 'bg-green-100 text-green-800 border-green-300' :
                       product.gemColor === 'Purple' ? 'bg-purple-100 text-purple-800 border-purple-300' :
-                      product.gemColor === 'Yellow' ? 'bg-yellow-100 text-yellow-800 border-yellow-300' : 'bg-gray-100 text-gray-700 border-gray-300' }`}>
+                      product.gemColor === 'Yellow' ? 'bg-yellow-100 text-yellow-800 border-yellow-300' :
+ 'bg-gray-100 text-gray-700 border-gray-300'
+ }`}>
                       {product.gemVariation === 'Dark' ? `Dark ${product.gemColor}` :
                        product.gemVariation === 'Bright' ? `Bright ${product.gemColor}` :
                        product.gemVariation === 'Mixed' ? `Mixed ${product.gemColor}` :
@@ -470,7 +482,9 @@ export default function CategoryPage({
                         {[...Array(5)].map((_, i) => (
                           <Star              key={i}              className={`h-4 w-4 ${
                               i < Math.floor(product.rating!)
-                                ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300' }`}
+                                ? 'fill-yellow-400 text-yellow-400'
+ : 'text-gray-300'
+ }`}
                             aria-hidden="true"
                           />
                         ))}
@@ -516,7 +530,9 @@ export default function CategoryPage({
           <motion.div initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -100, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }} className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+ className="fixed inset-0 z-50 flex items-center justify-center p-4"
+>
               <div className="w-full max-w-sm rounded-xl border border-gray-200 bg-white p-4 shadow-2xl">
               <div className="flex items-center gap-3">
               <div className="flex-shrink-0">
@@ -552,11 +568,16 @@ export default function CategoryPage({
           <motion.div initial={{ y: -100, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -100, opacity: 0 }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }} className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+ className="fixed inset-0 z-50 flex items-center justify-center p-4"
+>
               <div className="w-full max-w-sm rounded-xl border border-gray-200 bg-white p-4 shadow-2xl">
               <div className="flex items-center gap-3">
               <div className="flex-shrink-0">
-              <div className={`flex h-10 w-10 items-center justify-center rounded-full ${ wishlistAction.action === 'added' ? 'bg-red-100' : 'bg-gray-100' }`}>
+              <div className={`flex h-10 w-10 items-center justify-center rounded-full ${
+ wishlistAction.action === 'added' ? 'bg-red-100' : 'bg-gray-100'
+ }`}
+>
                     {wishlistAction.action === 'added' ? (
                       <Heart className="h-6 w-6 text-red-600 fill-current" />
                     ) : (
@@ -583,7 +604,9 @@ export default function CategoryPage({
               </div>
               <div className="mt-3">
               <div className="h-1 w-full rounded-full bg-gray-200">
-              <motion.div              initial={{ width: '100%' }}              animate={{ width: '0%' }}              transition={{ duration: 3, ease: 'linear' }}              className={`h-1 rounded-full ${ wishlistAction.action === 'added' ? 'bg-red-500' : 'bg-gray-500' }`}
+              <motion.div              initial={{ width: '100%' }}              animate={{ width: '0%' }}              transition={{ duration: 3, ease: 'linear' }}              className={`h-1 rounded-full ${
+ wishlistAction.action === 'added' ? 'bg-red-500' : 'bg-gray-500'
+ }`}
                   />
               </div>
               </div>

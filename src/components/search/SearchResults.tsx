@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { Heart, ShoppingBag } from 'lucide-react';
 import { useCartStore } from '@/store/cart';
 import { showToast } from '@/components/ui/SimpleToast';
-import { getPaginatedProducts } from '@/lib/queries';
+// Removed direct import of getPaginatedProducts - now using API route
 
 interface SearchResultsProps {
   query: string;
@@ -28,16 +28,22 @@ export function SearchResults({ query, category, minPrice, maxPrice, sort }: Sea
     const loadResults = async () => {
       setLoading(true);
       try {
-        const data = await getPaginatedProducts({
-          page: currentPage,
-          pageSize: 12,
-          q: query,
-          categorySlug: category,
-          minPrice,
-          maxPrice,
+        const params = new URLSearchParams({
+          page: currentPage.toString(),
+          pageSize: '12',
+          ...(query && { q: query }),
+          ...(category && { categorySlug: category }),
+          ...(minPrice && { minPrice: minPrice.toString() }),
+          ...(maxPrice && { maxPrice: maxPrice.toString() }),
           sort: sort || 'new',
         });
 
+        const response = await fetch(`/api/search?${params}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch search results');
+        }
+        
+        const data = await response.json();
         setResults(data.items);
         setTotal(data.total);
       } catch (error) {
@@ -168,8 +174,8 @@ export function SearchResults({ query, category, minPrice, maxPrice, sort }: Sea
               <button
                 onClick={() => handleWishlistToggle(product.id)}
                 className={`absolute top-3 right-3 p-2 rounded-full transition-all duration-200 ${wishlist.has(product.id)
-                    ? 'bg-red-500 text-white'
-                    : 'bg-white/80 text-gray-600 hover:bg-white'
+                  ? 'bg-red-500 text-white'
+                  : 'bg-white/80 text-gray-600 hover:bg-white'
                   }`}
                 aria-label={wishlist.has(product.id) ? 'Remove from wishlist' : 'Add to wishlist'}
               >

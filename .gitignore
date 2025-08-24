@@ -36,8 +36,6 @@ backups/
 *.bak
 *.sql
 coverage.zip
-<<<<<<< HEAD
-=======
 
 # Test artifacts
 playwright-report/
@@ -47,59 +45,11 @@ core
 tsconfig.ci.tsbuildinfo
 
 # Local backups
-coverage.zip
-*.zip
-backups/
-
-# Local backups
 Jewelry.Website/coverage.zip
 *.zip
 backups/
 
-
-# Local backups
-coverage.zip
-*.zip
-backups/
-
-
-# Local backups
-Jewelry.Website/coverage.zip
-*.zip
-backups/
->>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f
-
-# Test artifacts
-playwright-report/
-test-results/
-lighthouse-report.*
-core
-tsconfig.ci.tsbuildinfo
-
-# Local backups
-coverage.zip
-*.zip
-backups/
-
-# Local backups
-Jewelry.Website/coverage.zip
-*.zip
-backups/
-
-
-# Local backups
-coverage.zip
-*.zip
-backups/
-
-
-# Local backups
-Jewelry.Website/coverage.zip
-*.zip
-backups/
-
-*.zip
-*.7z
+# Additional backup formats
 *.rar
 /coverage
 /coverage.*

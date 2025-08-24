@@ -98,41 +98,43 @@ const nextConfig = {
       config.resolve.fallback = {
         ...config.resolve.fallback,
         fs: false,
-        net: false,
-        tls: false,
+        path: false,
         crypto: false,
         stream: false,
+        util: false,
+        buffer: false,
+        process: false,
+        os: false,
         url: false,
+        querystring: false,
         zlib: false,
         http: false,
         https: false,
         assert: false,
-        os: false,
-        path: false,
-        util: false,
-        buffer: false,
-        process: false,
-        querystring: false,
-        punycode: false,
-        domain: false,
-        dns: false,
-        dgram: false,
-        cluster: false,
-        child_process: false,
-        worker_threads: false,
-        inspector: false,
-        repl: false,
-        readline: false,
-        vm: false,
-        perf_hooks: false,
-        async_hooks: false,
+        constants: false,
         events: false,
+        punycode: false,
         string_decoder: false,
+        sys: false,
         timers: false,
         tty: false,
-        v8: false,
-        wasi: false,
+        vm: false,
+        domain: false,
+        module: false,
+        _stream_duplex: false,
+        _stream_passthrough: false,
+        _stream_readable: false,
+        _stream_transform: false,
+        _stream_writable: false,
       };
+    }
+
+    // Handle sharp as external during build time to prevent build-time evaluation
+    if (isServer) {
+      config.externals = config.externals || [];
+      config.externals.push({
+        sharp: 'commonjs sharp',
+      });
     }
 
     // Helpful aliases
@@ -141,6 +143,12 @@ const nextConfig = {
       'react-is': require.resolve('react-is'),
       '@': require('path').resolve(__dirname, 'src'),
     };
+
+    // Ensure Prisma client is only used on server-side
+    if (!isServer) {
+      config.resolve.alias['@prisma/client'] = false;
+      config.resolve.alias['prisma'] = false;
+    }
 
     config.resolve.modules = [
       ...(config.resolve.modules || []),

@@ -34,6 +34,10 @@ jobs:
       - name: Install deps (lockfile exact, skip scripts)
         run: npm ci --ignore-scripts --legacy-peer-deps
 
+      # Ensure sharp is properly installed with platform-specific binaries
+      - name: Install sharp with optional dependencies
+        run: npm install --include=optional sharp
+
       # Prisma is optional; keep non-fatal if not used
       - name: Generate Prisma client (if applicable)
         run: npx prisma generate

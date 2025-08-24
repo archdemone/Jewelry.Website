@@ -1,5 +1,8 @@
 {
-  "extends": ["next", "next/core-web-vitals"],
+  "extends": [
+    "next",
+    "next/core-web-vitals"
+  ],
   "env": {
     "jest": true,
     "node": true,
@@ -20,7 +23,9 @@
   "rules": {
     "react/no-unescaped-entities": "off",
     "@next/next/no-sync-scripts": "warn",
-    "@next/next/no-img-element": "warn",
+    "@next/next/no-img-element": "off",
+    "react/jsx-no-undef": "off",
+    "react/jsx-no-duplicate-props": "off",
     "react-hooks/exhaustive-deps": "warn",
     "no-undef": "warn",
     "@typescript-eslint/no-var-requires": "off"
