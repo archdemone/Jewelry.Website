@@ -98,28 +98,12 @@ const CategoryShowcase = () => {
                     </div>
                   )}
                 </div>
-                <div className="flex h-[140px] flex-col justify-between p-8">
+                <div className="flex flex-col p-8">
                   <div>
                     <h3 className="mb-3 text-2xl font-bold text-gray-900 group-hover:text-orange-600 transition-colors">
                       {category.name}
                     </h3>
                     <p className="text-gray-600 leading-relaxed">{category.description}</p>
-                  </div>
-                  <div className="mt-6 flex items-center text-orange-600 group-hover:text-orange-700 transition-colors">
-                    <span className="font-semibold">Explore Collection</span>
-                    <svg 
-                      className="ml-3 h-5 w-5 transition-transform duration-300 group-hover:translate-x-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path 
-                        strokeLinecap="round"
-                        strokeLinejoin="round" 
-                        strokeWidth={2}
-                        d="M9 5l7 7-7 7"
-                      />
-                    </svg>
                   </div>
                 </div>
               </Link>
