@@ -33,7 +33,7 @@ const HeroCarousel = () => {
           {/* CTA Buttons */}
           <div className="mt-12 flex flex-col justify-center gap-6 sm:flex-row">
             <Link href="/products"
-              className="btn-primary bg-gold-600 hover:bg-gold-700 text-white font-medium py-4 px-8 rounded-lg transition-colors duration-200 text-lg"
+              className="btn-primary bg-white border-2 border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white font-medium py-4 px-8 rounded-lg transition-colors duration-200 text-lg"
             >
               Shop Collection
             </Link>

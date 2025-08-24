@@ -661,6 +661,25 @@ export default function ProductsPage() {
 
                       {/* Product Info */}
                       <div className={`p-4 ${viewMode === 'list' ? 'flex-1' : ''}`}>
+                        {/* Color Tags */}
+                        <div className="flex flex-wrap gap-1 mb-3">
+                          <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded border border-gray-300">
+                            {product.material}
+                          </span>
+                          <span className={`px-2 py-1 text-xs rounded border ${
+                            product.gemColor === 'Red' ? 'bg-red-100 text-red-800 border-red-300' :
+                            product.gemColor === 'Blue' ? 'bg-blue-100 text-blue-800 border-blue-300' :
+                            product.gemColor === 'Green' ? 'bg-green-100 text-green-800 border-green-300' :
+                            product.gemColor === 'Purple' ? 'bg-purple-100 text-purple-800 border-purple-300' :
+                            product.gemColor === 'Yellow' ? 'bg-yellow-100 text-yellow-800 border-yellow-300' :
+                            'bg-gray-100 text-gray-700 border-gray-300'
+                          }`}>
+                            {product.gemVariation === 'Dark' ? `Dark ${product.gemColor}` :
+                             product.gemVariation === 'Bright' ? `Bright ${product.gemColor}` :
+                             product.gemVariation === 'Mixed' ? `Mixed ${product.gemColor}` :
+                             product.gemColor}
+                          </span>
+                        </div>
               <h3 className="mb-2 line-clamp-2 font-semibold text-gray-900">
                           {product.name}
                         </h3>
@@ -692,7 +711,7 @@ export default function ProductsPage() {
                           setQuickViewProduct(product);
                           initializeCustomization(product);
                         }}
-                          className="w-full rounded-lg bg-gold-500 py-2 font-medium text-white transition-colors hover:bg-gold-600"
+                          className="w-full rounded-lg bg-white border-2 border-orange-500 text-orange-500 py-2 font-medium transition-colors hover:bg-orange-500 hover:text-white"
                         >
                           Customize This Ring
                         </motion.button>
