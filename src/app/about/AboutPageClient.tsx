@@ -141,8 +141,8 @@ export default function AboutPageClient() {
         <section className="relative h-[60vh] min-h-[500px] overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
           <div className="absolute inset-0">
             <img 
-              src="/images/artisan/bedroom-workshop-hero.jpg"
-              alt="Artisan workshop"
+              src="/images/MyImages/ArtisanHeader.jpg"
+              alt="Artisan workshop header"
               className="absolute inset-0 h-full w-full object-cover"
             />
           </div>
