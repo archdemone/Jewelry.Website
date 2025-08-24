@@ -18,6 +18,7 @@ import {
   Building,
   Certificate,
   Sparkles,
+  MessageSquare,
 } from 'lucide-react';
 import Link from 'next/link';
 
