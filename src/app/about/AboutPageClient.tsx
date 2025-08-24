@@ -142,7 +142,7 @@ export default function AboutPageClient() {
         <section className="relative h-[60vh] min-h-[500px] overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
           <div className="absolute inset-0">
             <Image 
-              src="/images/MyImages/ArtisanHeader.jpg"
+              src="/images/MyImages/ArtisanHeader.webp"
               alt="Artisan workshop header"
               fill
               className="object-cover"
