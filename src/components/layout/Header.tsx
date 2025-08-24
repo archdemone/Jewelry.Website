@@ -14,6 +14,7 @@ export function Header() {
   const isHydrated = useCartStore((s) => s.isHydrated);
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [showRingsDropdown, setShowRingsDropdown] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -60,8 +61,45 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            <Link href="/products" className="text-gray-700 hover:text-gold-600 transition-colors">
-              Products
+            {/* Rings Dropdown */}
+            <div className="relative group">
+              <button 
+                className="flex items-center space-x-1 text-gray-700 hover:text-gold-600 transition-colors"
+                onMouseEnter={() => setShowRingsDropdown(true)}
+                onMouseLeave={() => setShowRingsDropdown(false)}
+              >
+                <span>Rings</span>
+                <ChevronDown className="h-4 w-4" />
+              </button>
+              <div 
+                className={`absolute top-full left-0 mt-1 w-48 bg-white rounded-md shadow-lg border border-gray-200 transition-all duration-200 ${
+                  showRingsDropdown ? 'opacity-100 visible' : 'opacity-0 invisible'
+                }`}
+                onMouseEnter={() => setShowRingsDropdown(true)}
+                onMouseLeave={() => setShowRingsDropdown(false)}
+              >
+                <div className="py-1">
+                  <Link href="/products/womens" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Women's Rings
+                  </Link>
+                  <Link href="/products/mens" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Men's Rings
+                  </Link>
+                  <Link href="/products/wedding" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Wedding Rings
+                  </Link>
+                  <Link href="/products/inlay" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Inlay Rings
+                  </Link>
+                  <Link href="/products" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-t border-gray-100">
+                    View All Rings
+                  </Link>
+                </div>
+              </div>
+            </div>
+            
+            <Link href="/crafting-process" className="text-gray-700 hover:text-gold-600 transition-colors">
+              Crafting Process
             </Link>
             <Link href="/about" className="text-gray-700 hover:text-gold-600 transition-colors">
               About
@@ -151,7 +189,19 @@ export function Header() {
               </button>
               <nav className="mt-8 space-y-4">
                 <Link href="/products" className="block text-gray-700 hover:text-gold-600">
-                  Products
+                  All Products
+                </Link>
+                <Link href="/products/womens" className="block text-gray-700 hover:text-gold-600">
+                  Women's Rings
+                </Link>
+                <Link href="/products/mens" className="block text-gray-700 hover:text-gold-600">
+                  Men's Rings
+                </Link>
+                <Link href="/products/wedding" className="block text-gray-700 hover:text-gold-600">
+                  Wedding Rings
+                </Link>
+                <Link href="/crafting-process" className="block text-gray-700 hover:text-gold-600">
+                  Crafting Process
                 </Link>
                 <Link href="/about" className="block text-gray-700 hover:text-gold-600">
                   About
