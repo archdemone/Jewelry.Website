@@ -60,19 +60,19 @@ export function Header() {
                 onMouseLeave={() => setShowRingsDropdown(false)}
               >
                 <div className="py-1">
-                  <Link href="/products/womens" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <Link href="/products/womens#products-section" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     Women's Rings
                   </Link>
-                  <Link href="/products/mens" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <Link href="/products/mens#products-section" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     Men's Rings
                   </Link>
-                  <Link href="/products/wedding" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <Link href="/products/wedding#products-section" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     Wedding Rings
                   </Link>
-                  <Link href="/products/inlay" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                  <Link href="/products/inlay#products-section" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     Inlay Rings
                   </Link>
-                  <Link href="/products" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-t border-gray-100">
+                  <Link href="/products#products-section" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-t border-gray-100">
                     View All Rings
                   </Link>
                 </div>

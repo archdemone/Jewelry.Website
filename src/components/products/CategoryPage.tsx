@@ -564,7 +564,7 @@ export default function CategoryPage({
                   )}
 
                   {/* Price */}
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 mb-3">
               <span className="text-2xl font-bold text-gray-900">
                       £{product.price.toLocaleString()}
                     </span>
@@ -573,6 +573,31 @@ export default function CategoryPage({
                         £{product.originalPrice.toLocaleString()}
                       </span>
                     )}
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-2">
+                    <motion.button
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      onClick={() => {
+                        setQuickViewProduct(product);
+                        initializeCustomization(product);
+                      }}
+                      className="flex-1 rounded-lg bg-white border-2 border-black text-white bg-black py-2 font-medium transition-colors hover:bg-orange-500 hover:text-white hover:border-orange-500"
+                    >
+                      Customize This Ring
+                    </motion.button>
+                    <button
+                      onClick={() => handleWishlistToggle(product.id)}
+                      className={`p-2 rounded-lg border transition-colors ${
+                        wishlistItems.has(product.id)
+                          ? 'border-red-500 bg-red-50 text-red-600'
+                          : 'border-gray-300 text-gray-900 hover:border-red-400 hover:bg-red-50'
+                      }`}
+                    >
+                      <Heart className={`h-4 w-4 ${wishlistItems.has(product.id) ? 'fill-current' : ''}`} />
+                    </button>
                   </div>
               </div>
               </motion.div>

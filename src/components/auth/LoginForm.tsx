@@ -27,10 +27,10 @@ export default function LoginForm() {
     }
 
     // Development auto-login: Auto-fill admin credentials
-    if (process.env.NODE_ENV !== 'production' && process.env.NEXT_PUBLIC_SANDBOX === '1') {
+    if (process.env.NODE_ENV !== 'production') {
       console.log('🛠️  Development mode detected - auto-filling admin credentials');
       setEmail('admin@jewelry.com');
-      setPassword('boberpoper34');
+      setPassword('admin123');
     }
   }, []);
 
