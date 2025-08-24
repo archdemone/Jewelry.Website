@@ -139,22 +139,37 @@ export default function AboutPageClient() {
       <div className="min-h-screen bg-white">
         {/* Hero Section */}
         <section className="relative h-[60vh] min-h-[500px] overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
-          <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent" />
+          <div className="absolute inset-0">
+            <img 
+              src="/images/artisan/bedroom-workshop-hero.jpg"
+              alt="Artisan workshop"
+              className="absolute inset-0 h-full w-full object-cover"
+            />
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />
           <div className="relative z-10 flex h-full items-center justify-center">
             <div className="text-center text-white">
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
-                className="text-5xl font-[var(--font-serif)] font-bold mb-4"
+                className="text-5xl font-[var(--font-serif)] font-bold mb-2"
               >
                 About J&M
               </motion.h1>
+              <motion.h2
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.1 }}
+                className="text-xl font-bold mb-4"
+              >
+                Jevgenijs Mironovs Jewelry Making
+              </motion.h2>
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-xl max-w-2xl mx-auto"
+                className="text-lg max-w-2xl mx-auto"
               >
                 A local passion project turned thriving business, crafting quality jewelry with documented materials and council approval.
               </motion.p>
