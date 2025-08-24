@@ -26,6 +26,10 @@ jobs:
       - name: Install deps (lockfile exact, skip scripts)
         run: npm ci --ignore-scripts --legacy-peer-deps
 
+      - name: Generate Prisma client (if applicable)
+        run: npx prisma generate
+        continue-on-error: true
+
       - name: Type check
         run: npm run type-check:ci
 
