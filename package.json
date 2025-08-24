@@ -37,6 +37,7 @@
     "type-check": "tsc --noEmit",
     "type-check:strict": "tsc --noEmit --skipLibCheck",
     "type-check:ci": "tsc --project tsconfig.ci.json --noEmit --skipLibCheck --pretty",
+    "type-check:with-prisma": "npm run db:generate && npm run type-check:strict",
     "type-check:fix": "node scripts/fix-typescript-errors.js",
     "type-check:workflow": "tsc --project tsconfig.workflow.json",
     "format": "prettier --write .",
