@@ -8,7 +8,7 @@ const HeroSection = () => {
     <section className="relative h-[90vh] min-h-[600px] w-full overflow-hidden bg-gradient-to-br from-amber-50 to-orange-50">
       {/* Perfect LCP-optimized hero image */}
       <Image
-        src="/images/header/hero-1.webp"
+        src="/images/home/header.webp"
         alt="Jewelry craftsmanship"
         fill
         className="object-cover"

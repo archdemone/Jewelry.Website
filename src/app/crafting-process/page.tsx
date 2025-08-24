@@ -94,7 +94,7 @@ export default function CraftingProcessPage() {
         <section className="relative h-[60vh] min-h-[500px] overflow-hidden bg-gradient-to-br from-amber-50 to-orange-50">
           <div className="absolute inset-0">
             <Image 
-              src="/images/process/workshop-hero.webp"
+              src="/images/craftingprocess/header.webp"
               alt="Artisan crafting a ring"              
               width={1200}              
               height={600}
@@ -395,8 +395,8 @@ export default function CraftingProcessPage() {
                 transition={{ delay: 0.1 }}
                 className="group relative overflow-hidden rounded-xl"
               >
-                <Image 
-                  src="/images/process/material-selection.webp"
+                                 <Image 
+                   src="/images/craftingprocess/material-selection.webp"
                   alt="Material Selection - Choosing the perfect materials for your ring"              
                   width={400}              
                   height={300}
@@ -419,8 +419,8 @@ export default function CraftingProcessPage() {
                 transition={{ delay: 0.2 }}
                 className="group relative overflow-hidden rounded-xl"
               >
-                <Image 
-                  src="/images/process/crafting-action.webp"
+                                 <Image 
+                   src="/images/craftingprocess/crafting-action.webp"
                   alt="Precision Crafting - Every detail carefully shaped by hand"              
                   width={400}              
                   height={300}
@@ -441,8 +441,8 @@ export default function CraftingProcessPage() {
                 transition={{ delay: 0.3 }}
                 className="group relative overflow-hidden rounded-xl"
               >
-                <Image 
-                  src="/images/process/final-polish.webp"
+                                 <Image 
+                   src="/images/craftingprocess/final-polish.webp"
                   alt="Perfect Finish - The final polish that makes it shine"              
                   width={400}              
                   height={300}
