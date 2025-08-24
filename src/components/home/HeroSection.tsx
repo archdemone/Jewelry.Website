@@ -8,15 +8,12 @@ const HeroSection = () => {
     <section className="relative h-[90vh] min-h-[600px] w-full overflow-hidden bg-gradient-to-br from-amber-50 to-orange-50">
       {/* Perfect LCP-optimized hero image */}
       <Image
-        src="/images/header/hero-1.jpg"
-        alt="Elegant handcrafted jewelry"
-        priority
-        quality={70}
+        src="/images/header/hero-1.webp"
+        alt="Jewelry craftsmanship"
         fill
+        className="object-cover"
+        priority
         sizes="100vw"
-        style={{ objectFit: 'cover' }}
-        placeholder="blur"
-        blurDataURL="/images/header/hero-blur.webp"
       />
 
       {/* Overlay content - positioned inside hero for faster FCP/LCP */}
