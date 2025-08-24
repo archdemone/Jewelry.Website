@@ -12,7 +12,6 @@ import { EnhancedSearchInput } from '@/components/search/EnhancedSearchInput';
 export function Header() {
   const count = useCartStore((s) => s.count);
   const isHydrated = useCartStore((s) => s.isHydrated);
-  const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [showRingsDropdown, setShowRingsDropdown] = useState(false);
   const { data: session } = useSession();
@@ -32,25 +31,6 @@ export function Header() {
     }
   };
 
-  // Remove loading state to force navigation to show
-  // if (!mounted) {
-  //   return (
-  //     <header className="bg-white shadow-sm border-b border-gray-200">
-  //       <div className="container mx-auto px-4">
-  //         <div className="flex items-center justify-between h-16">
-  //           <div className="h-8 w-32 bg-gray-200 rounded animate-pulse"></div>
-  //           <div className="hidden md:flex items-center space-x-4">
-  //             <div className="h-8 w-24 bg-gray-200 rounded animate-pulse"></div>
-  //             <div className="h-8 w-24 bg-gray-200 rounded animate-pulse"></div>
-  //             <div className="h-8 w-24 bg-gray-200 rounded animate-pulse"></div>
-  //           </div>
-  //           <div className="h-8 w-8 bg-gray-200 rounded animate-pulse"></div>
-  //         </div>
-  //       </div>
-  //     </header>
-  //   );
-  // }
-
   return (
     <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
       <div className="container mx-auto px-4">
@@ -62,7 +42,7 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8">
-            {/* Rings Dropdown - Updated */}
+            {/* Rings Dropdown */}
             <div className="relative group">
               <button 
                 className="flex items-center space-x-1 text-gray-700 hover:text-gold-600 transition-colors"
@@ -155,80 +135,20 @@ export function Header() {
             {/* Cart */}
             <Link href="/cart" className="relative text-gray-700 hover:text-gold-600 transition-colors">
               <ShoppingBag className="h-6 w-6" />
-              {isHydrated && count > 0 && (
+              {mounted && isHydrated && count > 0 && (
                 <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                   {count}
                 </span>
               )}
             </Link>
 
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setOpen(true)}
-              className="md:hidden text-gray-700 hover:text-gold-600 transition-colors"
-            >
-              <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      {/* Mobile Search Bar */}
-      <div className="md:hidden border-t border-gray-200 p-4">
-        <EnhancedSearchInput onSearch={handleSearch} />
-      </div>
-
-      {/* Mobile Menu */}
-      {open && (
-        <div className="md:hidden fixed inset-0 z-50 bg-black bg-opacity-50" onClick={() => setOpen(false)}>
-          <div className="fixed right-0 top-0 h-full w-64 bg-white shadow-lg" onClick={(e) => e.stopPropagation()}>
-            <div className="p-4">
-              <button onClick={() => setOpen(false)} className="text-gray-500 hover:text-gray-700">
-                <X className="h-6 w-6" />
-              </button>
-              <nav className="mt-8 space-y-4">
-                <Link href="/products" className="block text-gray-700 hover:text-gold-600">
-                  All Products
-                </Link>
-                <Link href="/products/womens" className="block text-gray-700 hover:text-gold-600">
-                  Women's Rings
-                </Link>
-                <Link href="/products/mens" className="block text-gray-700 hover:text-gold-600">
-                  Men's Rings
-                </Link>
-                <Link href="/products/wedding" className="block text-gray-700 hover:text-gold-600">
-                  Wedding Rings
-                </Link>
-                <Link href="/crafting-process" className="block text-gray-700 hover:text-gold-600">
-                  Crafting Process
-                </Link>
-                <Link href="/about" className="block text-gray-700 hover:text-gold-600">
-                  About
-                </Link>
-                <Link href="/contact" className="block text-gray-700 hover:text-gold-600">
-                  Contact
-                </Link>
-                {session ? (
-                  <>
-                    <Link href="/account" className="block text-gray-700 hover:text-gold-600">
-                      My Account
-                    </Link>
-                    <button onClick={handleSignOut} className="block w-full text-left text-gray-700 hover:text-gold-600">
-                      Sign Out
-                    </button>
-                  </>
-                ) : (
-                  <button onClick={() => signIn()} className="block w-full text-left text-gray-700 hover:text-gold-600">
-                    Sign In
-                  </button>
-                )}
-              </nav>
+            {/* Mobile Menu */}
+            <div className="md:hidden">
+              <MobileMenu />
             </div>
           </div>
         </div>
-      )}
+      </div>
     </header>
   );
 }
