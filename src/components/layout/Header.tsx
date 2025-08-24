@@ -32,23 +32,24 @@ export function Header() {
     }
   };
 
-  if (!mounted) {
-    return (
-      <header className="bg-white shadow-sm border-b border-gray-200">
-        <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between h-16">
-            <div className="h-8 w-32 bg-gray-200 rounded animate-pulse"></div>
-            <div className="hidden md:flex items-center space-x-4">
-              <div className="h-8 w-24 bg-gray-200 rounded animate-pulse"></div>
-              <div className="h-8 w-24 bg-gray-200 rounded animate-pulse"></div>
-              <div className="h-8 w-24 bg-gray-200 rounded animate-pulse"></div>
-            </div>
-            <div className="h-8 w-8 bg-gray-200 rounded animate-pulse"></div>
-          </div>
-        </div>
-      </header>
-    );
-  }
+  // Remove loading state to force navigation to show
+  // if (!mounted) {
+  //   return (
+  //     <header className="bg-white shadow-sm border-b border-gray-200">
+  //       <div className="container mx-auto px-4">
+  //         <div className="flex items-center justify-between h-16">
+  //           <div className="h-8 w-32 bg-gray-200 rounded animate-pulse"></div>
+  //           <div className="hidden md:flex items-center space-x-4">
+  //             <div className="h-8 w-24 bg-gray-200 rounded animate-pulse"></div>
+  //             <div className="h-8 w-24 bg-gray-200 rounded animate-pulse"></div>
+  //             <div className="h-8 w-24 bg-gray-200 rounded animate-pulse"></div>
+  //           </div>
+  //           <div className="h-8 w-8 bg-gray-200 rounded animate-pulse"></div>
+  //         </div>
+  //       </div>
+  //     </header>
+  //   );
+  // }
 
   return (
     <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
