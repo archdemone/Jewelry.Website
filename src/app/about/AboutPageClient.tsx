@@ -141,13 +141,10 @@ export default function AboutPageClient() {
         {/* Hero Section */}
         <section className="relative h-[60vh] min-h-[500px] overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
           <div className="absolute inset-0">
-            <Image 
+            <img 
               src="/images/about/header.webp"
               alt="Artisan workshop header"
-              fill
-              className="object-cover"
-              priority
-              sizes="100vw"
+              className="absolute inset-0 h-full w-full object-cover"
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/30 to-transparent" />

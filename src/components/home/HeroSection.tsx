@@ -7,13 +7,10 @@ const HeroSection = () => {
   return (
     <section className="relative h-[90vh] min-h-[600px] w-full overflow-hidden bg-gradient-to-br from-amber-50 to-orange-50">
       {/* Perfect LCP-optimized hero image */}
-      <Image
+      <img
         src="/images/home/header.webp"
         alt="Jewelry craftsmanship"
-        fill
-        className="object-cover"
-        priority
-        sizes="100vw"
+        className="absolute inset-0 h-full w-full object-cover"
       />
 
       {/* Overlay content - positioned inside hero for faster FCP/LCP */}

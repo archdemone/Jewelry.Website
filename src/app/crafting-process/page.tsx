@@ -93,13 +93,10 @@ export default function CraftingProcessPage() {
         {/* Hero Section */}
         <section className="relative h-[60vh] min-h-[500px] overflow-hidden bg-gradient-to-br from-amber-50 to-orange-50">
           <div className="absolute inset-0">
-            <Image 
+            <img 
               src="/images/craftingprocess/header.webp"
               alt="Artisan crafting a ring"              
-              width={1200}              
-              height={600}
               className="absolute inset-0 h-full w-full object-cover opacity-60"
-              sizes="100vw"
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
@@ -395,12 +392,10 @@ export default function CraftingProcessPage() {
                 transition={{ delay: 0.1 }}
                 className="group relative overflow-hidden rounded-xl"
               >
-                                 <Image 
-                   src="/images/craftingprocess/material-selection.webp"
-                  alt="Material Selection - Choosing the perfect materials for your ring"              
-                  width={400}              
-                  height={300}
-                  className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                                 <img 
+                                      src="/images/craftingprocess/material-selection.webp"
+                   alt="Material Selection - Choosing the perfect materials for your ring"              
+                   className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-110"
                   sizes="(max-width: 768px) 100vw, 400px"
                 />
                 <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/70 to-transparent p-6">
@@ -419,12 +414,10 @@ export default function CraftingProcessPage() {
                 transition={{ delay: 0.2 }}
                 className="group relative overflow-hidden rounded-xl"
               >
-                                 <Image 
-                   src="/images/craftingprocess/crafting-action.webp"
-                  alt="Precision Crafting - Every detail carefully shaped by hand"              
-                  width={400}              
-                  height={300}
-                  className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                                 <img 
+                                      src="/images/craftingprocess/crafting-action.webp"
+                   alt="Precision Crafting - Every detail carefully shaped by hand"              
+                   className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-110"
                   sizes="(max-width: 768px) 100vw, 400px"
                 />
                 <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/70 to-transparent p-6">
@@ -441,12 +434,10 @@ export default function CraftingProcessPage() {
                 transition={{ delay: 0.3 }}
                 className="group relative overflow-hidden rounded-xl"
               >
-                                 <Image 
-                   src="/images/craftingprocess/final-polish.webp"
-                  alt="Perfect Finish - The final polish that makes it shine"              
-                  width={400}              
-                  height={300}
-                  className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                                 <img 
+                                      src="/images/craftingprocess/final-polish.webp"
+                   alt="Perfect Finish - The final polish that makes it shine"              
+                   className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-110"
                   sizes="(max-width: 768px) 100vw, 400px"
                 />
                 <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/70 to-transparent p-6">
