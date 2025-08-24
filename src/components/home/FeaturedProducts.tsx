@@ -9,7 +9,7 @@ import { useCartStore } from '@/store/cart';
 import { showToast } from '@/components/ui/SimpleToast';
 
 const FeaturedProducts = () => {
-  const [hoveredProduct, setHoveredProduct] = useState<string | null>(null);
+
   const [featuredRings, setFeaturedRings] = useState<FeaturedProduct[]>([]);
   const [wishlist, setWishlist] = useState<Set<string>>(new Set());
   const [mounted, setMounted] = useState(false);
@@ -222,16 +222,15 @@ const FeaturedProducts = () => {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: index * 0.1 }}
-              className="group relative bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2"
-              onMouseEnter={() => setHoveredProduct(ring.id)}
-              onMouseLeave={() => setHoveredProduct(null)}
+              whileHover={{ y: -5 }}
+              className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm transition-all"
             >
               {/* Product Image */}
-              <div className="relative aspect-square overflow-hidden">
+              <div className="relative h-64">
                 <img
                   src={ring.image}
                   alt={ring.name}
-                  className="w-full h-full group-hover:scale-105 transition-transform duration-300"
+                  className="absolute inset-0 h-full w-full object-cover"
                 />
 
                 {/* Ready to Ship Badge */}
@@ -241,18 +240,6 @@ const FeaturedProducts = () => {
                   </div>
                 )}
 
-                {/* Wishlist Button */}
-                <button
-                  onClick={() => handleWishlistToggle(ring.id)}
-                  className={`absolute top-3 right-3 p-2 rounded-full transition-all duration-200 ${wishlist.has(ring.id)
-                      ? 'bg-red-500 text-white'
-                      : 'bg-white/80 text-gray-600 hover:bg-white'
-                    }`}
-                  aria-label={wishlist.has(ring.id) ? 'Remove from wishlist' : 'Add to wishlist'}
-                >
-                  <Heart className={`w-5 h-5 ${wishlist.has(ring.id) ? 'fill-current' : ''}`} />
-                </button>
-
                 {/* Quick View Button */}
                 <motion.button
                   whileHover={{ scale: 1.05 }}
@@ -261,36 +248,50 @@ const FeaturedProducts = () => {
                     setQuickViewProduct(ring);
                     initializeCustomization(ring);
                   }}
-                  className="absolute right-3 top-12 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur transition-colors hover:bg-white"
+                  className="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur transition-colors hover:bg-white"
                 >
                   <Eye className="h-4 w-4" />
-                </motion.button>
-
-                {/* Quick Add to Cart */}
-                <motion.button
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{
-                    opacity: hoveredProduct === ring.id ? 1 : 0,
-                    y: hoveredProduct === ring.id ? 0 : 20
-                  }}
-                  transition={{ duration: 0.3 }}
-                  onClick={() => handleAddToCart(ring)}
-                  className="absolute bottom-3 left-3 right-3 bg-white/90 backdrop-blur-sm text-gray-900 py-2 px-4 rounded-lg font-medium hover:bg-white transition-colors duration-200 flex items-center justify-center gap-2"
-                  aria-label={`Quick add ${ring.name} to cart`}
-                >
-                  <ShoppingBag className="w-4 h-4" />
-                  Quick Add
                 </motion.button>
               </div>
 
               {/* Product Info */}
-              <div className="p-6">
-                <h3 className="text-xl font-semibold text-gray-900 mb-2">
+              <div className="p-4">
+                <h3 className="mb-2 line-clamp-2 font-semibold text-gray-900">
                   {ring.name}
                 </h3>
-                <p className="text-2xl font-bold text-gold-600 mb-4">
-                  £{ring.price.toFixed(2)}
-                </p>
+                <div className="mb-2 flex items-center gap-2">
+                  <div className="flex items-center gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star
+                        key={i}
+                        className={`h-3 w-3 ${i < Math.floor(ring.rating || 4.5) ? 'fill-gold-400 text-gold-400' : 'text-gray-300'}`}
+                      />
+                    ))}
+                  </div>
+                  <span className="text-xs text-gray-500">({ring.reviews || 12})</span>
+                </div>
+                <div className="mb-3 flex items-center justify-between">
+                  <div>
+                    <span className="text-lg font-bold text-gray-900">
+                      £{ring.price}
+                    </span>
+                    {ring.originalPrice && (
+                      <span className="ml-2 text-sm text-gray-400 line-through">
+                        £{ring.originalPrice}
+                      </span>
+                    )}
+                  </div>
+                  <button
+                    onClick={() => handleWishlistToggle(ring.id)}
+                    className={`p-2 transition-colors ${
+                      wishlist.has(ring.id)
+                        ? 'text-red-500'
+                        : 'text-gray-400 hover:text-red-500'
+                    }`}
+                  >
+                    <Heart className={`h-4 w-4 ${wishlist.has(ring.id) ? 'fill-current' : ''}`} />
+                  </button>
+                </div>
                 <motion.button
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
