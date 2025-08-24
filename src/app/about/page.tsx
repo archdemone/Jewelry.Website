@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'About Us — Aurora Jewelry',
+  title: 'About Us — J&M Jewelry',
   description:
     'Discover our story, mission, values, and craftsmanship behind timeless fine jewelry.',
 };
@@ -26,7 +26,7 @@ export default function AboutPage() {
               <div>
               <h2 className="text-2xl font-semibold">Our Story</h2>
               <p className="mt-2 text-base leading-relaxed text-gray-700">
-              Founded in 2010, Aurora began as a small studio dedicated to responsible
+              Founded in 2010, J&M began as a small studio dedicated to responsible
               craftsmanship. Today, we serve customers worldwide while staying true to our roots.
             </p>
               <p className="mt-2 text-base leading-relaxed text-gray-700">
@@ -104,7 +104,7 @@ export default function AboutPage() {
               <h2 className="text-2xl font-semibold">Milestones</h2>
               <div className="mt-6 grid gap-4 md:grid-cols-4">
             {[
-              { year: '2010', text: 'Aurora was founded' },
+              { year: '2010', text: 'J&M was founded' },
               { year: '2015', text: 'Expanded to international shipping' },
               { year: '2020', text: 'Launched flagship store' },
               { year: '2024', text: 'Awarded for ethical sourcing' },

@@ -55,7 +55,7 @@ export function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2">
-            <div className="text-2xl font-bold text-gold-600">Jewelry</div>
+            <div className="text-2xl font-bold text-gold-600">J&M Jewelry</div>
           </Link>
 
           {/* Desktop Navigation */}

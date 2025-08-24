@@ -98,11 +98,11 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: .375rem;
-  background-color: white;
+  background-color: #D4AF37;
   padding: .75rem 2rem;
   font-size: 1.125rem;
   font-weight: 600;
-  color: #111827;
+  color: white;
   transition: all .2s;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
   text-decoration: none;
@@ -111,7 +111,7 @@ body {
 }
 
 .btn-primary:hover {
-  background-color: #f3f4f6;
+  background-color: #B45309;
   transform: scale(1.05)
 }
 
