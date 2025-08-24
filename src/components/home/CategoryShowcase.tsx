@@ -9,7 +9,7 @@ const CategoryShowcase = () => {
       id: 'womens-rings',
       name: "Women's Rings",
       description: 'Elegant silver inlay rings with precious gems',
-      image: '/images/home/header.webp', // Using existing image as placeholder
+      image: '/images/categories/womensrings/womensrings.webp',
       href: '/products/womens#products-section',
       featured: true,
     },
@@ -17,7 +17,7 @@ const CategoryShowcase = () => {
       id: 'mens-rings',
       name: "Men's Rings",
       description: 'Stunning Damascus steel wedding bands',
-      image: '/images/home/header.webp', // Using existing image as placeholder
+      image: '/images/categories/mensrings/mensrings.webp',
       href: '/products/mens#products-section',
       featured: false,
     },
@@ -25,7 +25,7 @@ const CategoryShowcase = () => {
       id: 'unisex-rings',
       name: 'Unisex Rings',
       description: 'Lightweight carbon rings for active lifestyles',
-      image: '/images/home/header.webp', // Using existing image as placeholder
+      image: '/images/categories/unisexrings/unisexrings.webp',
       href: '/products/unisex#products-section',
       featured: false,
     },
@@ -33,7 +33,7 @@ const CategoryShowcase = () => {
       id: 'inlay-rings',
       name: 'Inlay Rings',
       description: 'Handcrafted rings with gemstone inlays',
-      image: '/images/home/header.webp', // Using existing image as placeholder
+      image: '/images/categories/inlayrings/inlayrings.webp',
       href: '/products/inlay#products-section',
       featured: false,
     },
@@ -41,7 +41,7 @@ const CategoryShowcase = () => {
       id: 'wedding-rings',
       name: 'Wedding Rings',
       description: 'Timeless wedding bands and engagement rings',
-      image: '/images/home/header.webp', // Using existing image as placeholder
+      image: '/images/categories/weddingrings/weddingrings.webp',
       href: '/products/wedding#products-section',
       featured: false,
     },
@@ -49,7 +49,7 @@ const CategoryShowcase = () => {
       id: 'all-rings',
       name: 'All Rings',
       description: 'Complete collection of handcrafted rings',
-      image: '/images/home/header.webp', // Using existing image as placeholder
+      image: '/images/categories/allrings/allrings.webp',
       href: '/products#products-section',
       featured: false,
     },
