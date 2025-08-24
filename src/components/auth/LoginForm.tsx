@@ -16,6 +16,7 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const [tsToken, setTsToken] = useState<string | undefined>(undefined);
   const [requireCaptcha, setRequireCaptcha] = useState<boolean>(false);
 
@@ -31,6 +32,12 @@ export default function LoginForm() {
       console.log('🛠️  Development mode detected - auto-filling admin credentials');
       setEmail('admin@jewelry.com');
       setPassword('admin123');
+    }
+
+    // Check for success message from registration
+    const message = searchParams?.get('message');
+    if (message) {
+      setSuccess(message);
     }
   }, []);
 
@@ -146,6 +153,12 @@ export default function LoginForm() {
               onChange={(e) => setTsToken(e.target.value)}
               disabled={loading}
             />
+          </div>
+        )}
+
+        {success && (
+          <div className="rounded-md border border-green-200 bg-green-50 p-3">
+            <p className="text-sm text-green-600">{success}</p>
           </div>
         )}
 

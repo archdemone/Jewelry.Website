@@ -13,7 +13,7 @@ export async function POST(req: Request) {
       slowdownAfter: Math.floor(max * 0.8),
       slowdownMs: 250,
     });
-    const { name, email, password } = await req.json();
+    const { name, email, password, isAdmin } = await req.json();
     if (!email || !password) {
       return NextResponse.json({ message: 'Email and password required' }, { status: 400 });
     }
@@ -22,7 +22,18 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: 'Email already registered' }, { status: 409 });
     }
     const hashed = await bcrypt.hash(password, 10);
-    await db.user.create({ data: { name, email, password: hashed } });
+    
+    // Allow admin creation in development mode
+    const role = (isAdmin && process.env.NODE_ENV !== 'production') ? 'ADMIN' : 'CUSTOMER';
+    
+    await db.user.create({ 
+      data: { 
+        name, 
+        email, 
+        password: hashed,
+        role
+      } 
+    });
     return NextResponse.json({ ok: true });
   } catch (e) {
     const err = e as Error & { status?: number; headers?: Record<string, string> };
