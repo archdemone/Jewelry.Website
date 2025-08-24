@@ -1,6 +1,11 @@
 import { db } from './db';
 import type { ProductWithRelations } from '@/types';
 
+// Ensure this file is only used on the server side
+if (typeof window !== 'undefined') {
+  throw new Error('Database queries cannot be used on the client side');
+}
+
 // Helpers for CI/e2e: provide graceful fallbacks when DB is unavailable (e.g., in fast CI builds)
 const ringCategorySlugs = [
   'engagement-rings',

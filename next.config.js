@@ -142,6 +142,12 @@ const nextConfig = {
       '@': require('path').resolve(__dirname, 'src'),
     };
 
+    // Ensure Prisma client is only used on server-side
+    if (!isServer) {
+      config.resolve.alias['@prisma/client'] = false;
+      config.resolve.alias['prisma'] = false;
+    }
+
     config.resolve.modules = [
       ...(config.resolve.modules || []),
       'node_modules',
