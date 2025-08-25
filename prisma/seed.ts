@@ -101,7 +101,7 @@ async function main() {
 
   // Create ring products
   const products = await Promise.all([
-    // Engagement Rings
+    // Engagement Rings (categories[5] = engagement-rings)
     prisma.product.upsert({
       where: { sku: 'ENG-001' },
       update: {},
@@ -125,7 +125,7 @@ async function main() {
           '/images/MyImages/IMG-20250816-WA0001.jpg',
         ]),
         featured: true,
-        categoryId: categories[0].id, // engagement-rings
+        categoryId: categories[5].id, // engagement-rings
       },
     }),
     prisma.product.upsert({
@@ -151,7 +151,7 @@ async function main() {
           '/images/MyImages/IMG-20250816-WA0003.jpg',
         ]),
         featured: true,
-        categoryId: categories[0].id, // engagement-rings
+        categoryId: categories[5].id, // engagement-rings
       },
     }),
     prisma.product.upsert({
@@ -176,10 +176,35 @@ async function main() {
           '/images/MyImages/IMG-20250816-WA0005.jpg',
         ]),
         featured: false,
-        categoryId: categories[0].id, // engagement-rings
+        categoryId: categories[5].id, // engagement-rings
       },
     }),
-    // Wedding Bands
+    prisma.product.upsert({
+      where: { sku: 'ENG-004' },
+      update: {},
+      create: {
+        name: 'Rose Gold Pave Engagement Ring',
+        slug: 'rose-gold-pave-engagement-ring',
+        description: 'Romantic rose gold ring with pave diamond accents for extra sparkle.',
+        price: 115.0,
+        comparePrice: 130.0,
+        cost: 55.0,
+        sku: 'ENG-004',
+        barcode: '123456789004',
+        quantity: 2,
+        weight: 3.5,
+        material: '18k Rose Gold',
+        gemstones: '0.8ct Diamond + Pave',
+        size: '6.5',
+        images: stringifyImages([
+          '/images/MyImages/IMG-20250816-WA0006.jpg',
+          '/images/MyImages/IMG-20250816-WA0007.jpg',
+        ]),
+        featured: true,
+        categoryId: categories[5].id, // engagement-rings
+      },
+    }),
+    // Wedding Bands (categories[4] = wedding-rings)
     prisma.product.upsert({
       where: { sku: 'WED-001' },
       update: {},
@@ -192,18 +217,18 @@ async function main() {
         comparePrice: 95.0,
         cost: 35.0,
         sku: 'WED-001',
-        barcode: '123456789004',
+        barcode: '123456789005',
         quantity: 8,
         weight: 4.5,
         material: '14k White Gold',
         gemstones: 'None',
         size: '7.0',
         images: stringifyImages([
-          '/images/MyImages/IMG-20250816-WA0006.jpg',
-          '/images/MyImages/IMG-20250816-WA0007.jpg',
+          '/images/MyImages/IMG-20250816-WA0008.jpg',
+          '/images/MyImages/IMG-20250816-WA0009.jpg',
         ]),
         featured: true,
-        categoryId: categories[1].id, // wedding-bands
+        categoryId: categories[4].id, // wedding-rings
       },
     }),
     prisma.product.upsert({
@@ -384,55 +409,156 @@ async function main() {
         categoryId: categories[4].id, // statement-rings
       },
     }),
-    // Stackable Rings
+    // Statement Rings (categories[7] = statement-rings)
     prisma.product.upsert({
-      where: { sku: 'STACK-001' },
+      where: { sku: 'STAT-001' },
       update: {},
       create: {
-        name: 'Minimalist Gold Band',
-        slug: 'minimalist-gold-band',
-        description: 'Simple yet elegant, perfect for everyday wear or stacking.',
-        price: 450.0,
-        comparePrice: 600.0,
-        cost: 270.0,
-        sku: 'STACK-001',
-        barcode: '123456789012',
-        quantity: 15,
-        weight: 2.1,
-        material: '18k Rose Gold',
-        gemstones: 'None',
+        name: 'Bold Geometric Statement Ring',
+        slug: 'bold-geometric-statement-ring',
+        description: 'Striking geometric design with mixed metals and gemstones for a bold statement.',
+        price: 95.0,
+        comparePrice: 120.0,
+        cost: 45.0,
+        sku: 'STAT-001',
+        barcode: '123456789014',
+        quantity: 3,
+        weight: 5.2,
+        material: 'Mixed Metals',
+        gemstones: 'Sapphire + Diamond',
         size: '7.0',
         images: stringifyImages([
           '/images/MyImages/IMG-20250816-WA0022.jpg',
           '/images/MyImages/IMG-20250816-WA0023.jpg',
         ]),
         featured: true,
-        categoryId: categories[5].id, // stackable-rings
+        categoryId: categories[7].id, // statement-rings
       },
     }),
     prisma.product.upsert({
-      where: { sku: 'STACK-002' },
+      where: { sku: 'STAT-002' },
       update: {},
       create: {
-        name: 'Diamond Accent Band',
-        slug: 'diamond-accent-band',
-        description: 'Delicate band with small diamond accents, perfect for stacking.',
-        price: 750.0,
-        comparePrice: 950.0,
-        cost: 450.0,
-        sku: 'STACK-002',
-        barcode: '123456789013',
-        quantity: 8,
-        weight: 1.8,
-        material: '14k White Gold',
-        gemstones: 'Small Diamonds',
+        name: 'Artistic Floral Statement Ring',
+        slug: 'artistic-floral-statement-ring',
+        description: 'Handcrafted floral design with intricate details and vibrant gemstones.',
+        price: 110.0,
+        comparePrice: 130.0,
+        cost: 55.0,
+        sku: 'STAT-002',
+        barcode: '123456789015',
+        quantity: 2,
+        weight: 4.8,
+        material: '18k Yellow Gold',
+        gemstones: 'Ruby + Emerald',
         size: '7.0',
         images: stringifyImages([
           '/images/MyImages/IMG-20250816-WA0024.jpg',
           '/images/MyImages/IMG-20250816-WA0025.jpg',
         ]),
+        featured: true,
+        categoryId: categories[7].id, // statement-rings
+      },
+    }),
+    prisma.product.upsert({
+      where: { sku: 'STAT-003' },
+      update: {},
+      create: {
+        name: 'Modern Abstract Statement Ring',
+        slug: 'modern-abstract-statement-ring',
+        description: 'Contemporary abstract design with asymmetrical elements and mixed textures.',
+        price: 105.0,
+        comparePrice: 125.0,
+        cost: 50.0,
+        sku: 'STAT-003',
+        barcode: '123456789016',
+        quantity: 4,
+        weight: 6.1,
+        material: 'Sterling Silver',
+        gemstones: 'Onyx + Crystal',
+        size: '7.0',
+        images: stringifyImages([
+          '/images/MyImages/IMG-20250816-WA0026.jpg',
+          '/images/MyImages/IMG-20250816-WA0027.jpg',
+        ]),
         featured: false,
-        categoryId: categories[5].id, // stackable-rings
+        categoryId: categories[7].id, // statement-rings
+      },
+    }),
+    prisma.product.upsert({
+      where: { sku: 'STAT-004' },
+      update: {},
+      create: {
+        name: 'Vintage-Inspired Statement Ring',
+        slug: 'vintage-inspired-statement-ring',
+        description: 'Timeless vintage design with ornate details and precious gemstones.',
+        price: 120.0,
+        comparePrice: 140.0,
+        cost: 60.0,
+        sku: 'STAT-004',
+        barcode: '123456789017',
+        quantity: 2,
+        weight: 5.5,
+        material: '18k White Gold',
+        gemstones: 'Diamond + Sapphire',
+        size: '7.0',
+        images: stringifyImages([
+          '/images/MyImages/IMG-20250816-WA0028.jpg',
+          '/images/MyImages/IMG-20250816-WA0029.jpg',
+        ]),
+        featured: true,
+        categoryId: categories[7].id, // statement-rings
+      },
+    }),
+    // Unisex Rings (categories[3] = unisex-rings)
+    prisma.product.upsert({
+      where: { sku: 'UNI-001' },
+      update: {},
+      create: {
+        name: 'Minimalist Carbon Fiber Ring',
+        slug: 'minimalist-carbon-fiber-ring',
+        description: 'Lightweight and durable carbon fiber ring with a modern minimalist design.',
+        price: 65.0,
+        comparePrice: 80.0,
+        cost: 30.0,
+        sku: 'UNI-001',
+        barcode: '123456789018',
+        quantity: 10,
+        weight: 1.2,
+        material: 'Carbon Fiber',
+        gemstones: 'None',
+        size: '7.0',
+        images: stringifyImages([
+          '/images/MyImages/IMG-20250816-WA0030.jpg',
+          '/images/MyImages/IMG-20250816-WA0031.jpg',
+        ]),
+        featured: true,
+        categoryId: categories[3].id, // unisex-rings
+      },
+    }),
+    prisma.product.upsert({
+      where: { sku: 'UNI-002' },
+      update: {},
+      create: {
+        name: 'Ceramic Unisex Ring',
+        slug: 'ceramic-unisex-ring',
+        description: 'Sleek ceramic ring with a smooth finish, perfect for any style preference.',
+        price: 55.0,
+        comparePrice: 70.0,
+        cost: 25.0,
+        sku: 'UNI-002',
+        barcode: '123456789019',
+        quantity: 12,
+        weight: 1.5,
+        material: 'Ceramic',
+        gemstones: 'None',
+        size: '7.0',
+        images: stringifyImages([
+          '/images/MyImages/IMG-20250816-WA0032.jpg',
+          '/images/MyImages/IMG-20250816-WA0033.jpg',
+        ]),
+        featured: false,
+        categoryId: categories[3].id, // unisex-rings
       },
     }),
   ]);
