@@ -45,10 +45,10 @@ export default function AccountPage() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
   const [isEditing, setIsEditing] = useState(false);
-  
+
   // Wishlist store
-  const { removeItem, hydrate } = useWishlistStore();
-  
+  const { items: wishlistItems, removeItem, hydrate, hydrated } = useWishlistStore();
+
   useEffect(() => {
     hydrate();
   }, [hydrate]);
@@ -345,8 +345,7 @@ export default function AccountPage() {
   );
 
   const renderWishlist = () => {
-    const { items: wishlistItems, hydrated } = useWishlistStore();
-    
+
     if (!hydrated) {
       return (
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
@@ -362,7 +361,7 @@ export default function AccountPage() {
     return (
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
         <h2 className="text-xl font-semibold text-gray-900 mb-6">My Wishlist ({wishlistItems.length})</h2>
-        
+
         {wishlistItems.length === 0 ? (
           <div className="text-center py-12">
             <Heart className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -379,8 +378,8 @@ export default function AccountPage() {
             {wishlistItems.map((item) => (
               <div key={item.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
                 <div className="aspect-square bg-gray-100 rounded-md mb-3 overflow-hidden">
-                  <img 
-                    src={item.image} 
+                  <img
+                    src={item.image}
                     alt={item.name}
                     className="w-full h-full object-cover"
                   />
@@ -388,7 +387,7 @@ export default function AccountPage() {
                 <h3 className="font-medium text-gray-900 mb-1">{item.name}</h3>
                 <p className="text-lg font-semibold text-gray-900 mb-2">£{item.price.toFixed(2)}</p>
                 <div className="flex gap-2">
-                  <Link 
+                  <Link
                     href={`/products/${item.slug}`}
                     className="flex-1 bg-blue-600 text-white text-center py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
                   >

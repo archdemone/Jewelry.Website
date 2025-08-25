@@ -141,8 +141,8 @@ export default function AboutPageClient() {
         {/* Hero Section */}
         <section className="relative h-[60vh] min-h-[500px] overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
           <div className="absolute inset-0">
-            <img 
-              src="/images/about/header.webp"
+            <img
+              src="/images/about/aboutheader.webp"
               alt="Artisan workshop header"
               className="absolute inset-0 h-full w-full object-cover"
             />
@@ -176,7 +176,7 @@ export default function AboutPageClient() {
               </motion.p>
             </div>
           </div>
-        </section>
+        </section >
 
         {/* Stats Section */}
         <section className="py-16 bg-white">
@@ -235,10 +235,10 @@ export default function AboutPageClient() {
                     </div>
                     <h3 className="text-xl font-semibold">{section.title}</h3>
                   </div>
-                  
+
                   <h4 className="text-lg font-medium text-gold-600 mb-3">{section.content.subtitle}</h4>
                   <p className="text-gray-600 mb-6">{section.content.description}</p>
-                  
+
                   <ul className="space-y-2">
                     {section.content.details.map((detail, detailIndex) => (
                       <li key={detailIndex} className="flex items-start">
@@ -272,7 +272,7 @@ export default function AboutPageClient() {
             <div className="relative">
               {/* Timeline line */}
               <div className="absolute left-1/2 transform -translate-x-px h-full w-0.5 bg-gold-200"></div>
-              
+
               <div className="space-y-8">
                 {timeline.map((item, index) => (
                   <motion.div
@@ -290,12 +290,12 @@ export default function AboutPageClient() {
                         <p className="text-gray-600 text-sm">{item.description}</p>
                       </div>
                     </div>
-                    
+
                     {/* Timeline dot */}
                     <div className="relative z-10">
                       <div className="w-4 h-4 bg-gold-600 rounded-full border-4 border-white shadow-lg"></div>
                     </div>
-                    
+
                     <div className="w-1/2"></div>
                   </motion.div>
                 ))}

@@ -6,20 +6,20 @@ import Link from 'next/link';
 const CategoryShowcase = () => {
   const categories = [
     {
-      id: 'womens-rings',
-      name: "Women's Rings",
-      description: 'Elegant rings crafted with precious metals and stunning gemstone inlays, perfect for every occasion.',
-      image: '/images/MyImages/category-engagement-rings.jpg',
-      href: '/products/womens#products-section',
-      featured: true,
-    },
-    {
       id: 'mens-rings',
-      name: "Men's Rings",
+      name: "Mens Rings",
       description: 'Bold and sophisticated rings featuring Damascus steel, titanium, and premium materials for the modern man.',
       image: '/images/MyImages/category-signet-rings.jpg',
       href: '/products/mens#products-section',
       featured: false,
+    },
+    {
+      id: 'womens-rings',
+      name: "Womens Rings",
+      description: 'Elegant rings crafted with precious metals and stunning gemstone inlays, perfect for every occasion.',
+      image: '/images/MyImages/category-engagement-rings.jpg',
+      href: '/products/womens#products-section',
+      featured: true,
     },
     {
       id: 'unisex-rings',
@@ -27,6 +27,22 @@ const CategoryShowcase = () => {
       description: 'Versatile designs in carbon, ceramic, and lightweight materials perfect for any style preference.',
       image: '/images/MyImages/category-stackable-rings.jpg',
       href: '/products/unisex#products-section',
+      featured: false,
+    },
+    {
+      id: 'wedding-rings',
+      name: 'Wedding Rings',
+      description: 'Timeless wedding bands and engagement rings, crafted with love for your most precious moments.',
+      image: '/images/MyImages/category-wedding-bands.jpg',
+      href: '/products/wedding#products-section',
+      featured: false,
+    },
+    {
+      id: 'engagement-rings',
+      name: 'Engagement Rings',
+      description: 'Handcrafted engagement rings with ethically sourced diamonds and precious gemstones.',
+      image: '/images/MyImages/category-engagement-rings.jpg',
+      href: '/products/engagement#products-section',
       featured: false,
     },
     {
@@ -38,11 +54,11 @@ const CategoryShowcase = () => {
       featured: false,
     },
     {
-      id: 'wedding-rings',
-      name: 'Wedding Rings',
-      description: 'Timeless wedding bands and engagement rings, crafted with love for your most precious moments.',
-      image: '/images/MyImages/category-wedding-bands.jpg',
-      href: '/products/wedding#products-section',
+      id: 'statement-rings',
+      name: 'Statement Rings',
+      description: 'Bold designs that express your personality and make a lasting impression.',
+      image: '/images/MyImages/category-statement-rings.jpg',
+      href: '/products/statement#products-section',
       featured: false,
     },
     {
@@ -58,7 +74,7 @@ const CategoryShowcase = () => {
   return (
     <section className="bg-gradient-to-br from-gray-50 to-white py-24">
       <div className="container mx-auto px-4">
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -73,7 +89,7 @@ const CategoryShowcase = () => {
         </motion.div>
         <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
           {categories.map((category, index) => (
-            <motion.div 
+            <motion.div
               key={category.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -84,7 +100,7 @@ const CategoryShowcase = () => {
             >
               <Link href={category.href} className="block h-full">
                 <div className="relative aspect-[4/3] overflow-hidden">
-                  <img 
+                  <img
                     src={category.image}
                     alt={category.name}
                     className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"

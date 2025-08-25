@@ -7,8 +7,8 @@ const HeroCarousel = () => {
     <section className="hero-section relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
       {/* Hero Background Image */}
       <div className="absolute inset-0 z-0">
-        <img 
-          src="/images/home/header3.jpg"
+        <img
+          src="/images/home/header1.webp"
           alt="J&M Jewelry - Handcrafted rings with passion"
           className="absolute inset-0 h-full w-full object-cover"
         />
@@ -18,8 +18,8 @@ const HeroCarousel = () => {
       {/* Content Overlay */}
       <div className="relative z-10 text-center text-white px-4">
         <div className="max-w-4xl mx-auto space-y-8">
-          <h1 className="hero-title text-6xl md:text-8xl font-bold tracking-wider" style={{ 
-            fontFamily: 'Playfair Display, serif', 
+          <h1 className="hero-title text-6xl md:text-8xl font-bold tracking-wider" style={{
+            fontFamily: 'Playfair Display, serif',
             letterSpacing: '0.15em',
             fontWeight: '600',
             fontStyle: 'italic'

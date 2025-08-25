@@ -46,10 +46,10 @@ export function Header() {
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="flex items-center space-x-6">
             {/* Rings Dropdown */}
             <div className="relative group">
-              <button 
+              <button
                 className="flex items-center space-x-1 text-gray-700 hover:text-gold-600 transition-colors"
                 onMouseEnter={() => setShowRingsDropdown(true)}
                 onMouseLeave={() => setShowRingsDropdown(false)}
@@ -57,40 +57,48 @@ export function Header() {
                 <span>Rings</span>
                 <ChevronDown className="h-4 w-4" />
               </button>
-              <div 
-                className={`absolute top-full left-0 mt-1 w-48 bg-white rounded-md shadow-lg border border-gray-200 transition-all duration-200 ${
-                  showRingsDropdown ? 'opacity-100 visible' : 'opacity-0 invisible'
-                }`}
+              <div
+                className={`absolute top-full left-0 mt-1 w-48 bg-white rounded-md shadow-lg border border-gray-200 transition-all duration-200 ${showRingsDropdown ? 'opacity-100 visible' : 'opacity-0 invisible'
+                  }`}
                 onMouseEnter={() => setShowRingsDropdown(true)}
                 onMouseLeave={() => setShowRingsDropdown(false)}
               >
                 <div className="py-1">
-                  <Link href="/products/womens#products-section" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                    Women's Rings
-                  </Link>
                   <Link href="/products/mens#products-section" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                    Men's Rings
+                    Mens Rings
+                  </Link>
+                  <Link href="/products/womens#products-section" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Womens Rings
+                  </Link>
+                  <Link href="/products/unisex#products-section" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Unisex Rings
                   </Link>
                   <Link href="/products/wedding#products-section" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     Wedding Rings
                   </Link>
+                  <Link href="/products/engagement#products-section" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Engagement Rings
+                  </Link>
                   <Link href="/products/inlay#products-section" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                     Inlay Rings
                   </Link>
+                  <Link href="/products/statement#products-section" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                    Statement Rings
+                  </Link>
                   <Link href="/products#products-section" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 border-t border-gray-100">
-                    View All Rings
+                    All Rings
                   </Link>
                 </div>
               </div>
             </div>
-            
-            <Link href="/crafting-process" className="text-gray-700 hover:text-gold-600 transition-colors">
+
+            <Link href="/crafting-process" className="text-gray-700 hover:text-gold-600 transition-colors whitespace-nowrap">
               Crafting Process
             </Link>
-            <Link href="/about" className="text-gray-700 hover:text-gold-600 transition-colors">
+            <Link href="/about" className="text-gray-700 hover:text-gold-600 transition-colors whitespace-nowrap">
               About
             </Link>
-            <Link href="/contact" className="text-gray-700 hover:text-gold-600 transition-colors">
+            <Link href="/contact" className="text-gray-700 hover:text-gold-600 transition-colors whitespace-nowrap">
               Contact
             </Link>
           </nav>

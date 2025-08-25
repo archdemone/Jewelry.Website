@@ -8,47 +8,80 @@ async function main() {
   // Create ring-specific categories
   const categories = await Promise.all([
     prisma.category.upsert({
+      where: { slug: 'all-rings' },
+      update: {},
+      create: {
+        name: 'All Rings',
+        slug: 'all-rings',
+        description: 'Browse our complete collection of handcrafted rings',
+        image: '/images/categories/allrings/allrings.webp',
+        order: 1,
+      },
+    }),
+    prisma.category.upsert({
+      where: { slug: 'mens-rings' },
+      update: {},
+      create: {
+        name: 'Mens Rings',
+        slug: 'mens-rings',
+        description: 'Handcrafted rings designed specifically for men',
+        image: '/images/categories/mensrings/mensrings.webp',
+        order: 2,
+      },
+    }),
+    prisma.category.upsert({
+      where: { slug: 'womens-rings' },
+      update: {},
+      create: {
+        name: 'Womens Rings',
+        slug: 'womens-rings',
+        description: 'Elegant rings crafted for women',
+        image: '/images/categories/womensrings/womensrings.webp',
+        order: 3,
+      },
+    }),
+    prisma.category.upsert({
+      where: { slug: 'unisex-rings' },
+      update: {},
+      create: {
+        name: 'Unisex Rings',
+        slug: 'unisex-rings',
+        description: 'Versatile ring designs perfect for anyone',
+        image: '/images/categories/unisex/unisex.webp',
+        order: 4,
+      },
+    }),
+    prisma.category.upsert({
+      where: { slug: 'wedding-rings' },
+      update: {},
+      create: {
+        name: 'Wedding Rings',
+        slug: 'wedding-rings',
+        description: 'Beautiful wedding rings for your special day',
+        image: '/images/categories/wedding/wedding.webp',
+        order: 5,
+      },
+    }),
+    prisma.category.upsert({
       where: { slug: 'engagement-rings' },
       update: {},
       create: {
         name: 'Engagement Rings',
         slug: 'engagement-rings',
         description: 'Handcrafted engagement rings with ethically sourced diamonds',
-        image: '/images/MyImages/category-engagement-rings.jpg',
-        order: 1,
+        image: '/images/categories/engagement/engagement.webp',
+        order: 6,
       },
     }),
     prisma.category.upsert({
-      where: { slug: 'wedding-bands' },
+      where: { slug: 'inlay-rings' },
       update: {},
       create: {
-        name: 'Wedding Bands',
-        slug: 'wedding-bands',
-        description: 'Matching wedding bands for your special day',
-        image: '/images/MyImages/category-wedding-bands.jpg',
-        order: 2,
-      },
-    }),
-    prisma.category.upsert({
-      where: { slug: 'eternity-rings' },
-      update: {},
-      create: {
-        name: 'Eternity Rings',
-        slug: 'eternity-rings',
-        description: 'Celebrate eternal love with continuous stones',
-        image: '/images/MyImages/category-eternity-rings.jpg',
-        order: 3,
-      },
-    }),
-    prisma.category.upsert({
-      where: { slug: 'signet-rings' },
-      update: {},
-      create: {
-        name: 'Signet Rings',
-        slug: 'signet-rings',
-        description: 'Classic signet rings with custom engraving options',
-        image: '/images/MyImages/category-signet-rings.jpg',
-        order: 4,
+        name: 'Inlay Rings',
+        slug: 'inlay-rings',
+        description: 'Unique rings featuring beautiful inlay work',
+        image: '/images/categories/inlay/inlay.webp',
+        order: 7,
       },
     }),
     prisma.category.upsert({
@@ -58,19 +91,8 @@ async function main() {
         name: 'Statement Rings',
         slug: 'statement-rings',
         description: 'Bold designs that express your personality',
-        image: '/images/MyImages/category-statement-rings.jpg',
-        order: 5,
-      },
-    }),
-    prisma.category.upsert({
-      where: { slug: 'stackable-rings' },
-      update: {},
-      create: {
-        name: 'Stackable Rings',
-        slug: 'stackable-rings',
-        description: 'Delicate rings designed to be worn together',
-        image: '/images/MyImages/category-stackable-rings.jpg',
-        order: 6,
+        image: '/images/categories/statement/statement.webp',
+        order: 8,
       },
     }),
   ]);
