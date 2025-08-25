@@ -66,10 +66,25 @@ export default function ProfilePage() {
     setProfileMessage(null);
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await fetch('/api/user/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: profileData.name,
+          email: profileData.email,
+          phone: profileData.phone,
+        }),
+      });
 
-      // Update session
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to update profile');
+      }
+
+      // Update session with new data
       await update({
         ...session,
         user: {
@@ -82,7 +97,10 @@ export default function ProfilePage() {
       setProfileMessage({ type: 'success', text: 'Profile updated successfully!' });
     } catch (error) {
       console.error('Profile update error:', error);
-      setProfileMessage({ type: 'error', text: 'Failed to update profile. Please try again.' });
+      setProfileMessage({ 
+        type: 'error', 
+        text: error instanceof Error ? error.message : 'Failed to update profile. Please try again.' 
+      });
     } finally {
       setIsUpdatingProfile(false);
     }

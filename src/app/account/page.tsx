@@ -298,37 +298,38 @@ export default function AccountPage() {
   const renderSettings = () => (
     <div className="space-y-6">
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6">Profile Settings</h2>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-semibold text-gray-900">Profile Settings</h2>
+          <Link href="/account/profile" className="text-blue-600 hover:text-blue-700 font-medium">
+            Edit Profile
+          </Link>
+        </div>
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
-              <input type="text"
-                value={profile?.firstName || ''}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+              <div className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-700">
+                {profile?.firstName || 'Not set'}
+              </div>
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
-              <input type="text"
-                value={profile?.lastName || ''}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+              <div className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-700">
+                {profile?.lastName || 'Not set'}
+              </div>
             </div>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-            <input type="email"
-              value={profile?.email || ''}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <div className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-700">
+              {profile?.email || 'Not set'}
+            </div>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-            <input type="tel"
-              value={profile?.phone || ''}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <div className="w-full px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-700">
+              {profile?.phone || 'Not set'}
+            </div>
           </div>
         </div>
       </div>
@@ -368,8 +369,16 @@ export default function AccountPage() {
         </div>
       </div>
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-4">Account Actions</h3>
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
         <div className="space-y-3">
+          <Link href="/account/addresses" className="w-full flex items-center justify-center space-x-2 text-blue-600 hover:text-blue-700 py-2 px-4 border border-blue-200 rounded-lg hover:bg-blue-50">
+            <Settings className="h-4 w-4" />
+            <span>Manage Addresses</span>
+          </Link>
+          <Link href="/account/profile" className="w-full flex items-center justify-center space-x-2 text-green-600 hover:text-green-700 py-2 px-4 border border-green-200 rounded-lg hover:bg-green-50">
+            <Edit className="h-4 w-4" />
+            <span>Edit Profile</span>
+          </Link>
           <button className="w-full flex items-center justify-center space-x-2 text-red-600 hover:text-red-700 py-2 px-4 border border-red-200 rounded-lg hover:bg-red-50">
             <LogOut className="h-4 w-4" />
             <span>Sign Out</span>
