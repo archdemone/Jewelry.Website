@@ -1,10 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { ShoppingBag, User, Search, LogOut, ChevronDown, X, Heart } from 'lucide-react';
+import { ShoppingBag, User, Search, LogOut, ChevronDown, X } from 'lucide-react';
 import { useSession, signOut, signIn } from 'next-auth/react';
 import { useCartStore } from '@/store/cart';
-import { useWishlistStore } from '@/store/wishlist';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MobileMenu } from './MobileMenu';
@@ -13,22 +12,17 @@ import { EnhancedSearchInput } from '@/components/search/EnhancedSearchInput';
 export function Header() {
   const count = useCartStore((s) => s.count);
   const isHydrated = useCartStore((s) => s.isHydrated);
-  const wishlistCount = useWishlistStore((s) => s.count);
-  const wishlistHydrated = useWishlistStore((s) => s.isHydrated);
   const [mounted, setMounted] = useState(false);
   const [showRingsDropdown, setShowRingsDropdown] = useState(false);
-  const [showWishlistDropdown, setShowWishlistDropdown] = useState(false);
   const { data: session } = useSession();
   const router = useRouter();
 
   useEffect(() => {
     setMounted(true);
-    // Hydrate stores on mount
+    // Hydrate cart store on mount
     if (typeof window !== 'undefined') {
       const { hydrate: hydrateCart } = useCartStore.getState();
-      const { hydrate: hydrateWishlist } = useWishlistStore.getState();
       hydrateCart();
-      hydrateWishlist();
     }
   }, []);
 
@@ -142,16 +136,6 @@ export function Header() {
                 <span className="hidden sm:block">Sign In</span>
               </button>
             )}
-
-            {/* Wishlist */}
-            <Link href="/account/wishlist" className="relative text-gray-700 hover:text-gold-600 transition-colors">
-              <Heart className="h-6 w-6" />
-              {mounted && wishlistHydrated && wishlistCount > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                  {wishlistCount}
-                </span>
-              )}
-            </Link>
 
             {/* Cart */}
             <Link href="/cart" className="relative text-gray-700 hover:text-gold-600 transition-colors">

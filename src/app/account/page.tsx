@@ -5,7 +5,6 @@ import { motion } from 'framer-motion';
 import { User, Package, Heart, Settings, LogOut, Edit, Eye } from 'lucide-react';
 import Link from 'next/link';
 import { AuthGuard } from '@/components/auth/AuthGuard';
-import { useWishlistStore } from '@/store/wishlist';
 
 interface UserProfile {
   id: string;
@@ -43,13 +42,8 @@ export default function AccountPage() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
   const [isEditing, setIsEditing] = useState(false);
-  const { items: wishlistItems, removeItem, isHydrated: wishlistHydrated } = useWishlistStore();
 
   useEffect(() => {
-    // Hydrate wishlist store
-    const { hydrate } = useWishlistStore.getState();
-    hydrate();
-    
     // Mock data - in real app, fetch from API
     setProfile({
       id: 'user_1',
@@ -285,96 +279,21 @@ export default function AccountPage() {
     </div>
   );
 
-  const renderWishlist = () => {
-    if (!wishlistHydrated) {
-      return (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <div className="text-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900 mx-auto"></div>
-            <p className="mt-2 text-gray-600">Loading wishlist...</p>
-          </div>
-        </div>
-      );
-    }
-
-    if (wishlistItems.length === 0) {
-      return (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6">My Wishlist</h2>
-          <div className="text-center py-12">
-            <Heart className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">Your wishlist is empty</h3>
-            <p className="text-gray-600 mb-4">Start adding items you love to your wishlist</p>
-            <Link href="/products"
-              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
-            >
-              Browse Products
-            </Link>
-          </div>
-        </div>
-      );
-    }
-
-    return (
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-semibold text-gray-900">My Wishlist</h2>
-          <span className="text-sm text-gray-600">{wishlistItems.length} items</span>
-        </div>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {wishlistItems.map((item) => (
-            <div key={item.productId} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-              <div className="aspect-square bg-gray-100 rounded-lg mb-3 overflow-hidden">
-                {item.image ? (
-                  <img 
-                    src={item.image} 
-                    alt={item.name} 
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <Package className="h-8 w-8 text-gray-400" />
-                  </div>
-                )}
-              </div>
-              <div className="space-y-2">
-                <h3 className="font-medium text-gray-900 line-clamp-2">{item.name}</h3>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <span className="text-lg font-semibold text-gray-900">£{item.price.toFixed(2)}</span>
-                    {item.originalPrice && item.originalPrice > item.price && (
-                      <span className="ml-2 text-sm text-gray-500 line-through">
-                        £{item.originalPrice.toFixed(2)}
-                      </span>
-                    )}
-                  </div>
-                  {item.badge && (
-                    <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">
-                      {item.badge}
-                    </span>
-                  )}
-                </div>
-                <div className="flex items-center justify-between pt-2">
-                  <Link
-                    href={`/products/${item.slug}`}
-                    className="text-sm text-blue-600 hover:text-blue-700 font-medium"
-                  >
-                    View Product
-                  </Link>
-                  <button
-                    onClick={() => removeItem(item.productId)}
-                    className="text-sm text-red-600 hover:text-red-700 font-medium"
-                  >
-                    Remove
-                  </button>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+  const renderWishlist = () => (
+    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+      <h2 className="text-xl font-semibold text-gray-900 mb-6">My Wishlist</h2>
+      <div className="text-center py-12">
+        <Heart className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+        <h3 className="text-lg font-medium text-gray-900 mb-2">Your wishlist is empty</h3>
+        <p className="text-gray-600 mb-4">Start adding items you love to your wishlist</p>
+        <Link href="/products"
+          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
+        >
+          Browse Products
+        </Link>
       </div>
-    );
-  };
+    </div>
+  );
 
   const renderSettings = () => (
     <div className="space-y-6">

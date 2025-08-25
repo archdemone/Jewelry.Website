@@ -2,7 +2,6 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { Heart, ShoppingBag, Eye, X, Star } from 'lucide-react';
 import { getFeaturedProducts, type FeaturedProduct } from '@/lib/featured-products';
@@ -228,12 +227,10 @@ const FeaturedProducts = () => {
             >
               {/* Product Image */}
               <div className="relative h-64">
-                <Image
+                <img
                   src={ring.image}
                   alt={ring.name}
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="absolute inset-0 h-full w-full object-cover"
                 />
 
                 {/* Ready to Ship Badge */}
@@ -352,12 +349,10 @@ const FeaturedProducts = () => {
               <div className="grid lg:grid-cols-3">
                 {/* Image Gallery */}
                 <div className="relative h-96 bg-gradient-to-br from-gray-50 to-gray-100 lg:col-span-1 lg:h-full">
-                  <Image
+                  <img
                     src={quickViewProduct.image}
                     alt={quickViewProduct.name}
-                    fill
-                    className="object-cover"
-                    sizes="(max-width: 1024px) 100vw, 33vw"
+                    className="absolute inset-0 h-full w-full object-cover"
                   />
                   <button
                     onClick={() => setQuickViewProduct(null)}
@@ -460,12 +455,10 @@ const FeaturedProducts = () => {
                             <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                               <div className="rounded-lg border border-gray-200 bg-white p-3 shadow-lg">
                                 <div className="relative h-32 w-32 overflow-hidden rounded">
-                                  <Image
+                                  <img
                                     src={`/images/gems/colour/${color.toLowerCase()}.jpg`}
                                     alt={`${color} gem`}
-                                    fill
-                                    className="object-cover"
-                                    sizes="128px"
+                                    className="absolute inset-0 h-full w-full object-cover"
                                   />
                                 </div>
                                 <div className="absolute left-1/2 top-full h-2 w-2 -translate-x-1/2 rotate-45 transform border-b border-l border-gray-200 bg-white"></div>
