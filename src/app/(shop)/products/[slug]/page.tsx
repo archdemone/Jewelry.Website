@@ -73,7 +73,13 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
               <p className="mt-2 text-gray-600">{product.description}</p>
               <div className="mt-4 text-xl font-semibold">£{product.price.toFixed(2)}</div>
             </div>
-            <WishlistButton productId={product.id}
+            <WishlistButton 
+              productId={product.id}
+              name={product.name}
+              price={product.price}
+              image={mainImage}
+              slug={product.slug}
+              category={product.category?.name}
               variant="button"
               size="md"
             />

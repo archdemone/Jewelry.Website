@@ -253,20 +253,20 @@ export default function CategoryPage({
   // Initialize customization
   const initializeCustomization = (product: Product) => {
     setCustomization({
-      material: product.material,
-      gemColor: product.gemColor,
-      gemDensity: product.gemDensity,
-      gemVariation: product.gemVariation,
+      material: product.material || '',
+      gemColor: product.gemColor || '',
+      gemDensity: product.gemDensity || '',
+      gemVariation: product.gemVariation || '',
       ringSize: product.ringSizes?.us?.[0]?.toString() || '',
       ringWidth: product.ringWidth?.[0]?.toString() || '',
       mixColors: product.mixColors || [],
       sizeType: 'us'
     });
     setOriginalCustomization({
-      material: product.material,
-      gemColor: product.gemColor,
-      gemDensity: product.gemDensity,
-      gemVariation: product.gemVariation,
+      material: product.material || '',
+      gemColor: product.gemColor || '',
+      gemDensity: product.gemDensity || '',
+      gemVariation: product.gemVariation || '',
       ringSize: product.ringSizes?.us?.[0]?.toString() || '',
       ringWidth: product.ringWidth?.[0]?.toString() || '',
       mixColors: product.mixColors || [],
