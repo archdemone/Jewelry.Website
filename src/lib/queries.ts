@@ -99,8 +99,8 @@ export async function getPaginatedProducts({
   ] as const;
   if (q && q.trim()) {
     where.OR = [
-      { name: { contains: q, mode: 'insensitive' } },
-      { description: { contains: q, mode: 'insensitive' } },
+      { name: { contains: q } },
+      { description: { contains: q } },
     ];
   }
   // Limit results to ring categories by default unless a category is explicitly requested
@@ -206,16 +206,16 @@ export async function getProductBySlug(slug: string) {
       where: { slug },
       include: { category: true, reviews: true },
     });
-    
+
     if (dbProduct) {
       return dbProduct;
     }
-    
+
     // If not found in DB, check featured products
     const { getFeaturedProducts } = await import('./featured-products');
     const featuredProducts = getFeaturedProducts();
     const featuredProduct = featuredProducts.find(p => p.slug === slug);
-    
+
     if (featuredProduct) {
       // Transform featured product to match DB schema
       return {
@@ -239,14 +239,14 @@ export async function getProductBySlug(slug: string) {
         updatedAt: new Date(),
       };
     }
-    
+
     return null;
   } catch {
     // Fallback for featured products
     const { getFeaturedProducts } = await import('./featured-products');
     const featuredProducts = getFeaturedProducts();
     const featuredProduct = featuredProducts.find(p => p.slug === slug);
-    
+
     if (featuredProduct) {
       return {
         id: featuredProduct.id,
@@ -269,7 +269,7 @@ export async function getProductBySlug(slug: string) {
         updatedAt: new Date(),
       };
     }
-    
+
     const catalog = buildFallbackCatalog(48);
     const found = catalog.find((p) => p.slug === slug);
     return found as any;

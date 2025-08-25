@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { User, Package, Heart, Settings, LogOut, Edit, Eye, Loader2 } from 'lucide-react';
+import { User, Package, Heart, Settings, LogOut, Edit, Eye, Loader2, Shield } from 'lucide-react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { AuthGuard } from '@/components/auth/AuthGuard';
@@ -169,6 +169,7 @@ export default function AccountPage() {
     { id: 'orders', label: 'Orders', icon: Package },
     { id: 'wishlist', label: 'Wishlist', icon: Heart },
     { id: 'settings', label: 'Settings', icon: Settings },
+    ...((session?.user as any)?.role === 'ADMIN' ? [{ id: 'admin', label: 'Admin Panel', icon: Shield }] : []),
   ];
 
   const getStatusColor = (status: Order['status']) => {
@@ -409,6 +410,45 @@ export default function AccountPage() {
     );
   };
 
+  const renderAdmin = () => (
+    <div className="space-y-6">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-semibold text-gray-900">Admin Panel</h2>
+          <Link href="/admin" className="text-blue-600 hover:text-blue-700 font-medium">
+            Full Admin Panel
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <Link href="/admin/products" className="bg-blue-50 p-6 rounded-lg hover:bg-blue-100 transition-colors">
+            <h3 className="text-lg font-semibold text-blue-900 mb-2">Products</h3>
+            <p className="text-blue-700 text-sm">Manage your product catalog</p>
+          </Link>
+          <Link href="/admin/orders" className="bg-green-50 p-6 rounded-lg hover:bg-green-100 transition-colors">
+            <h3 className="text-lg font-semibold text-green-900 mb-2">Orders</h3>
+            <p className="text-green-700 text-sm">View and manage customer orders</p>
+          </Link>
+          <Link href="/admin/customers" className="bg-purple-50 p-6 rounded-lg hover:bg-purple-100 transition-colors">
+            <h3 className="text-lg font-semibold text-purple-900 mb-2">Customers</h3>
+            <p className="text-purple-700 text-sm">Manage customer accounts</p>
+          </Link>
+          <Link href="/admin/inventory" className="bg-orange-50 p-6 rounded-lg hover:bg-orange-100 transition-colors">
+            <h3 className="text-lg font-semibold text-orange-900 mb-2">Inventory</h3>
+            <p className="text-orange-700 text-sm">Track stock levels</p>
+          </Link>
+          <Link href="/admin/analytics" className="bg-indigo-50 p-6 rounded-lg hover:bg-indigo-100 transition-colors">
+            <h3 className="text-lg font-semibold text-indigo-900 mb-2">Analytics</h3>
+            <p className="text-indigo-700 text-sm">View sales and performance data</p>
+          </Link>
+          <Link href="/admin/settings" className="bg-gray-50 p-6 rounded-lg hover:bg-gray-100 transition-colors">
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">Settings</h3>
+            <p className="text-gray-700 text-sm">Configure store settings</p>
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+
   const renderSettings = () => (
     <div className="space-y-6">
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
@@ -515,6 +555,8 @@ export default function AccountPage() {
         return renderWishlist();
       case 'settings':
         return renderSettings();
+      case 'admin':
+        return renderAdmin();
       default:
         return renderOverview();
     }

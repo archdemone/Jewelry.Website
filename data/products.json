@@ -47,8 +47,7 @@
     "badge": "Ready to Ship",
     "slug": "womens-silver-inlay-ring-dark-red",
     "description": "Beautiful handcrafted silver set of rings with Mixed Red gem inlay and other with Mixed Blue . Perfect for couples in 'Opposites Attract' mind set.",
-    "isFeatured": true,
-    "featuredOrder": 1
+    "isFeatured": false
   },
   {
     "id": 2,

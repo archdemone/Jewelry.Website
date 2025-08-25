@@ -5,6 +5,28 @@ import { NextRequest, NextResponse } from 'next/server';
 
 const prisma = new PrismaClient();
 
+// Helper function to extract gem color from gemstones string
+function extractGemColor(gemstones: string | null): string {
+  if (!gemstones) return '';
+  const gemColor = gemstones.toLowerCase();
+  if (gemColor.includes('red')) return 'Red';
+  if (gemColor.includes('blue')) return 'Blue';
+  if (gemColor.includes('green')) return 'Green';
+  if (gemColor.includes('purple')) return 'Purple';
+  if (gemColor.includes('yellow')) return 'Yellow';
+  return '';
+}
+
+// Helper function to extract gem variation from gemstones string
+function extractGemVariation(gemstones: string | null): string {
+  if (!gemstones) return '';
+  const gemColor = gemstones.toLowerCase();
+  if (gemColor.includes('dark')) return 'Dark';
+  if (gemColor.includes('bright')) return 'Bright';
+  if (gemColor.includes('mixed')) return 'Mixed';
+  return 'Bright'; // Default
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url);
@@ -57,8 +79,32 @@ export async function GET(request: NextRequest) {
       orderBy: { order: 'asc' }
     });
 
+    // Map database products to frontend Product interface
+    const mappedProducts = products.map(product => ({
+      id: product.id,
+      slug: product.slug,
+      name: product.name,
+      price: product.price,
+      originalPrice: product.comparePrice,
+      images: product.images ? JSON.parse(product.images) : [],
+      material: product.material,
+      gemColor: extractGemColor(product.gemstones),
+      gemDensity: 'medium', // Default value
+      gemVariation: extractGemVariation(product.gemstones),
+      category: product.category?.slug,
+      subCategory: product.category?.name,
+      ringSizes: { us: [6, 7, 8, 9, 10], eu: [52, 54, 57, 59, 61] }, // Default sizes
+      ringWidth: [4, 6, 8], // Default widths
+      isReadyToShip: true, // Default value
+      rating: product.rating,
+      reviews: product.reviewCount,
+      badge: product.badge,
+      description: product.description,
+      status: product.active ? 'active' : 'draft'
+    }));
+
     return NextResponse.json({
-      products,
+      products: mappedProducts,
       categories
     });
   } catch (error) {

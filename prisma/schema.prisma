@@ -94,6 +94,9 @@ model Product {
 	wishlist      Wishlist[]
 	tags          String?
 	metadata      String?      // Changed from Json to String (JSON stored as text)
+	rating        Float?       // Product rating (e.g., 4.8)
+	reviewCount   Int?         // Number of reviews (e.g., 24)
+	badge         String?      // Product badge (e.g., "Ready to Ship")
 	createdAt     DateTime     @default(now())
 	updatedAt     DateTime     @updatedAt
 
