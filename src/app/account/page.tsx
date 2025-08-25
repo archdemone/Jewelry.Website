@@ -70,7 +70,7 @@ export default function AccountPage() {
           } else {
             // Fallback to session data if API fails
             setProfile({
-              id: session.user.id || 'unknown',
+              id: 'session-user',
               email: session.user.email || '',
               firstName: session.user.name ? session.user.name.split(' ')[0] : 'User',
               lastName: session.user.name ? session.user.name.split(' ').slice(1).join(' ') || '' : '',
@@ -89,7 +89,7 @@ export default function AccountPage() {
         // Fallback to session data on error
         if (session?.user) {
           setProfile({
-            id: session.user.id || 'unknown',
+            id: 'session-user',
             email: session.user.email || '',
             firstName: session.user.name ? session.user.name.split(' ')[0] : 'User',
             lastName: session.user.name ? session.user.name.split(' ').slice(1).join(' ') || '' : '',
@@ -109,8 +109,13 @@ export default function AccountPage() {
 
     if (session) {
       fetchUserData();
+    } else if (session === null) {
+      setLoading(false);
     }
+  }, [session]);
 
+  useEffect(() => {
+    // Mock orders data
     setOrders([
       {
         id: 'order_1',
