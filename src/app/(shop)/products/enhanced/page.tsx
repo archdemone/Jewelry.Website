@@ -24,6 +24,7 @@ const mockProducts = [
     price: 2499.99,
     images: ['/images/rings/rose-gold-engagement.jpg'],
     categorySlug: 'engagement-rings',
+    category: 'Engagement Rings',
   },
   {
     id: '2',
@@ -32,6 +33,7 @@ const mockProducts = [
     price: 299.99,
     images: ['/images/rings/silver-wedding.jpg'],
     categorySlug: 'wedding-bands',
+    category: 'Wedding Bands',
   },
   {
     id: '3',
@@ -40,6 +42,7 @@ const mockProducts = [
     price: 899.99,
     images: ['/images/necklaces/gold-pendant.jpg'],
     categorySlug: 'necklaces',
+    category: 'Necklaces',
   },
   {
     id: '4',
@@ -48,6 +51,7 @@ const mockProducts = [
     price: 1299.99,
     images: ['/images/earrings/diamond-studs.jpg'],
     categorySlug: 'earrings',
+    category: 'Earrings',
   },
   {
     id: '5',
@@ -56,6 +60,7 @@ const mockProducts = [
     price: 1899.99,
     images: ['/images/bracelets/platinum-tennis.jpg'],
     categorySlug: 'bracelets',
+    category: 'Bracelets',
   },
   {
     id: '6',
@@ -64,6 +69,7 @@ const mockProducts = [
     price: 599.99,
     images: ['/images/watches/titanium-sport.jpg'],
     categorySlug: 'watches',
+    category: 'Watches',
   },
 ];
 

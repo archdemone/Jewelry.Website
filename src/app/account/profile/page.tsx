@@ -66,8 +66,19 @@ export default function ProfilePage() {
     setProfileMessage(null);
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await fetch('/api/profile', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(profileData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to update profile');
+      }
 
       // Update session
       await update({
@@ -82,7 +93,10 @@ export default function ProfilePage() {
       setProfileMessage({ type: 'success', text: 'Profile updated successfully!' });
     } catch (error) {
       console.error('Profile update error:', error);
-      setProfileMessage({ type: 'error', text: 'Failed to update profile. Please try again.' });
+      setProfileMessage({ 
+        type: 'error', 
+        text: error instanceof Error ? error.message : 'Failed to update profile. Please try again.' 
+      });
     } finally {
       setIsUpdatingProfile(false);
     }
@@ -110,8 +124,22 @@ export default function ProfilePage() {
     }
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await fetch('/api/profile', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          currentPassword: passwordData.currentPassword,
+          newPassword: passwordData.newPassword,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to change password');
+      }
 
       setPasswordMessage({ type: 'success', text: 'Password changed successfully!' });
 
@@ -125,7 +153,7 @@ export default function ProfilePage() {
       console.error('Password change error:', error);
       setPasswordMessage({
         type: 'error',
-        text: 'Failed to change password. Please check your current password and try again.',
+        text: error instanceof Error ? error.message : 'Failed to change password. Please check your current password and try again.',
       });
     } finally {
       setIsChangingPassword(false);

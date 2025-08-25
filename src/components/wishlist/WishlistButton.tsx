@@ -1,28 +1,52 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
+import { useWishlistStore } from '@/store/wishlist';
+import { useSession } from 'next-auth/react';
 
 interface WishlistButtonProps {
   productId: string;
-  isInWishlist?: boolean;
-  onToggle?: (productId: string, isAdding: boolean) => void;
+  productName?: string;
+  productPrice?: number;
+  productImage?: string;
+  productSlug?: string;
+  productCategory?: string;
   size?: 'sm' | 'md' | 'lg';
   variant?: 'icon' | 'button';
   className?: string;
 }
 
 export function WishlistButton({ 
-  productId, 
-  isInWishlist = false, 
-  onToggle,
+  productId,
+  productName = '',
+  productPrice = 0,
+  productImage = '',
+  productSlug = '',
+  productCategory = '',
   size = 'md',
   variant = 'icon',
   className = ''
 }: WishlistButtonProps) {
+  const { data: session } = useSession();
+  const { 
+    isInWishlist, 
+    addToWishlist, 
+    removeFromWishlist, 
+    isLoading,
+    isHydrated 
+  } = useWishlistStore();
+  
   const [isAnimating, setIsAnimating] = useState(false);
-  const [localIsInWishlist, setLocalIsInWishlist] = useState(isInWishlist);
+  const [localIsInWishlist, setLocalIsInWishlist] = useState(false);
+
+  // Update local state when store is hydrated
+  useEffect(() => {
+    if (isHydrated) {
+      setLocalIsInWishlist(isInWishlist(productId));
+    }
+  }, [isHydrated, isInWishlist, productId]);
 
   const sizeClasses = {
     sm: variant === 'icon' ? 'p-1.5' : 'px-3 py-1.5 text-sm',
@@ -37,17 +61,32 @@ export function WishlistButton({
   };
 
   const handleToggle = async () => {
-    if (isAnimating) return;
+    if (isAnimating || isLoading || !session) return;
 
     setIsAnimating(true);
     const newState = !localIsInWishlist;
     setLocalIsInWishlist(newState);
 
     try {
-      onToggle?.(productId, newState);
+      if (newState) {
+        // Add to wishlist
+        await addToWishlist({
+          productId,
+          name: productName,
+          price: productPrice,
+          image: productImage,
+          slug: productSlug,
+          category: productCategory,
+          inStock: true,
+        });
+      } else {
+        // Remove from wishlist
+        await removeFromWishlist(productId);
+      }
     } catch (error) {
       // Revert on error
       setLocalIsInWishlist(!newState);
+      console.error('Wishlist toggle error:', error);
     } finally {
       setTimeout(() => setIsAnimating(false), 300);
     }

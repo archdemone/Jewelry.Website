@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
-import { ShoppingBag, User, Search, LogOut, ChevronDown, X } from 'lucide-react';
+import { ShoppingBag, User, Search, LogOut, ChevronDown, X, Heart } from 'lucide-react';
 import { useSession, signOut, signIn } from 'next-auth/react';
 import { useCartStore } from '@/store/cart';
+import { useWishlistStore } from '@/store/wishlist';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MobileMenu } from './MobileMenu';
@@ -12,6 +13,8 @@ import { EnhancedSearchInput } from '@/components/search/EnhancedSearchInput';
 export function Header() {
   const count = useCartStore((s) => s.count);
   const isHydrated = useCartStore((s) => s.isHydrated);
+  const wishlistCount = useWishlistStore((s) => s.getWishlistCount());
+  const wishlistIsHydrated = useWishlistStore((s) => s.isHydrated);
   const [mounted, setMounted] = useState(false);
   const [showRingsDropdown, setShowRingsDropdown] = useState(false);
   const { data: session } = useSession();
@@ -112,6 +115,14 @@ export function Header() {
                     </Link>
                     <Link href="/account/orders" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                       Orders
+                    </Link>
+                    <Link href="/account/wishlist" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                      Wishlist
+                      {mounted && wishlistIsHydrated && wishlistCount > 0 && (
+                        <span className="ml-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-red-100 bg-red-600 rounded-full">
+                          {wishlistCount}
+                        </span>
+                      )}
                     </Link>
                     <button
                       onClick={handleSignOut}

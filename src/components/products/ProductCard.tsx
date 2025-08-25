@@ -13,9 +13,10 @@ type ProductCardProps = {
   price: number;
   images?: string[] | null;
   categorySlug?: string | null;
+  category?: string;
 };
 
-export function ProductCard({ id, slug, name, price, images, categorySlug }: ProductCardProps) {
+export function ProductCard({ id, slug, name, price, images, categorySlug, category }: ProductCardProps) {
   const dbImages = Array.isArray(images) ? images : [];
   const productImages =
     dbImages.length > 0
@@ -44,7 +45,15 @@ export function ProductCard({ id, slug, name, price, images, categorySlug }: Pro
             productName={name}
           />
               <div className="absolute top-2 right-2">
-              <WishlistButton productId={id} size="sm" />
+              <WishlistButton 
+                productId={id}
+                productName={name}
+                productPrice={price}
+                productImage={productImages[0] || '/images/MyImages/IMG-20250816-WA0000.jpg'}
+                productSlug={slug}
+                productCategory={category || ''}
+                size="sm" 
+              />
               </div>
               </div>
               <div className="mt-3 text-sm font-medium">{name}</div>

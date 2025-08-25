@@ -6,17 +6,18 @@ import { useState, useEffect } from 'react';
 import { Heart, ShoppingBag, Eye, X, Star } from 'lucide-react';
 import { getFeaturedProducts, type FeaturedProduct } from '@/lib/featured-products';
 import { useCartStore } from '@/store/cart';
+import { useWishlistStore } from '@/store/wishlist';
 import { showToast } from '@/components/ui/SimpleToast';
 
 const FeaturedProducts = () => {
 
   const [featuredRings, setFeaturedRings] = useState<FeaturedProduct[]>([]);
-  const [wishlist, setWishlist] = useState<Set<string>>(new Set());
   const [mounted, setMounted] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState<FeaturedProduct | null>(null);
   const [showAddToCartToast, setShowAddToCartToast] = useState(false);
   const [addedProduct, setAddedProduct] = useState<FeaturedProduct | null>(null);
   const { addItem, items, isHydrated } = useCartStore();
+  const { isInWishlist, addToWishlist, removeFromWishlist, isHydrated: wishlistHydrated } = useWishlistStore();
 
   // Customization state
   const [customization, setCustomization] = useState({
@@ -42,12 +43,6 @@ const FeaturedProducts = () => {
 
     // Only access localStorage in browser environment
     if (typeof window !== 'undefined') {
-      // Load wishlist from localStorage
-      const savedWishlist = localStorage.getItem('wishlist');
-      if (savedWishlist) {
-        setWishlist(new Set(JSON.parse(savedWishlist)));
-      }
-
       // Listen for storage changes to refresh the data
       const handleStorageChange = () => {
         setFeaturedRings(getFeaturedProducts());
@@ -65,20 +60,28 @@ const FeaturedProducts = () => {
     }
   }, []);
 
-  const handleWishlistToggle = (productId: string) => {
-    const newWishlist = new Set(wishlist);
+  const handleWishlistToggle = async (productId: string) => {
     const product = featuredRings.find(ring => ring.id === productId);
+    if (!product) return;
 
-    if (newWishlist.has(productId)) {
-      newWishlist.delete(productId);
-      showToast(`${product?.name} removed from wishlist`, 'info');
-    } else {
-      newWishlist.add(productId);
-      showToast(`${product?.name} added to wishlist!`, 'success');
-    }
-    setWishlist(newWishlist);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('wishlist', JSON.stringify([...newWishlist]));
+    try {
+      if (isInWishlist(productId)) {
+        await removeFromWishlist(productId);
+        showToast(`${product.name} removed from wishlist`, 'info');
+      } else {
+        await addToWishlist({
+          productId,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          slug: product.slug || productId,
+          category: product.category || 'Featured Products',
+          inStock: product.isReadyToShip || false,
+        });
+        showToast(`${product.name} added to wishlist!`, 'success');
+      }
+    } catch (error) {
+      showToast('Failed to update wishlist', 'error');
     }
   };
 
@@ -304,12 +307,12 @@ const FeaturedProducts = () => {
                   <button
                     onClick={() => handleWishlistToggle(ring.id)}
                     className={`p-2 transition-colors ${
-                      wishlist.has(ring.id)
+                      isInWishlist(ring.id)
                         ? 'text-red-500'
                         : 'text-gray-400 hover:text-red-500'
                     }`}
                   >
-                    <Heart className={`h-4 w-4 ${wishlist.has(ring.id) ? 'fill-current' : ''}`} />
+                    <Heart className={`h-4 w-4 ${isInWishlist(ring.id) ? 'fill-current' : ''}`} />
                   </button>
                 </div>
                 <motion.button
@@ -638,14 +641,14 @@ const FeaturedProducts = () => {
                       whileTap={{ scale: 0.95 }}
                       onClick={handleWishlistClick}
                       className={`flex h-10 w-20 items-center justify-center gap-1 rounded-lg border transition-colors ${
-                        wishlist.has(quickViewProduct.id)
+                        isInWishlist(quickViewProduct.id)
                           ? 'border-red-500 bg-red-50 text-red-600'
                           : 'border-gray-300 text-gray-900 hover:border-red-400 hover:bg-red-50'
                       }`}
                     >
                       <span className="text-sm">❤️</span>
                       <span className="text-xs font-medium">
-                        {wishlist.has(quickViewProduct.id) ? 'Added!' : 'Save'}
+                        {isInWishlist(quickViewProduct.id) ? 'Added!' : 'Save'}
                       </span>
                     </motion.button>
                   </div>
