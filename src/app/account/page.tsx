@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { User, Package, Heart, Settings, LogOut, Edit, Eye } from 'lucide-react';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 import { AuthGuard } from '@/components/auth/AuthGuard';
 
 interface UserProfile {
@@ -38,26 +39,77 @@ interface Order {
 }
 
 export default function AccountPage() {
+  const { data: session } = useSession();
   const [activeTab, setActiveTab] = useState('overview');
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
   const [isEditing, setIsEditing] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Mock data - in real app, fetch from API
-    setProfile({
-      id: 'user_1',
-      email: 'john.doe@example.com',
-      firstName: 'John',
-      lastName: 'Doe',
-      phone: '+44 123 456 7890',
-      dateOfBirth: '1990-01-01',
-      preferences: {
-        emailNotifications: true,
-        smsNotifications: false,
-        marketingEmails: true,
-      },
-    });
+    const fetchUserData = async () => {
+      try {
+        if (session?.user) {
+          // Fetch actual user data from API
+          const response = await fetch('/api/user/profile');
+          if (response.ok) {
+            const userData = await response.json();
+            setProfile({
+              id: userData.user.id,
+              email: userData.user.email,
+              firstName: userData.user.name ? userData.user.name.split(' ')[0] : 'User',
+              lastName: userData.user.name ? userData.user.name.split(' ').slice(1).join(' ') || '' : '',
+              phone: userData.user.phone || '',
+              dateOfBirth: '',
+              preferences: {
+                emailNotifications: true,
+                smsNotifications: false,
+                marketingEmails: true,
+              },
+            });
+          } else {
+            // Fallback to session data if API fails
+            setProfile({
+              id: session.user.id || 'unknown',
+              email: session.user.email || '',
+              firstName: session.user.name ? session.user.name.split(' ')[0] : 'User',
+              lastName: session.user.name ? session.user.name.split(' ').slice(1).join(' ') || '' : '',
+              phone: '',
+              dateOfBirth: '',
+              preferences: {
+                emailNotifications: true,
+                smsNotifications: false,
+                marketingEmails: true,
+              },
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        // Fallback to session data on error
+        if (session?.user) {
+          setProfile({
+            id: session.user.id || 'unknown',
+            email: session.user.email || '',
+            firstName: session.user.name ? session.user.name.split(' ')[0] : 'User',
+            lastName: session.user.name ? session.user.name.split(' ').slice(1).join(' ') || '' : '',
+            phone: '',
+            dateOfBirth: '',
+            preferences: {
+              emailNotifications: true,
+              smsNotifications: false,
+              marketingEmails: true,
+            },
+          });
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (session) {
+      fetchUserData();
+    }
 
     setOrders([
       {
@@ -145,12 +197,12 @@ export default function AccountPage() {
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-semibold text-gray-900">Welcome back, {profile?.firstName}!</h2>
-          <button onClick={() => setIsEditing(!isEditing)}
+          <Link href="/account/profile"
             className="flex items-center space-x-2 text-blue-600 hover:text-blue-700"
           >
             <Edit className="h-4 w-4" />
             <span>Edit Profile</span>
-          </button>
+          </Link>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="text-center">
@@ -343,7 +395,7 @@ export default function AccountPage() {
             </div>
             <input type="checkbox"
               checked={profile?.preferences.emailNotifications || false}
-              onChange={() => {}} // Read-only for now
+              onChange={() => { }} // Read-only for now
               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
             />
           </div>
@@ -354,7 +406,7 @@ export default function AccountPage() {
             </div>
             <input type="checkbox"
               checked={profile?.preferences.smsNotifications || false}
-              onChange={() => {}} // Read-only for now
+              onChange={() => { }} // Read-only for now
               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
             />
           </div>
@@ -365,7 +417,7 @@ export default function AccountPage() {
             </div>
             <input type="checkbox"
               checked={profile?.preferences.marketingEmails || false}
-              onChange={() => {}} // Read-only for now
+              onChange={() => { }} // Read-only for now
               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
             />
           </div>

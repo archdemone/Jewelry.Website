@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AuthGuard } from '@/components/auth/AuthGuard';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -34,10 +34,11 @@ interface PasswordFormData {
 export default function ProfilePage() {
   const { data: session, update } = useSession();
   const [profileData, setProfileData] = useState<ProfileFormData>({
-    name: session?.user?.name || '',
-    email: session?.user?.email || '',
+    name: '',
+    email: '',
     phone: '',
   });
+  const [loading, setLoading] = useState(true);
 
   const [passwordData, setPasswordData] = useState<PasswordFormData>({
     currentPassword: '',
@@ -59,6 +60,57 @@ export default function ProfilePage() {
     type: 'success' | 'error';
     text: string;
   } | null>(null);
+
+  // Load user data on component mount
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        if (session?.user?.email) {
+          const response = await fetch('/api/user/profile');
+          if (response.ok) {
+            const userData = await response.json();
+            setProfileData({
+              name: userData.user.name || '',
+              email: userData.user.email || '',
+              phone: userData.user.phone || '',
+            });
+          } else {
+            // Fallback to session data if API fails
+            setProfileData({
+              name: session.user.name || '',
+              email: session.user.email || '',
+              phone: '',
+            });
+          }
+        } else if (session?.user) {
+          // Use session data if available
+          setProfileData({
+            name: session.user.name || '',
+            email: session.user.email || '',
+            phone: '',
+          });
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+        // Fallback to session data on error
+        if (session?.user) {
+          setProfileData({
+            name: session.user.name || '',
+            email: session.user.email || '',
+            phone: '',
+          });
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (session) {
+      fetchUserData();
+    } else if (session === null) {
+      setLoading(false);
+    }
+  }, [session]);
 
   const handleProfileUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -149,6 +201,21 @@ export default function ProfilePage() {
       setIsChangingPassword(false);
     }
   };
+
+  if (loading) {
+    return (
+      <AuthGuard>
+        <div className="mx-auto max-w-4xl px-4 py-8">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="text-center">
+              <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-gold-600" />
+              <p className="text-gray-600">Loading profile...</p>
+            </div>
+          </div>
+        </div>
+      </AuthGuard>
+    );
+  }
 
   return (
     <AuthGuard>
