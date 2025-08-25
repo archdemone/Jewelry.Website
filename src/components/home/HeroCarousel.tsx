@@ -1,16 +1,20 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 
 const HeroCarousel = () => {
   return (
     <section className="hero-section relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
       {/* Hero Background Image */}
       <div className="absolute inset-0 z-0">
-        <img 
-          src="/images/home/header.webp"
+        <Image 
+          src="/images/home/header1.webp"
           alt="J&M Jewelry - Handcrafted rings with passion"
-          className="absolute inset-0 h-full w-full object-cover"
+          fill
+          className="object-cover"
+          priority
+          sizes="100vw"
         />
         <div className="absolute inset-0 bg-black/40"></div>
       </div>
