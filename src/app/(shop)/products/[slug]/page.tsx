@@ -13,6 +13,7 @@ import { WishlistButton } from '@/components/wishlist/WishlistButton';
 import { getProductImageFallback } from '@/lib/assets/images';
 import { db } from '@/lib/db';
 import { ProductJsonLd, BreadcrumbsJsonLd } from '@/components/seo/JsonLd';
+import { parseImages } from '@/lib/utils/json-helpers';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 3600;
@@ -21,10 +22,8 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
   const product = await getProductBySlug(params.slug);
   if (!product) return notFound();
 
-  // Prefer DB images; always append curated fallback to ensure a local image exists
-  const dbImages = Array.isArray((product as any).images)
-    ? ((product as any).images as string[])
-    : [];
+  // Parse images from database (they are stored as JSON strings)
+  const dbImages = parseImages((product as any).images);
   const fallbackImages = getProductImageFallback({
     productSlug: product.slug,
     categorySlug: product.category?.slug,
@@ -32,6 +31,7 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
   });
   const productImages = [...dbImages, ...fallbackImages];
   const mainImage = productImages[0];
+
   const relatedRaw = await getRelatedProducts(product.id, product.categoryId);
   const related = relatedRaw.map((r: any) => ({
     id: r.id,
@@ -72,8 +72,82 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
               <h1 className="text-2xl font-semibold">{product.name}</h1>
               <p className="mt-2 text-gray-600">{product.description}</p>
               <div className="mt-4 text-xl font-semibold">£{product.price.toFixed(2)}</div>
+
+              {/* Product Details */}
+              <div className="mt-6 space-y-4">
+                {/* Material and Gemstone */}
+                <div className="flex flex-wrap gap-4">
+                  {product.material && (
+                    <div className="flex items-center space-x-2">
+                      <span className="text-sm font-medium text-gray-700">Material:</span>
+                      <span className="text-sm text-gray-600">{product.material}</span>
+                    </div>
+                  )}
+                  {product.gemstones && (
+                    <div className="flex items-center space-x-2">
+                      <span className="text-sm font-medium text-gray-700">Gemstone:</span>
+                      <span className="text-sm text-gray-600">{product.gemstones}</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* Size and Weight */}
+                <div className="flex flex-wrap gap-4">
+                  {product.size && (
+                    <div className="flex items-center space-x-2">
+                      <span className="text-sm font-medium text-gray-700">Size:</span>
+                      <span className="text-sm text-gray-600">{product.size}</span>
+                    </div>
+                  )}
+                  {product.weight && (
+                    <div className="flex items-center space-x-2">
+                      <span className="text-sm font-medium text-gray-700">Weight:</span>
+                      <span className="text-sm text-gray-600">{product.weight}g</span>
+                    </div>
+                  )}
+                </div>
+
+                {/* SKU and Stock */}
+                <div className="flex flex-wrap gap-4">
+                  {product.sku && (
+                    <div className="flex items-center space-x-2">
+                      <span className="text-sm font-medium text-gray-700">SKU:</span>
+                      <span className="text-sm text-gray-600">{product.sku}</span>
+                    </div>
+                  )}
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm font-medium text-gray-700">Stock:</span>
+                    <span className={`text-sm ${product.quantity > 0 ? 'text-green-600' : 'text-red-600'}`}>
+                      {product.quantity > 0 ? `${product.quantity} available` : 'Out of stock'}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Rating and Reviews */}
+                {product.rating && (
+                  <div className="flex items-center space-x-2">
+                    <span className="text-sm font-medium text-gray-700">Rating:</span>
+                    <div className="flex items-center space-x-1">
+                      <span className="text-sm text-yellow-500">★</span>
+                      <span className="text-sm text-gray-600">{product.rating}</span>
+                      {product.reviewCount && (
+                        <span className="text-sm text-gray-500">({product.reviewCount} reviews)</span>
+                      )}
+                    </div>
+                  </div>
+                )}
+
+                {/* Badge */}
+                {product.badge && (
+                  <div className="inline-block">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      {product.badge}
+                    </span>
+                  </div>
+                )}
+              </div>
             </div>
-            <WishlistButton 
+            <WishlistButton
               productId={product.id}
               name={product.name}
               price={product.price}

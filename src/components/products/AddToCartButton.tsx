@@ -17,7 +17,9 @@ export function AddToCartButton({
 }) {
   const addItem = useCartStore((s) => s.addItem);
   return (
-    <Button size="lg"
+    <Button
+      variant="primary"
+      size="lg"
       data-testid="add-to-cart-card"
       aria-label={`Add ${name} to cart`}
       aria-describedby={`product-${productId}`}

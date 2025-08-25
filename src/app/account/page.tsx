@@ -52,6 +52,16 @@ export default function AccountPage() {
   useEffect(() => {
     hydrate();
   }, [hydrate]);
+
+  useEffect(() => {
+    if (wishlistItems.length > 0 || hydrated) {
+      console.log('AccountPage: Wishlist updated', {
+        itemsCount: wishlistItems.length,
+        hydrated
+      });
+    }
+  }, [wishlistItems, hydrated]);
+
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

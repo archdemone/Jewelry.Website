@@ -26,6 +26,7 @@ import {
 // Removed direct import of Prisma queries - now using API routes
 import { getProductImageFallback } from '@/lib/assets/images';
 import { useCartStore } from '@/store/cart';
+import { useWishlistStore } from '@/store/wishlist';
 import CategoryShowcase from '@/components/home/CategoryShowcase';
 
 interface Product {
@@ -120,7 +121,6 @@ export default function ProductsPage() {
     null,
   );
   const [showGemPopup, setShowGemPopup] = useState<string | null>(null);
-  const [wishlistItems, setWishlistItems] = useState<Set<string | number>>(new Set());
   const [showAddToCartToast, setShowAddToCartToast] = useState(false);
   const [addedProduct, setAddedProduct] = useState<Product | null>(null);
   const [showWishlistToast, setShowWishlistToast] = useState(false);
@@ -129,13 +129,16 @@ export default function ProductsPage() {
     product: Product | null;
   }>({ action: 'added', product: null });
 
+  // Use Zustand wishlist store
+  const { items: wishlistItems, addItem, removeItem, isInWishlist, hydrate, hydrated } = useWishlistStore();
+
   // Ensure component is mounted before using stores
   useEffect(() => {
     setMounted(true);
   }, []);
 
   // Cart store - always call the hook
-  const addItem = useCartStore((state) => state.addItem);
+  const addItemToCart = useCartStore((state) => state.addItem);
 
   // Safely get cart store values - moved outside component to prevent recreation
   const getCartStore = useCallback(() => {
@@ -151,6 +154,9 @@ export default function ProductsPage() {
   useEffect(() => {
     const loadData = async () => {
       try {
+        // Hydrate wishlist store
+        hydrate();
+
         // Load all products from Prisma database
         const response = await fetch('/api/products');
 
@@ -172,7 +178,7 @@ export default function ProductsPage() {
       }
     };
     loadData();
-  }, []);
+  }, [hydrate]);
 
   // Handle smooth scrolling to products section
   useEffect(() => {
@@ -270,7 +276,7 @@ export default function ProductsPage() {
     };
 
     // Add item to cart store
-    addItem(customizedRing);
+    addItemToCart(customizedRing);
 
     // Show success feedback
     setAddedProduct(quickViewProduct); // Use the original product for the toast
@@ -293,7 +299,7 @@ export default function ProductsPage() {
       console.log('Adding to cart:', quickViewProduct.name);
 
       // Add item to cart store
-      addItem({
+      addItemToCart({
         productId: quickViewProduct.id.toString(),
         name: quickViewProduct.name,
         price: quickViewProduct.price,
@@ -323,38 +329,40 @@ export default function ProductsPage() {
   const handleWishlistClick = () => {
     if (!quickViewProduct) return;
 
-    const productId = quickViewProduct.id;
-    const isInWishlist = wishlistItems.has(productId);
+    const productId = quickViewProduct.id.toString();
+    const isInWishlistItem = isInWishlist(productId);
 
-    if (isInWishlist) {
+    if (isInWishlistItem) {
       // Remove from wishlist
-      setWishlistItems((prev) => {
-        const newSet = new Set(prev);
-        newSet.delete(productId);
-        return newSet;
-      });
+      removeItem(productId);
       setWishlistAction({ action: 'removed', product: quickViewProduct });
       setShowWishlistToast(true);
-
-      // Auto-hide after 3 seconds
       setTimeout(() => {
         setShowWishlistToast(false);
         setWishlistAction({ action: 'added', product: null });
       }, 3000);
     } else {
       // Add to wishlist
-      setWishlistItems((prev) => new Set([...prev, productId]));
+      addItem({
+        id: productId,
+        name: quickViewProduct.name,
+        price: quickViewProduct.price,
+        image: Array.isArray(quickViewProduct.images) && quickViewProduct.images.length > 0 ? quickViewProduct.images[0] : '',
+        slug: quickViewProduct.slug,
+        material: quickViewProduct.material || undefined,
+        gemColor: quickViewProduct.gemColor || undefined,
+        category: quickViewProduct.category || undefined,
+        badge: quickViewProduct.badge || undefined,
+      });
       setWishlistAction({ action: 'added', product: quickViewProduct });
       setShowWishlistToast(true);
-
-      // Auto-hide after 3 seconds
       setTimeout(() => {
         setShowWishlistToast(false);
         setWishlistAction({ action: 'added', product: null });
       }, 3000);
     }
 
-    console.log('Wishlist updated:', isInWishlist ? 'removed' : 'added', quickViewProduct.name);
+    console.log('Wishlist updated:', isInWishlistItem ? 'removed' : 'added', quickViewProduct.name);
   };
 
   const availableMaterials = [
@@ -603,11 +611,11 @@ export default function ProductsPage() {
                             {product.material}
                           </span>
                           <span className={`px-2 py-1 text-xs rounded border ${product.gemColor === 'Red' ? 'bg-red-100 text-red-800 border-red-300' :
-                              product.gemColor === 'Blue' ? 'bg-blue-100 text-blue-800 border-blue-300' :
-                                product.gemColor === 'Green' ? 'bg-green-100 text-green-800 border-green-300' :
-                                  product.gemColor === 'Purple' ? 'bg-purple-100 text-purple-800 border-purple-300' :
-                                    product.gemColor === 'Yellow' ? 'bg-yellow-100 text-yellow-800 border-yellow-300' :
-                                      'bg-gray-100 text-gray-700 border-gray-300'
+                            product.gemColor === 'Blue' ? 'bg-blue-100 text-blue-800 border-blue-300' :
+                              product.gemColor === 'Green' ? 'bg-green-100 text-green-800 border-green-300' :
+                                product.gemColor === 'Purple' ? 'bg-purple-100 text-purple-800 border-purple-300' :
+                                  product.gemColor === 'Yellow' ? 'bg-yellow-100 text-yellow-800 border-yellow-300' :
+                                    'bg-gray-100 text-gray-700 border-gray-300'
                             }`}>
                             {product.gemVariation === 'Dark' ? `Dark ${product.gemColor}` :
                               product.gemVariation === 'Bright' ? `Bright ${product.gemColor}` :
@@ -915,14 +923,14 @@ export default function ProductsPage() {
                       </motion.button>
                     )}
 
-                    <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleWishlistClick} className={`flex h-10 w-20 items-center justify-center gap-1 rounded-lg border transition-colors ${wishlistItems.has(quickViewProduct.id)
+                    <motion.button whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} onClick={handleWishlistClick} className={`flex h-10 w-20 items-center justify-center gap-1 rounded-lg border transition-colors ${isInWishlist(quickViewProduct.id.toString())
                       ? 'border-red-500 bg-red-50 text-red-600'
                       : 'border-gray-300 text-gray-900 hover:border-red-400 hover:bg-red-50'
                       }`}
                     >
                       <span className="text-sm">❤️</span>
                       <span className="text-xs font-medium">
-                        {wishlistItems.has(quickViewProduct.id) ? 'Added!' : 'Save'}
+                        {isInWishlist(quickViewProduct.id.toString()) ? 'Added!' : 'Save'}
                       </span>
                     </motion.button>
                   </div>

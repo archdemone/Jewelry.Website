@@ -27,13 +27,6 @@ export default function LoginForm() {
       setRequireCaptcha(true);
     }
 
-    // Development auto-login: Auto-fill admin credentials
-    if (process.env.NODE_ENV !== 'production') {
-      console.log('🛠️  Development mode detected - auto-filling admin credentials');
-      setEmail('admin@jewelry.com');
-      setPassword('admin123');
-    }
-
     // Check for success message from registration
     const message = searchParams?.get('message');
     if (message) {
@@ -68,6 +61,7 @@ export default function LoginForm() {
         } else {
           router.push('/account');
         }
+        setLoading(false);
       } else {
         setError('Login failed. Please try again.');
         setLoading(false);

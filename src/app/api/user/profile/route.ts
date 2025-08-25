@@ -1,38 +1,44 @@
-import { NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth/next';
+import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/auth-options';
 import { db } from '@/lib/db';
-import { z } from 'zod';
 
-// Validation schema for profile updates
-const profileUpdateSchema = z.object({
-  name: z.string().min(1, 'Name is required').max(100, 'Name is too long'),
-  email: z.string().email('Invalid email address'),
-  phone: z.string().optional(),
-});
-
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user?.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    const user = await db.user.findUnique({
+    let user = await db.user.findUnique({
       where: { email: session.user.email },
       select: {
         id: true,
-        name: true,
         email: true,
+        name: true,
         phone: true,
         createdAt: true,
-        role: true,
+        updatedAt: true,
       },
     });
 
+    // If user doesn't exist, create them
     if (!user) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 });
+      user = await db.user.create({
+        data: {
+          email: session.user.email,
+          name: session.user.name || session.user.email.split('@')[0],
+        },
+        select: {
+          id: true,
+          email: true,
+          name: true,
+          phone: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+      });
     }
 
     return NextResponse.json({ user });
@@ -42,59 +48,41 @@ export async function GET() {
   }
 }
 
-export async function PUT(request: Request) {
+export async function PUT(request: NextRequest) {
   try {
     const session = await getServerSession(authOptions);
-    
+
     if (!session?.user?.email) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     const body = await request.json();
-    const validatedData = profileUpdateSchema.parse(body);
+    const { name, phone } = body;
 
-    // Check if email is being changed and if it's already taken
-    if (validatedData.email !== session.user.email) {
-      const existingUser = await db.user.findUnique({
-        where: { email: validatedData.email },
-      });
-
-      if (existingUser) {
-        return NextResponse.json(
-          { error: 'Email address is already in use' },
-          { status: 400 }
-        );
-      }
-    }
-
-    const updatedUser = await db.user.update({
+    // Try to update existing user, or create if doesn't exist
+    let updatedUser = await db.user.upsert({
       where: { email: session.user.email },
-      data: {
-        name: validatedData.name,
-        email: validatedData.email,
-        phone: validatedData.phone || null,
+      update: {
+        name: name || undefined,
+        phone: phone || undefined,
+      },
+      create: {
+        email: session.user.email,
+        name: name || session.user.name || session.user.email.split('@')[0],
+        phone: phone || undefined,
       },
       select: {
         id: true,
-        name: true,
         email: true,
+        name: true,
         phone: true,
-        role: true,
+        createdAt: true,
+        updatedAt: true,
       },
     });
 
-    return NextResponse.json({ 
-      message: 'Profile updated successfully',
-      user: updatedUser 
-    });
+    return NextResponse.json({ user: updatedUser });
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      return NextResponse.json(
-        { error: 'Validation failed', details: error.errors },
-        { status: 400 }
-      );
-    }
-
     console.error('Error updating user profile:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }

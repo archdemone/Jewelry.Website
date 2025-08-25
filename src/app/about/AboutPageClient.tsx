@@ -170,7 +170,7 @@ export default function AboutPageClient() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-lg max-w-2xl mx-auto"
+                className="text-lg max-w-2xl mx-auto text-orange-400"
               >
                 A local passion project turned thriving business, crafting quality jewelry with documented materials and council approval.
               </motion.p>

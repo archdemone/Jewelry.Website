@@ -241,7 +241,7 @@ export async function getProductBySlug(slug: string) {
     }
 
     return null;
-  } catch {
+  } catch (error) {
     // Fallback for featured products
     const { getFeaturedProducts } = await import('./featured-products');
     const featuredProducts = getFeaturedProducts();

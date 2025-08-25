@@ -14,27 +14,26 @@ export default function RegisterForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [isAdmin, setIsAdmin] = useState(false);
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
     setLoading(true);
-    
+
     try {
       const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, isAdmin }),
+        body: JSON.stringify({ name, email, password }),
       });
-      
+
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         setError(data?.message || 'Registration failed');
         setLoading(false);
         return;
       }
-      
+
       // Successful registration
       router.push('/auth/login?message=Account created successfully! Please sign in.');
     } catch (err) {
@@ -126,22 +125,6 @@ export default function RegisterForm() {
             Password must be at least 8 characters long
           </p>
         </div>
-
-        {/* Admin Account Option (Development Only) */}
-        {process.env.NODE_ENV !== 'production' && (
-          <div className="flex items-center space-x-2">
-            <input
-              type="checkbox"
-              id="isAdmin"
-              checked={isAdmin}
-              onChange={(e) => setIsAdmin(e.target.checked)}
-              className="h-4 w-4 text-orange-600 focus:ring-orange-500 border-gray-300 rounded"
-            />
-            <label htmlFor="isAdmin" className="text-sm text-gray-700">
-              Create as Admin Account (Development Only)
-            </label>
-          </div>
-        )}
 
         {error && (
           <div className="rounded-md bg-red-50 p-3">

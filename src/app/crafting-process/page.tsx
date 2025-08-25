@@ -96,7 +96,7 @@ export default function CraftingProcessPage() {
             <img
               src="/images/process/processheader.webp"
               alt="Artisan crafting a ring"
-              className="absolute inset-0 h-full w-full object-cover opacity-60"
+              className="absolute inset-0 h-full w-full object-cover"
             />
           </div>
           <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />

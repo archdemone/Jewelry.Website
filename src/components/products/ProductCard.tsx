@@ -58,7 +58,9 @@ export function ProductCard({
     return '';
   };
 
-  const gemColor = getGemColor(gemstones);
+  const gemColor = getGemColor(gemstones || null);
+
+  console.log('ProductCard: Rendering product', { id, name, gemColor });
 
   return (
     <div className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-sm transition-all hover:shadow-md"
@@ -97,14 +99,18 @@ export function ProductCard({
         </Link>
 
         {/* Wishlist Button */}
-        <div className="absolute right-3 top-16">
+        <div className="absolute right-3 top-16 z-20">
           <WishlistButton
             productId={id}
             name={name}
             price={price}
             image={productImages[0] || '/images/MyImages/IMG-20250816-WA0000.jpg'}
             slug={slug}
+            originalPrice={comparePrice || undefined}
+            material={material || undefined}
+            gemColor={gemColor || undefined}
             category={categorySlug || undefined}
+            badge={badge || undefined}
             size="sm"
           />
         </div>
@@ -121,11 +127,11 @@ export function ProductCard({
           )}
           {gemColor && (
             <span className={`px-2 py-1 text-xs rounded border ${gemColor === 'Red' ? 'bg-red-100 text-red-800 border-red-300' :
-                gemColor === 'Blue' ? 'bg-blue-100 text-blue-800 border-blue-300' :
-                  gemColor === 'Green' ? 'bg-green-100 text-green-800 border-green-300' :
-                    gemColor === 'Purple' ? 'bg-purple-100 text-purple-800 border-purple-300' :
-                      gemColor === 'Yellow' ? 'bg-yellow-100 text-yellow-800 border-yellow-300' :
-                        'bg-gray-100 text-gray-700 border-gray-300'
+              gemColor === 'Blue' ? 'bg-blue-100 text-blue-800 border-blue-300' :
+                gemColor === 'Green' ? 'bg-green-100 text-green-800 border-green-300' :
+                  gemColor === 'Purple' ? 'bg-purple-100 text-purple-800 border-purple-300' :
+                    gemColor === 'Yellow' ? 'bg-yellow-100 text-yellow-800 border-yellow-300' :
+                      'bg-gray-100 text-gray-700 border-gray-300'
               }`}>
               {gemColor}
             </span>

@@ -683,23 +683,14 @@ async function main() {
 
   console.log('Ring products created:', products.length);
 
-  // Create demo user
-  const demoUser = await prisma.user.upsert({
-    where: { email: 'demo@example.com' },
-    update: {},
-    create: {
-      email: 'demo@example.com',
-      name: 'Demo User',
-      password: '$2a$12$LQv3c1yqBWVHxkd0LHAkCOYz6TtxMQJqhN8/LewdBPj4tbQJhqKre', // password: demo123
-      role: UserRole.CUSTOMER,
-    },
-  });
+  // Delete all existing users first
+  console.log('Deleting all existing users...');
+  await prisma.user.deleteMany({});
+  console.log('All existing users deleted.');
 
   // Create admin user with correct credentials
-  const adminUser = await prisma.user.upsert({
-    where: { email: 'admin@jewelry.com' },
-    update: {},
-    create: {
+  const adminUser = await prisma.user.create({
+    data: {
       email: 'admin@jewelry.com',
       name: 'Admin User',
       password: '$2b$12$JmgEjavpcj4cQ53CfwUxeeTdwp4uNtZtTSbderb9RwVoRqjOy7euG', // password: boberpoper34
@@ -707,7 +698,6 @@ async function main() {
     },
   });
 
-  console.log('Demo user created:', demoUser.email);
   console.log('Admin user created:', adminUser.email);
 
   console.log('Ring-focused database seeded successfully!');

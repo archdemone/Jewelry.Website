@@ -31,35 +31,51 @@ export const useWishlistStore = create<WishlistState>()(
     (set, get) => ({
       items: [],
       hydrated: false,
-      
+
       addItem: (item: WishlistItem) => {
-        const items = get().items;
-        const existingItem = items.find(i => i.id === item.id);
-        
+        const currentItems = get().items;
+        const existingItem = currentItems.find(i => i.id === item.id);
+
         if (!existingItem) {
-          set({ items: [...items, item] });
+          console.log('WishlistStore: Adding item', item);
+          const newItems = [...currentItems, item];
+          set({ items: newItems });
+          console.log('WishlistStore: Updated items array', newItems);
+        } else {
+          console.log('WishlistStore: Item already exists', item.id);
         }
       },
-      
+
       removeItem: (id: string) => {
-        set({ items: get().items.filter(item => item.id !== id) });
+        const currentItems = get().items;
+        const newItems = currentItems.filter(item => item.id !== id);
+        console.log('WishlistStore: Removing item', id);
+        set({ items: newItems });
       },
-      
+
       isInWishlist: (id: string) => {
-        return get().items.some(item => item.id === id);
+        const items = get().items;
+        const result = items.some(item => item.id === id);
+        console.log('WishlistStore: Checking if in wishlist', { id, result, itemsCount: items.length });
+        return result;
       },
-      
+
       clearWishlist: () => {
+        console.log('WishlistStore: Clearing wishlist');
         set({ items: [] });
       },
-      
+
       hydrate: () => {
+        console.log('WishlistStore: Hydrating store');
         set({ hydrated: true });
       },
     }),
     {
       name: 'wishlist-storage',
       storage: createJSONStorage(() => localStorage),
+      onRehydrateStorage: () => (state) => {
+        console.log('WishlistStore: Rehydrated from storage', state);
+      },
     }
   )
 );

@@ -26,6 +26,7 @@ import {
 // Removed direct import of Prisma queries - now using API routes
 import { getProductImageFallback } from '@/lib/assets/images';
 import { useCartStore } from '@/store/cart';
+import { useWishlistStore } from '@/store/wishlist';
 import CategoryShowcase from '@/components/home/CategoryShowcase';
 import { Product } from '@/types';
 
@@ -89,7 +90,6 @@ export default function CategoryPage({
     null,
   );
   const [showGemPopup, setShowGemPopup] = useState<string | null>(null);
-  const [wishlistItems, setWishlistItems] = useState<Set<string | number>>(new Set());
   const [showAddToCartToast, setShowAddToCartToast] = useState(false);
   const [addedProduct, setAddedProduct] = useState<Product | null>(null);
   const [showWishlistToast, setShowWishlistToast] = useState(false);
@@ -98,49 +98,48 @@ export default function CategoryPage({
     product: Product | null;
   }>({ action: 'added', product: null });
 
+  // Use Zustand wishlist store
+  const { items: wishlistItems, addItem, removeItem, isInWishlist, hydrate, hydrated } = useWishlistStore();
+
   // Cart store
-  const addItem = useCartStore((state) => state.addItem);
+  const addItemToCart = useCartStore((state) => state.addItem);
 
   // Load products and categories on mount
   useEffect(() => {
     const loadData = async () => {
+      setLoading(true);
       try {
-        // Load products from Prisma database based on category
-        let apiUrl = '/api/products';
-        if (category && category !== 'all') {
-          apiUrl = `/api/products?category=${category}`;
+        // Hydrate wishlist store
+        hydrate();
+
+        // Load products
+        const productsResponse = await fetch(`/api/products?category=${category}`);
+        if (productsResponse.ok) {
+          const productsData = await productsResponse.json();
+          setProducts(productsData.products || []);
         }
 
-        const response = await fetch(apiUrl);
-        if (response.ok) {
-          const data = await response.json();
-          setProducts(data.products || []);
-          setCategories(data.categories || []);
-
-          console.log('Category:', category);
-          console.log('Products loaded:', data.products?.length || 0);
-        } else {
-          console.error('Failed to load products');
-          setProducts([]);
-          setCategories([]);
+        // Load categories
+        const categoriesResponse = await fetch('/api/categories');
+        if (categoriesResponse.ok) {
+          const categoriesData = await categoriesResponse.json();
+          setCategories(categoriesData.categories || []);
         }
-        setLoading(false);
       } catch (error) {
-        console.error('Error loading products:', error);
+        console.error('Error loading data:', error);
+      } finally {
         setLoading(false);
       }
     };
 
     loadData();
-  }, [category]);
+  }, [category, hydrate]);
 
   // Load wishlist from localStorage
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const savedWishlist = localStorage.getItem('wishlist');
-      if (savedWishlist) {
-        setWishlistItems(new Set(JSON.parse(savedWishlist)));
-      }
+      // Wishlist is now handled by Zustand store
+      // No need to load from localStorage manually
     }
   }, []);
 
@@ -189,21 +188,25 @@ export default function CategoryPage({
 
   // Handle wishlist toggle
   const handleWishlistToggle = (productId: string | number) => {
-    const newWishlist = new Set(wishlistItems);
     const product = products.find(p => p.id === productId) || null;
+    const productIdString = productId.toString();
 
-    if (newWishlist.has(productId)) {
-      newWishlist.delete(productId);
+    if (isInWishlist(productIdString)) {
+      removeItem(productIdString);
       setWishlistAction({ action: 'removed', product });
-    } else {
-      newWishlist.add(productId);
+    } else if (product) {
+      addItem({
+        id: productIdString,
+        name: product.name,
+        price: product.price,
+        image: Array.isArray(product.images) && product.images.length > 0 ? product.images[0] : '',
+        slug: product.slug,
+        material: product.material || undefined,
+        gemColor: product.gemColor || undefined,
+        category: category || undefined,
+        badge: product.badge || undefined,
+      });
       setWishlistAction({ action: 'added', product });
-    }
-
-    setWishlistItems(newWishlist);
-
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('wishlist', JSON.stringify([...newWishlist]));
     }
 
     setShowWishlistToast(true);
@@ -212,7 +215,7 @@ export default function CategoryPage({
 
   // Handle add to cart
   const handleAddToCart = (product: Product) => {
-    addItem({
+    addItemToCart({
       productId: product.id.toString(),
       name: product.name,
       price: product.price,
@@ -265,7 +268,7 @@ export default function CategoryPage({
 
     const customName = `Custom ${quickViewProduct.name}`;
 
-    addItem({
+    addItemToCart({
       productId: `custom-${quickViewProduct.id}`,
       name: customName,
       price: quickViewProduct.price,
@@ -386,8 +389,8 @@ export default function CategoryPage({
                 {/* View Mode Toggle */}
                 <div className="flex rounded-lg border border-gray-200 bg-white p-1">
                   <button onClick={() => setViewMode('grid')} className={`rounded-md p-2 transition-colors ${viewMode === 'grid'
-                      ? 'bg-gold-500 text-white'
-                      : 'text-gray-600 hover:text-gray-900'
+                    ? 'bg-gold-500 text-white'
+                    : 'text-gray-600 hover:text-gray-900'
                     }`}
                     aria-label="Grid view"
                     aria-pressed={viewMode === 'grid'}
@@ -395,8 +398,8 @@ export default function CategoryPage({
                     <Grid3x3 className="h-4 w-4" aria-hidden="true" />
                   </button>
                   <button onClick={() => setViewMode('list')} className={`rounded-md p-2 transition-colors ${viewMode === 'list'
-                      ? 'bg-gold-500 text-white'
-                      : 'text-gray-600 hover:text-gray-900'
+                    ? 'bg-gold-500 text-white'
+                    : 'text-gray-600 hover:text-gray-900'
                     }`}
                     aria-label="List view"
                     aria-pressed={viewMode === 'list'}
@@ -445,7 +448,7 @@ export default function CategoryPage({
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
                     loading="lazy" quality={75}
                     placeholder="blur"
-                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxAAPwCdABmX/9k="
                   />
 
                   {/* Badge */}
@@ -460,9 +463,9 @@ export default function CategoryPage({
                   {/* Wishlist Button */}
                   <button onClick={() => handleWishlistToggle(product.id)}
                     className="absolute right-2 top-2 rounded-full bg-white/90 p-2 text-red-500 transition-colors hover:bg-white"
-                    aria-label={wishlistItems.has(product.id) ? 'Remove from wishlist' : 'Add to wishlist'}
+                    aria-label={isInWishlist(product.id.toString()) ? 'Remove from wishlist' : 'Add to wishlist'}
                   >
-                    <Heart className={`h-4 w-4 ${wishlistItems.has(product.id) ? 'fill-current' : ''}`} aria-hidden="true" />
+                    <Heart className={`h-4 w-4 ${isInWishlist(product.id.toString()) ? 'fill-current' : ''}`} aria-hidden="true" />
                   </button>
 
                   {/* Quick Actions */}
@@ -496,11 +499,11 @@ export default function CategoryPage({
                       {product.material}
                     </span>
                     <span className={`px-2 py-1 text-xs rounded border ${product.gemColor === 'Red' ? 'bg-red-100 text-red-800 border-red-300' :
-                        product.gemColor === 'Blue' ? 'bg-blue-100 text-blue-800 border-blue-300' :
-                          product.gemColor === 'Green' ? 'bg-green-100 text-green-800 border-green-300' :
-                            product.gemColor === 'Purple' ? 'bg-purple-100 text-purple-800 border-purple-300' :
-                              product.gemColor === 'Yellow' ? 'bg-yellow-100 text-yellow-800 border-yellow-300' :
-                                'bg-gray-100 text-gray-700 border-gray-300'
+                      product.gemColor === 'Blue' ? 'bg-blue-100 text-blue-800 border-blue-300' :
+                        product.gemColor === 'Green' ? 'bg-green-100 text-green-800 border-green-300' :
+                          product.gemColor === 'Purple' ? 'bg-purple-100 text-purple-800 border-purple-300' :
+                            product.gemColor === 'Yellow' ? 'bg-yellow-100 text-yellow-800 border-yellow-300' :
+                              'bg-gray-100 text-gray-700 border-gray-300'
                       }`}>
                       {product.gemVariation === 'Dark' ? `Dark ${product.gemColor}` :
                         product.gemVariation === 'Bright' ? `Bright ${product.gemColor}` :
@@ -520,8 +523,8 @@ export default function CategoryPage({
                       <div className="flex" role="img" aria-label={`${product.rating} out of 5 stars`}>
                         {[...Array(5)].map((_, i) => (
                           <Star key={i} className={`h-4 w-4 ${i < Math.floor(product.rating!)
-                              ? 'fill-yellow-400 text-yellow-400'
-                              : 'text-gray-300'
+                            ? 'fill-yellow-400 text-yellow-400'
+                            : 'text-gray-300'
                             }`}
                             aria-hidden="true"
                           />
@@ -560,12 +563,12 @@ export default function CategoryPage({
                     </motion.button>
                     <button
                       onClick={() => handleWishlistToggle(product.id)}
-                      className={`p-2 rounded-lg border transition-colors ${wishlistItems.has(product.id)
-                          ? 'border-red-500 bg-red-50 text-red-600'
-                          : 'border-gray-300 text-gray-900 hover:border-red-400 hover:bg-red-50'
+                      className={`p-2 rounded-lg border transition-colors ${isInWishlist(product.id.toString())
+                        ? 'border-red-500 bg-red-50 text-red-600'
+                        : 'border-gray-300 text-gray-900 hover:border-red-400 hover:bg-red-50'
                         }`}
                     >
-                      <Heart className={`h-4 w-4 ${wishlistItems.has(product.id) ? 'fill-current' : ''}`} />
+                      <Heart className={`h-4 w-4 ${isInWishlist(product.id.toString()) ? 'fill-current' : ''}`} />
                     </button>
                   </div>
                 </div>
@@ -702,8 +705,8 @@ export default function CategoryPage({
                                 setCustomization((prev) => ({ ...prev, gemColor: color }))
                               }
                               className={`w-full rounded-lg border-2 p-2 text-sm transition-all ${customization.gemColor === color
-                                  ? 'border-green-500 bg-green-100 shadow-md ring-2 ring-green-200'
-                                  : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+                                ? 'border-green-500 bg-green-100 shadow-md ring-2 ring-green-200'
+                                : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
                                 }`}
                             >
                               <span className="font-medium text-gray-900">{color}</span>
@@ -726,8 +729,8 @@ export default function CategoryPage({
                               setCustomization((prev) => ({ ...prev, gemDensity: density }))
                             }
                             className={`rounded-lg border-2 p-2 text-sm transition-all ${customization.gemDensity === density
-                                ? 'border-green-500 bg-green-100 shadow-md ring-2 ring-green-200'
-                                : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+                              ? 'border-green-500 bg-green-100 shadow-md ring-2 ring-green-200'
+                              : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
                               }`}
                           >
                             <span className={`font-medium capitalize ${customization.gemDensity === density ? 'text-gray-900' : 'text-gray-900'
@@ -752,8 +755,8 @@ export default function CategoryPage({
                               setCustomization((prev) => ({ ...prev, gemVariation: variation }))
                             }
                             className={`rounded-lg border-2 p-2 text-sm transition-all ${customization.gemVariation === variation
-                                ? 'border-green-500 bg-green-100 shadow-md ring-2 ring-green-200'
-                                : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+                              ? 'border-green-500 bg-green-100 shadow-md ring-2 ring-green-200'
+                              : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
                               }`}
                           >
                             <span className={`font-medium ${customization.gemVariation === variation ? 'text-gray-900' : 'text-gray-900'
@@ -877,14 +880,14 @@ export default function CategoryPage({
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={() => handleWishlistToggle(quickViewProduct.id)}
-                      className={`flex h-10 w-20 items-center justify-center gap-1 rounded-lg border transition-colors ${wishlistItems.has(quickViewProduct.id)
-                          ? 'border-red-500 bg-red-50 text-red-600'
-                          : 'border-gray-300 text-gray-900 hover:border-red-400 hover:bg-red-50'
+                      className={`flex h-10 w-20 items-center justify-center gap-1 rounded-lg border transition-colors ${isInWishlist(quickViewProduct.id.toString())
+                        ? 'border-red-500 bg-red-50 text-red-600'
+                        : 'border-gray-300 text-gray-900 hover:border-red-400 hover:bg-red-50'
                         }`}
                     >
                       <span className="text-sm">❤️</span>
                       <span className="text-xs font-medium">
-                        {wishlistItems.has(quickViewProduct.id) ? 'Added!' : 'Save'}
+                        {isInWishlist(quickViewProduct.id.toString()) ? 'Added!' : 'Save'}
                       </span>
                     </motion.button>
                   </div>

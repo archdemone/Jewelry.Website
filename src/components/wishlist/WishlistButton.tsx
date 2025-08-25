@@ -21,7 +21,7 @@ interface WishlistButtonProps {
   className?: string;
 }
 
-export function WishlistButton({ 
+export function WishlistButton({
   productId,
   name = '',
   price = 0,
@@ -42,18 +42,37 @@ export function WishlistButton({
   useEffect(() => {
     setMounted(true);
     hydrate();
-  }, [hydrate]);
+    console.log('WishlistButton: Component mounted and hydrated', { productId, hydrated });
+  }, [hydrate, productId]);
 
   const inWishlist = mounted && hydrated ? isInWishlist(productId) : false;
 
+  useEffect(() => {
+    console.log('WishlistButton: State updated', {
+      productId,
+      inWishlist,
+      mounted,
+      hydrated,
+      itemsCount: items.length
+    });
+  }, [inWishlist, mounted, hydrated, items.length, productId]);
+
   const handleToggle = (e: React.MouseEvent) => {
+    console.log('WishlistButton: Click detected!', { productId, mounted, hydrated });
+
     e.preventDefault();
     e.stopPropagation();
-    
-    if (!mounted || !hydrated) return;
-    
+
+    if (!mounted || !hydrated) {
+      console.log('WishlistButton: Not mounted or hydrated yet', { mounted, hydrated });
+      return;
+    }
+
+    console.log('WishlistButton: Toggling wishlist', { productId, inWishlist, items: items.length });
+
     if (inWishlist) {
       removeItem(productId);
+      console.log('WishlistButton: Removed item', productId);
     } else {
       addItem({
         id: productId,
@@ -67,6 +86,7 @@ export function WishlistButton({
         category,
         badge,
       });
+      console.log('WishlistButton: Added item', { productId, name });
     }
   };
 
@@ -84,21 +104,19 @@ export function WishlistButton({
 
   return (
     <motion.button
-      whileHover={{ scale: 1.1 }}
-      whileTap={{ scale: 0.9 }}
       onClick={handleToggle}
       className={`
-        relative rounded-full border transition-all duration-200
-        ${inWishlist 
-          ? 'border-red-200 bg-red-50 text-red-600' 
+        relative rounded-full border transition-all duration-200 z-10
+        ${inWishlist
+          ? 'border-red-200 bg-red-50 text-red-600'
           : 'border-gray-200 bg-white text-gray-600 hover:border-red-200 hover:text-red-600'
         }
         ${sizeClasses[size]}
         ${className}
       `}
     >
-      <Heart 
-        className={`${iconSizes[size]} transition-colors ${inWishlist ? 'fill-current' : ''}`} 
+      <Heart
+        className={`${iconSizes[size]} transition-colors ${inWishlist ? 'fill-current' : ''}`}
       />
     </motion.button>
   );

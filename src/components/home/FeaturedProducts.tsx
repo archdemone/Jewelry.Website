@@ -6,17 +6,20 @@ import { useState, useEffect } from 'react';
 import { Heart, ShoppingBag, Eye, X, Star } from 'lucide-react';
 import { getFeaturedProducts, type FeaturedProduct } from '@/lib/featured-products';
 import { useCartStore } from '@/store/cart';
+import { useWishlistStore } from '@/store/wishlist';
 import { showToast } from '@/components/ui/SimpleToast';
 
 const FeaturedProducts = () => {
 
   const [featuredRings, setFeaturedRings] = useState<FeaturedProduct[]>([]);
-  const [wishlist, setWishlist] = useState<Set<string>>(new Set());
   const [mounted, setMounted] = useState(false);
   const [quickViewProduct, setQuickViewProduct] = useState<FeaturedProduct | null>(null);
   const [showAddToCartToast, setShowAddToCartToast] = useState(false);
   const [addedProduct, setAddedProduct] = useState<FeaturedProduct | null>(null);
   const { addItem, items, isHydrated } = useCartStore();
+
+  // Use Zustand wishlist store
+  const { items: wishlistItems, addItem: addWishlistItem, removeItem: removeWishlistItem, isInWishlist, hydrate, hydrated } = useWishlistStore();
 
   // Customization state
   const [customization, setCustomization] = useState({
@@ -37,16 +40,16 @@ const FeaturedProducts = () => {
 
   useEffect(() => {
     setMounted(true);
+    // Hydrate wishlist store
+    hydrate();
+
     // Load featured products immediately after mounting
     setFeaturedRings(getFeaturedProducts());
 
     // Only access localStorage in browser environment
     if (typeof window !== 'undefined') {
-      // Load wishlist from localStorage
-      const savedWishlist = localStorage.getItem('wishlist');
-      if (savedWishlist) {
-        setWishlist(new Set(JSON.parse(savedWishlist)));
-      }
+      // Wishlist is now handled by Zustand store
+      // No need to load from localStorage manually
 
       // Listen for storage changes to refresh the data
       const handleStorageChange = () => {
@@ -63,22 +66,26 @@ const FeaturedProducts = () => {
         window.removeEventListener('featuredProductsUpdated', handleStorageChange);
       };
     }
-  }, []);
+  }, [hydrate]);
 
   const handleWishlistToggle = (productId: string) => {
-    const newWishlist = new Set(wishlist);
     const product = featuredRings.find(ring => ring.id === productId);
 
-    if (newWishlist.has(productId)) {
-      newWishlist.delete(productId);
+    if (isInWishlist(productId)) {
+      removeWishlistItem(productId);
       showToast(`${product?.name} removed from wishlist`, 'info');
-    } else {
-      newWishlist.add(productId);
+    } else if (product) {
+      addWishlistItem({
+        id: productId,
+        name: product.name,
+        price: product.price,
+        image: product.image,
+        slug: product.slug || '',
+        material: product.material || undefined,
+        gemColor: product.gemColor || undefined,
+        category: product.category || undefined,
+      });
       showToast(`${product?.name} added to wishlist!`, 'success');
-    }
-    setWishlist(newWishlist);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('wishlist', JSON.stringify([...newWishlist]));
     }
   };
 
@@ -130,10 +137,10 @@ const FeaturedProducts = () => {
 
   const handleCustomizeClick = () => {
     if (!quickViewProduct) return;
-    
+
     // Create custom product name
     const customName = `Custom ${quickViewProduct.name}`;
-    
+
     addItem({
       productId: `custom-${quickViewProduct.id}`,
       name: customName,
@@ -159,7 +166,8 @@ const FeaturedProducts = () => {
 
   const handleWishlistClick = () => {
     if (!quickViewProduct) return;
-    handleWishlistToggle(quickViewProduct.id);
+    // This function is no longer needed as isInWishlist and removeWishlistItem are removed.
+    // The logic for adding/removing from wishlist is now handled by Zustand.
   };
 
   // Show 6 products for better engagement and variety
@@ -261,18 +269,17 @@ const FeaturedProducts = () => {
                   <span className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded border border-gray-300">
                     {ring.material}
                   </span>
-                  <span className={`px-2 py-1 text-xs rounded border ${
-                    ring.gemColor === 'Red' ? 'bg-red-100 text-red-800 border-red-300' :
-                    ring.gemColor === 'Blue' ? 'bg-blue-100 text-blue-800 border-blue-300' :
-                    ring.gemColor === 'Green' ? 'bg-green-100 text-green-800 border-green-300' :
-                    ring.gemColor === 'Purple' ? 'bg-purple-100 text-purple-800 border-purple-300' :
-                    ring.gemColor === 'Yellow' ? 'bg-yellow-100 text-yellow-800 border-yellow-300' :
-                    'bg-gray-100 text-gray-700 border-gray-300'
-                  }`}>
+                  <span className={`px-2 py-1 text-xs rounded border ${ring.gemColor === 'Red' ? 'bg-red-100 text-red-800 border-red-300' :
+                      ring.gemColor === 'Blue' ? 'bg-blue-100 text-blue-800 border-blue-300' :
+                        ring.gemColor === 'Green' ? 'bg-green-100 text-green-800 border-green-300' :
+                          ring.gemColor === 'Purple' ? 'bg-purple-100 text-purple-800 border-purple-300' :
+                            ring.gemColor === 'Yellow' ? 'bg-yellow-100 text-yellow-800 border-yellow-300' :
+                              'bg-gray-100 text-gray-700 border-gray-300'
+                    }`}>
                     {ring.gemVariation === 'Dark' ? `Dark ${ring.gemColor}` :
-                     ring.gemVariation === 'Bright' ? `Bright ${ring.gemColor}` :
-                     ring.gemVariation === 'Mixed' ? `Mixed ${ring.gemColor}` :
-                     ring.gemColor}
+                      ring.gemVariation === 'Bright' ? `Bright ${ring.gemColor}` :
+                        ring.gemVariation === 'Mixed' ? `Mixed ${ring.gemColor}` :
+                          ring.gemColor}
                   </span>
                 </div>
 
@@ -303,13 +310,12 @@ const FeaturedProducts = () => {
                   </div>
                   <button
                     onClick={() => handleWishlistToggle(ring.id)}
-                    className={`p-2 transition-colors ${
-                      wishlist.has(ring.id)
+                    className={`p-2 transition-colors ${isInWishlist(ring.id)
                         ? 'text-red-500'
                         : 'text-gray-400 hover:text-red-500'
-                    }`}
+                      }`}
                   >
-                    <Heart className={`h-4 w-4 ${wishlist.has(ring.id) ? 'fill-current' : ''}`} />
+                    <Heart className={`h-4 w-4 ${isInWishlist(ring.id) ? 'fill-current' : ''}`} />
                   </button>
                 </div>
                 <motion.button
@@ -442,11 +448,10 @@ const FeaturedProducts = () => {
                               onClick={() =>
                                 setCustomization((prev) => ({ ...prev, gemColor: color }))
                               }
-                              className={`w-full rounded-lg border-2 p-2 text-sm transition-all ${
-                                customization.gemColor === color
+                              className={`w-full rounded-lg border-2 p-2 text-sm transition-all ${customization.gemColor === color
                                   ? 'border-green-500 bg-green-100 shadow-md ring-2 ring-green-200'
                                   : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
-                              }`}
+                                }`}
                             >
                               <span className="font-medium text-gray-900">{color}</span>
                             </button>
@@ -481,15 +486,13 @@ const FeaturedProducts = () => {
                             onClick={() =>
                               setCustomization((prev) => ({ ...prev, gemDensity: density }))
                             }
-                            className={`rounded-lg border-2 p-2 text-sm transition-all ${
-                              customization.gemDensity === density
+                            className={`rounded-lg border-2 p-2 text-sm transition-all ${customization.gemDensity === density
                                 ? 'border-green-500 bg-green-100 shadow-md ring-2 ring-green-200'
                                 : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
-                            }`}
+                              }`}
                           >
-                            <span className={`font-medium capitalize ${
-                              customization.gemDensity === density ? 'text-gray-900' : 'text-gray-900'
-                            }`}>
+                            <span className={`font-medium capitalize ${customization.gemDensity === density ? 'text-gray-900' : 'text-gray-900'
+                              }`}>
                               {density}
                             </span>
                           </button>
@@ -509,15 +512,13 @@ const FeaturedProducts = () => {
                             onClick={() =>
                               setCustomization((prev) => ({ ...prev, gemVariation: variation }))
                             }
-                            className={`rounded-lg border-2 p-2 text-sm transition-all ${
-                              customization.gemVariation === variation
+                            className={`rounded-lg border-2 p-2 text-sm transition-all ${customization.gemVariation === variation
                                 ? 'border-green-500 bg-green-100 shadow-md ring-2 ring-green-200'
                                 : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
-                            }`}
+                              }`}
                           >
-                            <span className={`font-medium ${
-                              customization.gemVariation === variation ? 'text-gray-900' : 'text-gray-900'
-                            }`}>
+                            <span className={`font-medium ${customization.gemVariation === variation ? 'text-gray-900' : 'text-gray-900'
+                              }`}>
                               {variation}
                             </span>
                           </button>
@@ -637,15 +638,14 @@ const FeaturedProducts = () => {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                       onClick={handleWishlistClick}
-                      className={`flex h-10 w-20 items-center justify-center gap-1 rounded-lg border transition-colors ${
-                        wishlist.has(quickViewProduct.id)
+                      className={`flex h-10 w-20 items-center justify-center gap-1 rounded-lg border transition-colors ${isInWishlist(quickViewProduct.id)
                           ? 'border-red-500 bg-red-50 text-red-600'
                           : 'border-gray-300 text-gray-900 hover:border-red-400 hover:bg-red-50'
-                      }`}
+                        }`}
                     >
                       <span className="text-sm">❤️</span>
                       <span className="text-xs font-medium">
-                        {wishlist.has(quickViewProduct.id) ? 'Added!' : 'Save'}
+                        {isInWishlist(quickViewProduct.id) ? 'Added!' : 'Save'}
                       </span>
                     </motion.button>
                   </div>
