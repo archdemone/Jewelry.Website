@@ -399,7 +399,7 @@ export default function AccountPage() {
               <div className="text-sm text-gray-600">Receive order updates via email</div>
             </div>
             <input type="checkbox"
-              checked={profile?.preferences.emailNotifications || false}
+              checked={profile?.preferences?.emailNotifications || false}
               onChange={() => { }} // Read-only for now
               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
             />
@@ -410,7 +410,7 @@ export default function AccountPage() {
               <div className="text-sm text-gray-600">Receive order updates via SMS</div>
             </div>
             <input type="checkbox"
-              checked={profile?.preferences.smsNotifications || false}
+              checked={profile?.preferences?.smsNotifications || false}
               onChange={() => { }} // Read-only for now
               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
             />
@@ -421,7 +421,7 @@ export default function AccountPage() {
               <div className="text-sm text-gray-600">Receive promotional emails and offers</div>
             </div>
             <input type="checkbox"
-              checked={profile?.preferences.marketingEmails || false}
+              checked={profile?.preferences?.marketingEmails || false}
               onChange={() => { }} // Read-only for now
               className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
             />

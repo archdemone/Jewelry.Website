@@ -8,7 +8,7 @@ const HeroCarousel = () => {
       {/* Hero Background Image */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="/images/home/header1.webp"
+          src="/images/home/header3.jpg"
           alt="J&M Jewelry - Handcrafted rings with passion"
           className="absolute inset-0 h-full w-full object-cover"
         />
