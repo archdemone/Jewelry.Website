@@ -1,8 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
+import { useWishlistStore } from '@/store/wishlist';
 
 interface WishlistButtonProps {
   productId: string;
@@ -22,16 +23,51 @@ interface WishlistButtonProps {
 
 export function WishlistButton({ 
   productId,
+  name = '',
+  price = 0,
+  image = '',
+  slug = '',
+  originalPrice,
+  material,
+  gemColor,
+  category,
+  badge,
   size = 'md',
   variant = 'icon',
   className = ''
 }: WishlistButtonProps) {
-  const [inWishlist, setInWishlist] = useState(false);
+  const { items, addItem, removeItem, isInWishlist, hydrate, hydrated } = useWishlistStore();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    hydrate();
+  }, [hydrate]);
+
+  const inWishlist = mounted && hydrated ? isInWishlist(productId) : false;
 
   const handleToggle = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setInWishlist(!inWishlist);
+    
+    if (!mounted || !hydrated) return;
+    
+    if (inWishlist) {
+      removeItem(productId);
+    } else {
+      addItem({
+        id: productId,
+        name,
+        price,
+        image,
+        slug,
+        originalPrice,
+        material,
+        gemColor,
+        category,
+        badge,
+      });
+    }
   };
 
   const sizeClasses = {

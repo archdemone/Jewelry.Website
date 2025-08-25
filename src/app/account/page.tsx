@@ -469,6 +469,7 @@ export default function AccountPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-8">
             <h1 className="text-3xl font-bold text-gray-900">My Account</h1>
+            <p className="mt-2 text-gray-600">Manage your profile, orders, and preferences</p>
           </div>
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Sidebar */}

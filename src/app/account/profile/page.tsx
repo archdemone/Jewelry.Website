@@ -219,14 +219,15 @@ export default function ProfilePage() {
 
   return (
     <AuthGuard>
-      <div className="mx-auto max-w-4xl px-4 py-8">
-        <div className="mb-8">
-          <h1 className="mb-2 text-3xl font-bold text-gray-900">Profile Settings</h1>
-          <p className="text-gray-600">Manage your account information and security settings</p>
-        </div>
-        <div className="grid gap-8 lg:grid-cols-2">
+      <div className="min-h-screen bg-gray-50">
+        <div className="mx-auto max-w-4xl px-4 py-8">
+          <div className="mb-8">
+            <h1 className="mb-2 text-3xl font-bold text-gray-900">Profile Settings</h1>
+            <p className="text-gray-600">Manage your account information and security settings</p>
+          </div>
+          <div className="grid gap-8 lg:grid-cols-2">
           {/* Profile Information */}
-          <Card className="p-6">
+          <Card className="bg-white p-6 shadow-sm border border-gray-200">
             <div className="mb-6 flex items-center gap-3">
               <User className="h-5 w-5 text-gold-600" />
               <h2 className="text-xl font-semibold">Profile Information</h2>
@@ -311,7 +312,7 @@ export default function ProfilePage() {
           </Card>
 
           {/* Password Change */}
-          <Card className="p-6">
+          <Card className="bg-white p-6 shadow-sm border border-gray-200">
             <div className="mb-6 flex items-center gap-3">
               <Lock className="h-5 w-5 text-gold-600" />
               <h2 className="text-xl font-semibold">Change Password</h2>
@@ -476,6 +477,7 @@ export default function ProfilePage() {
             </div>
           </div>
         </Card>
+        </div>
       </div>
     </AuthGuard>
   );
