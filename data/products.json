@@ -93,8 +93,7 @@
     "badge": "Ready to Ship",
     "slug": "womens-gold-statement-ring-bright-purple",
     "description": "Elegant gold statement ring with bright green gemstone. A stunning piece for special occasions.",
-    "isFeatured": true,
-    "featuredOrder": 2
+    "isFeatured": false
   },
   {
     "id": 3,

@@ -100,7 +100,13 @@ export async function GET(request: NextRequest) {
       reviews: product.reviewCount,
       badge: product.badge,
       description: product.description,
-      status: product.active ? 'active' : 'draft'
+      status: product.active ? 'active' : 'draft',
+      sku: product.sku,
+      createdAt: product.createdAt?.toISOString(),
+      isFeatured: product.featured,
+      featuredOrder: product.featured ? 1 : undefined,
+      mixColors: [],
+      isInStock: product.active
     }));
 
     return NextResponse.json({
@@ -116,21 +122,131 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST(req: Request) {
-  const gate = await requireAdminApi();
-  if ((gate as any)?.ok !== true) return gate as Response;
+// Create new product
+export async function POST(request: NextRequest) {
   try {
-    const body = await req.json().catch(() => ({}));
-    // TODO: persist to DB
-    await audit('product:create', 'product', undefined, null, body);
-    return new Response(JSON.stringify({ ok: true }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
+    const productData = await request.json();
+
+    // Find the category
+    const category = await prisma.category.findFirst({
+      where: { slug: productData.category }
     });
-  } catch (e) {
-    return new Response(JSON.stringify({ ok: false, error: 'Unexpected error' }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
+
+    if (!category) {
+      return NextResponse.json(
+        { error: 'Category not found' },
+        { status: 404 }
+      );
+    }
+
+    // Create the product
+    const newProduct = await prisma.product.create({
+      data: {
+        name: productData.name,
+        slug: productData.slug || productData.name.toLowerCase().replace(/\s+/g, '-'),
+        description: productData.description || '',
+        price: productData.price,
+        comparePrice: productData.originalPrice,
+        sku: productData.sku || '',
+        barcode: productData.sku || '',
+        quantity: 10, // Default quantity
+        weight: 5.0, // Default weight
+        material: productData.material || 'Silver',
+        gemstones: productData.gemColor || '',
+        size: '7.0', // Default size
+        images: JSON.stringify(productData.images || []),
+        featured: productData.isFeatured || false,
+        active: productData.status === 'active',
+        categoryId: category.id,
+        rating: productData.rating || 4.5,
+        reviewCount: productData.reviews || 0,
+        badge: productData.badge || 'Ready to Ship'
+      }
     });
+
+    return NextResponse.json(newProduct);
+  } catch (error) {
+    console.error('Error creating product:', error);
+    return NextResponse.json(
+      { error: 'Failed to create product' },
+      { status: 500 }
+    );
+  }
+}
+
+// Update product
+export async function PUT(request: NextRequest) {
+  try {
+    const productData = await request.json();
+
+    // Find the category
+    const category = await prisma.category.findFirst({
+      where: { slug: productData.category }
+    });
+
+    if (!category) {
+      return NextResponse.json(
+        { error: 'Category not found' },
+        { status: 404 }
+      );
+    }
+
+    // Update the product
+    const updatedProduct = await prisma.product.update({
+      where: { id: productData.id },
+      data: {
+        name: productData.name,
+        slug: productData.slug || productData.name.toLowerCase().replace(/\s+/g, '-'),
+        description: productData.description || '',
+        price: productData.price,
+        comparePrice: productData.originalPrice,
+        sku: productData.sku || '',
+        barcode: productData.sku || '',
+        material: productData.material || 'Silver',
+        gemstones: productData.gemColor || '',
+        images: JSON.stringify(productData.images || []),
+        featured: productData.isFeatured || false,
+        active: productData.status === 'active',
+        categoryId: category.id,
+        rating: productData.rating || 4.5,
+        reviewCount: productData.reviews || 0,
+        badge: productData.badge || 'Ready to Ship'
+      }
+    });
+
+    return NextResponse.json(updatedProduct);
+  } catch (error) {
+    console.error('Error updating product:', error);
+    return NextResponse.json(
+      { error: 'Failed to update product' },
+      { status: 500 }
+    );
+  }
+}
+
+// Delete product
+export async function DELETE(request: NextRequest) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json(
+        { error: 'Product ID is required' },
+        { status: 400 }
+      );
+    }
+
+    await prisma.product.delete({
+      where: { id }
+    });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    return NextResponse.json(
+      { error: 'Failed to delete product' },
+      { status: 500 }
+    );
   }
 }

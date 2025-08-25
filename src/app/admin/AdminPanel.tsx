@@ -8,7 +8,6 @@ import {
   Trash2,
   Save,
   X,
-  Eye,
   ShoppingBag,
   Settings,
   Package,
@@ -24,19 +23,17 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
 interface Product {
-  id: string | number;
+  id: string;
   name: string;
   price: number;
   originalPrice?: number | null;
   images?: string[];
-  material: 'Silver' | 'Damascus' | 'Ceramic(white)' | 'Ceramic(black)' | 'Carbon' | 'Tungsten' | 'Titanium' | 'Stainless Steel' | 'Gold';
-  gemColor: 'Red' | 'Green' | 'Blue' | 'Purple' | 'Yellow' | 'Custom';
-  gemColor2?: 'Red' | 'Green' | 'Blue' | 'Purple' | 'Yellow' | 'Custom';
-  gemDensity: 'small' | 'medium' | 'large';
-  gemVariation: 'Dark' | 'Mixed' | 'Bright';
+  material: string;
+  gemColor: string;
+  gemDensity: string;
+  gemVariation: string;
   mixColors: string[];
-  mixColors2?: string[];
-  category: 'Wedding' | 'Inlay Ring' | 'Couple Ring Set' | 'Mens' | 'Womens' | 'Unisex' | 'Single Inlay' | 'Double Inlay';
+  category: string;
   subCategory?: string;
   ringSizes: { us: number[]; eu: number[] };
   ringWidth: number[];
@@ -51,6 +48,8 @@ interface Product {
   description?: string;
   isFeatured?: boolean;
   featuredOrder?: number;
+  sku?: string; // Added sku to the interface
+  createdAt?: string; // Added createdAt to the interface
 }
 
 interface ImageFile {
@@ -83,13 +82,16 @@ export default function AdminPanel() {
     pendingOrders: '0',
   });
 
+  // Updated categories to match the new database
   const categories = [
     { id: 'all', name: 'All Products' },
-    { id: 'womens', name: "Women's Rings" },
-    { id: 'mens', name: "Men's Rings" },
-    { id: 'unisex', name: 'Unisex Rings' },
-    { id: 'wedding', name: 'Wedding Rings' },
-    { id: 'inlay', name: 'Inlay Rings' },
+    { id: 'mens-rings', name: "Men's Rings" },
+    { id: 'womens-rings', name: "Women's Rings" },
+    { id: 'unisex-rings', name: 'Unisex Rings' },
+    { id: 'wedding-rings', name: 'Wedding Rings' },
+    { id: 'engagement-rings', name: 'Engagement Rings' },
+    { id: 'inlay-rings', name: 'Inlay Rings' },
+    { id: 'statement-rings', name: 'Statement Rings' },
   ];
 
   const materials = ['Silver', 'Damascus', 'Ceramic(white)', 'Ceramic(black)', 'Carbon', 'Tungsten', 'Titanium', 'Stainless Steel', 'Gold'];
@@ -111,144 +113,81 @@ export default function AdminPanel() {
   };
 
   const getGemColorImage = (color: string): string => {
-    const imageMap: Record<string, string> = {
-      'Red': '/images/gems/colour/red.jpg',
-      'Green': '/images/gems/colour/green.jpg',
-      'Blue': '/images/gems/colour/blue.jpg',
-      'Purple': '/images/gems/colour/purple.jpg',
-      'Yellow': '/images/gems/colour/yellow.jpg',
-      'Custom': '/images/gems/colour/custom.jpg',
-      'Black': '/images/gems/colour/custom.jpg',
-      'White': '/images/gems/colour/custom.jpg',
-      'Pink': '/images/gems/colour/custom.jpg',
-      'Orange': '/images/gems/colour/custom.jpg',
-      'Turquoise': '/images/gems/colour/custom.jpg',
+    const colorMap: Record<string, string> = {
+      'Red': '/images/gem-colors/red-gem.webp',
+      'Green': '/images/gem-colors/green-gem.webp',
+      'Blue': '/images/gem-colors/blue-gem.webp',
+      'Purple': '/images/gem-colors/purple-gem.webp',
+      'Yellow': '/images/gem-colors/yellow-gem.webp',
+      'Custom': '/images/gem-colors/custom-gem.webp',
     };
-    return imageMap[color] || '/images/gems/colour/custom.jpg';
+    return colorMap[color] || '/images/gem-colors/custom-gem.webp';
   };
 
-  // Dashboard helper functions
-  const calculateDashboardStats = useCallback(() => {
-    const activeProducts = products.filter(p => p.status === 'active').length;
-    const lowStockProducts = products.filter(p => !p.isReadyToShip).length;
-
-    setDashboardStats(prev => ({
-      ...prev,
-      activeProducts: activeProducts.toString(),
-      lowStockProducts: lowStockProducts.toString(),
-    }));
-  }, [products]);
-
-  const getRecentProducts = () => {
-    return products.slice(0, 5); // Get last 5 products
-  };
-
-  const getLowStockProducts = () => {
-    return products.filter(p => !p.isReadyToShip).slice(0, 3);
-  };
-
-  // Load products and images on mount
-  useEffect(() => {
-    loadProducts();
-    loadAvailableImages();
-  }, []);
-
-  // Cleanup scroll when component unmounts
-  useEffect(() => {
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, []);
-
-  // Calculate dashboard stats when products change
-  useEffect(() => {
-    calculateDashboardStats();
-  }, [products, calculateDashboardStats]);
-
-  const loadProducts = async () => {
+  // Load products from the new Prisma database API
+  const loadProducts = useCallback(async () => {
     try {
-      const response = await fetch('/api/admin/products');
+      setLoading(true);
+      const response = await fetch('/api/products');
       if (response.ok) {
         const data = await response.json();
-        setProducts(data);
+        setProducts(data.products || []);
       } else {
         console.error('Failed to load products');
+        setProducts([]);
       }
-      setLoading(false);
     } catch (error) {
       console.error('Error loading products:', error);
+      setProducts([]);
+    } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const loadAvailableImages = async () => {
+  // Load available images
+  const loadAvailableImages = useCallback(async () => {
     try {
       const response = await fetch('/api/admin/images');
       if (response.ok) {
         const data = await response.json();
-        setAvailableImages(data);
-      } else {
-        console.error('Failed to load images');
+        setAvailableImages(data.images || []);
       }
     } catch (error) {
       console.error('Error loading images:', error);
     }
-  };
+  }, []);
 
-  const filteredProducts = products.filter(product => {
-    if (selectedCategory === 'all') return true;
-    return product.category.toLowerCase() === selectedCategory;
-  });
+  useEffect(() => {
+    loadProducts();
+    loadAvailableImages();
+  }, [loadProducts, loadAvailableImages]);
 
   const handleAddProduct = () => {
-    const newProduct: Product = {
-      id: Date.now(),
+    setEditingProduct({
+      id: '',
       name: '',
       price: 0,
-      images: [],
       material: 'Silver',
       gemColor: 'Red',
       gemDensity: 'medium',
       gemVariation: 'Dark',
       mixColors: [],
-      category: 'Womens',
-      ringSizes: { us: [], eu: [] },
-      ringWidth: [],
-      isReadyToShip: true,
+      category: 'mens-rings',
+      ringSizes: { us: [6, 7, 8, 9], eu: [52, 54, 57, 59] },
+      ringWidth: [4, 6, 8],
+      isReadyToShip: false,
       isInStock: true,
-      currency: 'GBP',
-      slug: `product-${Date.now()}`,
-      description: '',
-    };
-    setEditingProduct(newProduct);
+      status: 'draft',
+      images: [],
+      isFeatured: false,
+      slug: '',
+    });
     setIsAddingProduct(true);
-    // Prevent body scroll when modal opens
-    document.body.style.overflow = 'hidden';
   };
 
   const handleEditProduct = (product: Product) => {
     setEditingProduct({ ...product });
     setIsAddingProduct(false);
-    // Prevent body scroll when modal opens
-    document.body.style.overflow = 'hidden';
-  };
-
-  const handleDeleteProduct = async (productId: string | number) => {
-    if (confirm('Are you sure you want to delete this product?')) {
-      try {
-        const response = await fetch(`/api/admin/products?id=${productId}`, {
-          method: 'DELETE',
-        });
-
-        if (response.ok) {
-          setProducts(products.filter(p => p.id !== productId));
-        } else {
-          console.error('Failed to delete product');
-        }
-      } catch (error) {
-        console.error('Error deleting product:', error);
-      }
-    }
   };
 
   const handleSaveProduct = async () => {
@@ -256,141 +195,170 @@ export default function AdminPanel() {
 
     try {
       const method = isAddingProduct ? 'POST' : 'PUT';
-      const response = await fetch('/api/admin/products', {
+      const url = '/api/products';
+
+      const response = await fetch(url, {
         method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(editingProduct),
       });
 
       if (response.ok) {
-        const savedProduct = await response.json();
-
-        if (isAddingProduct) {
-          setProducts([...products, savedProduct]);
-        } else {
-          setProducts(products.map(p => p.id === editingProduct.id ? savedProduct : p));
-        }
-
         setEditingProduct(null);
         setIsAddingProduct(false);
-
-        // Restore body scroll when modal closes
-        document.body.style.overflow = 'unset';
-
-        alert(isAddingProduct ? 'Product added successfully!' : 'Product updated successfully!');
-      } else {
-        console.error('Failed to save product');
-        alert('Failed to save product. Please try again.');
+        loadProducts();
       }
     } catch (error) {
       console.error('Error saving product:', error);
-      alert('Error saving product. Please try again.');
     }
   };
 
-  const handleCancelEdit = () => {
-    setEditingProduct(null);
-    setIsAddingProduct(false);
-    // Restore body scroll when modal closes
-    document.body.style.overflow = 'unset';
+  const handleDeleteProduct = async (id: string) => {
+    if (!confirm('Are you sure you want to delete this product?')) return;
+
+    try {
+      const response = await fetch(`/api/products?id=${id}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        loadProducts();
+      }
+    } catch (error) {
+      console.error('Error deleting product:', error);
+    }
+  };
+
+  const toggleFeatured = async (product: Product) => {
+    const updatedProduct = {
+      ...product,
+      isFeatured: !product.isFeatured,
+      featuredOrder: !product.isFeatured ? Date.now() : undefined,
+    };
+
+    try {
+      const response = await fetch('/api/products', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedProduct),
+      });
+
+      if (response.ok) {
+        loadProducts();
+      }
+    } catch (error) {
+      console.error('Error updating featured status:', error);
+    }
+  };
+
+  const filteredProducts = products.filter((product) => {
+    if (selectedCategory === 'all') return true;
+    return product.category === selectedCategory;
+  });
+
+  const getRecentProducts = () => {
+    return products
+      .filter(p => p.status === 'active')
+      .sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime())
+      .slice(0, 5);
+  };
+
+  const getLowStockProducts = () => {
+    return products.filter(p => !p.isInStock || p.status === 'out_of_stock').slice(0, 5);
   };
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gold-500"></div>
+      <div className="flex items-center justify-center h-64">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gold-500"></div>
       </div>
     );
   }
 
   return (
     <div className="space-y-6">
-      {/* Page Header */}
-      <div className="bg-white rounded-lg shadow-sm border p-6">
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Product Management</h1>
-            <p className="text-gray-600">Manage your jewelry products</p>
-          </div>
-          <div className="flex items-center gap-4">
-            <Button variant={showDashboard ? "default" : "outline"} onClick={() => setShowDashboard(!showDashboard)}
-              className="flex items-center gap-2"
-            >
-              <BarChart3 className="w-4 h-4" />
-              {showDashboard ? 'Hide Dashboard' : 'Show Dashboard'}
-            </Button>
-          </div>
-        </div>
+      {/* Dashboard Toggle */}
+      <div className="flex justify-between items-center">
+        <h1 className="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
+        <Button
+          onClick={() => setShowDashboard(!showDashboard)}
+          variant="outline"
+          className="flex items-center gap-2"
+        >
+          {showDashboard ? <BarChart3 className="w-4 h-4" /> : <Activity className="w-4 h-4" />}
+          {showDashboard ? 'Hide Dashboard' : 'Show Dashboard'}
+        </Button>
       </div>
 
-      {/* Enhanced Dashboard Section */}
       {showDashboard && (
         <>
-          {/* Enhanced Stats Cards */}
+          {/* Quick Stats */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="flex items-center gap-4 p-4 shadow-sm">
-              <div className="flex h-10 w-10 items-center justify-center rounded bg-blue-100 text-blue-600">
-                <DollarSign className="h-5 w-5" />
+            <div className="bg-white rounded-lg shadow-sm border p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Total Products</p>
+                  <p className="text-2xl font-bold text-gray-900">{products.length}</p>
+                </div>
+                <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <Package className="h-6 w-6 text-blue-600" />
+                </div>
               </div>
-              <div>
-                <div className="text-sm text-gray-500">Total Revenue</div>
-                <div className="text-2xl font-bold">{dashboardStats.totalRevenue}</div>
-                <div className="text-xs text-gray-500">+20.1% from last month</div>
+            </div>
+            <div className="bg-white rounded-lg shadow-sm border p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Active Products</p>
+                  <p className="text-2xl font-bold text-gray-900">{products.filter(p => p.status === 'active').length}</p>
+                </div>
+                <div className="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center">
+                  <Edit className="h-6 w-6 text-green-600" />
+                </div>
               </div>
-            </Card>
-            <Card className="flex items-center gap-4 p-4 shadow-sm">
-              <div className="flex h-10 w-10 items-center justify-center rounded bg-green-100 text-green-600">
-                <ShoppingBag className="h-5 w-5" />
+            </div>
+            <div className="bg-white rounded-lg shadow-sm border p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Ready to Ship</p>
+                  <p className="text-2xl font-bold text-gray-900">{products.filter(p => p.isReadyToShip).length}</p>
+                </div>
+                <div className="h-12 w-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                  <ShoppingBag className="h-6 w-6 text-orange-600" />
+                </div>
               </div>
-              <div>
-                <div className="text-sm text-gray-500">Orders</div>
-                <div className="text-2xl font-bold">{dashboardStats.totalOrders}</div>
-                <div className="text-xs text-gray-500">+12% from last month</div>
+            </div>
+            <div className="bg-white rounded-lg shadow-sm border p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Categories</p>
+                  <p className="text-2xl font-bold text-gray-900">{categories.length - 1}</p>
+                </div>
+                <div className="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <Settings className="h-6 w-6 text-purple-600" />
+                </div>
               </div>
-            </Card>
-            <Card className="flex items-center gap-4 p-4 shadow-sm">
-              <div className="flex h-10 w-10 items-center justify-center rounded bg-purple-100 text-purple-600">
-                <Users className="h-5 w-5" />
-              </div>
-              <div>
-                <div className="text-sm text-gray-500">Customers</div>
-                <div className="text-2xl font-bold">{dashboardStats.totalCustomers}</div>
-                <div className="text-xs text-gray-500">+19% from last month</div>
-              </div>
-            </Card>
-            <Card className="flex items-center gap-4 p-4 shadow-sm">
-              <div className="flex h-10 w-10 items-center justify-center rounded bg-orange-100 text-orange-600">
-                <TrendingUp className="h-5 w-5" />
-              </div>
-              <div>
-                <div className="text-sm text-gray-500">Conversion Rate</div>
-                <div className="text-2xl font-bold">{dashboardStats.conversionRate}</div>
-                <div className="text-xs text-gray-500">+2% from last month</div>
-              </div>
-            </Card>
+            </div>
           </div>
 
-          {/* Dashboard Content Grid */}
+          {/* Dashboard Cards */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {/* Recent Products */}
             <Card className="p-4">
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-semibold text-gray-900">Recent Products</h3>
-                <Button variant="outline" size="sm" onClick={() => setSelectedCategory('all')}>
-                  View All
-                </Button>
+                <div className="flex h-6 w-6 items-center justify-center rounded bg-blue-100">
+                  <Package className="h-4 w-4 text-blue-600" />
+                </div>
               </div>
               <div className="space-y-3">
                 {getRecentProducts().map((product) => (
-                  <div key={product.id} className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50">
-                    <div className="w-10 h-10 bg-gray-200 rounded-lg flex items-center justify-center">
-                      <Package className="w-5 h-5 text-gray-500" />
+                  <div key={product.id} className="flex items-center gap-3 p-2 rounded-lg bg-blue-50 border border-blue-200">
+                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                      <Package className="w-5 h-5 text-blue-600" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-900 truncate">{product.name}</p>
-                      <p className="text-xs text-gray-500">£{product.price}</p>
+                      <p className="text-xs text-blue-600">£{product.price}</p>
                     </div>
                     <Button variant="ghost"
                       size="sm" onClick={() => handleEditProduct(product)}
@@ -452,7 +420,7 @@ export default function AdminPanel() {
                   <Package className="w-4 h-4 mr-2" />
                   View All Products
                 </Button>
-                <Button onClick={() => setSelectedCategory('inlay')}
+                <Button onClick={() => setSelectedCategory('inlay-rings')}
                   className="w-full justify-start"
                   variant="outline"
                 >
@@ -471,54 +439,6 @@ export default function AdminPanel() {
           </div>
         </>
       )}
-
-      {/* Quick Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <div className="bg-white rounded-lg shadow-sm border p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Total Products</p>
-              <p className="text-2xl font-bold text-gray-900">{products.length}</p>
-            </div>
-            <div className="h-12 w-12 bg-blue-100 rounded-lg flex items-center justify-center">
-              <Package className="h-6 w-6 text-blue-600" />
-            </div>
-          </div>
-        </div>
-        <div className="bg-white rounded-lg shadow-sm border p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Active Products</p>
-              <p className="text-2xl font-bold text-gray-900">{products.filter(p => p.status === 'active').length}</p>
-            </div>
-            <div className="h-12 w-12 bg-green-100 rounded-lg flex items-center justify-center">
-              <Eye className="h-6 w-6 text-green-600" />
-            </div>
-          </div>
-        </div>
-        <div className="bg-white rounded-lg shadow-sm border p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Ready to Ship</p>
-              <p className="text-2xl font-bold text-gray-900">{products.filter(p => p.isReadyToShip).length}</p>
-            </div>
-            <div className="h-12 w-12 bg-orange-100 rounded-lg flex items-center justify-center">
-              <ShoppingBag className="h-6 w-6 text-orange-600" />
-            </div>
-          </div>
-        </div>
-        <div className="bg-white rounded-lg shadow-sm border p-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-gray-600">Categories</p>
-              <p className="text-2xl font-bold text-gray-900">{categories.length - 1}</p>
-            </div>
-            <div className="h-12 w-12 bg-purple-100 rounded-lg flex items-center justify-center">
-              <Settings className="h-6 w-6 text-purple-600" />
-            </div>
-          </div>
-        </div>
-      </div>
 
       {/* Products Section */}
       <div className="bg-white rounded-lg shadow-sm border p-6">
@@ -557,25 +477,15 @@ export default function AdminPanel() {
                   </div>
                 )}
                 <div className="absolute top-2 right-2 flex space-x-1">
-                  <button onClick={() => {
-                    if (product.slug) {
-                      window.open(`/products/${product.slug}`, '_blank');
-                    } else {
-                      alert('Product slug not available. Please save the product first.');
-                    }
-                  }}
-                    className="p-1 bg-white rounded shadow-sm hover:bg-gray-50"
-                    title="View Product"
-                  >
-                    <Eye className="w-4 h-4 text-blue-600" />
-                  </button>
-                  <button onClick={() => handleEditProduct(product)}
+                  <button
+                    onClick={() => handleEditProduct(product)}
                     className="p-1 bg-white rounded shadow-sm hover:bg-gray-50"
                     title="Edit Product"
                   >
                     <Edit className="w-4 h-4 text-gray-600" />
                   </button>
-                  <button onClick={() => handleDeleteProduct(product.id)}
+                  <button
+                    onClick={() => handleDeleteProduct(product.id)}
                     className="p-1 bg-white rounded shadow-sm hover:bg-gray-50"
                     title="Delete Product"
                   >
@@ -599,18 +509,31 @@ export default function AdminPanel() {
             </div>
           ))}
         </div>
+
+        {filteredProducts.length === 0 && (
+          <div className="text-center py-12">
+            <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 mb-2">No products found</h3>
+            <p className="text-gray-500">Try adjusting your filters or add a new product.</p>
+          </div>
+        )}
       </div>
 
-      {/* Edit/Add Product Modal */}
+      {/* Advanced Edit Modal - Updated Layout */}
       {editingProduct && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-start justify-center p-4 z-50 overflow-y-auto">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-y-auto">
           <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b">
               <h2 className="text-2xl font-bold text-gray-900">
                 {isAddingProduct ? 'Add New Product' : 'Edit Product'}
               </h2>
-              <button onClick={handleCancelEdit} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
+              <button onClick={() => {
+                setEditingProduct(null);
+                setIsAddingProduct(false);
+              }}
+                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+              >
                 <X className="w-5 h-5" />
               </button>
             </div>
@@ -632,7 +555,7 @@ export default function AdminPanel() {
                     ) : (
                       <div className="flex items-center justify-center h-full">
                         <div className="text-center">
-                          <ImageIcon className="w-12 h-12 text-gray-400 mx-auto mb-2" />
+                          <Package className="w-12 h-12 text-gray-400 mx-auto mb-2" />
                           <p className="text-sm text-gray-500">No image selected</p>
                         </div>
                       </div>
@@ -644,8 +567,10 @@ export default function AdminPanel() {
                     )}
                     {editingProduct.status && (
                       <div className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium ${editingProduct.status === 'active' ? 'bg-green-100 text-green-800' :
-                        editingProduct.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
-                          editingProduct.status === 'archived' ? 'bg-gray-100 text-gray-800' : 'bg-red-100 text-red-800'}`}>
+                          editingProduct.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
+                            editingProduct.status === 'archived' ? 'bg-gray-100 text-gray-800' :
+                              'bg-red-100 text-red-800'
+                        }`}>
                         {editingProduct.status === 'active' ? 'Active' :
                           editingProduct.status === 'draft' ? 'Draft' :
                             editingProduct.status === 'archived' ? 'Archived' :
@@ -660,19 +585,21 @@ export default function AdminPanel() {
                   <label className="block text-sm font-medium text-gray-700 mb-2">Available Images</label>
                   <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto">
                     {availableImages.map((image) => (
-                      <button key={image.path} onClick={() => {
-                        const newImages = editingProduct.images?.includes(image.path)
-                          ? editingProduct.images.filter(img => img !== image.path)
-                          : [...(editingProduct.images || []), image.path];
+                      <button key={image.url} onClick={() => {
+                        const newImages = editingProduct.images?.includes(image.url)
+                          ? editingProduct.images.filter(img => img !== image.url)
+                          : [...(editingProduct.images || []), image.url];
                         setEditingProduct({ ...editingProduct, images: newImages });
-                      }} className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-colors ${editingProduct.images?.includes(image.path)
-                        ? 'border-gold-500 ring-2 ring-gold-200' : 'border-gray-200 hover:border-gray-300'}`}
+                      }} className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-colors ${editingProduct.images?.includes(image.url)
+                          ? 'border-gold-500 ring-2 ring-gold-200'
+                          : 'border-gray-200 hover:border-gray-300'
+                        }`}
                       >
                         <Image src={image.url} alt={image.name}
                           fill className="object-cover"
-                          sizes="(max-width: 768px) 100vw, 200px"
+                          sizes="200px"
                         />
-                        {editingProduct.images?.includes(image.path) && (
+                        {editingProduct.images?.includes(image.url) && (
                           <div className="absolute top-1 right-1 w-5 h-5 bg-gold-500 rounded-full flex items-center justify-center">
                             <span className="text-white text-xs">✓</span>
                           </div>
@@ -695,9 +622,8 @@ export default function AdminPanel() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Product Slug</label>
-                    <input type="text" value={editingProduct.slug} onChange={(e) => setEditingProduct({ ...editingProduct, slug: e.target.value })}
-                      placeholder="e.g., gold-ring-rose"
+                    <label className="block text-sm font-medium text-gray-700 mb-1">SKU</label>
+                    <input type="text" value={editingProduct.sku || ''} onChange={(e) => setEditingProduct({ ...editingProduct, sku: e.target.value })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                     />
                   </div>
@@ -705,17 +631,12 @@ export default function AdminPanel() {
                   {/* Category & Sub Category - Side by Side */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                    <select value={editingProduct.category} onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value as any })}
+                    <select value={editingProduct.category} onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                     >
-                      <option value="Wedding">Wedding Rings</option>
-                      <option value="Inlay Ring">Inlay Rings</option>
-                      <option value="Couple Ring Set">Couple Ring Set</option>
-                      <option value="Mens">Men's Rings</option>
-                      <option value="Womens">Women's Rings</option>
-                      <option value="Unisex">Unisex Rings</option>
-                      <option value="Single Inlay">Single Inlay</option>
-                      <option value="Double Inlay">Double Inlay</option>
+                      {categories.filter(cat => cat.id !== 'all').map((cat) => (
+                        <option key={cat.id} value={cat.id}>{cat.name}</option>
+                      ))}
                     </select>
                   </div>
                   <div>
@@ -743,7 +664,7 @@ export default function AdminPanel() {
                   {/* Material - Full Width */}
                   <div className="col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-1">Material</label>
-                    <select value={editingProduct.material} onChange={(e) => setEditingProduct({ ...editingProduct, material: e.target.value as any })}
+                    <select value={editingProduct.material} onChange={(e) => setEditingProduct({ ...editingProduct, material: e.target.value })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                     >
                       {materials.map((material) => (
@@ -760,8 +681,10 @@ export default function AdminPanel() {
                         <div className="grid grid-cols-3 gap-2">
                           {gemColors.map((color) => (
                             <button key={color}
-                              type="button" onClick={() => setEditingProduct({ ...editingProduct, gemColor: color as any })} onMouseEnter={() => setHoveredGemColor(color)} onMouseLeave={() => setHoveredGemColor(null)} className={`relative rounded-lg border-2 p-3 transition-all ${editingProduct.gemColor === color
-                                ? 'border-gold-500 bg-gold-50' : 'border-gray-300 hover:border-gray-400'}`}
+                              type="button" onClick={() => setEditingProduct({ ...editingProduct, gemColor: color })} onMouseEnter={() => setHoveredGemColor(color)} onMouseLeave={() => setHoveredGemColor(null)} className={`relative rounded-lg border-2 p-3 transition-all ${editingProduct.gemColor === color
+                                  ? 'border-gold-500 bg-gold-50'
+                                  : 'border-gray-300 hover:border-gray-400'
+                                }`}
                             >
                               <div className="flex flex-col items-center gap-2">
                                 <div className="w-4 h-4 rounded-full border-2 border-gray-200 flex-shrink-0" style={{
@@ -831,123 +754,10 @@ export default function AdminPanel() {
                     </div>
                   </div>
 
-                  {/* Second Gem Color & Mix Colors for Couple Rings - Side by Side */}
-                  {editingProduct.category === 'Couple Ring Set' && (
-                    <div className="col-span-2">
-                      <div className="grid grid-cols-2 gap-6">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Second Gem Color (Ring 2)</label>
-                          <div className="grid grid-cols-3 gap-2">
-                            {gemColors.map((color) => (
-                              <button key={color}
-                                type="button" onClick={() => setEditingProduct({ ...editingProduct, gemColor2: color as any })} onMouseEnter={() => setHoveredGemColor2(color)} onMouseLeave={() => setHoveredGemColor2(null)} className={`relative rounded-lg border-2 p-3 transition-all ${editingProduct.gemColor2 === color
-                                  ? 'border-gold-500 bg-gold-50' : 'border-gray-300 hover:border-gray-400'}`}
-                              >
-                                <div className="flex flex-col items-center gap-2">
-                                  <div className="w-4 h-4 rounded-full border-2 border-gray-200 flex-shrink-0" style={{
-                                    backgroundColor: getGemColorHex(color),
-                                    aspectRatio: '1 / 1',
-                                    minWidth: '16px',
-                                    minHeight: '16px'
-                                  }}
-                                  />
-                                  <span className="text-sm font-medium">{color}</span>
-                                </div>
-
-                                {/* Gem Color Popup */}
-                                {hoveredGemColor2 === color && (
-                                  <div className="absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 transform">
-                                    <div className="rounded-lg border bg-white p-4 shadow-lg">
-                                      <Image src={getGemColorImage(color)} alt={`${color} gem`} width={300} height={300}
-                                        className="rounded object-cover"
-                                      />
-                                    </div>
-                                  </div>
-                                )}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Mix Colors for Ring 2 (Custom option)</label>
-                          <div className="grid grid-cols-3 gap-2">
-                            {['Red', 'Green', 'Blue', 'Purple', 'Yellow', 'Black', 'White', 'Pink', 'Orange', 'Turquoise'].map((color) => (
-                              <label key={color}
-                                className="relative flex items-center p-2 rounded border hover:bg-gray-50 cursor-pointer" onMouseEnter={() => setHoveredMixColor2(color)} onMouseLeave={() => setHoveredMixColor2(null)}
-                              >
-                                <input type="checkbox" checked={editingProduct.mixColors2?.includes(color) || false} onChange={(e) => {
-                                  const newMixColors2 = e.target.checked
-                                    ? [...(editingProduct.mixColors2 || []), color]
-                                    : (editingProduct.mixColors2 || []).filter(c => c !== color);
-                                  setEditingProduct({ ...editingProduct, mixColors2: newMixColors2 });
-                                }}
-                                  className="mr-2"
-                                />
-                                <div className="flex items-center gap-2 min-w-0">
-                                  <div className="w-4 h-4 rounded-full border border-gray-200 flex-shrink-0" style={{
-                                    backgroundColor: getGemColorHex(color),
-                                    aspectRatio: '1 / 1',
-                                    minWidth: '16px',
-                                    minHeight: '16px'
-                                  }}
-                                  />
-                                  <span className="text-sm truncate">{color}</span>
-                                </div>
-
-                                {/* Mix Color Popup */}
-                                {hoveredMixColor2 === color && (
-                                  <div className="absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 transform">
-                                    <div className="rounded-lg border bg-white p-4 shadow-lg">
-                                      <Image src={getGemColorImage(color)} alt={`${color} gem`} width={300} height={300}
-                                        className="rounded object-cover" style={{ minWidth: '300px', minHeight: '300px' }}
-                                      />
-                                    </div>
-                                  </div>
-                                )}
-                              </label>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Second Gem Color for Double Inlay */}
-                  {editingProduct.category === 'Double Inlay' && (
-                    <div className="col-span-2">
-                      <label className="block text-sm font-medium text-gray-700 mb-1">Second Gem Color (Inlay 2)</label>
-                      <div className="grid grid-cols-3 gap-2">
-                        {gemColors.map((color) => (
-                          <button key={color}
-                            type="button" onClick={() => setEditingProduct({ ...editingProduct, gemColor2: color as any })} onMouseEnter={() => setHoveredGemColor2(color)} onMouseLeave={() => setHoveredGemColor2(null)} className={`relative rounded-lg border-2 p-3 transition-all ${editingProduct.gemColor2 === color
-                              ? 'border-gold-500 bg-gold-50' : 'border-gray-300 hover:border-gray-400'}`}
-                          >
-                            <div className="flex flex-col items-center gap-2">
-                              <div className="h-8 w-8 rounded-full border-2 border-gray-200" style={{ backgroundColor: getGemColorHex(color) }}
-                              />
-                              <span className="text-sm font-medium">{color}</span>
-                            </div>
-
-                            {/* Gem Color Popup */}
-                            {hoveredGemColor2 === color && (
-                              <div className="absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform">
-                                <div className="rounded-lg border bg-white p-4 shadow-lg">
-                                  <Image src={getGemColorImage(color)} alt={`${color} gem`} width={300} height={300}
-                                    className="rounded object-cover" style={{ minWidth: '300px', minHeight: '300px' }}
-                                  />
-                                </div>
-                              </div>
-                            )}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
                   {/* Gem Density & Gem Variation - Side by Side */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Gem Density</label>
-                    <select value={editingProduct.gemDensity} onChange={(e) => setEditingProduct({ ...editingProduct, gemDensity: e.target.value as any })}
+                    <select value={editingProduct.gemDensity} onChange={(e) => setEditingProduct({ ...editingProduct, gemDensity: e.target.value })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                     >
                       {gemDensities.map((density) => (
@@ -957,7 +767,7 @@ export default function AdminPanel() {
                   </div>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Gem Variation</label>
-                    <select value={editingProduct.gemVariation} onChange={(e) => setEditingProduct({ ...editingProduct, gemVariation: e.target.value as any })}
+                    <select value={editingProduct.gemVariation} onChange={(e) => setEditingProduct({ ...editingProduct, gemVariation: e.target.value })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                     >
                       {gemVariations.map((variation) => (
@@ -1007,7 +817,7 @@ export default function AdminPanel() {
                   {/* Status - Side by Side with Ring Width */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                    <select value={editingProduct.status} onChange={(e) => setEditingProduct({ ...editingProduct, status: e.target.value as any })}
+                    <select value={editingProduct.status || 'draft'} onChange={(e) => setEditingProduct({ ...editingProduct, status: e.target.value as any })}
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
                     >
                       <option value="draft">Draft</option>
@@ -1035,8 +845,6 @@ export default function AdminPanel() {
                       <label htmlFor="isInStock" className="text-sm font-medium text-gray-700">In Stock</label>
                     </div>
                   </div>
-
-                  {/* Ready to Ship & Featured - Side by Side */}
                   <div>
                     <div className="flex items-center gap-2">
                       <input type="checkbox"
@@ -1056,7 +864,7 @@ export default function AdminPanel() {
                     <label className="block text-sm font-medium text-gray-700 mb-1">Featured Order</label>
                     <input type="number" value={editingProduct.featuredOrder || ''} onChange={(e) => setEditingProduct({
                       ...editingProduct,
-                      featuredOrder: e.target.value ? parseInt(e.target.value) : undefined
+                                             featuredOrder: e.target.value ? parseInt(e.target.value) : undefined
                     })}
                       placeholder="e.g., 1, 2, 3"
                       className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
@@ -1075,11 +883,13 @@ export default function AdminPanel() {
                   <div className="col-span-2 mt-6 p-4 bg-gray-50 rounded-lg">
                     <h4 className="text-sm font-medium text-gray-700 mb-2">Status Preview</h4>
                     <div className="flex items-center gap-2">
-                      {/* Status Badge - Only show non-stock statuses */}
-                      {editingProduct.status !== 'out_of_stock' && (
+                      {/* Status Badge - Show for valid statuses */}
+                      {editingProduct.status && (
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${editingProduct.status === 'active' ? 'bg-green-100 text-green-800' :
-                          editingProduct.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
-                            editingProduct.status === 'archived' ? 'bg-gray-100 text-gray-800' : 'bg-gray-100 text-gray-800'}`}>
+                            editingProduct.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
+                              editingProduct.status === 'archived' ? 'bg-gray-100 text-gray-800' :
+                                'bg-gray-100 text-gray-800'
+                          }`}>
                           {editingProduct.status === 'active' ? 'Active' :
                             editingProduct.status === 'draft' ? 'Draft' :
                               editingProduct.status === 'archived' ? 'Archived' :
@@ -1118,10 +928,17 @@ export default function AdminPanel() {
 
                 {/* Save/Cancel Buttons */}
                 <div className="flex justify-end space-x-3 pt-6 mt-6 border-t">
-                  <button onClick={handleCancelEdit} className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                  <button onClick={() => {
+                    setEditingProduct(null);
+                    setIsAddingProduct(false);
+                  }}
+                    className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                  >
                     Cancel
                   </button>
-                  <button onClick={handleSaveProduct} className="px-4 py-2 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition-colors flex items-center">
+                  <button onClick={handleSaveProduct}
+                    className="px-4 py-2 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition-colors flex items-center"
+                  >
                     <Save className="w-4 h-4 mr-2" />
                     {isAddingProduct ? 'Add Product' : 'Save Changes'}
                   </button>
@@ -1134,3 +951,4 @@ export default function AdminPanel() {
     </div>
   );
 }
+
