@@ -2,10 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { User, Package, Heart, Settings, LogOut, Edit, Eye } from 'lucide-react';
+import { User, Package, Heart, Settings, LogOut, Edit, Eye, Loader2 } from 'lucide-react';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { AuthGuard } from '@/components/auth/AuthGuard';
+import { useWishlistStore } from '@/store/wishlist';
 
 interface UserProfile {
   id: string;
@@ -44,6 +45,13 @@ export default function AccountPage() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [orders, setOrders] = useState<Order[]>([]);
   const [isEditing, setIsEditing] = useState(false);
+  
+  // Wishlist store
+  const { removeItem, hydrate } = useWishlistStore();
+  
+  useEffect(() => {
+    hydrate();
+  }, [hydrate]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -336,21 +344,71 @@ export default function AccountPage() {
     </div>
   );
 
-  const renderWishlist = () => (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-      <h2 className="text-xl font-semibold text-gray-900 mb-6">My Wishlist</h2>
-      <div className="text-center py-12">
-        <Heart className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-        <h3 className="text-lg font-medium text-gray-900 mb-2">Your wishlist is empty</h3>
-        <p className="text-gray-600 mb-4">Start adding items you love to your wishlist</p>
-        <Link href="/products"
-          className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
-        >
-          Browse Products
-        </Link>
+  const renderWishlist = () => {
+    const { items: wishlistItems, hydrated } = useWishlistStore();
+    
+    if (!hydrated) {
+      return (
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <h2 className="text-xl font-semibold text-gray-900 mb-6">My Wishlist</h2>
+          <div className="text-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4 text-gray-400" />
+            <p className="text-gray-600">Loading wishlist...</p>
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-6">My Wishlist ({wishlistItems.length})</h2>
+        
+        {wishlistItems.length === 0 ? (
+          <div className="text-center py-12">
+            <Heart className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 mb-2">Your wishlist is empty</h3>
+            <p className="text-gray-600 mb-4">Start adding items you love to your wishlist</p>
+            <Link href="/products"
+              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
+            >
+              Browse Products
+            </Link>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {wishlistItems.map((item) => (
+              <div key={item.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                <div className="aspect-square bg-gray-100 rounded-md mb-3 overflow-hidden">
+                  <img 
+                    src={item.image} 
+                    alt={item.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <h3 className="font-medium text-gray-900 mb-1">{item.name}</h3>
+                <p className="text-lg font-semibold text-gray-900 mb-2">£{item.price.toFixed(2)}</p>
+                <div className="flex gap-2">
+                  <Link 
+                    href={`/products/${item.slug}`}
+                    className="flex-1 bg-blue-600 text-white text-center py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
+                  >
+                    View Product
+                  </Link>
+                  <button
+                    onClick={() => removeItem(item.id)}
+                    className="p-2 text-red-600 hover:bg-red-50 rounded-md transition-colors"
+                    title="Remove from wishlist"
+                  >
+                    <Heart className="h-5 w-5 fill-current" />
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
-    </div>
-  );
+    );
+  };
 
   const renderSettings = () => (
     <div className="space-y-6">
