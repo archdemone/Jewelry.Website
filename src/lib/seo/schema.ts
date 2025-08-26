@@ -16,7 +16,7 @@ export function buildOrganization() {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'Your Jewelry Store',
-    url: 'https://yourjewelrystore.com',
-    logo: 'https://yourjewelrystore.com/icon-512.png',
+    url: 'https://jewelry-website.vercel.app',
+    logo: 'https://jewelry-website.vercel.app/icon-512.svg',
   };
 }

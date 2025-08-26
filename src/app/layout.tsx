@@ -59,21 +59,21 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://jm-jewelry.com'),
+  metadataBase: new URL('https://jewelry-website.vercel.app'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://jm-jewelry.com',
+    url: 'https://jewelry-website.vercel.app',
     title: 'J&M | Handcrafted Rings & Artisan Jewelry',
     description:
       'Each ring is personally crafted by a master artisan, ensuring unique beauty and exceptional quality.',
     siteName: 'J&M Jewelry',
     images: [
       {
-        url: '/images/og-image.jpg',
+        url: '/images/og-image.svg',
         width: 1200,
         height: 630,
         alt: 'J&M Jewelry - Handcrafted Rings',
@@ -125,7 +125,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="J&M Jewelry" />
-        <link rel="apple-touch-icon" href="/images/icon-192x192.png" />
+        <link rel="apple-touch-icon" href="/icons/icon-192.svg" />
         <link rel="manifest" href="/manifest.webmanifest" />
         {/* Force cache invalidation with cache-busting query parameter */}
         <meta name="cache-control" content="no-cache, no-store, must-revalidate" />

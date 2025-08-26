@@ -15,7 +15,7 @@ export const metadata = {
     title: 'J&M | Handcrafted Rings & Artisan Jewelry',
     description:
       'Each ring is personally crafted by a master artisan, ensuring unique beauty and exceptional quality.',
-    images: ['/images/og-image.jpg'],
+    images: ['/images/og-image.svg'],
   },
   // Performance optimizations
   robots: {
@@ -31,8 +31,8 @@ export const metadata = {
       '@context': 'https://schema.org',
       '@type': 'Organization',
       name: 'J&M Jewelry',
-      url: 'https://jm-jewelry.com',
-      logo: 'https://jm-jewelry.com/images/logo.png',
+      url: 'https://jewelry-website.vercel.app',
+      logo: 'https://jewelry-website.vercel.app/images/logo.svg',
       description: 'Handcrafted rings with passion, designed for your forever moments',
       address: {
         '@type': 'PostalAddress',

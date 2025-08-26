@@ -18,7 +18,7 @@ export default function AccountAdminPage() {
     }
 
     // Check if user is admin
-    if (session.user?.role !== 'ADMIN') {
+    if ((session.user as any)?.role !== 'ADMIN') {
       router.push('/account');
       return;
     }
@@ -44,7 +44,7 @@ export default function AccountAdminPage() {
           <div className="px-6 py-4 border-b border-gray-200">
             <h1 className="text-2xl font-bold text-gray-900">Admin Panel</h1>
             <p className="mt-1 text-sm text-gray-600">
-              Welcome back, {session.user?.name || 'Admin'}
+              Welcome back, {session?.user?.name || 'Admin'}
             </p>
           </div>
 

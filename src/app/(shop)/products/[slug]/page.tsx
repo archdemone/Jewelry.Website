@@ -56,9 +56,9 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
       }}
       />
       <BreadcrumbsJsonLd items={[
-        { name: 'Home', item: 'https://yourjewelrystore.com' },
-        { name: 'Products', item: 'https://yourjewelrystore.com/products' },
-        { name: product.name, item: `https://yourjewelrystore.com/products/${product.slug}` },
+        { name: 'Home', item: 'https://jewelry-website.vercel.app' },
+        { name: 'Products', item: 'https://jewelry-website.vercel.app/products' },
+        { name: product.name, item: `https://jewelry-website.vercel.app/products/${product.slug}` },
       ]}
       />
       <div className="grid gap-8 md:grid-cols-2">

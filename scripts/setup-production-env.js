@@ -6,7 +6,7 @@ DATABASE_URL="postgresql://user:password@host:5432/jewelry_prod?schema=public"
 DIRECT_URL="postgresql://user:password@host:5432/jewelry_prod?schema=public"
 
 # Authentication
-NEXTAUTH_URL="https://yourjewelrystore.com"
+NEXTAUTH_URL="https://j&m-jewelry.co.uk"
 NEXTAUTH_SECRET="generate-with-openssl-rand-base64-32"
 
 # Google OAuth
@@ -23,7 +23,7 @@ EMAIL_SERVER_HOST="smtp.sendgrid.net"
 EMAIL_SERVER_PORT="587"
 EMAIL_SERVER_USER="apikey"
 EMAIL_SERVER_PASSWORD="your-sendgrid-api-key"
-EMAIL_FROM="noreply@yourjewelrystore.com"
+EMAIL_FROM="noreply@j&m-jewelry.co.uk"
 
 # Cloud Storage (AWS S3/Cloudinary)
 NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME="your-cloud-name"
@@ -42,7 +42,7 @@ NEXT_PUBLIC_SENTRY_DSN="https://...@sentry.io/..."
 REDIS_URL="redis://localhost:6379"
 
 # CDN
-NEXT_PUBLIC_CDN_URL="https://cdn.yourjewelrystore.com"
+NEXT_PUBLIC_CDN_URL="https://cdn.j&m-jewelry.co.uk"
 
 # Feature Flags
 NEXT_PUBLIC_ENABLE_REVIEWS="true"
@@ -53,7 +53,7 @@ NEXT_PUBLIC_MAINTENANCE_MODE="false"
 ADMIN_PASSWORD="ChangeMe123!"
 
 # Site Configuration
-NEXT_PUBLIC_SITE_URL="https://yourjewelrystore.com"
+NEXT_PUBLIC_SITE_URL="https://j&m-jewelry.co.uk"
 NEXT_PUBLIC_SITE_NAME="Your Jewelry Store"
 `;
 
