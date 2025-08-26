@@ -32,7 +32,7 @@ export default function LoginForm() {
     if (message) {
       setSuccess(message);
     }
-  }, []);
+  }, [searchParams]);
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();

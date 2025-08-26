@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -127,14 +127,12 @@ export default function CreateAdminPage() {
               </div>
 
               {message && (
-                <div className={`rounded-md p-3 ${
-                  message.type === 'success' 
-                    ? 'bg-green-50 border border-green-200' 
-                    : 'bg-red-50 border border-red-200'
-                }`}>
-                  <p className={`text-sm ${
-                    message.type === 'success' ? 'text-green-600' : 'text-red-600'
+                <div className={`rounded-md p-3 ${message.type === 'success'
+                  ? 'bg-green-50 border border-green-200'
+                  : 'bg-red-50 border border-red-200'
                   }`}>
+                  <p className={`text-sm ${message.type === 'success' ? 'text-green-600' : 'text-red-600'
+                    }`}>
                     {message.text}
                   </p>
                 </div>
