@@ -1,3 +1,47 @@
+/* Mobile-specific fixes */
+@media (max-width: 768px) {
+
+  /* Fix viewport issues */
+  body {
+    width: 100vw;
+    overflow-x: hidden;
+  }
+
+  /* Ensure mobile menu doesn't cause horizontal scroll */
+  .md\\:hidden {
+    position: relative;
+  }
+
+  /* Fix container padding on mobile */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Ensure header doesn't overflow */
+  header {
+    width: 100%;
+    overflow: hidden;
+  }
+
+  /* Fix mobile menu positioning */
+  #mobile-menu {
+    width: 100vw;
+    left: 0;
+    right: 0;
+  }
+}
+
+/* Fix any duplicate mobile menu issues */
+.mobile-menu-container {
+  position: relative;
+}
+
+/* Ensure proper z-index for mobile menu */
+.mobile-menu {
+  z-index: 1000;
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -8,6 +52,7 @@
     opacity: 0;
     transform: translateY(30px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -47,8 +92,7 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb)))
-    rgb(var(--background-start-rgb));
+  background: linear-gradient(to bottom, transparent, rgb(var(--background-end-rgb))) rgb(var(--background-start-rgb));
   /* Prevent layout shifts during font loading */
   font-display: swap;
   text-rendering: optimizeLegibility;
@@ -64,7 +108,12 @@ body {
 /* Reserve space for fonts to prevent layout shifts */
 .heading-primary,
 .heading-secondary,
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-display: swap;
   min-height: 1.2em;
   line-height: 1.2;
@@ -73,7 +122,9 @@ h1, h2, h3, h4, h5, h6 {
 
 .body-text,
 .body-text-medium,
-p, span, div {
+p,
+span,
+div {
   font-display: swap;
   min-height: 1.6em;
   line-height: 1.6;
@@ -176,6 +227,7 @@ html {
 
 /* Optimize for reduced motion */
 @media (prefers-reduced-motion: reduce) {
+
   *,
   *::before,
   *::after {
@@ -204,26 +256,30 @@ html {
 
 /* Ensure proper text contrast */
 .bg-white .text-white {
-  color: #1f2937; /* gray-800 */
+  color: #1f2937;
+  /* gray-800 */
 }
 
 /* Fix text contrast issues on light backgrounds */
 .bg-gradient-to-br.from-amber-50.via-orange-50.to-yellow-50 .text-white,
 .bg-gradient-to-r.from-amber-50.via-orange-50.to-yellow-50 .text-white {
-  color: #1f2937 !important; /* gray-800 */
+  color: #1f2937 !important;
+  /* gray-800 */
 }
 
 /* Ensure proper contrast for buttons and text on light backgrounds */
 .bg-gradient-to-br.from-amber-50.via-orange-50.to-yellow-50 button,
 .bg-gradient-to-r.from-amber-50.via-orange-50.to-yellow-50 button {
-  color: #1f2937 !important; /* gray-800 */
+  color: #1f2937 !important;
+  /* gray-800 */
 }
 
 /* Fix any other white text on light background issues */
 .bg-amber-50 .text-white,
 .bg-orange-50 .text-white,
 .bg-yellow-50 .text-white {
-  color: #1f2937 !important; /* gray-800 */
+  color: #1f2937 !important;
+  /* gray-800 */
 }
 
 /* Tighter spacing throughout site */
@@ -282,7 +338,8 @@ nav {
 
 /* Reduce hero section heights */
 .hero-section {
-  min-height: 50vh; /* Instead of 100vh */
+  min-height: 50vh;
+  /* Instead of 100vh */
 }
 
 /* Enhanced Gallery Styles */

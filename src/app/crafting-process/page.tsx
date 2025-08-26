@@ -429,7 +429,7 @@ export default function CraftingProcessPage() {
                 className="group relative overflow-hidden rounded-xl"
               >
                 <img
-                  src="/images/craftingprocess/final-polish.webp"
+                  src="/images/process/final-polish.webp"
                   alt="Perfect Finish - The final polish that makes it shine"
                   className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-110"
                   sizes="(max-width: 768px) 100vw, 400px"
