@@ -47,7 +47,7 @@
     "prebuild": "echo 'Running build with type checking and linting enabled' && npx prisma generate",
     "debug:prisma": "node scripts/debug-prisma.js",
     "postbuild": "npm run size-limit || true",
-    "postinstall": "npm install --include=optional sharp",
+    "postinstall": "npm install --include=optional sharp && npx prisma generate",
     "web-vitals-check": "node scripts/web-vitals-guard.js",
     "pre-commit": "npm run web-vitals-check && npm run lint && npm run type-check:strict",
     "lighthouse": "lighthouse http://localhost:3000 --output json --output-path ./lighthouse-report.json",
