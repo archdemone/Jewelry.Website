@@ -3,31 +3,37 @@
   "devCommand": "next dev",
   "installCommand": "npm install",
   "framework": "nextjs",
-  "regions": ["iad1"],
-  "env": {
-    "NEXT_PUBLIC_SITE_URL": "https://yourjewelrystore.com"
-  },
-  "build": {
-    "env": {
-      "DATABASE_URL": "@database_url",
-      "NEXTAUTH_SECRET": "@nextauth_secret",
-      "STRIPE_SECRET_KEY": "@stripe_secret_key"
-    }
-  },
+  "regions": [
+    "iad1"
+  ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
-        { "key": "X-XSS-Protection", "value": "1; mode=block" }
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        }
       ]
     }
   ],
   "redirects": [
     {
       "source": "/admin",
-      "has": [{ "type": "host", "value": "www.yourjewelrystore.com" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "www.yourjewelrystore.com"
+        }
+      ],
       "destination": "https://yourjewelrystore.com/admin",
       "permanent": false
     }
