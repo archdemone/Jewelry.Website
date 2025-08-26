@@ -119,7 +119,7 @@ export default function RootLayout({
         {/* Preload critical images - removed to avoid duplicate preload warning */}
         {/* Preload service worker - removed to avoid duplicate preload warning */}
 
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
         <meta name="theme-color" content="#d4af37" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -133,7 +133,7 @@ export default function RootLayout({
         <meta name="expires" content="0" />
         {/* Manifest and SW disabled to avoid errors */}
       </head>
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${inter.className} antialiased`} style={{ width: '100%', overflowX: 'hidden' }}>
         {/* Skip Links for Accessibility */}
         <a
           href="#main-content"
@@ -151,7 +151,7 @@ export default function RootLayout({
           <CartProvider>
             <ErrorBoundary>
               <Header />
-              <main id="main-content" role="main">{children}</main>
+              <main id="main-content" role="main" style={{ width: '100%', overflowX: 'hidden' }}>{children}</main>
               <ConditionalFooter />
               <SimpleToastContainer />
               <NewsletterPopup />
