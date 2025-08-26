@@ -1,6 +1,4 @@
 import type { Metadata } from 'next';
-import { Header } from '@/components/layout/Header';
-import { Footer } from '@/components/layout/Footer';
 import FAQAccordion, { FAQItem } from '@/components/features/FAQAccordion';
 import { FAQPageJsonLd } from '@/components/seo/JsonLd';
 
@@ -58,7 +56,7 @@ const FAQs: FAQItem[] = [
     id: '8',
     category: 'Account & Security',
     question: 'How do I reset my password?',
-    answer: 'Use the “Forgot password” link on the login page.',
+    answer: 'Use the "Forgot password" link on the login page.',
     popularity: 3,
   },
 ];
@@ -70,27 +68,23 @@ export const metadata: Metadata = {
 
 export default function FAQPage() {
   return (
-    <>
-              <Header />
-              <main className="container py-10">
-              <FAQPageJsonLd faqs={FAQs.map((f) => ({ question: f.question, answer: f.answer }))} />
-              <section className="mx-auto max-w-3xl">
-              <h1 className="text-3xl font-[var(--font-serif)] font-semibold text-secondary">
-            Frequently Asked Questions
-          </h1>
-              <p className="mt-2 text-sm text-gray-600">
-            Find answers to common questions. Can’t find what you’re looking for?{' '}
-            <a href="/contact" className="underline">
-              Contact us
-            </a>
-            .
-          </p>
-              <div className="mt-6">
-              <FAQAccordion items={FAQs} />
-              </div>
-              </section>
-              </main>
-              <Footer />
-              </>
+    <main className="container py-10">
+      <FAQPageJsonLd faqs={FAQs.map((f) => ({ question: f.question, answer: f.answer }))} />
+      <section className="mx-auto max-w-3xl">
+        <h1 className="text-3xl font-[var(--font-serif)] font-semibold text-secondary">
+          Frequently Asked Questions
+        </h1>
+        <p className="mt-2 text-sm text-gray-600">
+          Find answers to common questions. Can't find what you're looking for?{' '}
+          <a href="/contact" className="underline">
+            Contact us
+          </a>
+          .
+        </p>
+        <div className="mt-6">
+          <FAQAccordion items={FAQs} />
+        </div>
+      </section>
+    </main>
   );
 }
