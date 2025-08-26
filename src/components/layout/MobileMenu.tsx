@@ -67,15 +67,15 @@ export function MobileMenu() {
                 className="w-full"
               />
             </div>
-            <nav className="space-y-0.5 p-1">
+            <nav className="space-y-0 p-1">
               <Link href="/"
-                className="block rounded-lg px-2 py-1.5 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600" onClick={handleMenuToggle}
+                className="block rounded-lg px-2 py-1 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600" onClick={handleMenuToggle}
                 aria-label="Go to home page"
               >
                 Home
               </Link>
               <Link href="/products"
-                className="block rounded-lg px-2 py-1.5 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600" onClick={handleMenuToggle}
+                className="block rounded-lg px-2 py-1 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600" onClick={handleMenuToggle}
                 aria-label="Browse all products"
               >
                 Products
@@ -84,7 +84,7 @@ export function MobileMenu() {
               {/* Ring Collections Dropdown */}
               <div className="relative">
                 <button onClick={handleCollectionsToggle}
-                  className="flex w-full items-center justify-between rounded-lg px-2 py-1.5 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600"
+                  className="flex w-full items-center justify-between rounded-lg px-2 py-1 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600"
                   aria-expanded={showCollections}
                   aria-haspopup="true"
                   aria-label="Ring Collections Menu"
@@ -104,7 +104,7 @@ export function MobileMenu() {
                       <div className="space-y-0.5 pl-3">
                         {ringCollections.map((collection) => (
                           <Link key={collection.name} href={collection.href}
-                            className="block rounded-lg px-3 py-1.5 text-sm text-gray-600 transition-colors hover:bg-gray-50 hover:text-gold-600" onClick={handleMenuToggle}
+                            className="block rounded-lg px-3 py-1 text-sm text-gray-600 transition-colors hover:bg-gray-50 hover:text-gold-600" onClick={handleMenuToggle}
                             role="menuitem"
                             aria-label={`Browse ${collection.name}`}
                           >
@@ -117,19 +117,19 @@ export function MobileMenu() {
                 </AnimatePresence>
               </div>
               <Link href="/about-artisan"
-                className="block rounded-lg px-2 py-1.5 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600" onClick={handleMenuToggle}
+                className="block rounded-lg px-2 py-1 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600" onClick={handleMenuToggle}
                 aria-label="Learn about the artisan"
               >
                 The Artisan
               </Link>
               <Link href="/crafting-process"
-                className="block rounded-lg px-2 py-1.5 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600" onClick={handleMenuToggle}
+                className="block rounded-lg px-2 py-1 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600" onClick={handleMenuToggle}
                 aria-label="Learn about our crafting process"
               >
-                Process
+                Crafting
               </Link>
               <Link href="/contact"
-                className="block rounded-lg px-2 py-1.5 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600" onClick={handleMenuToggle}
+                className="block rounded-lg px-2 py-1 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600" onClick={handleMenuToggle}
                 aria-label="Contact us"
               >
                 Contact
@@ -137,7 +137,7 @@ export function MobileMenu() {
 
               {/* Admin Panel Link - Only show if user is logged in */}
               <Link href="/admin"
-                className="block rounded-lg px-2 py-1.5 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600 border-t border-gray-100" onClick={handleMenuToggle}
+                className="block rounded-lg px-2 py-1 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600 border-t border-gray-100" onClick={handleMenuToggle}
                 aria-label="Access admin panel"
               >
                 <div className="flex items-center gap-2">

@@ -149,8 +149,8 @@ export default function CraftingProcessPage() {
               viewport={{ once: true }}
               className="mb-12 text-center"
             >
-              <h2 className="mb-4 font-serif text-3xl">The Creation Journey</h2>
-              <p className="text-lg text-orange-600">
+              <h2 className="mb-4 font-serif text-3xl text-white">The Creation Journey</h2>
+              <p className="text-lg text-orange-400">
                 Click on each step to learn more about the process
               </p>
             </motion.div>

@@ -136,8 +136,8 @@ export default function AboutPageClient() {
   ];
 
   return (
-    <main className="space-y-0">
-      <div className="min-h-screen bg-white">
+    <main className="space-y-0 overflow-x-hidden">
+      <div className="min-h-screen bg-white overflow-x-hidden">
         {/* Hero Section */}
         <section className="relative h-[60vh] min-h-[500px] overflow-hidden bg-gradient-to-br from-gray-50 to-gray-100">
           <div className="absolute inset-0">
