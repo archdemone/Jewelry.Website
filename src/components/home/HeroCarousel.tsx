@@ -4,13 +4,14 @@ import Link from 'next/link';
 
 const HeroCarousel = () => {
   return (
-    <section className="hero-section relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden">
+    <section className="hero-section relative h-screen min-h-[600px] flex items-center justify-center overflow-hidden" style={{ width: '100%', maxWidth: '100vw' }}>
       {/* Hero Background Image */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 z-0" style={{ width: '100%', maxWidth: '100vw' }}>
         <img
           src="/images/home/header1.webp"
           alt="J&M Jewelry - Handcrafted rings with passion"
           className="absolute inset-0 h-full w-full object-cover"
+          style={{ width: '100%', maxWidth: '100vw' }}
         />
         <div className="absolute inset-0 bg-black/40"></div>
       </div>
