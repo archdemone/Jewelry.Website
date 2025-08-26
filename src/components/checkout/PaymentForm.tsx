@@ -44,7 +44,7 @@ export default function PaymentForm() {
   const [disabled, setDisabled] = useState<boolean>(false);
 
   // If there's no public key at build-time, disable payments entirely
-  const stripeEnabled = Boolean(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY);
+  const stripeEnabled = false; // Disabled for showcase deployment
 
   useEffect(() => {
     if (!stripeEnabled) {

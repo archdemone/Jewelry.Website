@@ -10,8 +10,7 @@
   "build": {
     "env": {
       "DATABASE_URL": "@database_url",
-      "NEXTAUTH_SECRET": "@nextauth_secret",
-      "STRIPE_SECRET_KEY": "@stripe_secret_key"
+      "NEXTAUTH_SECRET": "@nextauth_secret"
     }
   },
   "headers": [

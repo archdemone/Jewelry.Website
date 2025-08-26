@@ -24,7 +24,7 @@ export function PayPalButton({
   useEffect(() => {
     // Load PayPal script
     const script = document.createElement('script');
-    script.src = `https://www.paypal.com/sdk/js?client-id=${process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID}&currency=${currency}`;
+    script.src = `https://www.paypal.com/sdk/js?client-id=disabled&currency=${currency}`;
     script.async = true;
     script.onload = () => setPaypalLoaded(true);
     document.body.appendChild(script);
