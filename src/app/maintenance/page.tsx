@@ -12,7 +12,7 @@ export default function MaintenancePage() {
               <div className="space-y-4">
               <p className="text-sm text-gray-500">Expected completion: 2 hours</p>
               <p className="text-sm text-gray-500">
-            For urgent inquiries: support@j&m-jewelry.co.uk
+            For urgent inquiries: support@jewelry-website.vercel.app
           </p>
               </div>
               </div>

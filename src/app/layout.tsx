@@ -59,14 +59,14 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  metadataBase: new URL('https://j&m-jewelry.co.uk'),
+  metadataBase: new URL('https://jewelry-website.vercel.app'),
   alternates: {
     canonical: '/',
   },
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://j&m-jewelry.co.uk',
+    url: 'https://jewelry-website.vercel.app',
     title: 'J&M | Handcrafted Rings & Artisan Jewelry',
     description:
       'Each ring is personally crafted by a master artisan, ensuring unique beauty and exceptional quality.',

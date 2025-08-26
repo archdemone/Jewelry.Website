@@ -39,9 +39,9 @@ export default function BlogPostPage({ params }: Params) {
           }}
         />
               <BreadcrumbsJsonLd items={[
-                    { name: 'Home', item: 'https://j&m-jewelry.co.uk' },
-        { name: 'Blog', item: 'https://j&m-jewelry.co.uk/blog' },
-        { name: post.title, item: `https://j&m-jewelry.co.uk/blog/${params.slug}` },
+                    { name: 'Home', item: 'https://jewelry-website.vercel.app' },
+        { name: 'Blog', item: 'https://jewelry-website.vercel.app/blog' },
+        { name: post.title, item: `https://jewelry-website.vercel.app/blog/${params.slug}` },
           ]}
         />
               <article className="mx-auto max-w-3xl">

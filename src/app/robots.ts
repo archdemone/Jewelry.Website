@@ -9,6 +9,6 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/admin/', '/api/', '/checkout/success', '/checkout/cancel', '/account/'],
       },
     ],
-    sitemap: 'https://j&m-jewelry.co.uk/sitemap.xml',
+    sitemap: 'https://jewelry-website.vercel.app/sitemap.xml',
   };
 }

@@ -11,8 +11,8 @@ export function OrganizationJsonLd() {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'Your Jewelry Store',
-    url: 'https://j&m-jewelry.co.uk',
-    logo: 'https://j&m-jewelry.co.uk/icon-512.svg',
+    url: 'https://jewelry-website.vercel.app',
+    logo: 'https://jewelry-website.vercel.app/icon-512.svg',
     sameAs: [
       'https://www.facebook.com/yourjewelrystore',
       'https://www.instagram.com/yourjewelrystore',
@@ -37,7 +37,7 @@ export function ProductJsonLd({ product }: { product: any }) {
     },
     offers: {
       '@type': 'Offer',
-              url: `https://j&m-jewelry.co.uk/products/${product.slug}`,
+              url: `https://jewelry-website.vercel.app/products/${product.slug}`,
       priceCurrency: 'USD',
       price: product.price,
       availability:
@@ -93,7 +93,7 @@ export function LocalBusinessJsonLd() {
     '@context': 'https://schema.org',
     '@type': 'JewelryStore',
     name: 'Your Jewelry Store',
-          image: 'https://j&m-jewelry.co.uk/icon-512.svg',
+          image: 'https://jewelry-website.vercel.app/icon-512.svg',
     address: {
       '@type': 'PostalAddress',
       streetAddress: '123 Fifth Ave',
@@ -103,7 +103,7 @@ export function LocalBusinessJsonLd() {
       addressCountry: 'US',
     },
     telephone: '+1-212-555-1234',
-            url: 'https://j&m-jewelry.co.uk/contact',
+            url: 'https://jewelry-website.vercel.app/contact',
   };
   return <JsonLd data={schema} />;
 }
@@ -121,7 +121,7 @@ export function ArticleJsonLd({
     author: article.author || 'Aurora Team',
     datePublished: article.date,
     dateModified: article.date,
-          mainEntityOfPage: `https://j&m-jewelry.co.uk/blog/${article.slug}`,
+          mainEntityOfPage: `https://jewelry-website.vercel.app/blog/${article.slug}`,
   };
   return <JsonLd data={schema} />;
 }

@@ -5,12 +5,14 @@
   "framework": "nextjs",
   "regions": ["iad1"],
   "env": {
-    "NEXT_PUBLIC_SITE_URL": "https://j&m-jewelry.co.uk"
+    "NEXT_PUBLIC_SITE_URL": "https://jewelry-website.vercel.app",
+    "NEXT_PUBLIC_SUPABASE_URL": "https://gscatsdlwvaujahpewes.supabase.co",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdzY2F0c2Rsd3ZhdWphaHBld2VzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTYwMzIyMzEsImV4cCI6MjA3MTYwODIzMX0.QY033NJYeDDuPPwbx3gcWCYW0qSmzaipuIxw-vH2xiY"
   },
   "build": {
     "env": {
-      "DATABASE_URL": "@database_url",
-      "NEXTAUTH_SECRET": "@nextauth_secret"
+      "DATABASE_URL": "postgresql://postgres:boberpoper34@db.gscatsdlwvaujahpewes.supabase.co:5432/postgres",
+      "NEXTAUTH_SECRET": "j&m-jewelry-secret-key-2025-production-deploy"
     }
   },
   "headers": [

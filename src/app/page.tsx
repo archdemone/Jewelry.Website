@@ -31,8 +31,8 @@ export const metadata = {
       '@context': 'https://schema.org',
       '@type': 'Organization',
       name: 'J&M Jewelry',
-      url: 'https://j&m-jewelry.co.uk',
-      logo: 'https://j&m-jewelry.co.uk/images/logo.svg',
+      url: 'https://jewelry-website.vercel.app',
+      logo: 'https://jewelry-website.vercel.app/images/logo.svg',
       description: 'Handcrafted rings with passion, designed for your forever moments',
       address: {
         '@type': 'PostalAddress',

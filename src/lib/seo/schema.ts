@@ -16,7 +16,7 @@ export function buildOrganization() {
     '@context': 'https://schema.org',
     '@type': 'Organization',
     name: 'Your Jewelry Store',
-    url: 'https://j&m-jewelry.co.uk',
-    logo: 'https://j&m-jewelry.co.uk/icon-512.svg',
+    url: 'https://jewelry-website.vercel.app',
+    logo: 'https://jewelry-website.vercel.app/icon-512.svg',
   };
 }
