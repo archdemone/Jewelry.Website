@@ -409,10 +409,10 @@ export default function CraftingProcessPage() {
                   className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-110"
                   sizes="(max-width: 768px) 100vw, 400px"
                 />
-                <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/70 to-transparent p-6">
-                  <div className="text-white">
-                    <h3 className="text-lg font-semibold">Material Selection</h3>
-                    <p className="text-sm opacity-90">
+                <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6">
+                  <div className="text-white backdrop-blur-sm bg-black/20 rounded-lg p-3">
+                    <h3 className="text-lg font-semibold text-white drop-shadow-lg">Material Selection</h3>
+                    <p className="text-sm text-white/95 drop-shadow-md">
                       Choosing the perfect materials for your ring
                     </p>
                   </div>
@@ -431,10 +431,10 @@ export default function CraftingProcessPage() {
                   className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-110"
                   sizes="(max-width: 768px) 100vw, 400px"
                 />
-                <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/70 to-transparent p-6">
-                  <div className="text-white">
-                    <h3 className="text-lg font-semibold">Precision Crafting</h3>
-                    <p className="text-sm opacity-90">Every detail carefully shaped by hand</p>
+                <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6">
+                  <div className="text-white backdrop-blur-sm bg-black/20 rounded-lg p-3">
+                    <h3 className="text-lg font-semibold text-white drop-shadow-lg">Precision Crafting</h3>
+                    <p className="text-sm text-white/95 drop-shadow-md">Every detail carefully shaped by hand</p>
                   </div>
                 </div>
               </motion.div>
@@ -451,10 +451,10 @@ export default function CraftingProcessPage() {
                   className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-110"
                   sizes="(max-width: 768px) 100vw, 400px"
                 />
-                <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/70 to-transparent p-6">
-                  <div className="text-white">
-                    <h3 className="text-lg font-semibold">Perfect Finish</h3>
-                    <p className="text-sm opacity-90">The final polish that makes it shine</p>
+                <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/80 via-black/40 to-transparent p-6">
+                  <div className="text-white backdrop-blur-sm bg-black/20 rounded-lg p-3">
+                    <h3 className="text-lg font-semibold text-white drop-shadow-lg">Perfect Finish</h3>
+                    <p className="text-sm text-white/95 drop-shadow-md">The final polish that makes it shine</p>
                   </div>
                 </div>
               </motion.div>

@@ -255,7 +255,7 @@ export default function AboutPageClient() {
 
         {/* Timeline Section */}
         <section className="py-16 bg-white">
-          <div className="container mx-auto px-4">
+          <div className="container mx-auto px-4 max-w-full overflow-hidden">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -269,7 +269,8 @@ export default function AboutPageClient() {
               </p>
             </motion.div>
 
-            <div className="relative">
+            {/* Desktop Timeline */}
+            <div className="relative hidden md:block">
               {/* Timeline line */}
               <div className="absolute left-1/2 transform -translate-x-px h-full w-0.5 bg-gold-200"></div>
 
@@ -300,6 +301,37 @@ export default function AboutPageClient() {
                   </motion.div>
                 ))}
               </div>
+            </div>
+
+            {/* Mobile Timeline */}
+            <div className="md:hidden space-y-6">
+              {timeline.map((item, index) => (
+                <motion.div
+                  key={item.year}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="relative"
+                >
+                  {/* Mobile timeline line */}
+                  <div className="absolute left-6 top-0 bottom-0 w-0.5 bg-gold-200"></div>
+
+                  <div className="flex items-start gap-4 pl-12">
+                    {/* Timeline dot */}
+                    <div className="absolute left-4 top-2 z-10">
+                      <div className="w-3 h-3 bg-gold-600 rounded-full border-2 border-white shadow-md"></div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="bg-white p-4 rounded-lg shadow-md border border-gray-100 flex-1 min-w-0">
+                      <div className="text-xl font-bold text-gold-600 mb-1">{item.year}</div>
+                      <h3 className="text-base font-semibold mb-2 leading-tight">{item.title}</h3>
+                      <p className="text-gray-600 text-sm leading-relaxed">{item.description}</p>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </div>
         </section>
