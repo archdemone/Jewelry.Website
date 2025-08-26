@@ -12,7 +12,7 @@ export function OrganizationJsonLd() {
     '@type': 'Organization',
     name: 'Your Jewelry Store',
     url: 'https://j&m-jewelry.co.uk',
-    logo: 'https://j&m-jewelry.co.uk/icon-512.png',
+    logo: 'https://j&m-jewelry.co.uk/icon-512.svg',
     sameAs: [
       'https://www.facebook.com/yourjewelrystore',
       'https://www.instagram.com/yourjewelrystore',
@@ -93,7 +93,7 @@ export function LocalBusinessJsonLd() {
     '@context': 'https://schema.org',
     '@type': 'JewelryStore',
     name: 'Your Jewelry Store',
-          image: 'https://j&m-jewelry.co.uk/icon-512.png',
+          image: 'https://j&m-jewelry.co.uk/icon-512.svg',
     address: {
       '@type': 'PostalAddress',
       streetAddress: '123 Fifth Ave',

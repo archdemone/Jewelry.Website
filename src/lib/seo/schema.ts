@@ -17,6 +17,6 @@ export function buildOrganization() {
     '@type': 'Organization',
     name: 'Your Jewelry Store',
     url: 'https://j&m-jewelry.co.uk',
-    logo: 'https://j&m-jewelry.co.uk/icon-512.png',
+    logo: 'https://j&m-jewelry.co.uk/icon-512.svg',
   };
 }

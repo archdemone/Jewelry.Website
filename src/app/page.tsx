@@ -15,7 +15,7 @@ export const metadata = {
     title: 'J&M | Handcrafted Rings & Artisan Jewelry',
     description:
       'Each ring is personally crafted by a master artisan, ensuring unique beauty and exceptional quality.',
-    images: ['/images/og-image.jpg'],
+    images: ['/images/og-image.svg'],
   },
   // Performance optimizations
   robots: {
@@ -32,7 +32,7 @@ export const metadata = {
       '@type': 'Organization',
       name: 'J&M Jewelry',
       url: 'https://j&m-jewelry.co.uk',
-      logo: 'https://j&m-jewelry.co.uk/images/logo.png',
+      logo: 'https://j&m-jewelry.co.uk/images/logo.svg',
       description: 'Handcrafted rings with passion, designed for your forever moments',
       address: {
         '@type': 'PostalAddress',
