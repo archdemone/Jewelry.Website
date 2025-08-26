@@ -130,7 +130,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-08-26T10:42:12.525Z",
+                  "startTime": "2025-08-26T10:54:32.979Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -172,7 +172,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-08-26T10:42:14.353Z",
+                  "startTime": "2025-08-26T10:54:34.696Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -199,7 +199,7 @@
               "results": [
                 {
                   "workerIndex": 19,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "failed",
                   "duration": 2,
                   "error": {
@@ -214,7 +214,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-08-26T10:42:16.707Z",
+                  "startTime": "2025-08-26T10:54:36.794Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -264,7 +264,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-08-26T10:42:12.530Z",
+                  "startTime": "2025-08-26T10:54:32.977Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -306,7 +306,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-08-26T10:42:12.980Z",
+                  "startTime": "2025-08-26T10:54:33.410Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -335,7 +335,7 @@
                   "workerIndex": 4,
                   "parallelIndex": 1,
                   "status": "failed",
-                  "duration": 2,
+                  "duration": 5,
                   "error": {
                     "message": "Error: browserType.launch: Executable doesn't exist at /home/ubuntu/.cache/ms-playwright/chromium_headless_shell-1187/chrome-linux/headless_shell\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
                     "stack": "Error: browserType.launch: Executable doesn't exist at /home/ubuntu/.cache/ms-playwright/chromium_headless_shell-1187/chrome-linux/headless_shell\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
@@ -348,7 +348,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-08-26T10:42:13.430Z",
+                  "startTime": "2025-08-26T10:54:33.832Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -390,7 +390,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-08-26T10:42:14.892Z",
+                  "startTime": "2025-08-26T10:54:35.119Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -416,7 +416,7 @@
               "projectName": "baseline",
               "results": [
                 {
-                  "workerIndex": 13,
+                  "workerIndex": 12,
                   "parallelIndex": 1,
                   "status": "failed",
                   "duration": 2,
@@ -432,7 +432,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-08-26T10:42:15.339Z",
+                  "startTime": "2025-08-26T10:54:35.544Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -474,7 +474,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-08-26T10:42:15.796Z",
+                  "startTime": "2025-08-26T10:54:35.972Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -500,10 +500,10 @@
               "projectName": "sandbox",
               "results": [
                 {
-                  "workerIndex": 21,
-                  "parallelIndex": 0,
+                  "workerIndex": 20,
+                  "parallelIndex": 1,
                   "status": "failed",
-                  "duration": 3,
+                  "duration": 2,
                   "error": {
                     "message": "Error: browserType.launch: Executable doesn't exist at /home/ubuntu/.cache/ms-playwright/chromium_headless_shell-1187/chrome-linux/headless_shell\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
                     "stack": "Error: browserType.launch: Executable doesn't exist at /home/ubuntu/.cache/ms-playwright/chromium_headless_shell-1187/chrome-linux/headless_shell\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
@@ -516,7 +516,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-08-26T10:42:17.165Z",
+                  "startTime": "2025-08-26T10:54:37.224Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -542,8 +542,8 @@
               "projectName": "sandbox",
               "results": [
                 {
-                  "workerIndex": 22,
-                  "parallelIndex": 0,
+                  "workerIndex": 23,
+                  "parallelIndex": 1,
                   "status": "failed",
                   "duration": 2,
                   "error": {
@@ -558,7 +558,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-08-26T10:42:17.651Z",
+                  "startTime": "2025-08-26T10:54:37.643Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -585,7 +585,7 @@
               "results": [
                 {
                   "workerIndex": 24,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "failed",
                   "duration": 2,
                   "error": {
@@ -600,7 +600,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-08-26T10:42:18.101Z",
+                  "startTime": "2025-08-26T10:54:38.062Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -650,7 +650,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-08-26T10:42:12.985Z",
+                  "startTime": "2025-08-26T10:54:33.417Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -692,7 +692,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-08-26T10:42:15.796Z",
+                  "startTime": "2025-08-26T10:54:35.954Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -719,7 +719,7 @@
               "results": [
                 {
                   "workerIndex": 26,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "failed",
                   "duration": 2,
                   "error": {
@@ -734,7 +734,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-08-26T10:42:18.542Z",
+                  "startTime": "2025-08-26T10:54:38.485Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -791,7 +791,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-08-26T10:42:13.450Z",
+                      "startTime": "2025-08-26T10:54:33.845Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -820,7 +820,7 @@
                       "workerIndex": 7,
                       "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 7,
+                      "duration": 2,
                       "error": {
                         "message": "Error: browserType.launch: Executable doesn't exist at /home/ubuntu/.cache/ms-playwright/chromium_headless_shell-1187/chrome-linux/headless_shell\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
                         "stack": "Error: browserType.launch: Executable doesn't exist at /home/ubuntu/.cache/ms-playwright/chromium_headless_shell-1187/chrome-linux/headless_shell\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
@@ -833,7 +833,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-08-26T10:42:13.907Z",
+                      "startTime": "2025-08-26T10:54:34.269Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -875,7 +875,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-08-26T10:42:14.362Z",
+                      "startTime": "2025-08-26T10:54:34.713Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -917,7 +917,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-08-26T10:42:14.879Z",
+                      "startTime": "2025-08-26T10:54:35.138Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -943,7 +943,7 @@
                   "projectName": "chromium",
                   "results": [
                     {
-                      "workerIndex": 12,
+                      "workerIndex": 13,
                       "parallelIndex": 0,
                       "status": "failed",
                       "duration": 2,
@@ -959,7 +959,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-08-26T10:42:15.352Z",
+                      "startTime": "2025-08-26T10:54:35.555Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -986,7 +986,7 @@
                   "results": [
                     {
                       "workerIndex": 16,
-                      "parallelIndex": 1,
+                      "parallelIndex": 0,
                       "status": "failed",
                       "duration": 2,
                       "error": {
@@ -1001,7 +1001,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-08-26T10:42:16.241Z",
+                      "startTime": "2025-08-26T10:54:36.378Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1028,7 +1028,7 @@
                   "results": [
                     {
                       "workerIndex": 18,
-                      "parallelIndex": 1,
+                      "parallelIndex": 0,
                       "status": "failed",
                       "duration": 2,
                       "error": {
@@ -1043,7 +1043,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-08-26T10:42:16.696Z",
+                      "startTime": "2025-08-26T10:54:36.796Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1069,8 +1069,8 @@
                   "projectName": "baseline",
                   "results": [
                     {
-                      "workerIndex": 20,
-                      "parallelIndex": 1,
+                      "workerIndex": 21,
+                      "parallelIndex": 0,
                       "status": "failed",
                       "duration": 2,
                       "error": {
@@ -1085,7 +1085,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-08-26T10:42:17.174Z",
+                      "startTime": "2025-08-26T10:54:37.222Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1111,8 +1111,8 @@
                   "projectName": "baseline",
                   "results": [
                     {
-                      "workerIndex": 23,
-                      "parallelIndex": 1,
+                      "workerIndex": 22,
+                      "parallelIndex": 0,
                       "status": "failed",
                       "duration": 2,
                       "error": {
@@ -1127,7 +1127,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-08-26T10:42:17.661Z",
+                      "startTime": "2025-08-26T10:54:37.657Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1154,7 +1154,7 @@
                   "results": [
                     {
                       "workerIndex": 25,
-                      "parallelIndex": 1,
+                      "parallelIndex": 0,
                       "status": "failed",
                       "duration": 2,
                       "error": {
@@ -1169,7 +1169,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-08-26T10:42:18.100Z",
+                      "startTime": "2025-08-26T10:54:38.073Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1196,7 +1196,7 @@
                   "results": [
                     {
                       "workerIndex": 27,
-                      "parallelIndex": 1,
+                      "parallelIndex": 0,
                       "status": "failed",
                       "duration": 2,
                       "error": {
@@ -1211,7 +1211,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-08-26T10:42:18.553Z",
+                      "startTime": "2025-08-26T10:54:38.492Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1237,10 +1237,10 @@
                   "projectName": "sandbox",
                   "results": [
                     {
-                      "workerIndex": 29,
-                      "parallelIndex": 1,
+                      "workerIndex": 28,
+                      "parallelIndex": 0,
                       "status": "failed",
-                      "duration": 2,
+                      "duration": 3,
                       "error": {
                         "message": "Error: browserType.launch: Executable doesn't exist at /home/ubuntu/.cache/ms-playwright/chromium_headless_shell-1187/chrome-linux/headless_shell\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
                         "stack": "Error: browserType.launch: Executable doesn't exist at /home/ubuntu/.cache/ms-playwright/chromium_headless_shell-1187/chrome-linux/headless_shell\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
@@ -1253,7 +1253,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-08-26T10:42:19.011Z",
+                      "startTime": "2025-08-26T10:54:38.912Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1295,7 +1295,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-08-26T10:42:19.450Z",
+                      "startTime": "2025-08-26T10:54:39.340Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1337,7 +1337,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-08-26T10:42:19.885Z",
+                      "startTime": "2025-08-26T10:54:39.751Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1379,7 +1379,7 @@
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2025-08-26T10:42:20.337Z",
+                      "startTime": "2025-08-26T10:54:40.159Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -1418,7 +1418,7 @@
                   "workerIndex": 6,
                   "parallelIndex": 1,
                   "status": "failed",
-                  "duration": 2,
+                  "duration": 4,
                   "error": {
                     "message": "Error: browserType.launch: Executable doesn't exist at /home/ubuntu/.cache/ms-playwright/chromium_headless_shell-1187/chrome-linux/headless_shell\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝",
                     "stack": "Error: browserType.launch: Executable doesn't exist at /home/ubuntu/.cache/ms-playwright/chromium_headless_shell-1187/chrome-linux/headless_shell\n╔═════════════════════════════════════════════════════════════════════════╗\n║ Looks like Playwright Test or Playwright was just installed or updated. ║\n║ Please run the following command to download new browsers:              ║\n║                                                                         ║\n║     npx playwright install                                              ║\n║                                                                         ║\n║ <3 Playwright Team                                                      ║\n╚═════════════════════════════════════════════════════════════════════════╝"
@@ -1431,7 +1431,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-08-26T10:42:13.894Z",
+                  "startTime": "2025-08-26T10:54:34.259Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1458,7 +1458,7 @@
               "results": [
                 {
                   "workerIndex": 17,
-                  "parallelIndex": 0,
+                  "parallelIndex": 1,
                   "status": "failed",
                   "duration": 2,
                   "error": {
@@ -1473,7 +1473,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-08-26T10:42:16.246Z",
+                  "startTime": "2025-08-26T10:54:36.388Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1499,8 +1499,8 @@
               "projectName": "sandbox",
               "results": [
                 {
-                  "workerIndex": 28,
-                  "parallelIndex": 0,
+                  "workerIndex": 29,
+                  "parallelIndex": 1,
                   "status": "failed",
                   "duration": 2,
                   "error": {
@@ -1515,7 +1515,7 @@
                   "stdout": [],
                   "stderr": [],
                   "retry": 0,
-                  "startTime": "2025-08-26T10:42:19.004Z",
+                  "startTime": "2025-08-26T10:54:38.921Z",
                   "annotations": [],
                   "attachments": []
                 }
@@ -1533,8 +1533,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2025-08-26T10:42:11.908Z",
-    "duration": 8466.259,
+    "startTime": "2025-08-26T10:54:32.519Z",
+    "duration": 7672.392000000001,
     "expected": 0,
     "skipped": 0,
     "unexpected": 33,
