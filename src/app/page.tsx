@@ -31,8 +31,8 @@ export const metadata = {
       '@context': 'https://schema.org',
       '@type': 'Organization',
       name: 'J&M Jewelry',
-      url: 'https://jm-jewelry.com',
-      logo: 'https://jm-jewelry.com/images/logo.png',
+      url: 'https://j&m-jewelry.co.uk',
+      logo: 'https://j&m-jewelry.co.uk/images/logo.png',
       description: 'Handcrafted rings with passion, designed for your forever moments',
       address: {
         '@type': 'PostalAddress',
