@@ -474,7 +474,8 @@ test.describe('Console Error Monitoring', () => {
           // Check for missing labels on form inputs
           const inputs = Array.from(document.querySelectorAll('input:not([aria-label]):not([aria-labelledby]):not([placeholder])'));
           inputs.forEach(input => {
-            if (input.type !== 'submit' && input.type !== 'button' && input.type !== 'hidden') {
+            const inputElement = input as HTMLInputElement;
+            if (inputElement.type !== 'submit' && inputElement.type !== 'button' && inputElement.type !== 'hidden') {
               issues.push({
                 type: 'accessibility',
                 message: 'Form input missing accessible label',
