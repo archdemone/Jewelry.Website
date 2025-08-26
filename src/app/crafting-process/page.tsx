@@ -28,6 +28,23 @@ import {
 export default function CraftingProcessPage() {
   const [activeStep, setActiveStep] = useState(1);
 
+  const handleStepClick = (stepNumber: number) => {
+    setActiveStep(stepNumber);
+
+    // Auto-scroll to details section on mobile
+    if (window.innerWidth <= 768) {
+      setTimeout(() => {
+        const detailsSection = document.querySelector('.step-details-section');
+        if (detailsSection) {
+          detailsSection.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      }, 100);
+    }
+  };
+
   const processSteps = [
     {
       number: 1,
@@ -155,7 +172,7 @@ export default function CraftingProcessPage() {
                     className="relative"
                   >
                     <button
-                      onClick={() => setActiveStep(step.number)}
+                      onClick={() => handleStepClick(step.number)}
                       className={`w-full transition-all ${activeStep === step.number ? 'scale-110' : ''}`}
                     >
                       <div className={`mx-auto flex h-32 w-32 items-center justify-center rounded-full ${activeStep === step.number
@@ -195,7 +212,7 @@ export default function CraftingProcessPage() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
-                  onClick={() => setActiveStep(step.number)}
+                  onClick={() => handleStepClick(step.number)}
                   className={`flex w-full items-center gap-4 rounded-xl p-4 transition-all ${activeStep === step.number
                     ? 'bg-gradient-to-r from-orange-50 to-amber-50 shadow-lg'
                     : 'bg-gray-50 hover:bg-gray-100'
@@ -225,7 +242,7 @@ export default function CraftingProcessPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
-              className="mt-12 rounded-2xl bg-gradient-to-br from-gray-50 to-white p-8 shadow-lg"
+              className="mt-12 rounded-2xl bg-gradient-to-br from-gray-50 to-white p-8 shadow-lg step-details-section"
             >
               <div className="flex items-start gap-6">
                 <div
@@ -387,7 +404,7 @@ export default function CraftingProcessPage() {
                 className="group relative overflow-hidden rounded-xl"
               >
                 <img
-                  src="/images/craftingprocess/material-selection.webp"
+                  src="/images/process/material-selection.webp"
                   alt="Material Selection - Choosing the perfect materials for your ring"
                   className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-110"
                   sizes="(max-width: 768px) 100vw, 400px"
@@ -409,7 +426,7 @@ export default function CraftingProcessPage() {
                 className="group relative overflow-hidden rounded-xl"
               >
                 <img
-                  src="/images/craftingprocess/crafting-action.webp"
+                  src="/images/process/crafting-action.webp"
                   alt="Precision Crafting - Every detail carefully shaped by hand"
                   className="h-64 w-full object-cover transition-transform duration-300 group-hover:scale-110"
                   sizes="(max-width: 768px) 100vw, 400px"
