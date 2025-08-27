@@ -69,6 +69,10 @@ export function Header() {
     };
   }, [isMobileDropdownVisible]);
 
+  const handleDropdownLinkClick = () => {
+    setIsMobileDropdownVisible(false);
+  };
+
   return (
     <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
       <div className="container mx-auto px-3 sm:px-4">
@@ -232,28 +236,28 @@ export function Header() {
           className="w-36 bg-white rounded-md shadow-lg border border-gray-200"
         >
           <div className="py-1">
-            <Link href="/products/mens#products-section" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
+            <Link href="/products/mens#products-section" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100" onClick={handleDropdownLinkClick}>
               Mens Rings
             </Link>
-            <Link href="/products/womens#products-section" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
+            <Link href="/products/womens#products-section" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100" onClick={handleDropdownLinkClick}>
               Womens Rings
             </Link>
-            <Link href="/products/unisex#products-section" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
+            <Link href="/products/unisex#products-section" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100" onClick={handleDropdownLinkClick}>
               Unisex Rings
             </Link>
-            <Link href="/products/wedding#products-section" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
+            <Link href="/products/wedding#products-section" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100" onClick={handleDropdownLinkClick}>
               Wedding Rings
             </Link>
-            <Link href="/products/engagement#products-section" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
+            <Link href="/products/engagement#products-section" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100" onClick={handleDropdownLinkClick}>
               Engagement Rings
             </Link>
-            <Link href="/products/inlay#products-section" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
+            <Link href="/products/inlay#products-section" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100" onClick={handleDropdownLinkClick}>
               Inlay Rings
             </Link>
-            <Link href="/products/statement#products-section" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
+            <Link href="/products/statement#products-section" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100" onClick={handleDropdownLinkClick}>
               Statement Rings
             </Link>
-            <Link href="/products#products-section" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100 border-t border-gray-100">
+            <Link href="/products#products-section" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100 border-t border-gray-100" onClick={handleDropdownLinkClick}>
               All Rings
             </Link>
           </div>
