@@ -6,45 +6,52 @@ const prisma = new PrismaClient();
 export async function GET() {
   try {
     // Test database connection
+    await prisma.$connect();
+    
+    // Get basic counts
+    const totalProducts = await prisma.product.count();
+    const totalCategories = await prisma.category.count();
+    
+    // Get categories with product counts
     const categories = await prisma.category.findMany({
       include: {
         _count: {
           select: { products: true }
         }
-      }
+      },
+      orderBy: { order: 'asc' }
     });
-
-    const products = await prisma.product.findMany({
+    
+    // Get sample products
+    const sampleProducts = await prisma.product.findMany({
       take: 5,
-      include: {
-        category: true
-      }
+      include: { category: true }
     });
-
-    const totalProducts = await prisma.product.count();
-    const totalCategories = await prisma.category.count();
-
+    
     return NextResponse.json({
       success: true,
       database: {
+        connected: true,
         totalProducts,
         totalCategories,
         categories: categories.map(cat => ({
+          id: cat.id,
           name: cat.name,
           slug: cat.slug,
           productCount: cat._count.products
         })),
-        sampleProducts: products.map(prod => ({
+        sampleProducts: sampleProducts.map(prod => ({
           id: prod.id,
           name: prod.name,
+          slug: prod.slug,
           category: prod.category?.name,
-          price: prod.price,
-          active: prod.active
+          categorySlug: prod.category?.slug
         }))
       },
       environment: {
         nodeEnv: process.env.NODE_ENV,
-        databaseUrl: process.env.DATABASE_URL ? 'Set' : 'Not set'
+        databaseUrl: process.env.DATABASE_URL ? 'Set' : 'Not set',
+        vercel: process.env.VERCEL ? 'Yes' : 'No'
       }
     });
   } catch (error) {
@@ -52,9 +59,11 @@ export async function GET() {
     return NextResponse.json({
       success: false,
       error: error instanceof Error ? error.message : 'Unknown error',
+      stack: error instanceof Error ? error.stack : undefined,
       environment: {
         nodeEnv: process.env.NODE_ENV,
-        databaseUrl: process.env.DATABASE_URL ? 'Set' : 'Not set'
+        databaseUrl: process.env.DATABASE_URL ? 'Set' : 'Not set',
+        vercel: process.env.VERCEL ? 'Yes' : 'No'
       }
     }, { status: 500 });
   } finally {
