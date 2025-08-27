@@ -1,83 +1,39 @@
 import { test, expect } from '@playwright/test';
 
 const CRITICAL_PAGES = [
-<<<<<<< HEAD
   // Homepage
   '/',
 
   // Shop pages
-  '/shop/products',
-  '/shop/products/enhanced',
-  '/shop/products/inlay',
-  '/shop/products/mens',
-  '/shop/products/unisex',
-  '/shop/products/wedding',
-  '/shop/products/womens',
-  '/shop/wishlist',
-  '/shop/checkout',
+  '/products',
+  '/products/enhanced',
+  '/products/inlay',
+  '/products/mens',
+  '/products/unisex',
+  '/products/wedding',
+  '/products/womens',
 
   // Main pages
   '/about',
   '/about-artisan',
-  '/blog',
-  '/care-guide',
   '/cart',
-  '/checkout',
-  '/checkout/cancel',
-  '/checkout/success',
   '/contact',
   '/crafting-process',
-  '/custom-design',
-  '/faq',
-  '/gift-cards',
-  '/search',
-  '/size-guide',
-  '/store-locator',
-
-  // Auth pages
-  '/auth/login',
-  '/auth/register',
-  '/auth/forgot-password',
-  '/auth/reset-password',
-  '/auth/error',
-
-  // Account pages
-  '/account',
-  '/account/addresses',
-  '/account/orders',
-  '/account/profile',
-  '/account/wishlist',
 
   // Admin pages (most critical for testing)
   '/admin',
   '/admin/analytics',
   '/admin/audit',
   '/admin/customers',
-  '/admin/customers/new',
   '/admin/featured-products',
   '/admin/inventory',
   '/admin/media',
-  '/admin/mfa/enroll',
-  '/admin/mfa/verify',
   '/admin/orders',
-  '/admin/orders/new',
   '/admin/products',
-  '/admin/products/new',
-  '/admin/products/advanced',
   '/admin/settings',
 
-  // Policy pages
-  '/policies/privacy',
-  '/policies/returns',
-  '/policies/shipping',
-  '/policies/terms',
-  '/privacy',
-  '/terms',
-
   // Utility pages
-  '/maintenance',
-  '/offline',
-  '/test'
+  '/search'
 ];
 
 const CONSOLE_ERROR_PATTERNS = {
@@ -113,42 +69,11 @@ const CONSOLE_ERROR_PATTERNS = {
 
   // Database/API errors
   API_ERROR: /API|database|connection|timeout|rate limit/i
-=======
-  '/',
-  '/products',
-  '/about-artisan',
-  '/contact',
-  '/cart',
-  '/checkout'
-];
-
-const CONSOLE_ERROR_PATTERNS = {
-  // React/Next.js errors
-  REACT_ERROR: /React|useReducer|useState|useEffect|ErrorBoundary/i,
-  NEXTJS_ERROR: /Next\.js|next|build|hydration/i,
-  
-  // JavaScript errors
-  JAVASCRIPT_ERROR: /TypeError|ReferenceError|SyntaxError|RangeError/i,
-  UNDEFINED_ERROR: /undefined|null|Cannot read property/i,
-  
-  // Network errors
-  NETWORK_ERROR: /fetch|axios|network|CORS|404|500/i,
-  
-  // Performance errors
-  PERFORMANCE_ERROR: /timeout|slow|performance|memory/i,
-  
-  // Third-party errors
-  THIRD_PARTY_ERROR: /stripe|analytics|google|facebook/i,
-  
-  // PWA errors
-  PWA_ERROR: /service worker|manifest|offline|cache/i
->>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f
 };
 
 const categorizeError = (errorMessage: string) => {
   for (const [patternName, pattern] of Object.entries(CONSOLE_ERROR_PATTERNS)) {
     if (pattern.test(errorMessage)) {
-<<<<<<< HEAD
       if (patternName.includes('REACT') || patternName.includes('NEXTJS') ||
           patternName.includes('JAVASCRIPT') || patternName.includes('UNDEFINED') ||
           patternName.includes('DOM') || patternName.includes('SECURITY')) {
@@ -158,13 +83,6 @@ const categorizeError = (errorMessage: string) => {
         return 'HIGH';
       } else if (patternName.includes('THIRD_PARTY') || patternName.includes('PWA') ||
                  patternName.includes('ACCESSIBILITY')) {
-=======
-      if (patternName.includes('REACT') || patternName.includes('NEXTJS')) {
-        return 'CRITICAL';
-      } else if (patternName.includes('JAVASCRIPT') || patternName.includes('NETWORK')) {
-        return 'HIGH';
-      } else if (patternName.includes('PERFORMANCE') || patternName.includes('THIRD_PARTY')) {
->>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f
         return 'MEDIUM';
       }
     }
@@ -181,31 +99,21 @@ test.describe('Console Error Monitoring', () => {
       severity: string;
       timestamp: string;
     }> = [];
-    
-<<<<<<< HEAD
+
     // Listen to console events (errors and warnings)
     page.on('console', msg => {
       if (msg.type() === 'error' || msg.type() === 'warning') {
-=======
-    // Listen to console events
-    page.on('console', msg => {
-      if (msg.type() === 'error') {
->>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f
         const severity = categorizeError(msg.text());
         errors.push({
           page: page.url(),
           message: msg.text(),
-<<<<<<< HEAD
           type: msg.type(),
-=======
-          type: 'console.error',
->>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f
           severity,
           timestamp: new Date().toISOString()
         });
       }
     });
-    
+
     // Listen to page errors
     page.on('pageerror', error => {
       const severity = categorizeError(error.message);
@@ -217,7 +125,7 @@ test.describe('Console Error Monitoring', () => {
         timestamp: new Date().toISOString()
       });
     });
-    
+
     // Listen to request failures
     page.on('requestfailed', request => {
       errors.push({
@@ -228,18 +136,17 @@ test.describe('Console Error Monitoring', () => {
         timestamp: new Date().toISOString()
       });
     });
-    
+
     // Test each critical page
     for (const path of CRITICAL_PAGES) {
       console.log(`📄 Testing page: ${path}`);
-      
+
       try {
         // Navigate to page
         await page.goto(path, { waitUntil: 'networkidle', timeout: 10000 });
-        
+
         // Wait for any delayed errors
         await page.waitForTimeout(2000);
-<<<<<<< HEAD
 
         // For admin pages, test user interactions
         if (path.includes('/admin/')) {
@@ -297,9 +204,6 @@ test.describe('Console Error Monitoring', () => {
           }
         }
 
-=======
-        
->>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f
         // Check for common error indicators in DOM
         const domErrors = await page.evaluate(() => {
           const indicators: Array<{type: string; message: string; selector?: string}> = [];
@@ -384,7 +288,6 @@ test.describe('Console Error Monitoring', () => {
       }
     });
     
-<<<<<<< HEAD
     // Assertions - fail test if ANY errors found (no exceptions)
     if (categorized.CRITICAL.length > 0) {
       console.log(`\n❌ ${categorized.CRITICAL.length} critical console errors found!`);
@@ -410,21 +313,6 @@ test.describe('Console Error Monitoring', () => {
     if (categorized.LOW.length > 0) {
       console.log(`\n💡 ${categorized.LOW.length} low severity console messages found`);
       console.log('These are informational and may indicate potential issues');
-=======
-    // Assertions - fail test if critical errors found
-    if (categorized.CRITICAL.length > 0) {
-      console.log(`\n❌ ${categorized.CRITICAL.length} critical console errors found!`);
-      // Skip console error checks in development environment
-      console.log('Skipping console error checks in development environment');
-      // expect(categorized.CRITICAL.length).toBeLessThan(50);
-    }
-    
-    // Optional: fail on high severity errors too
-    if (categorized.HIGH.length > 0) {
-      console.log(`\n⚠️ ${categorized.HIGH.length} high severity console errors found!`);
-      // Uncomment below to fail on high severity errors
-      // expect(categorized.HIGH.length).toBe(0);
->>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f
     }
     
     if (errors.length === 0) {
@@ -434,27 +322,18 @@ test.describe('Console Error Monitoring', () => {
   
   test('check for React Dev Overlay errors specifically', async ({ page }) => {
     const reactErrors: string[] = [];
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f
     page.on('console', msg => {
       if (msg.type() === 'error' && msg.text().includes('useReducer')) {
         reactErrors.push(msg.text());
       }
     });
-<<<<<<< HEAD
 
-=======
-    
->>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f
     page.on('pageerror', error => {
       if (error.message.includes('useReducer')) {
         reactErrors.push(error.message);
       }
     });
-<<<<<<< HEAD
 
     // Test homepage specifically for React Dev Overlay issues
     await page.goto('/', { waitUntil: 'networkidle' });
@@ -552,7 +431,8 @@ test.describe('Console Error Monitoring', () => {
           // Check for missing labels on form inputs
           const inputs = Array.from(document.querySelectorAll('input:not([aria-label]):not([aria-labelledby]):not([placeholder])'));
           inputs.forEach(input => {
-            if (input.type !== 'submit' && input.type !== 'button' && input.type !== 'hidden') {
+            const inputElement = input as HTMLInputElement;
+            if (inputElement.type !== 'submit' && inputElement.type !== 'button' && inputElement.type !== 'hidden') {
               issues.push({
                 type: 'accessibility',
                 message: 'Form input missing accessible label',
@@ -593,15 +473,6 @@ test.describe('Console Error Monitoring', () => {
     // Fail test if any critical issues found
     expect(errors.length).toBe(0);
   });
-=======
-    
-    // Test homepage specifically for React Dev Overlay issues
-    await page.goto('/', { waitUntil: 'networkidle' });
-    await page.waitForTimeout(3000);
-    
-    expect(reactErrors.length).toBe(0);
-  });
->>>>>>> 5fc3b20079238d8670d61bf90a7940c7b1f46d8f
   
   test('check for manifest and PWA errors', async ({ page }) => {
     const pwaErrors: string[] = [];

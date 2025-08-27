@@ -42,13 +42,13 @@ export function MobileMenu() {
   return (
     <div className="md:hidden">
       <button onClick={handleMenuToggle}
-        className="p-2 text-gray-600 transition-colors hover:text-gray-900"
+        className="p-2 text-gray-600 transition-colors hover:text-gray-900 touch-manipulation"
         aria-label="Toggle mobile menu"
         aria-expanded={isOpen}
         aria-controls="mobile-menu"
         aria-haspopup="true"
       >
-        {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+        {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
       </button>
       <AnimatePresence>
         {isOpen && (
@@ -57,34 +57,34 @@ export function MobileMenu() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.2 }}
-            className="absolute left-0 right-0 top-full z-50 bg-white shadow-lg max-h-[85vh] overflow-y-auto"
+            className="absolute left-0 right-0 top-full z-50 bg-white shadow-lg max-h-[80vh] overflow-y-auto border-t border-gray-100"
             role="navigation"
             aria-label="Mobile navigation"
           >
             {/* Mobile Search */}
-            <div className="p-1">
+            <div className="p-3 border-b border-gray-100">
               <EnhancedSearchInput placeholder="Search products..." onSearch={handleSearch}
                 className="w-full"
               />
             </div>
-            <nav className="space-y-0 p-1">
+            <nav className="space-y-0">
               <Link href="/"
-                className="block rounded-lg px-2 py-1 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600" onClick={handleMenuToggle}
+                className="block px-4 py-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600 border-b border-gray-50" onClick={handleMenuToggle}
                 aria-label="Go to home page"
               >
                 Home
               </Link>
               <Link href="/products"
-                className="block rounded-lg px-2 py-1 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600" onClick={handleMenuToggle}
+                className="block px-4 py-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600 border-b border-gray-50" onClick={handleMenuToggle}
                 aria-label="Browse all products"
               >
                 Products
               </Link>
 
               {/* Ring Collections Dropdown */}
-              <div className="relative">
+              <div className="relative border-b border-gray-50">
                 <button onClick={handleCollectionsToggle}
-                  className="flex w-full items-center justify-between rounded-lg px-2 py-1 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600"
+                  className="flex w-full items-center justify-between px-4 py-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600"
                   aria-expanded={showCollections}
                   aria-haspopup="true"
                   aria-label="Ring Collections Menu"
@@ -97,14 +97,14 @@ export function MobileMenu() {
                 <AnimatePresence>
                   {showCollections && (
                     <motion.div initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: 'auto' }} exit={{ opacity: 0, height: 0 }} transition={{ duration: 0.2 }}
-                      className="overflow-hidden"
+                      className="overflow-hidden bg-gray-50"
                       role="menu"
                       aria-label="Ring Collections"
                     >
-                      <div className="space-y-0.5 pl-3">
+                      <div className="space-y-0">
                         {ringCollections.map((collection) => (
                           <Link key={collection.name} href={collection.href}
-                            className="block rounded-lg px-3 py-1 text-sm text-gray-600 transition-colors hover:bg-gray-50 hover:text-gold-600" onClick={handleMenuToggle}
+                            className="block px-6 py-2.5 text-sm text-gray-600 transition-colors hover:bg-gray-100 hover:text-gold-600" onClick={handleMenuToggle}
                             role="menuitem"
                             aria-label={`Browse ${collection.name}`}
                           >
@@ -117,19 +117,19 @@ export function MobileMenu() {
                 </AnimatePresence>
               </div>
               <Link href="/about-artisan"
-                className="block rounded-lg px-2 py-1 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600" onClick={handleMenuToggle}
+                className="block px-4 py-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600 border-b border-gray-50" onClick={handleMenuToggle}
                 aria-label="Learn about the artisan"
               >
                 The Artisan
               </Link>
               <Link href="/crafting-process"
-                className="block rounded-lg px-2 py-1 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600" onClick={handleMenuToggle}
+                className="block px-4 py-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600 border-b border-gray-50" onClick={handleMenuToggle}
                 aria-label="Learn about our crafting process"
               >
                 Crafting
               </Link>
               <Link href="/contact"
-                className="block rounded-lg px-2 py-1 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600" onClick={handleMenuToggle}
+                className="block px-4 py-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600 border-b border-gray-50" onClick={handleMenuToggle}
                 aria-label="Contact us"
               >
                 Contact
@@ -137,12 +137,12 @@ export function MobileMenu() {
 
               {/* Admin Panel Link - Only show if user is logged in */}
               <Link href="/admin"
-                className="block rounded-lg px-2 py-1 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600 border-t border-gray-100" onClick={handleMenuToggle}
+                className="block px-4 py-3 text-gray-700 transition-colors hover:bg-gray-50 hover:text-gold-600 border-t border-gray-100" onClick={handleMenuToggle}
                 aria-label="Access admin panel"
               >
                 <div className="flex items-center gap-2">
                   <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 00-1.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                   Admin Panel

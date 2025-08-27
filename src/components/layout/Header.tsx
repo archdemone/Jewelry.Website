@@ -38,15 +38,15 @@ export function Header() {
 
   return (
     <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+      <div className="container mx-auto px-3 sm:px-4">
+        <div className="flex items-center justify-between h-14 sm:h-16 min-h-0">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-2">
-            <div className="text-2xl font-bold text-black" style={{ fontFamily: 'Playfair Display, serif', letterSpacing: '0.15em', fontWeight: '600', fontStyle: 'italic' }}>J&M</div>
+          <Link href="/" className="flex items-center space-x-2 flex-shrink-0">
+            <div className="text-xl sm:text-2xl font-bold text-black" style={{ fontFamily: 'Playfair Display, serif', letterSpacing: '0.15em', fontWeight: '600', fontStyle: 'italic' }}>J&M</div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="flex items-center space-x-6">
+          <nav className="hidden md:flex items-center space-x-4 lg:space-x-6">
             {/* Rings Dropdown */}
             <div className="relative group">
               <button
@@ -104,12 +104,12 @@ export function Header() {
           </nav>
 
           {/* Search Bar */}
-          <div className="hidden md:block flex-1 max-w-md mx-8">
+          <div className="hidden md:block flex-1 max-w-md mx-4 lg:mx-8">
             <EnhancedSearchInput onSearch={handleSearch} />
           </div>
 
           {/* Right Side Actions */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-4 flex-shrink-0">
             {/* User Menu */}
             {session ? (
               <div className="relative group">
