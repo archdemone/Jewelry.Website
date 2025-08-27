@@ -29,6 +29,9 @@ function extractGemVariation(gemstones: string | null): string {
 
 export async function GET(request: NextRequest) {
   try {
+    // Ensure database connection
+    await prisma.$connect();
+    
     const { searchParams } = new URL(request.url);
     const categorySlug = searchParams.get('category');
 
@@ -120,6 +123,8 @@ export async function GET(request: NextRequest) {
       { error: 'Failed to fetch products' },
       { status: 500 }
     );
+  } finally {
+    await prisma.$disconnect();
   }
 }
 
