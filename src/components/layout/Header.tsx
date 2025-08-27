@@ -1,18 +1,24 @@
 'use client';
 
+import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { ShoppingBag, User, Search, LogOut, ChevronDown, X } from 'lucide-react';
 import { useSession, signOut, signIn } from 'next-auth/react';
+import { ShoppingBag, User, Search, LogOut, ChevronDown, X } from 'lucide-react';
 import { useCartStore } from '@/store/cart';
-import { useEffect, useState } from 'react';
+import { useWishlistStore } from '@/store/wishlist';
 import { useRouter } from 'next/navigation';
 import { EnhancedSearchInput } from '@/components/search/EnhancedSearchInput';
+import { createPortal } from 'react-dom';
 
 export function Header() {
   const count = useCartStore((s) => s.count);
   const isHydrated = useCartStore((s) => s.isHydrated);
+  const wishlistCount = useWishlistStore((s) => s.items.length);
   const [mounted, setMounted] = useState(false);
   const [showRingsDropdown, setShowRingsDropdown] = useState(false);
+  const [mobileDropdownPosition, setMobileDropdownPosition] = useState({ top: 0, left: 0 });
+  const [isMobileDropdownVisible, setIsMobileDropdownVisible] = useState(false);
+  const mobileRingsButtonRef = useRef<HTMLButtonElement>(null);
   const { data: session } = useSession();
   const router = useRouter();
 
@@ -32,6 +38,17 @@ export function Header() {
   const handleSearch = (query: string) => {
     if (query.trim()) {
       router.push(`/search?q=${encodeURIComponent(query.trim())}`);
+    }
+  };
+
+  const handleMobileRingsClick = () => {
+    if (mobileRingsButtonRef.current) {
+      const rect = mobileRingsButtonRef.current.getBoundingClientRect();
+      setMobileDropdownPosition({
+        top: rect.bottom + window.scrollY,
+        left: rect.left + window.scrollX
+      });
+      setIsMobileDropdownVisible(!isMobileDropdownVisible);
     }
   };
 
@@ -108,9 +125,9 @@ export function Header() {
               {/* Rings Dropdown Button */}
               <div className="relative group flex-shrink-0">
                 <button
+                  ref={mobileRingsButtonRef}
                   className="flex items-center space-x-1 text-gray-700 hover:text-gold-600 transition-colors text-xs px-1 py-1"
-                  onMouseEnter={() => setShowRingsDropdown(true)}
-                  onMouseLeave={() => setShowRingsDropdown(false)}
+                  onClick={handleMobileRingsClick}
                 >
                   <span>Rings</span>
                   <ChevronDown className="h-3 w-3" />
@@ -128,40 +145,7 @@ export function Header() {
               </Link>
             </nav>
             
-            {/* Mobile Rings Dropdown - Outside nav container */}
-            <div
-              className={`absolute top-full left-0 mt-1 w-36 bg-white rounded-md shadow-lg border border-gray-200 transition-all duration-200 z-50 ${showRingsDropdown ? 'opacity-100 visible' : 'opacity-0 invisible'
-                }`}
-              onMouseEnter={() => setShowRingsDropdown(true)}
-              onMouseLeave={() => setShowRingsDropdown(false)}
-            >
-              <div className="py-1">
-                <Link href="/products/mens" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
-                  Mens Rings
-                </Link>
-                <Link href="/products/womens" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
-                  Womens Rings
-                </Link>
-                <Link href="/products/unisex" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
-                  Unisex Rings
-                </Link>
-                <Link href="/products/wedding" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
-                  Wedding Rings
-                </Link>
-                <Link href="/products/engagement" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
-                  Engagement Rings
-                </Link>
-                <Link href="/products/inlay" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
-                  Inlay Rings
-                </Link>
-                <Link href="/products/statement" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
-                  Statement Rings
-                </Link>
-                <Link href="/products" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100 border-t border-gray-100">
-                  All Rings
-                </Link>
-              </div>
-            </div>
+
           </div>
 
           {/* Search Bar */}
@@ -218,6 +202,47 @@ export function Header() {
           </div>
         </div>
       </div>
+      
+      {/* Mobile Rings Dropdown Portal */}
+      {mounted && isMobileDropdownVisible && typeof window !== 'undefined' && createPortal(
+        <div
+          style={{
+            position: 'absolute',
+            top: `${mobileDropdownPosition.top}px`,
+            left: `${mobileDropdownPosition.left}px`,
+            zIndex: 9999
+          }}
+          className="w-36 bg-white rounded-md shadow-lg border border-gray-200"
+        >
+          <div className="py-1">
+            <Link href="/products/mens" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
+              Mens Rings
+            </Link>
+            <Link href="/products/womens" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
+              Womens Rings
+            </Link>
+            <Link href="/products/unisex" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
+              Unisex Rings
+            </Link>
+            <Link href="/products/wedding" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
+              Wedding Rings
+            </Link>
+            <Link href="/products/engagement" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
+              Engagement Rings
+            </Link>
+            <Link href="/products/inlay" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
+              Inlay Rings
+            </Link>
+            <Link href="/products/statement" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
+              Statement Rings
+            </Link>
+            <Link href="/products" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100 border-t border-gray-100">
+              All Rings
+            </Link>
+          </div>
+        </div>,
+        document.body
+      )}
     </header>
   );
 }
