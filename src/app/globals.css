@@ -562,3 +562,33 @@ nav {
     background: transparent;
   }
 }
+
+/* Hide scrollbar for mobile navigation */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* Internet Explorer 10+ */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Safari and Chrome */
+}
+
+/* Mobile navigation improvements */
+@media (max-width: 768px) {
+  header nav.md\:hidden {
+    max-width: calc(100vw - 200px); /* Leave space for logo and cart/profile */
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  header nav.md\:hidden::-webkit-scrollbar {
+    display: none;
+  }
+  
+  header nav.md\:hidden a,
+  header nav.md\:hidden button {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+}
