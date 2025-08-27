@@ -499,3 +499,66 @@ nav {
   transform: scale(2);
   cursor: move;
 }
+
+/* Mobile Menu Improvements */
+#mobile-menu {
+  min-height: 200px;
+  max-height: 85vh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+#mobile-menu a,
+#mobile-menu button {
+  min-height: 2.75rem;
+  display: flex;
+  align-items: center;
+  touch-action: manipulation;
+}
+
+#mobile-menu .grid {
+  gap: 0.5rem;
+}
+
+#mobile-menu .grid a {
+  min-height: 2.5rem;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Ensure mobile menu is above other elements */
+.md\:hidden {
+  position: relative;
+  z-index: 50;
+}
+
+/* Mobile menu backdrop */
+.mobile-menu-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 40;
+}
+
+/* Improve touch targets on mobile */
+@media (max-width: 768px) {
+  header button,
+  header a {
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Ensure mobile menu button is always visible */
+  .md\:hidden button {
+    padding: 0.5rem;
+    margin: 0;
+    border: none;
+    background: transparent;
+  }
+}
