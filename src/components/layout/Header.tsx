@@ -57,7 +57,7 @@ export function Header() {
                 <ChevronDown className="h-4 w-4" />
               </button>
               <div
-                className={`absolute top-full left-0 mt-1 w-48 bg-white rounded-md shadow-lg border border-gray-200 transition-all duration-200 ${showRingsDropdown ? 'opacity-100 visible' : 'opacity-0 invisible'
+                className={`absolute top-full left-0 mt-1 w-48 bg-white rounded-md shadow-lg border border-gray-200 transition-all duration-200 z-50 ${showRingsDropdown ? 'opacity-100 visible' : 'opacity-0 invisible'
                   }`}
                 onMouseEnter={() => setShowRingsDropdown(true)}
                 onMouseLeave={() => setShowRingsDropdown(false)}
@@ -103,7 +103,7 @@ export function Header() {
           </nav>
 
           {/* Mobile Navigation */}
-          <nav className="md:hidden flex items-center space-x-1 overflow-x-auto scrollbar-hide ml-2">
+          <nav className="md:hidden flex items-center space-x-0 overflow-x-auto scrollbar-hide ml-1">
             {/* Rings Dropdown */}
             <div className="relative group flex-shrink-0">
               <button
@@ -115,7 +115,7 @@ export function Header() {
                 <ChevronDown className="h-3 w-3" />
               </button>
               <div
-                className={`absolute top-full left-0 mt-1 w-36 bg-white rounded-md shadow-lg border border-gray-200 transition-all duration-200 z-50 ${showRingsDropdown ? 'opacity-100 visible' : 'opacity-0 invisible'
+                className={`absolute top-full left-0 mt-1 w-36 bg-white rounded-md shadow-lg border border-gray-200 transition-all duration-200 z-[9999] ${showRingsDropdown ? 'opacity-100 visible' : 'opacity-0 invisible'
                   }`}
                 onMouseEnter={() => setShowRingsDropdown(true)}
                 onMouseLeave={() => setShowRingsDropdown(false)}

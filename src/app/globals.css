@@ -545,6 +545,7 @@ nav {
 
 /* Improve touch targets on mobile */
 @media (max-width: 768px) {
+
   header button,
   header a {
     min-width: 2.5rem;
@@ -553,7 +554,7 @@ nav {
     align-items: center;
     justify-content: center;
   }
-  
+
   /* Ensure mobile menu button is always visible */
   .md\:hidden button {
     padding: 0.5rem;
@@ -565,38 +566,42 @@ nav {
 
 /* Hide scrollbar for mobile navigation */
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* Internet Explorer 10+ */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* Internet Explorer 10+ */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .scrollbar-hide::-webkit-scrollbar {
-  display: none;  /* Safari and Chrome */
+  display: none;
+  /* Safari and Chrome */
 }
 
 /* Mobile navigation improvements */
 @media (max-width: 768px) {
   header nav.md\:hidden {
-    max-width: calc(100vw - 180px); /* More space for navigation */
+    max-width: calc(100vw - 160px);
+    /* More space for navigation */
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
-    margin-left: 0.5rem;
+    margin-left: 0.25rem;
   }
-  
+
   header nav.md\:hidden::-webkit-scrollbar {
     display: none;
   }
-  
+
   header nav.md\:hidden a,
   header nav.md\:hidden button {
     white-space: nowrap;
     flex-shrink: 0;
     font-size: 0.75rem;
-    padding: 0.25rem 0.5rem;
+    padding: 0.25rem 0.25rem;
   }
-  
+
   /* Ensure dropdown appears above header */
   header .relative .absolute {
-    z-index: 1000;
+    z-index: 9999;
   }
 }
