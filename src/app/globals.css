@@ -579,6 +579,11 @@ nav {
 
 /* Mobile navigation improvements */
 @media (max-width: 768px) {
+  /* Lower header z-index so dropdowns can appear above it */
+  header {
+    z-index: 10;
+  }
+  
   header nav.md\:hidden {
     max-width: calc(100vw - 160px);
     /* More space for navigation */
