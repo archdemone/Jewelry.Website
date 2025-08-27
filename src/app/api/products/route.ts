@@ -1,5 +1,3 @@
-import { requireAdminApi } from '@/lib/admin/admin-auth';
-import { audit } from '@/lib/audit';
 import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
 
