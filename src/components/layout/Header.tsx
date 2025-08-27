@@ -103,11 +103,11 @@ export function Header() {
           </nav>
 
           {/* Mobile Navigation */}
-          <nav className="md:hidden flex items-center space-x-2 overflow-x-auto scrollbar-hide">
+          <nav className="md:hidden flex items-center space-x-1 overflow-x-auto scrollbar-hide ml-2">
             {/* Rings Dropdown */}
             <div className="relative group flex-shrink-0">
               <button
-                className="flex items-center space-x-1 text-gray-700 hover:text-gold-600 transition-colors text-sm px-2 py-1"
+                className="flex items-center space-x-1 text-gray-700 hover:text-gold-600 transition-colors text-xs px-1 py-1"
                 onMouseEnter={() => setShowRingsDropdown(true)}
                 onMouseLeave={() => setShowRingsDropdown(false)}
               >
@@ -115,47 +115,47 @@ export function Header() {
                 <ChevronDown className="h-3 w-3" />
               </button>
               <div
-                className={`absolute top-full left-0 mt-1 w-40 bg-white rounded-md shadow-lg border border-gray-200 transition-all duration-200 ${showRingsDropdown ? 'opacity-100 visible' : 'opacity-0 invisible'
+                className={`absolute top-full left-0 mt-1 w-36 bg-white rounded-md shadow-lg border border-gray-200 transition-all duration-200 z-50 ${showRingsDropdown ? 'opacity-100 visible' : 'opacity-0 invisible'
                   }`}
                 onMouseEnter={() => setShowRingsDropdown(true)}
                 onMouseLeave={() => setShowRingsDropdown(false)}
               >
                 <div className="py-1">
-                  <Link href="/products/mens" className="block px-3 py-2 text-xs text-gray-700 hover:bg-gray-100">
+                  <Link href="/products/mens" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
                     Mens Rings
                   </Link>
-                  <Link href="/products/womens" className="block px-3 py-2 text-xs text-gray-700 hover:bg-gray-100">
+                  <Link href="/products/womens" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
                     Womens Rings
                   </Link>
-                  <Link href="/products/unisex" className="block px-3 py-2 text-xs text-gray-700 hover:bg-gray-100">
+                  <Link href="/products/unisex" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
                     Unisex Rings
                   </Link>
-                  <Link href="/products/wedding" className="block px-3 py-2 text-xs text-gray-700 hover:bg-gray-100">
+                  <Link href="/products/wedding" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
                     Wedding Rings
                   </Link>
-                  <Link href="/products/engagement" className="block px-3 py-2 text-xs text-gray-700 hover:bg-gray-100">
+                  <Link href="/products/engagement" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
                     Engagement Rings
                   </Link>
-                  <Link href="/products/inlay" className="block px-3 py-2 text-xs text-gray-700 hover:bg-gray-100">
+                  <Link href="/products/inlay" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
                     Inlay Rings
                   </Link>
-                  <Link href="/products/statement" className="block px-3 py-2 text-xs text-gray-700 hover:bg-gray-100">
+                  <Link href="/products/statement" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
                     Statement Rings
                   </Link>
-                  <Link href="/products" className="block px-3 py-2 text-xs text-gray-700 hover:bg-gray-100 border-t border-gray-100">
+                  <Link href="/products" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100 border-t border-gray-100">
                     All Rings
                   </Link>
                 </div>
               </div>
             </div>
 
-            <Link href="/about" className="text-gray-700 hover:text-gold-600 transition-colors text-sm px-2 py-1 flex-shrink-0">
+            <Link href="/about" className="text-gray-700 hover:text-gold-600 transition-colors text-xs px-1 py-1 flex-shrink-0">
               About
             </Link>
-            <Link href="/crafting-process" className="text-gray-700 hover:text-gold-600 transition-colors text-sm px-2 py-1 flex-shrink-0">
+            <Link href="/crafting-process" className="text-gray-700 hover:text-gold-600 transition-colors text-xs px-1 py-1 flex-shrink-0">
               Crafting
             </Link>
-            <Link href="/contact" className="text-gray-700 hover:text-gold-600 transition-colors text-sm px-2 py-1 flex-shrink-0">
+            <Link href="/contact" className="text-gray-700 hover:text-gold-600 transition-colors text-xs px-1 py-1 flex-shrink-0">
               Contact
             </Link>
           </nav>

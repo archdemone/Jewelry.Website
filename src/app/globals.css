@@ -576,10 +576,11 @@ nav {
 /* Mobile navigation improvements */
 @media (max-width: 768px) {
   header nav.md\:hidden {
-    max-width: calc(100vw - 200px); /* Leave space for logo and cart/profile */
+    max-width: calc(100vw - 180px); /* More space for navigation */
     overflow-x: auto;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    margin-left: 0.5rem;
   }
   
   header nav.md\:hidden::-webkit-scrollbar {
@@ -590,5 +591,12 @@ nav {
   header nav.md\:hidden button {
     white-space: nowrap;
     flex-shrink: 0;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+  }
+  
+  /* Ensure dropdown appears above header */
+  header .relative .absolute {
+    z-index: 1000;
   }
 }
