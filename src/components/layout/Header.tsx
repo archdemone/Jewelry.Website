@@ -52,6 +52,23 @@ export function Header() {
     }
   };
 
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (isMobileDropdownVisible && mobileRingsButtonRef.current && !mobileRingsButtonRef.current.contains(event.target as Node)) {
+        setIsMobileDropdownVisible(false);
+      }
+    };
+
+    if (isMobileDropdownVisible) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMobileDropdownVisible]);
+
   return (
     <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
       <div className="container mx-auto px-3 sm:px-4">
@@ -215,28 +232,28 @@ export function Header() {
           className="w-36 bg-white rounded-md shadow-lg border border-gray-200"
         >
           <div className="py-1">
-            <Link href="/products/mens" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
+            <Link href="/products/mens#products-section" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
               Mens Rings
             </Link>
-            <Link href="/products/womens" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
+            <Link href="/products/womens#products-section" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
               Womens Rings
             </Link>
-            <Link href="/products/unisex" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
+            <Link href="/products/unisex#products-section" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
               Unisex Rings
             </Link>
-            <Link href="/products/wedding" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
+            <Link href="/products/wedding#products-section" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
               Wedding Rings
             </Link>
-            <Link href="/products/engagement" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
+            <Link href="/products/engagement#products-section" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
               Engagement Rings
             </Link>
-            <Link href="/products/inlay" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
+            <Link href="/products/inlay#products-section" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
               Inlay Rings
             </Link>
-            <Link href="/products/statement" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
+            <Link href="/products/statement#products-section" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100">
               Statement Rings
             </Link>
-            <Link href="/products" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100 border-t border-gray-100">
+            <Link href="/products#products-section" className="block px-2 py-1 text-xs text-gray-700 hover:bg-gray-100 border-t border-gray-100">
               All Rings
             </Link>
           </div>
