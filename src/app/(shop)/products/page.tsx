@@ -27,7 +27,7 @@ import {
 import { getProductImageFallback } from '@/lib/assets/images';
 import { useCartStore } from '@/store/cart';
 import { useWishlistStore } from '@/store/wishlist';
-import CategoryShowcase from '@/components/home/CategoryShowcase';
+
 
 interface Product {
   id: string | number;
@@ -434,8 +434,7 @@ export default function ProductsPage() {
         </div>
       </section>
 
-      {/* Category Showcase */}
-      <CategoryShowcase />
+
 
       {/* Main Content Area */}
       <section id="products-section" className="py-12">
