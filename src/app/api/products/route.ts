@@ -53,7 +53,8 @@ export async function GET(request: NextRequest) {
           'wedding': 'wedding-rings',
           'engagement': 'engagement-rings',
           'inlay': 'inlay-rings',
-          'statement': 'statement-rings'
+          'statement': 'statement-rings',
+          'all': 'all-rings'
         };
 
         const mappedSlug = categoryMap[categorySlug];
