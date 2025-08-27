@@ -75,14 +75,14 @@ const categorizeError = (errorMessage: string) => {
   for (const [patternName, pattern] of Object.entries(CONSOLE_ERROR_PATTERNS)) {
     if (pattern.test(errorMessage)) {
       if (patternName.includes('REACT') || patternName.includes('NEXTJS') ||
-          patternName.includes('JAVASCRIPT') || patternName.includes('UNDEFINED') ||
-          patternName.includes('DOM') || patternName.includes('SECURITY')) {
+        patternName.includes('JAVASCRIPT') || patternName.includes('UNDEFINED') ||
+        patternName.includes('DOM') || patternName.includes('SECURITY')) {
         return 'CRITICAL';
       } else if (patternName.includes('NETWORK') || patternName.includes('API') ||
-                 patternName.includes('PERFORMANCE')) {
+        patternName.includes('PERFORMANCE')) {
         return 'HIGH';
       } else if (patternName.includes('THIRD_PARTY') || patternName.includes('PWA') ||
-                 patternName.includes('ACCESSIBILITY')) {
+        patternName.includes('ACCESSIBILITY')) {
         return 'MEDIUM';
       }
     }
@@ -206,8 +206,8 @@ test.describe('Console Error Monitoring', () => {
 
         // Check for common error indicators in DOM
         const domErrors = await page.evaluate(() => {
-          const indicators: Array<{type: string; message: string; selector?: string}> = [];
-          
+          const indicators: Array<{ type: string; message: string; selector?: string }> = [];
+
           // Check for error elements
           const errorElements = document.querySelectorAll('[data-error], .error, .alert-error, .error-message');
           errorElements.forEach(el => {
@@ -217,7 +217,7 @@ test.describe('Console Error Monitoring', () => {
               selector: el.tagName + (el.className ? '.' + el.className : '')
             });
           });
-          
+
           // Check for broken images
           const brokenImages = Array.from(document.images).filter(img => !img.complete || img.naturalWidth === 0);
           brokenImages.forEach(img => {
@@ -227,7 +227,7 @@ test.describe('Console Error Monitoring', () => {
               selector: img.src
             });
           });
-          
+
           // Check for missing critical elements
           const criticalSelectors = ['main', 'header', 'footer', '[data-testid="homepage-main"]'];
           criticalSelectors.forEach(selector => {
@@ -239,10 +239,10 @@ test.describe('Console Error Monitoring', () => {
               });
             }
           });
-          
+
           return indicators;
         });
-        
+
         // Add DOM errors to our collection
         domErrors.forEach(indicator => {
           const severity = indicator.type === 'DOM.error' ? 'HIGH' : 'MEDIUM';
@@ -254,7 +254,7 @@ test.describe('Console Error Monitoring', () => {
             timestamp: new Date().toISOString()
           });
         });
-        
+
       } catch (error) {
         errors.push({
           page: path,
@@ -265,7 +265,7 @@ test.describe('Console Error Monitoring', () => {
         });
       }
     }
-    
+
     // Categorize errors by severity
     const categorized = {
       CRITICAL: errors.filter(e => e.severity === 'CRITICAL'),
@@ -273,11 +273,11 @@ test.describe('Console Error Monitoring', () => {
       MEDIUM: errors.filter(e => e.severity === 'MEDIUM'),
       LOW: errors.filter(e => e.severity === 'LOW')
     };
-    
+
     // Report results
     console.log('\n📊 Console Error Check Results:');
     console.log(`Total errors found: ${errors.length}`);
-    
+
     Object.entries(categorized).forEach(([severity, errorList]) => {
       if (errorList.length > 0) {
         const icon = severity === 'CRITICAL' ? '🚨' : severity === 'HIGH' ? '⚠️' : severity === 'MEDIUM' ? 'ℹ️' : '💡';
@@ -287,7 +287,7 @@ test.describe('Console Error Monitoring', () => {
         });
       }
     });
-    
+
     // Assertions - fail test if ANY errors found (no exceptions)
     if (categorized.CRITICAL.length > 0) {
       console.log(`\n❌ ${categorized.CRITICAL.length} critical console errors found!`);
@@ -314,12 +314,12 @@ test.describe('Console Error Monitoring', () => {
       console.log(`\n💡 ${categorized.LOW.length} low severity console messages found`);
       console.log('These are informational and may indicate potential issues');
     }
-    
+
     if (errors.length === 0) {
       console.log('\n✅ No console errors detected!');
     }
   });
-  
+
   test('check for React Dev Overlay errors specifically', async ({ page }) => {
     const reactErrors: string[] = [];
 
@@ -393,7 +393,7 @@ test.describe('Console Error Monitoring', () => {
   });
 
   test('comprehensive accessibility and DOM error check', async ({ page }) => {
-    const errors: Array<{type: string; message: string; selector?: string}> = [];
+    const errors: Array<{ type: string; message: string; selector?: string }> = [];
 
     page.on('console', msg => {
       if (msg.type() === 'error' || msg.type() === 'warning') {
@@ -416,7 +416,7 @@ test.describe('Console Error Monitoring', () => {
 
         // Check for accessibility issues
         const accessibilityIssues = await page.evaluate(() => {
-          const issues: Array<{type: string; message: string; element?: string}> = [];
+          const issues: Array<{ type: string; message: string; element?: string }> = [];
 
           // Check for missing alt text on images
           const images = Array.from(document.querySelectorAll('img:not([alt])'));
@@ -473,28 +473,28 @@ test.describe('Console Error Monitoring', () => {
     // Fail test if any critical issues found
     expect(errors.length).toBe(0);
   });
-  
+
   test('check for manifest and PWA errors', async ({ page }) => {
     const pwaErrors: string[] = [];
-    
+
     page.on('console', msg => {
       if (msg.type() === 'error' && (
-        msg.text().includes('manifest') || 
+        msg.text().includes('manifest') ||
         msg.text().includes('service worker') ||
         msg.text().includes('PWA')
       )) {
         pwaErrors.push(msg.text());
       }
     });
-    
+
     // Test manifest specifically
     await page.goto('/manifest.webmanifest');
     await page.waitForTimeout(1000);
-    
+
     // Test homepage for PWA-related errors
     await page.goto('/', { waitUntil: 'networkidle' });
     await page.waitForTimeout(2000);
-    
+
     expect(pwaErrors.length).toBe(0);
   });
 });

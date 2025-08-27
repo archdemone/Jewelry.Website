@@ -1,7 +1,7 @@
 {
   "config": {
-    "configFile": "/workspace/playwright.config.ts",
-    "rootDir": "/workspace/__tests__/e2e",
+    "configFile": "C:\\Users\\dimam\\OneDrive\\Desktop\\Jewelry.Website\\Jewelry.Website\\playwright.config.ts",
+    "rootDir": "C:/Users/dimam/OneDrive/Desktop/Jewelry.Website/Jewelry.Website/__tests__/e2e",
     "forbidOnly": false,
     "fullyParallel": false,
     "globalSetup": null,
@@ -37,13 +37,13 @@
     "quiet": false,
     "projects": [
       {
-        "outputDir": "/workspace/test-results",
+        "outputDir": "C:/Users/dimam/OneDrive/Desktop/Jewelry.Website/Jewelry.Website/test-results",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {},
         "id": "chromium",
         "name": "chromium",
-        "testDir": "/workspace/__tests__/e2e",
+        "testDir": "C:/Users/dimam/OneDrive/Desktop/Jewelry.Website/Jewelry.Website/__tests__/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.spec.ts"
@@ -51,13 +51,13 @@
         "timeout": 30000
       },
       {
-        "outputDir": "/workspace/test-results",
+        "outputDir": "C:/Users/dimam/OneDrive/Desktop/Jewelry.Website/Jewelry.Website/test-results",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {},
         "id": "baseline",
         "name": "baseline",
-        "testDir": "/workspace/__tests__/e2e",
+        "testDir": "C:/Users/dimam/OneDrive/Desktop/Jewelry.Website/Jewelry.Website/__tests__/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.spec.ts"
@@ -65,13 +65,13 @@
         "timeout": 30000
       },
       {
-        "outputDir": "/workspace/test-results",
+        "outputDir": "C:/Users/dimam/OneDrive/Desktop/Jewelry.Website/Jewelry.Website/test-results",
         "repeatEach": 1,
         "retries": 0,
         "metadata": {},
         "id": "sandbox",
         "name": "sandbox",
-        "testDir": "/workspace/__tests__/e2e",
+        "testDir": "C:/Users/dimam/OneDrive/Desktop/Jewelry.Website/Jewelry.Website/__tests__/e2e",
         "testIgnore": [],
         "testMatch": [
           "**/*.spec.ts"
@@ -83,20 +83,20 @@
     "updateSnapshots": "missing",
     "updateSourceMethod": "patch",
     "version": "1.55.0",
-    "workers": 2,
+    "workers": 14,
     "webServer": null
   },
   "suites": [],
   "errors": [
     {
-      "message": "SyntaxError: /workspace/__tests__/e2e/console-error-check.spec.ts: Unexpected token (4:0)\n\n  2 |\n  3 | const CRITICAL_PAGES = [\n> 4 | <<<<<<< HEAD\n    | ^\n  5 |   // Homepage\n  6 |   '/',\n  7 |",
-      "stack": "SyntaxError: /workspace/__tests__/e2e/console-error-check.spec.ts: Unexpected token (4:0)\n\n  2 |\n  3 | const CRITICAL_PAGES = [\n> 4 | <<<<<<< HEAD\n    | ^\n  5 |   // Homepage\n  6 |   '/',\n  7 |",
+      "message": "SyntaxError: C:\\Users\\dimam\\OneDrive\\Desktop\\Jewelry.Website\\Jewelry.Website\\__tests__\\e2e\\console-error-check.spec.ts: Unexpected token (4:0)\n\n\u001b[0m \u001b[90m 2 |\u001b[39m\n \u001b[90m 3 |\u001b[39m \u001b[36mconst\u001b[39m \u001b[33mCRITICAL_PAGES\u001b[39m \u001b[33m=\u001b[39m [\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 4 |\u001b[39m \u001b[33m<<\u001b[39m\u001b[33m<<\u001b[39m\u001b[33m<<\u001b[39m\u001b[33m<\u001b[39m \u001b[33mHEAD\u001b[39m\n \u001b[90m   |\u001b[39m \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 5 |\u001b[39m   \u001b[90m// Homepage\u001b[39m\n \u001b[90m 6 |\u001b[39m   \u001b[32m'/'\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 7 |\u001b[39m\u001b[0m",
+      "stack": "SyntaxError: C:\\Users\\dimam\\OneDrive\\Desktop\\Jewelry.Website\\Jewelry.Website\\__tests__\\e2e\\console-error-check.spec.ts: Unexpected token (4:0)\n\n\u001b[0m \u001b[90m 2 |\u001b[39m\n \u001b[90m 3 |\u001b[39m \u001b[36mconst\u001b[39m \u001b[33mCRITICAL_PAGES\u001b[39m \u001b[33m=\u001b[39m [\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 4 |\u001b[39m \u001b[33m<<\u001b[39m\u001b[33m<<\u001b[39m\u001b[33m<<\u001b[39m\u001b[33m<\u001b[39m \u001b[33mHEAD\u001b[39m\n \u001b[90m   |\u001b[39m \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 5 |\u001b[39m   \u001b[90m// Homepage\u001b[39m\n \u001b[90m 6 |\u001b[39m   \u001b[32m'/'\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 7 |\u001b[39m\u001b[0m",
       "location": {
-        "file": "/workspace/__tests__/e2e/console-error-check.spec.ts",
+        "file": "C:\\Users\\dimam\\OneDrive\\Desktop\\Jewelry.Website\\Jewelry.Website\\__tests__\\e2e\\console-error-check.spec.ts",
         "line": 4,
         "column": 0
       },
-      "snippet": "\u001b[90m   at \u001b[39mconsole-error-check.spec.ts:4\n\n  2 |\n  3 | const CRITICAL_PAGES = [\n> 4 | <<<<<<< HEAD\n  5 |   // Homepage\n  6 |   '/',\n  7 |"
+      "snippet": "\u001b[90m   at \u001b[39mconsole-error-check.spec.ts:4\n\n\u001b[0m \u001b[90m 2 |\u001b[39m\n \u001b[90m 3 |\u001b[39m \u001b[36mconst\u001b[39m \u001b[33mCRITICAL_PAGES\u001b[39m \u001b[33m=\u001b[39m [\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 4 |\u001b[39m \u001b[33m<<\u001b[39m\u001b[33m<<\u001b[39m\u001b[33m<<\u001b[39m\u001b[33m<\u001b[39m \u001b[33mHEAD\u001b[39m\n \u001b[90m 5 |\u001b[39m   \u001b[90m// Homepage\u001b[39m\n \u001b[90m 6 |\u001b[39m   \u001b[32m'/'\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 7 |\u001b[39m\u001b[0m"
     },
     {
       "message": "Error: No tests found",
@@ -104,8 +104,8 @@
     }
   ],
   "stats": {
-    "startTime": "2025-08-25T07:37:45.175Z",
-    "duration": 64.78699999999992,
+    "startTime": "2025-08-27T07:32:21.160Z",
+    "duration": 58.89200000000005,
     "expected": 0,
     "skipped": 0,
     "unexpected": 0,
