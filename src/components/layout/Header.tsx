@@ -115,7 +115,7 @@ export function Header() {
                 <ChevronDown className="h-3 w-3" />
               </button>
               <div
-                className={`fixed top-16 left-0 right-0 w-36 bg-white rounded-md shadow-lg border border-gray-200 transition-all duration-200 z-[99999] mx-auto ${showRingsDropdown ? 'opacity-100 visible' : 'opacity-0 invisible'
+                className={`absolute top-full left-0 mt-1 w-36 bg-white rounded-md shadow-lg border border-gray-200 transition-all duration-200 z-[99999] ${showRingsDropdown ? 'opacity-100 visible' : 'opacity-0 invisible'
                   }`}
                 onMouseEnter={() => setShowRingsDropdown(true)}
                 onMouseLeave={() => setShowRingsDropdown(false)}
