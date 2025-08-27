@@ -52,23 +52,6 @@ export function Header() {
     }
   };
 
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (isMobileDropdownVisible && mobileRingsButtonRef.current && !mobileRingsButtonRef.current.contains(event.target as Node)) {
-        setIsMobileDropdownVisible(false);
-      }
-    };
-
-    if (isMobileDropdownVisible) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isMobileDropdownVisible]);
-
   const handleDropdownLinkClick = () => {
     setIsMobileDropdownVisible(false);
   };
