@@ -113,14 +113,14 @@ export default function CategoryPage({
         hydrate();
 
         // Load products
-        const productsResponse = await fetch(`/api/products?category=${category}`);
+        const productsResponse = await fetch(`/api/products?category=${category}`, { cache: 'no-store' });
         if (productsResponse.ok) {
           const productsData = await productsResponse.json();
           setProducts(productsData.products || []);
         }
 
         // Load categories
-        const categoriesResponse = await fetch('/api/categories');
+        const categoriesResponse = await fetch('/api/categories', { cache: 'no-store' });
         if (categoriesResponse.ok) {
           const categoriesData = await categoriesResponse.json();
           setCategories(categoriesData.categories || []);

@@ -128,6 +128,9 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       products: mappedProducts,
       categories
+    }, {
+      status: 200,
+      headers: { 'Cache-Control': 'no-store' }
     });
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -182,6 +185,10 @@ export async function POST(request: NextRequest) {
       }
     });
 
+    // Revalidate after create
+    revalidatePath('/products');
+    revalidatePath(`/products/${newProduct.slug}`);
+
     return NextResponse.json(newProduct);
   } catch (error) {
     console.error('Error creating product:', error);
@@ -209,6 +216,12 @@ export async function PUT(request: NextRequest) {
       );
     }
 
+    // Get the old product to check slug changes
+    const oldProduct = await db.product.findUnique({
+      where: { id: productData.id },
+      select: { slug: true }
+    });
+
     // Update the product
     const updatedProduct = await db.product.update({
       where: { id: productData.id },
@@ -231,6 +244,13 @@ export async function PUT(request: NextRequest) {
         badge: productData.badge || 'Ready to Ship'
       }
     });
+
+    // Revalidate after update
+    revalidatePath('/products');
+    if (oldProduct && oldProduct.slug !== updatedProduct.slug) {
+      revalidatePath(`/products/${oldProduct.slug}`);
+    }
+    revalidatePath(`/products/${updatedProduct.slug}`);
 
     return NextResponse.json(updatedProduct);
   } catch (error) {
@@ -255,9 +275,21 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
+    // Get the product before deleting to get its slug
+    const product = await db.product.findUnique({
+      where: { id },
+      select: { slug: true }
+    });
+
     await db.product.delete({
       where: { id }
     });
+
+    // Revalidate after delete
+    revalidatePath('/products');
+    if (product) {
+      revalidatePath(`/products/${product.slug}`);
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {
