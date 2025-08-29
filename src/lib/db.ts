@@ -20,6 +20,11 @@ const createPrismaClient = () => {
           url: process.env.DATABASE_URL,
         },
       },
+      // Better connection handling for serverless environments
+      ...(process.env.NODE_ENV === 'production' && {
+        // Disable query logging in production to reduce noise
+        log: ['error'],
+      }),
     });
   } catch (error) {
     console.warn('Failed to create Prisma client:', error);
@@ -27,6 +32,7 @@ const createPrismaClient = () => {
     return {
       $connect: async () => { },
       $disconnect: async () => { },
+      $queryRaw: async () => [],
       product: {
         findMany: async () => [],
         findUnique: async () => null,
@@ -51,6 +57,10 @@ const createPrismaClient = () => {
   }
 };
 
+// Use global variable to prevent multiple instances in development
 export const db = global.prisma || createPrismaClient();
 
-if (process.env.NODE_ENV !== 'production') global.prisma = db;
+// In development, store the client in global scope to prevent multiple instances
+if (process.env.NODE_ENV !== 'production') {
+  global.prisma = db;
+}

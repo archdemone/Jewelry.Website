@@ -3,13 +3,9 @@ import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 
 export async function GET() {
-  let prisma;
   try {
-    prisma = db;
-    await prisma.$connect();
-
-    // Test database connection
-    await prisma.$queryRaw`SELECT 1`;
+    // Test database connection without explicit connect/disconnect
+    await db.$queryRaw`SELECT 1`;
 
     return NextResponse.json({
       status: 'healthy',
@@ -28,9 +24,5 @@ export async function GET() {
       },
       error: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 503 });
-  } finally {
-    if (prisma) {
-      await prisma.$disconnect();
-    }
   }
 }
