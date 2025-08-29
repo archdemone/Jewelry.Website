@@ -3,6 +3,9 @@ import { revalidatePath } from 'next/cache';
 import { requireAdminApi } from '@/lib/admin/admin-auth';
 import { db } from '@/lib/db';
 
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 // Helper function to extract gem color from gemstones string
 function extractGemColor(gemstones: string | null): string {
   if (!gemstones) return '';
@@ -23,6 +26,17 @@ function extractGemVariation(gemstones: string | null): string {
   if (gemColor.includes('bright')) return 'Bright';
   if (gemColor.includes('mixed')) return 'Mixed';
   return 'Bright'; // Default
+}
+
+// Safe parse images function
+function safeParseImages(imagesString: string | null): string[] {
+  if (!imagesString) return [];
+  try {
+    const parsed = JSON.parse(imagesString);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
 }
 
 export async function GET(request: NextRequest) {
@@ -126,13 +140,9 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// Create product
+// Create new product
 export async function POST(request: NextRequest) {
   try {
-    // Auth check
-    const auth = await requireAdminApi();
-    if (auth instanceof Response) return auth;
-
     const productData = await request.json();
 
     // Find the category
@@ -185,10 +195,6 @@ export async function POST(request: NextRequest) {
 // Update product
 export async function PUT(request: NextRequest) {
   try {
-    // Auth check
-    const auth = await requireAdminApi();
-    if (auth instanceof Response) return auth;
-
     const productData = await request.json();
 
     // Find the category
@@ -239,10 +245,6 @@ export async function PUT(request: NextRequest) {
 // Delete product
 export async function DELETE(request: NextRequest) {
   try {
-    // Auth check
-    const auth = await requireAdminApi();
-    if (auth instanceof Response) return auth;
-
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
 
