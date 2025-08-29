@@ -1,6 +1,10 @@
 import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 
+export async function GET() {
+  return await POST();
+}
+
 export async function POST() {
   try {
     // Create the Media table if it doesn't exist
@@ -19,15 +23,15 @@ export async function POST() {
       );
     `;
 
-    return NextResponse.json({ 
-      success: true, 
-      message: 'Media table created successfully' 
+    return NextResponse.json({
+      success: true,
+      message: 'Media table created successfully'
     });
   } catch (error) {
     console.error('Migration error:', error);
-    return NextResponse.json({ 
-      success: false, 
-      error: error instanceof Error ? error.message : 'Unknown error' 
+    return NextResponse.json({
+      success: false,
+      error: error instanceof Error ? error.message : 'Unknown error'
     }, { status: 500 });
   }
 }
