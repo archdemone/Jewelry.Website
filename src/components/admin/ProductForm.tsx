@@ -17,6 +17,7 @@ type ImageItem = {
   alt: string;
   primary?: boolean;
   progress?: number;
+  uploaded?: boolean;
 };
 
 export default function ProductForm({
@@ -46,6 +47,7 @@ export default function ProductForm({
   const [continueWhenOOS, setContinueWhenOOS] = useState(initialData?.continueWhenOOS ?? false);
 
   const [images, setImages] = useState<ImageItem[]>(initialData?.images || []);
+  const [uploadedImages, setUploadedImages] = useState<string[]>([]);
 
   const [material, setMaterial] = useState(initialData?.material || '');
   const [gemstone, setGemstone] = useState(initialData?.gemstone || '');
@@ -63,22 +65,78 @@ export default function ProductForm({
     if (!initialData?.urlSlug) setUrlSlug(slugify(name));
   }, [name, initialData?.slug, initialData?.urlSlug]);
 
-  function onDrop(acceptedFiles: File[]) {
-    const mapped: ImageItem[] = acceptedFiles.map((file) => ({
-      id: crypto.randomUUID(),
-      file,
-      url: URL.createObjectURL(file),
-      alt: file.name,
-    }));
-    setImages((prev) => [...prev, ...mapped]);
-    // Simulate upload progress
-    mapped.forEach((img) => simulateUploadProgress(img.id));
+  async function uploadImage(file: File): Promise<string> {
+    const formData = new FormData();
+    formData.append('file', file);
+    
+    const response = await fetch('/api/upload', {
+      method: 'POST',
+      body: formData,
+    });
+    
+    const data = await response.json();
+    
+    if (!response.ok || !data.ok) {
+      throw new Error(data.error || 'Upload failed');
+    }
+    
+    return data.url;
   }
 
-  async function simulateUploadProgress(id: string) {
-    for (let p = 10; p <= 100; p += 10) {
-      await new Promise((r) => setTimeout(r, 80));
-      setImages((prev) => prev.map((i) => (i.id === id ? { ...i, progress: p } : i)));
+  async function onDrop(acceptedFiles: File[]) {
+    const newImages: ImageItem[] = [];
+    
+    for (const file of acceptedFiles) {
+      const imageId = crypto.randomUUID();
+      
+      // Add to images with local preview
+      const imageItem: ImageItem = {
+        id: imageId,
+        file,
+        url: URL.createObjectURL(file),
+        alt: file.name,
+        progress: 0,
+        uploaded: false,
+      };
+      
+      newImages.push(imageItem);
+      setImages(prev => [...prev, imageItem]);
+      
+      try {
+        // Upload to Vercel Blob
+        for (let progress = 10; progress <= 90; progress += 10) {
+          await new Promise(resolve => setTimeout(resolve, 50));
+          setImages(prev => 
+            prev.map(img => 
+              img.id === imageId ? { ...img, progress } : img
+            )
+          );
+        }
+        
+        const blobUrl = await uploadImage(file);
+        
+        // Update with uploaded URL
+        setImages(prev => 
+          prev.map(img => 
+            img.id === imageId 
+              ? { ...img, url: blobUrl, progress: 100, uploaded: true }
+              : img
+          )
+        );
+        
+        // Add to uploaded images list
+        setUploadedImages(prev => [...prev, blobUrl]);
+        
+      } catch (error) {
+        console.error('Upload failed:', error);
+        setImages(prev => 
+          prev.map(img => 
+            img.id === imageId 
+              ? { ...img, progress: -1 } // Error state
+              : img
+          )
+        );
+      }
     }
   }
 
@@ -93,7 +151,13 @@ export default function ProductForm({
   }
 
   function removeImage(id: string) {
-    setImages((prev) => prev.filter((i) => i.id !== id));
+    setImages((prev) => {
+      const removed = prev.find(img => img.id === id);
+      if (removed?.uploaded && removed.url) {
+        setUploadedImages(current => current.filter(url => url !== removed.url));
+      }
+      return prev.filter((i) => i.id !== id);
+    });
   }
 
   function moveImage(id: string, dir: -1 | 1) {
@@ -182,7 +246,9 @@ export default function ProductForm({
               <div {...getRootProps()}
             className={clsx(
               'cursor-pointer rounded border-2 border-dashed p-6 text-center',
-              isDragActive ? 'bg-amber-50' : 'bg-white', )}>
+              isDragActive ? 'bg-amber-50' : 'bg-white',
+ )}
+>
               <input {...getInputProps()} />
               <div>Drag & drop images here, or click to select (JPG, PNG, WEBP)</div>
               </div>

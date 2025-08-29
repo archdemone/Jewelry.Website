@@ -56,6 +56,7 @@ const nextConfig = {
     remotePatterns: [
       { protocol: 'http', hostname: 'localhost', port: '3000' },
       { protocol: 'http', hostname: 'localhost', port: '3001' },
+      { protocol: 'https', hostname: 'blob.vercel-storage.com' },
     ],
     formats: ['image/webp', 'image/avif'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
