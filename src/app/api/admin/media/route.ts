@@ -1,87 +1,113 @@
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth/auth-options';
+import { requireAdminApi } from '@/lib/admin/admin-auth';
 import { db } from '@/lib/db';
 
-async function isAdmin() {
-  const session = await getServerSession(authOptions);
-  return (session?.user as any)?.role === 'ADMIN';
-}
-
-export async function GET() {
-  if (!await isAdmin()) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
+// POST /api/admin/media (create)
+export async function POST(req: NextRequest) {
   try {
-    // Get media files from database
-    const mediaFiles = await db.media.findMany({
-      orderBy: { createdAt: 'desc' }
-    });
+    // Auth check
+    const auth = await requireAdminApi();
+    if (auth instanceof Response) return auth;
 
-    // Transform to match expected format
-    const files = mediaFiles.map(file => ({
-      name: file.name,
-      path: file.url, // Use Blob URL as path
-      url: file.url,  // Use Blob URL
-      size: file.size,
-      type: file.type,
-      modifiedDate: file.updatedAt.toISOString(),
-    }));
-    
-    return NextResponse.json(files);
-  } catch (error) {
-    console.error('Error reading media files:', error);
-    return NextResponse.json({ error: 'Failed to load media files' }, { status: 500 });
-  }
-}
+    const { url, alt } = await req.json();
 
-export async function POST(request: NextRequest) {
-  if (!await isAdmin()) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
-  try {
-    const { name, url, path, size, type } = await request.json();
-    
-    // Save media file to database
-    const mediaFile = await db.media.create({
-      data: {
-        name,
-        url,
-        path,
-        size,
-        type,
-      }
-    });
-    
-    return NextResponse.json(mediaFile);
-  } catch (error) {
-    console.error('Error saving media file:', error);
-    return NextResponse.json({ error: 'Failed to save media file' }, { status: 500 });
-  }
-}
-
-export async function DELETE(request: NextRequest) {
-  if (!await isAdmin()) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
-
-  try {
-    const { path: filePath } = await request.json();
-    
-    if (!filePath) {
-      return NextResponse.json({ error: 'Invalid file path' }, { status: 400 });
+    if (!url) {
+      return NextResponse.json({ ok: false, error: 'URL is required' }, { status: 400 });
     }
-    
-    // Delete from database
-    await db.media.deleteMany({
-      where: { url: filePath }
+
+    // Insert into Media (unique on url). Ignore conflict with 409.
+    try {
+      const media = await db.media.create({
+        data: {
+          name: alt || 'Untitled',
+          url,
+          path: url, // Using URL as path for now
+          size: 0, // Size not available from URL
+          type: 'image/jpeg', // Default type
+        },
+      });
+
+      return NextResponse.json({ ok: true, media });
+    } catch (error: any) {
+      if (error.code === 'P2002') {
+        // Unique constraint violation
+        return NextResponse.json({ ok: false, error: 'Media already exists' }, { status: 409 });
+      }
+      throw error;
+    }
+  } catch (error: any) {
+    console.error('Media creation error:', error);
+    return NextResponse.json({ ok: false, error: 'Internal server error' }, { status: 500 });
+  }
+}
+
+// GET /api/admin/media (list)
+export async function GET(req: NextRequest) {
+  try {
+    // Auth check
+    const auth = await requireAdminApi();
+    if (auth instanceof Response) return auth;
+
+    const { searchParams } = new URL(req.url);
+    const query = searchParams.get('query') || '';
+    const page = parseInt(searchParams.get('page') || '1');
+    const pageSize = parseInt(searchParams.get('pageSize') || '24');
+    const offset = (page - 1) * pageSize;
+
+    // Build where clause for filtering
+    const where = query ? {
+      OR: [
+        { name: { contains: query, mode: 'insensitive' } },
+        { url: { contains: query, mode: 'insensitive' } },
+      ],
+    } : {};
+
+    // Get total count
+    const total = await db.media.count({ where });
+
+    // Get items with pagination
+    const items = await db.media.findMany({
+      where,
+      orderBy: { createdAt: 'desc' },
+      skip: offset,
+      take: pageSize,
     });
-    
-    return NextResponse.json({ success: true });
-  } catch (error) {
-    console.error('Error deleting file:', error);
-    return NextResponse.json({ error: 'Failed to delete file' }, { status: 500 });
+
+    const response = NextResponse.json({ items, total });
+    response.headers.set('Cache-Control', 'no-store');
+
+    return response;
+  } catch (error: any) {
+    console.error('Media list error:', error);
+    return NextResponse.json({ ok: false, error: 'Internal server error' }, { status: 500 });
+  }
+}
+
+// DELETE /api/admin/media?id=...
+export async function DELETE(req: NextRequest) {
+  try {
+    // Auth check
+    const auth = await requireAdminApi();
+    if (auth instanceof Response) return auth;
+
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id');
+
+    if (!id) {
+      return NextResponse.json({ ok: false, error: 'ID is required' }, { status: 400 });
+    }
+
+    // Delete DB row (do NOT delete Blob yet)
+    await db.media.delete({
+      where: { id },
+    });
+
+    return NextResponse.json({ ok: true });
+  } catch (error: any) {
+    console.error('Media deletion error:', error);
+    return NextResponse.json({ ok: false, error: 'Internal server error' }, { status: 500 });
   }
 }

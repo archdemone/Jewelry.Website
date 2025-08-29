@@ -108,7 +108,7 @@ model Product {
 model Media {
 	id            String   @id @default(cuid())
 	name          String
-	url           String   // Vercel Blob URL
+	url           String   @unique // Vercel Blob URL - unique constraint
 	path          String   // Original file path/key
 	size          Int
 	type          String
@@ -270,5 +270,3 @@ model AuditLog {
 	ua        String?
 	ts        DateTime @default(now())
 }
-
-
