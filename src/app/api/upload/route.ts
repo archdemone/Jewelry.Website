@@ -21,6 +21,7 @@ export async function POST(req: Request) {
       return bad('Upload service not configured', 503);
     }
 
+    // Auth check - using correct pattern
     const auth = await requireAdminApi();
     if (auth instanceof Response) return auth;
 
