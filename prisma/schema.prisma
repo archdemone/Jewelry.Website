@@ -105,6 +105,18 @@ model Product {
 	@@index([featured])
 }
 
+model Media {
+	id            String   @id @default(cuid())
+	name          String
+	url           String   // Vercel Blob URL
+	path          String   // Original file path/key
+	size          Int
+	type          String
+	uploadedBy    String?  // User ID who uploaded
+	createdAt     DateTime @default(now())
+	updatedAt     DateTime @updatedAt
+}
+
 model Category {
 	id          String      @id @default(cuid())
 	name        String

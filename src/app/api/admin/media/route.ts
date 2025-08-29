@@ -1,24 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/auth-options';
-import fs from 'fs/promises';
-import path from 'path';
-
-// Allowed directories for media files
-const ALLOWED_DIRS = ['images/MyImages', 'images/products', 'images/banners'];
-const PUBLIC_DIR = path.join(process.cwd(), 'public');
+import { db } from '@/lib/db';
 
 async function isAdmin() {
   const session = await getServerSession(authOptions);
   return (session?.user as any)?.role === 'ADMIN';
-}
-
-function isPathSafe(filePath: string): boolean {
-  const normalized = path.normalize(filePath);
-  const resolved = path.resolve(PUBLIC_DIR, normalized);
-  return resolved.startsWith(PUBLIC_DIR) && ALLOWED_DIRS.some(dir => 
-    normalized.startsWith(dir) || normalized.startsWith('/' + dir)
-  );
 }
 
 export async function GET() {
@@ -27,40 +14,51 @@ export async function GET() {
   }
 
   try {
-    const files: any[] = [];
-    
-    for (const dir of ALLOWED_DIRS) {
-      const dirPath = path.join(PUBLIC_DIR, dir);
-      
-      try {
-        await fs.access(dirPath);
-        const items = await fs.readdir(dirPath, { withFileTypes: true });
-        
-        for (const item of items) {
-          if (item.isFile() && /\.(jpg|jpeg|png|gif|webp|svg)$/i.test(item.name)) {
-            const filePath = path.join(dir, item.name);
-            const fullPath = path.join(dirPath, item.name);
-            const stats = await fs.stat(fullPath);
-            
-            files.push({
-              name: item.name,
-              path: '/' + filePath.replace(/\\/g, '/'),
-              url: '/' + filePath.replace(/\\/g, '/'),
-              size: stats.size,
-              type: `image/${path.extname(item.name).slice(1).toLowerCase()}`,
-              modifiedDate: stats.mtime.toISOString(),
-            });
-          }
-        }
-      } catch (error) {
-        console.log(`Directory ${dirPath} not found, skipping...`);
-      }
-    }
+    // Get media files from database
+    const mediaFiles = await db.media.findMany({
+      orderBy: { createdAt: 'desc' }
+    });
+
+    // Transform to match expected format
+    const files = mediaFiles.map(file => ({
+      name: file.name,
+      path: file.url, // Use Blob URL as path
+      url: file.url,  // Use Blob URL
+      size: file.size,
+      type: file.type,
+      modifiedDate: file.updatedAt.toISOString(),
+    }));
     
     return NextResponse.json(files);
   } catch (error) {
     console.error('Error reading media files:', error);
     return NextResponse.json({ error: 'Failed to load media files' }, { status: 500 });
+  }
+}
+
+export async function POST(request: NextRequest) {
+  if (!await isAdmin()) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  try {
+    const { name, url, path, size, type } = await request.json();
+    
+    // Save media file to database
+    const mediaFile = await db.media.create({
+      data: {
+        name,
+        url,
+        path,
+        size,
+        type,
+      }
+    });
+    
+    return NextResponse.json(mediaFile);
+  } catch (error) {
+    console.error('Error saving media file:', error);
+    return NextResponse.json({ error: 'Failed to save media file' }, { status: 500 });
   }
 }
 
@@ -72,21 +70,14 @@ export async function DELETE(request: NextRequest) {
   try {
     const { path: filePath } = await request.json();
     
-    if (!filePath || !isPathSafe(filePath)) {
+    if (!filePath) {
       return NextResponse.json({ error: 'Invalid file path' }, { status: 400 });
     }
     
-    const fullPath = path.join(PUBLIC_DIR, filePath);
-    
-    // Check if file exists
-    try {
-      await fs.access(fullPath);
-    } catch {
-      return NextResponse.json({ error: 'File not found' }, { status: 404 });
-    }
-    
-    // Delete the file
-    await fs.unlink(fullPath);
+    // Delete from database
+    await db.media.deleteMany({
+      where: { url: filePath }
+    });
     
     return NextResponse.json({ success: true });
   } catch (error) {
