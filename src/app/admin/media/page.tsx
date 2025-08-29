@@ -53,22 +53,38 @@ export default function AdminMediaPage() {
     if (!e.target.files || e.target.files.length === 0) return;
 
     setIsUploading(true);
-    const formData = new FormData();
     
-    Array.from(e.target.files).forEach((file) => {
-      formData.append('files', file);
-    });
-
     try {
-      const response = await fetch('/api/admin/media/upload', {
-        method: 'POST',
-        body: formData,
+      // Upload each file individually to the new endpoint
+      const uploadPromises = Array.from(e.target.files).map(async (file) => {
+        const formData = new FormData();
+        formData.append('file', file);
+        
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok || !data.ok) {
+          throw new Error(data.error || 'Upload failed');
+        }
+        
+        return {
+          name: file.name,
+          originalName: file.name,
+          path: data.url,
+          size: file.size,
+          type: file.type,
+        };
       });
 
-      if (response.ok) {
-        await loadMediaFiles();
-        alert('Files uploaded successfully!');
-      }
+      const uploadedFiles = await Promise.all(uploadPromises);
+      
+      // Add uploaded files to the list
+      setFiles(prev => [...uploadedFiles, ...prev]);
+      alert('Files uploaded successfully!');
     } catch (error) {
       console.error('Error uploading files:', error);
       alert('Failed to upload files');
@@ -162,7 +178,9 @@ export default function AdminMediaPage() {
       {viewMode === 'grid' ? (
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
           {filteredFiles.map((file) => (
-            <motion.div key={file.path}              initial={{ opacity: 0, scale: 0.9 }}              animate={{ opacity: 1, scale: 1 }} className="relative group">
+            <motion.div key={file.path}              initial={{ opacity: 0, scale: 0.9 }}              animate={{ opacity: 1, scale: 1 }}
+ className="relative group"
+>
               <div className="border-2 border-gray-200 rounded-lg overflow-hidden">
               <div className="aspect-square bg-gray-100 relative cursor-pointer" onClick={() => setPreviewFile(file)}>
               <Image              src={file.url}              alt={file.name}
