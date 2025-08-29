@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Textarea } from '@/components/ui/textarea';
 import { GemColorSelector } from '@/components/admin/GemColorSelector';
-import { SupabaseImageUpload } from '@/components/admin/SupabaseImageUpload';
+import { ImageUpload } from '@/components/admin/ImageUpload';
 import {
   ArrowLeft,
   Save,
@@ -488,7 +488,7 @@ export default function AddNewRingPage() {
               <Upload className="h-5 w-5 text-gold-600" />
               <h2 className="text-xl font-semibold">Images</h2>
               </div>
-              <SupabaseImageUpload              images={formData.images}              onImagesChange={(images) => setFormData((prev) => ({ ...prev, images }))}
+              <ImageUpload              images={formData.images}              onImagesChange={(images) => setFormData((prev) => ({ ...prev, images }))}
               />
               </Card>
 

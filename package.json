@@ -35,7 +35,7 @@
     "db:reset": "prisma migrate reset",
     "db:deploy": "prisma migrate deploy",
     "db:migrate-supabase": "node scripts/migrate-to-supabase.js",
-    "supabase:setup-storage": "node scripts/setup-supabase-storage.js",
+
     "type-check": "tsc --noEmit",
     "type-check:strict": "tsc --noEmit --skipLibCheck",
     "type-check:ci": "tsc --project tsconfig.ci.json --noEmit --skipLibCheck --pretty",
