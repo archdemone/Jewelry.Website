@@ -59,11 +59,11 @@ export async function requireAdminAccess() {
   return { session, allowed: true as const };
 }
 
-export async function requireAdminApi(): Promise<{ ok: true } | Response> {
+export async function requireAdminApi(): Promise<Response | undefined> {
   const session = await getSession();
   if (!session || !isAdminOrStaff((session.user as any)?.role)) {
-    return new Response(JSON.stringify({ error: 'Forbidden' }), {
-      status: 403,
+    return new Response(JSON.stringify({ ok: false, error: 'Unauthorized' }), {
+      status: 401,
       headers: { 'Content-Type': 'application/json' },
     });
   }
@@ -72,12 +72,12 @@ export async function requireAdminApi(): Promise<{ ok: true } | Response> {
     if (user?.mfaEnabled) {
       const mfaVerified = cookies().get('mfa_verified')?.value === 'true';
       if (!mfaVerified) {
-        return new Response(JSON.stringify({ error: 'MFA required' }), {
+        return new Response(JSON.stringify({ ok: false, error: 'MFA required' }), {
           status: 403,
           headers: { 'Content-Type': 'application/json' },
         });
       }
     }
   }
-  return { ok: true };
+  return undefined; // Authorized
 }
