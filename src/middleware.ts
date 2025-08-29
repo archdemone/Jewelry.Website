@@ -74,9 +74,10 @@ export async function middleware(request: NextRequest) {
 
   // Security headers
   // Disable CSP in development to allow Next.js dev tooling (e.g., eval in HMR)
-  if (process.env.NODE_ENV === 'production' && process.env.CSP_DISABLE !== 'true' && !process.env.VERCEL_URL?.includes('preview')) {
+  // Skip CSP for static files like manifest.webmanifest
+  if (process.env.NODE_ENV === 'production' && process.env.CSP_DISABLE !== 'true' && !process.env.VERCEL_URL?.includes('preview') && !pathname.includes('manifest.webmanifest')) {
     const csp =
-      "default-src 'self'; img-src 'self' data: blob:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://vercel.live; style-src 'self' 'unsafe-inline'; connect-src 'self'; frame-src 'self' https://vercel.live; frame-ancestors 'self';";
+      "default-src 'self'; img-src 'self' data: blob: https://*.public.blob.vercel-storage.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://vercel.live; style-src 'self' 'unsafe-inline'; connect-src 'self'; frame-src 'self' https://vercel.live; frame-ancestors 'self';";
     const reportOnly = process.env.CSP_REPORT_ONLY === 'true';
     const reportUri = process.env.CSP_REPORT_URI;
     const value = reportUri ? `${csp} report-uri ${reportUri};` : csp;
