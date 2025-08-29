@@ -15,12 +15,18 @@ function bad(error: string, code = 400) {
 
 export async function POST(req: Request) {
   try {
+    // Check for required environment variables
+    if (!process.env.BLOB_READ_WRITE_TOKEN) {
+      console.error('Missing BLOB_READ_WRITE_TOKEN environment variable');
+      return bad('Upload service not configured', 503);
+    }
+
     const auth = await requireAdminApi();
     if (auth instanceof Response) return auth;
 
     const form = await req.formData();
     const file = form.get('file') as unknown as File | null;
-    
+
     if (!file) {
       return bad('No file provided');
     }
@@ -36,10 +42,15 @@ export async function POST(req: Request) {
     const ext = file.name.split('.').pop() || 'bin';
     const key = `products/${Date.now()}-${crypto.randomUUID()}.${ext}`;
 
-    const blob = await put(key, file, { access: 'public' });
-
-    return ok({ url: blob.url, key: blob.pathname });
+    try {
+      const blob = await put(key, file, { access: 'public' });
+      return ok({ url: blob.url, key: blob.pathname });
+    } catch (blobError: any) {
+      console.error('Vercel Blob upload error:', blobError);
+      return bad(`Upload failed: ${blobError.message || 'Unknown error'}`, 500);
+    }
   } catch (err: any) {
+    console.error('Upload endpoint error:', err);
     const msg = err?.message || 'Upload failed';
     return bad(msg, 500);
   }
