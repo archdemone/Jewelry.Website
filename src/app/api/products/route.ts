@@ -126,9 +126,13 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// Create new product
+// Create product
 export async function POST(request: NextRequest) {
   try {
+    // Auth check
+    const auth = await requireAdminApi();
+    if (auth instanceof Response) return auth;
+
     const productData = await request.json();
 
     // Find the category
@@ -181,6 +185,10 @@ export async function POST(request: NextRequest) {
 // Update product
 export async function PUT(request: NextRequest) {
   try {
+    // Auth check
+    const auth = await requireAdminApi();
+    if (auth instanceof Response) return auth;
+
     const productData = await request.json();
 
     // Find the category
@@ -231,6 +239,10 @@ export async function PUT(request: NextRequest) {
 // Delete product
 export async function DELETE(request: NextRequest) {
   try {
+    // Auth check
+    const auth = await requireAdminApi();
+    if (auth instanceof Response) return auth;
+
     const { searchParams } = new URL(request.url);
     const id = searchParams.get('id');
 

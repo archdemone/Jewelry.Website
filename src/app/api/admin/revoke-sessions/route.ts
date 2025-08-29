@@ -5,8 +5,9 @@ import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth/auth-options';
 
 export async function POST() {
-  const gate = await requireAdminApi();
-  if ((gate as any)?.ok !== true) return gate as Response;
+  const auth = await requireAdminApi();
+  if (auth instanceof Response) return auth;
+  
   try {
     const session = await getServerSession(authOptions);
     const userId = (session?.user as any)?.id as string | undefined;
