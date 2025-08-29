@@ -73,10 +73,11 @@ export default function AdminMediaPage() {
         
         return {
           name: file.name,
-          originalName: file.name,
           path: data.url,
+          url: data.url,
           size: file.size,
           type: file.type,
+          modifiedDate: new Date().toISOString(),
         };
       });
 
