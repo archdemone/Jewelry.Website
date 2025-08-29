@@ -1,29 +1,22 @@
-import { PrismaClient } from '@prisma/client';
 import { NextResponse } from 'next/server';
-
-const prisma = new PrismaClient();
+import { db } from '@/lib/db';
 
 export async function GET() {
   try {
-    await prisma.$connect();
-    
-    const productCount = await prisma.product.count();
-    const categoryCount = await prisma.category.count();
-    
-    await prisma.$disconnect();
-    
+    const products = await db.product.findMany({
+      take: 5
+    });
+
     return NextResponse.json({
-      success: true,
-      productCount,
-      categoryCount,
-      message: 'Database connection successful'
+      message: 'Test endpoint working',
+      products: products.length,
+      timestamp: new Date().toISOString()
     });
   } catch (error) {
-    console.error('Test API error:', error);
+    console.error('Test endpoint error:', error);
     return NextResponse.json({
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : undefined
+      error: 'Database connection failed',
+      timestamp: new Date().toISOString()
     }, { status: 500 });
   }
 }

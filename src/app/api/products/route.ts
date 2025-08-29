@@ -1,7 +1,7 @@
-import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
-
-const prisma = new PrismaClient();
+import { revalidatePath } from 'next/cache';
+import { requireAdminApi } from '@/lib/admin/admin-auth';
+import { db } from '@/lib/db';
 
 // Helper function to extract gem color from gemstones string
 function extractGemColor(gemstones: string | null): string {
@@ -28,8 +28,8 @@ function extractGemVariation(gemstones: string | null): string {
 export async function GET(request: NextRequest) {
   try {
     // Ensure database connection
-    await prisma.$connect();
-    
+    await db.$connect();
+
     const { searchParams } = new URL(request.url);
     const categorySlug = searchParams.get('category');
 
@@ -38,7 +38,7 @@ export async function GET(request: NextRequest) {
 
     if (categorySlug && categorySlug !== 'all') {
       // Get products by category slug
-      const category = await prisma.category.findFirst({
+      const category = await db.category.findFirst({
         where: { slug: categorySlug },
         include: { products: true }
       });
@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
 
         const mappedSlug = categoryMap[categorySlug];
         if (mappedSlug) {
-          const mappedCategory = await prisma.category.findFirst({
+          const mappedCategory = await db.category.findFirst({
             where: { slug: mappedSlug },
             include: { products: true }
           });
@@ -71,13 +71,13 @@ export async function GET(request: NextRequest) {
       }
     } else {
       // Get all products
-      products = await prisma.product.findMany({
+      products = await db.product.findMany({
         include: { category: true }
       });
     }
 
     // Get all categories
-    categories = await prisma.category.findMany({
+    categories = await db.category.findMany({
       orderBy: { order: 'asc' }
     });
 
@@ -122,7 +122,7 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   } finally {
-    await prisma.$disconnect();
+    await db.$disconnect();
   }
 }
 
@@ -132,7 +132,7 @@ export async function POST(request: NextRequest) {
     const productData = await request.json();
 
     // Find the category
-    const category = await prisma.category.findFirst({
+    const category = await db.category.findFirst({
       where: { slug: productData.category }
     });
 
@@ -144,7 +144,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Create the product
-    const newProduct = await prisma.product.create({
+    const newProduct = await db.product.create({
       data: {
         name: productData.name,
         slug: productData.slug || productData.name.toLowerCase().replace(/\s+/g, '-'),
@@ -184,7 +184,7 @@ export async function PUT(request: NextRequest) {
     const productData = await request.json();
 
     // Find the category
-    const category = await prisma.category.findFirst({
+    const category = await db.category.findFirst({
       where: { slug: productData.category }
     });
 
@@ -196,7 +196,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Update the product
-    const updatedProduct = await prisma.product.update({
+    const updatedProduct = await db.product.update({
       where: { id: productData.id },
       data: {
         name: productData.name,
@@ -241,7 +241,7 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    await prisma.product.delete({
+    await db.product.delete({
       where: { id }
     });
 
