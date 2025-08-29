@@ -1,5 +1,3 @@
-export const fetchCache = 'force-no-store';
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
