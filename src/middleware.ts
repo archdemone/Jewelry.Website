@@ -4,8 +4,10 @@ import { getToken } from 'next-auth/jwt';
 import { UserRole } from '@/types/enums';
 
 export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  // Maintenance mode check
   if (process.env.NEXT_PUBLIC_MAINTENANCE_MODE === 'true') {
-    const { pathname } = request.nextUrl;
     if (!pathname.startsWith('/maintenance') && !pathname.startsWith('/api')) {
       const url = request.nextUrl.clone();
       url.pathname = '/maintenance';
@@ -22,24 +24,25 @@ export async function middleware(request: NextRequest) {
       if (request.method === 'GET' || request.method === 'HEAD') {
         return NextResponse.redirect(url, 308);
       }
-      // For non-GET/HEAD, do not redirect to avoid breaking requests
     }
   }
 
-  const { pathname } = request.nextUrl;
-  // Admin gating (skip MFA routes)
+  // Admin protection - only protect /admin routes
   if (pathname.startsWith('/admin') && !pathname.startsWith('/admin/mfa')) {
     const allowlist = (process.env.IP_ALLOWLIST || '')
       .split(',')
       .map((s) => s.trim())
       .filter(Boolean);
+
     const clientIp =
       request.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
       request.headers.get('x-real-ip') ||
       '';
+
     if (allowlist.length > 0 && clientIp && !allowlist.includes(clientIp)) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
     }
+
     const token = (await getToken({ req: request, secret: process.env.NEXTAUTH_SECRET })) as any;
     if (!token) {
       const url = request.nextUrl.clone();
@@ -47,6 +50,7 @@ export async function middleware(request: NextRequest) {
       url.searchParams.set('callbackUrl', '/admin');
       return NextResponse.redirect(url, { status: 302 });
     }
+
     const role = token?.role;
     if (role !== UserRole.ADMIN && role !== UserRole.STAFF) {
       const url = request.nextUrl.clone();
@@ -54,6 +58,7 @@ export async function middleware(request: NextRequest) {
       url.searchParams.set('callbackUrl', '/admin');
       return NextResponse.redirect(url, { status: 302 });
     }
+
     if (process.env.ADMIN_MFA_REQUIRED === 'true') {
       const mfaEnabled = !!token?.mfaEnabled;
       const mfaCookie = request.cookies.get('mfa_verified')?.value === 'true';
@@ -72,24 +77,7 @@ export async function middleware(request: NextRequest) {
 
   const res = NextResponse.next();
 
-  // Security headers - Simplified and more reliable
-  // Only apply CSP in production and only for specific paths that need it
-  // Skip CSP for auth routes, static files, and API endpoints to avoid interference
-  const shouldApplyCSP = process.env.NODE_ENV === 'production' &&
-    !pathname.startsWith('/api/auth') &&
-    !pathname.startsWith('/api/') &&
-    !pathname.includes('/manifest.webmanifest') &&
-    !pathname.includes('/favicon.ico') &&
-    !pathname.includes('/robots.txt') &&
-    !pathname.includes('/sitemap.xml') &&
-    pathname !== '/' &&
-    !pathname.startsWith('/_next/');
-
-  if (shouldApplyCSP) {
-    const csp =
-      "default-src 'self'; img-src 'self' data: blob: https://*.public.blob.vercel-storage.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://vercel.live; style-src 'self' 'unsafe-inline'; connect-src 'self'; frame-src 'self' https://vercel.live; frame-ancestors 'self';";
-    res.headers.set('Content-Security-Policy', csp);
-  }
+  // Basic security headers - no CSP for now to avoid interference
   res.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.headers.set('X-Content-Type-Options', 'nosniff');
   res.headers.set('X-Frame-Options', 'SAMEORIGIN');
@@ -103,8 +91,8 @@ export async function middleware(request: NextRequest) {
   const existingReqId = request.headers.get('x-request-id');
   if (existingReqId) res.headers.set('x-request-id', existingReqId);
 
-  // Short TTL for HTML/API
-  if (pathname.startsWith('/api') || pathname === '/' || pathname.endsWith('.html')) {
+  // Cache control for API routes
+  if (pathname.startsWith('/api')) {
     res.headers.set('Cache-Control', 'max-age=0, must-revalidate');
   }
 
@@ -113,10 +101,8 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Match all routes except static assets and Next.js internals
-    '/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|manifest.webmanifest|images|static).*)',
-    // Explicitly include admin and API routes
+    // Only match admin routes and exclude static assets
     '/admin/:path*',
-    '/api/:path*',
+    '/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|manifest.webmanifest|images|static).*)',
   ],
 };
