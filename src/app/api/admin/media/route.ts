@@ -87,7 +87,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ ok: false, error: 'URL is required' }, { status: 400 });
     }
 
-    // If category and fileName are provided, save to public folder
+    // If category and fileName are provided, save to public folder (local) or database (production)
     if (category && fileName) {
       try {
         // Download the image from the uploaded URL
@@ -97,48 +97,87 @@ export async function POST(req: NextRequest) {
         }
 
         const imageBuffer = await imageResponse.arrayBuffer();
-        const categoryPath = join(process.cwd(), 'public', 'images', category);
-
-        // Ensure category directory exists
-        try {
-          await stat(categoryPath);
-        } catch {
-          // Directory doesn't exist, create it
-          const { mkdir } = await import('fs/promises');
-          await mkdir(categoryPath, { recursive: true });
-          console.log(`Created directory: ${categoryPath}`);
-        }
-
-        // Save file to the category folder
-        const filePath = join(categoryPath, fileName);
-        const { writeFile } = await import('fs/promises');
-        await writeFile(filePath, Buffer.from(imageBuffer));
-        console.log(`Saved file: ${filePath}`);
-
-        // Get file extension for type
         const fileExt = fileName.split('.').pop()?.toLowerCase() || 'jpeg';
 
-        // Return success with the new file path
-        const newUrl = `/images/${category}/${fileName}`;
-        return NextResponse.json({
-          ok: true,
-          media: {
-            id: `public-${category}-${fileName}`,
-            name: fileName.replace(/\.[^/.]+$/, ''),
-            url: newUrl,
-            path: `${category}/${fileName}`,
-            size: imageBuffer.byteLength,
-            type: `image/${fileExt === 'jpg' ? 'jpeg' : fileExt}`,
-            createdAt: new Date(),
-            updatedAt: new Date(),
-            source: 'public'
+        // Check if we're in production (Vercel) or local development
+        const isProduction = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1';
+
+        if (isProduction) {
+          // In production, save to database instead of file system
+          console.log('Production environment detected, saving to database');
+
+          // Create a unique ID for the media item
+          const mediaId = `public-${category}-${fileName}`;
+
+          // Save to database with the category information
+          const media = await db.media.create({
+            data: {
+              name: fileName.replace(/\.[^/.]+$/, ''),
+              url: url, // Keep the original blob URL
+              path: `${category}/${fileName}`,
+              size: imageBuffer.byteLength,
+              type: `image/${fileExt === 'jpg' ? 'jpeg' : fileExt}`,
+            },
+          });
+
+          return NextResponse.json({
+            ok: true,
+            media: {
+              id: media.id,
+              name: media.name,
+              url: media.url,
+              path: media.path,
+              size: media.size,
+              type: media.type,
+              createdAt: media.createdAt,
+              updatedAt: media.updatedAt,
+              source: 'database'
+            }
+          });
+        } else {
+          // Local development - save to file system
+          console.log('Local development environment detected, saving to file system');
+
+          const categoryPath = join(process.cwd(), 'public', 'images', category);
+
+          // Ensure category directory exists
+          try {
+            await stat(categoryPath);
+          } catch {
+            // Directory doesn't exist, create it
+            const { mkdir } = await import('fs/promises');
+            await mkdir(categoryPath, { recursive: true });
+            console.log(`Created directory: ${categoryPath}`);
           }
-        });
+
+          // Save file to the category folder
+          const filePath = join(categoryPath, fileName);
+          const { writeFile } = await import('fs/promises');
+          await writeFile(filePath, Buffer.from(imageBuffer));
+          console.log(`Saved file: ${filePath}`);
+
+          // Return success with the new file path
+          const newUrl = `/images/${category}/${fileName}`;
+          return NextResponse.json({
+            ok: true,
+            media: {
+              id: `public-${category}-${fileName}`,
+              name: fileName.replace(/\.[^/.]+$/, ''),
+              url: newUrl,
+              path: `${category}/${fileName}`,
+              size: imageBuffer.byteLength,
+              type: `image/${fileExt === 'jpg' ? 'jpeg' : fileExt}`,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+              source: 'public'
+            }
+          });
+        }
       } catch (error) {
-        console.error('Error saving to public folder:', error);
+        console.error('Error saving file:', error);
         return NextResponse.json({
           ok: false,
-          error: `Failed to save file to public folder: ${error instanceof Error ? error.message : 'Unknown error'}`
+          error: `Failed to save file: ${error instanceof Error ? error.message : 'Unknown error'}`
         }, { status: 500 });
       }
     }
@@ -297,32 +336,59 @@ export async function DELETE(req: NextRequest) {
     // Handle public file deletion
     if (id.startsWith('public-')) {
       try {
-        // Extract path from ID (public-category-filename)
-        const pathParts = id.replace('public-', '').split('-');
-        const category = pathParts[0];
-        const fileName = pathParts.slice(1).join('-');
+        // Check if we're in production (Vercel) or local development
+        const isProduction = process.env.NODE_ENV === 'production' || process.env.VERCEL === '1';
 
-        console.log(`Attempting to delete: category=${category}, fileName=${fileName}`);
+        if (isProduction) {
+          // In production, try to delete from database if it exists
+          console.log('Production environment detected, attempting to delete from database');
 
-        const filePath = join(process.cwd(), 'public', 'images', category, fileName);
-        console.log(`Full file path: ${filePath}`);
+          try {
+            // Try to find and delete from database
+            await db.media.delete({
+              where: { id },
+            });
+            console.log(`Successfully deleted from database: ${id}`);
+            return NextResponse.json({ ok: true });
+          } catch (dbError: any) {
+            if (dbError.code === 'P2025') {
+              // Record not found in database, which is fine
+              console.log(`Record not found in database: ${id}`);
+              return NextResponse.json({ ok: true });
+            }
+            throw dbError;
+          }
+        } else {
+          // Local development - delete from file system
+          console.log('Local development environment detected, deleting from file system');
 
-        // Check if file exists before trying to delete
-        try {
-          await stat(filePath);
-        } catch (statError) {
-          console.log(`File does not exist: ${filePath}`);
-          // File doesn't exist, but we'll still return success since the goal is achieved
+          // Extract path from ID (public-category-filename)
+          const pathParts = id.replace('public-', '').split('-');
+          const category = pathParts[0];
+          const fileName = pathParts.slice(1).join('-');
+
+          console.log(`Attempting to delete: category=${category}, fileName=${fileName}`);
+
+          const filePath = join(process.cwd(), 'public', 'images', category, fileName);
+          console.log(`Full file path: ${filePath}`);
+
+          // Check if file exists before trying to delete
+          try {
+            await stat(filePath);
+          } catch (statError) {
+            console.log(`File does not exist: ${filePath}`);
+            // File doesn't exist, but we'll still return success since the goal is achieved
+            return NextResponse.json({ ok: true });
+          }
+
+          const { unlink } = await import('fs/promises');
+          await unlink(filePath);
+          console.log(`Successfully deleted: ${filePath}`);
+
           return NextResponse.json({ ok: true });
         }
-
-        const { unlink } = await import('fs/promises');
-        await unlink(filePath);
-        console.log(`Successfully deleted: ${filePath}`);
-
-        return NextResponse.json({ ok: true });
       } catch (error) {
-        console.error('Error deleting public file:', error);
+        console.error('Error deleting file:', error);
         return NextResponse.json({
           ok: false,
           error: `Failed to delete file: ${error instanceof Error ? error.message : 'Unknown error'}`
