@@ -1,6 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
@@ -593,7 +594,7 @@ export default function ProductsPage() {
                           alt={product.name}
                           fill
                           className="object-cover"
-                          unoptimized={/^https?:\/\//i.test(product.images?.[0] || '')}
+                          unoptimized={/^https?:\/\//i.test(getProductImage(product))}
                           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         />
 
@@ -700,7 +701,7 @@ export default function ProductsPage() {
                     alt={quickViewProduct.name}
                     fill
                     className="object-cover"
-                    unoptimized={/^https?:\/\//i.test(quickViewProduct.images?.[0] || '')}
+                    unoptimized={/^https?:\/\//i.test(getProductImage(quickViewProduct))}
                     sizes="(max-width: 768px) 100vw, 33vw"
                   />
                   <button onClick={() => setQuickViewProduct(null)}
