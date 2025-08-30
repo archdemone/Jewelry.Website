@@ -72,18 +72,23 @@ export async function middleware(request: NextRequest) {
 
   const res = NextResponse.next();
 
-  // Security headers
-  // Disable CSP in development to allow Next.js dev tooling (e.g., eval in HMR)
-  // Skip CSP for static files like manifest.webmanifest and auth routes
-  // Temporarily disable CSP for Vercel preview deployments to debug auth issues
-  if (process.env.NODE_ENV === 'production' && process.env.CSP_DISABLE !== 'true' && process.env.CSP_DISABLE !== 'debug' && !process.env.VERCEL_URL?.includes('preview') && !pathname.includes('/manifest.webmanifest') && !pathname.startsWith('/api/auth')) {
+  // Security headers - Simplified and more reliable
+  // Only apply CSP in production and only for specific paths that need it
+  // Skip CSP for auth routes, static files, and API endpoints to avoid interference
+  const shouldApplyCSP = process.env.NODE_ENV === 'production' &&
+    !pathname.startsWith('/api/auth') &&
+    !pathname.startsWith('/api/') &&
+    !pathname.includes('/manifest.webmanifest') &&
+    !pathname.includes('/favicon.ico') &&
+    !pathname.includes('/robots.txt') &&
+    !pathname.includes('/sitemap.xml') &&
+    pathname !== '/' &&
+    !pathname.startsWith('/_next/');
+
+  if (shouldApplyCSP) {
     const csp =
       "default-src 'self'; img-src 'self' data: blob: https://*.public.blob.vercel-storage.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://vercel.live; style-src 'self' 'unsafe-inline'; connect-src 'self'; frame-src 'self' https://vercel.live; frame-ancestors 'self';";
-    const reportOnly = process.env.CSP_REPORT_ONLY === 'true';
-    const reportUri = process.env.CSP_REPORT_URI;
-    const value = reportUri ? `${csp} report-uri ${reportUri};` : csp;
-    if (reportOnly) res.headers.set('Content-Security-Policy-Report-Only', value);
-    else res.headers.set('Content-Security-Policy', value);
+    res.headers.set('Content-Security-Policy', csp);
   }
   res.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.headers.set('X-Content-Type-Options', 'nosniff');
@@ -108,10 +113,10 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
+    // Match all routes except static assets and Next.js internals
     '/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|manifest.webmanifest|images|static).*)',
+    // Explicitly include admin and API routes
     '/admin/:path*',
-    '/api/admin/:path*',
-    '/api/upload',
-    '/api/auth/:path*',
+    '/api/:path*',
   ],
 };
