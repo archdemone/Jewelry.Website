@@ -691,7 +691,7 @@ export default function ProductsPage() {
             onClick={() => setQuickViewProduct(null)}
           >
             <motion.div initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }} onClick={(e) => e.stopPropagation()}
-              className="max-h-[85vh] w-full max-w-3xl overflow-auto rounded-2xl bg-white shadow-2xl"
+              className="max-h-[85vh] w-full max-w-3xl overflow-auto rounded-2xl bg-white shadow-2xl relative"
             >
               <div className="grid lg:grid-cols-3">
                 {/* Image Gallery */}
@@ -780,7 +780,7 @@ export default function ProductsPage() {
                       <label className="mb-1 block text-sm font-medium text-gray-700">
                         Gem Color
                       </label>
-                      <div className="grid grid-cols-3 gap-1">
+                      <div className="grid grid-cols-3 gap-1" style={{ overflow: 'visible' }}>
                         {availableGemColors.map((color) => (
                           <div key={color} className="group relative">
                             <button onClick={() =>
@@ -794,11 +794,15 @@ export default function ProductsPage() {
                             </button>
 
                             {/* Hover Popup with Gem Image */}
-                            <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                              <div className="rounded-lg border border-gray-200 bg-white p-3 shadow-lg">
+                            <div className="pointer-events-none absolute bottom-full left-1/2 z-[9999] mb-2 -translate-x-1/2 transform opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                              <div className="rounded-lg border border-gray-200 bg-white p-3 shadow-xl">
                                 <div className="relative h-32 w-32 overflow-hidden rounded">
                                   <img src={`/images/gems/colour/${color.toLowerCase()}.jpg`} alt={`${color} gem`}
                                     className="absolute inset-0 h-full w-full object-cover"
+                                    onError={(e) => {
+                                      console.warn(`Failed to load gem image: /images/gems/colour/${color.toLowerCase()}.jpg`);
+                                      e.currentTarget.style.display = 'none';
+                                    }}
                                   />
                                 </div>
                                 <div className="absolute left-1/2 top-full h-2 w-2 -translate-x-1/2 rotate-45 transform border-b border-l border-gray-200 bg-white"></div>

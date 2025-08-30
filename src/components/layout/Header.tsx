@@ -62,7 +62,7 @@ export function Header() {
         <div className="flex items-center justify-between h-14 sm:h-16 min-h-0">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-2 flex-shrink-0">
-            <div className="text-xl sm:text-2xl font-bold text-black" style={{ fontFamily: 'Playfair Display, serif', letterSpacing: '0.15em', fontWeight: '600', fontStyle: 'italic' }}>J&M</div>
+            <div className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-black" style={{ fontFamily: 'Playfair Display, serif', letterSpacing: '0.15em', fontWeight: '600', fontStyle: 'italic' }}>J&M</div>
           </Link>
 
           {/* Desktop Navigation */}
@@ -148,7 +148,7 @@ export function Header() {
                 Contact
               </Link>
             </nav>
-            
+
 
           </div>
 
@@ -206,7 +206,7 @@ export function Header() {
           </div>
         </div>
       </div>
-      
+
       {/* Mobile Rings Dropdown Portal */}
       {mounted && isMobileDropdownVisible && typeof window !== 'undefined' && createPortal(
         <div

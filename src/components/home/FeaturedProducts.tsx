@@ -270,11 +270,11 @@ const FeaturedProducts = () => {
                     {ring.material}
                   </span>
                   <span className={`px-2 py-1 text-xs rounded border ${ring.gemColor === 'Red' ? 'bg-red-100 text-red-800 border-red-300' :
-                      ring.gemColor === 'Blue' ? 'bg-blue-100 text-blue-800 border-blue-300' :
-                        ring.gemColor === 'Green' ? 'bg-green-100 text-green-800 border-green-300' :
-                          ring.gemColor === 'Purple' ? 'bg-purple-100 text-purple-800 border-purple-300' :
-                            ring.gemColor === 'Yellow' ? 'bg-yellow-100 text-yellow-800 border-yellow-300' :
-                              'bg-gray-100 text-gray-700 border-gray-300'
+                    ring.gemColor === 'Blue' ? 'bg-blue-100 text-blue-800 border-blue-300' :
+                      ring.gemColor === 'Green' ? 'bg-green-100 text-green-800 border-green-300' :
+                        ring.gemColor === 'Purple' ? 'bg-purple-100 text-purple-800 border-purple-300' :
+                          ring.gemColor === 'Yellow' ? 'bg-yellow-100 text-yellow-800 border-yellow-300' :
+                            'bg-gray-100 text-gray-700 border-gray-300'
                     }`}>
                     {ring.gemVariation === 'Dark' ? `Dark ${ring.gemColor}` :
                       ring.gemVariation === 'Bright' ? `Bright ${ring.gemColor}` :
@@ -311,8 +311,8 @@ const FeaturedProducts = () => {
                   <button
                     onClick={() => handleWishlistToggle(ring.id)}
                     className={`p-2 transition-colors ${isInWishlist(ring.id)
-                        ? 'text-red-500'
-                        : 'text-gray-400 hover:text-red-500'
+                      ? 'text-red-500'
+                      : 'text-gray-400 hover:text-red-500'
                       }`}
                   >
                     <Heart className={`h-4 w-4 ${isInWishlist(ring.id) ? 'fill-current' : ''}`} />
@@ -449,21 +449,25 @@ const FeaturedProducts = () => {
                                 setCustomization((prev) => ({ ...prev, gemColor: color }))
                               }
                               className={`w-full rounded-lg border-2 p-2 text-sm transition-all ${customization.gemColor === color
-                                  ? 'border-green-500 bg-green-100 shadow-md ring-2 ring-green-200'
-                                  : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+                                ? 'border-green-500 bg-green-100 shadow-md ring-2 ring-green-200'
+                                : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
                                 }`}
                             >
                               <span className="font-medium text-gray-900">{color}</span>
                             </button>
 
                             {/* Hover Popup with Gem Image */}
-                            <div className="pointer-events-none absolute bottom-full left-1/2 z-10 mb-2 -translate-x-1/2 transform opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                              <div className="rounded-lg border border-gray-200 bg-white p-3 shadow-lg">
+                            <div className="pointer-events-none absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 transform opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                              <div className="rounded-lg border border-gray-200 bg-white p-3 shadow-xl">
                                 <div className="relative h-32 w-32 overflow-hidden rounded">
                                   <img
                                     src={`/images/gems/colour/${color.toLowerCase()}.jpg`}
                                     alt={`${color} gem`}
                                     className="absolute inset-0 h-full w-full object-cover"
+                                    onError={(e) => {
+                                      console.warn(`Failed to load gem image: /images/gems/colour/${color.toLowerCase()}.jpg`);
+                                      e.currentTarget.style.display = 'none';
+                                    }}
                                   />
                                 </div>
                                 <div className="absolute left-1/2 top-full h-2 w-2 -translate-x-1/2 rotate-45 transform border-b border-l border-gray-200 bg-white"></div>
@@ -487,8 +491,8 @@ const FeaturedProducts = () => {
                               setCustomization((prev) => ({ ...prev, gemDensity: density }))
                             }
                             className={`rounded-lg border-2 p-2 text-sm transition-all ${customization.gemDensity === density
-                                ? 'border-green-500 bg-green-100 shadow-md ring-2 ring-green-200'
-                                : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+                              ? 'border-green-500 bg-green-100 shadow-md ring-2 ring-green-200'
+                              : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
                               }`}
                           >
                             <span className={`font-medium capitalize ${customization.gemDensity === density ? 'text-gray-900' : 'text-gray-900'
@@ -513,8 +517,8 @@ const FeaturedProducts = () => {
                               setCustomization((prev) => ({ ...prev, gemVariation: variation }))
                             }
                             className={`rounded-lg border-2 p-2 text-sm transition-all ${customization.gemVariation === variation
-                                ? 'border-green-500 bg-green-100 shadow-md ring-2 ring-green-200'
-                                : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+                              ? 'border-green-500 bg-green-100 shadow-md ring-2 ring-green-200'
+                              : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
                               }`}
                           >
                             <span className={`font-medium ${customization.gemVariation === variation ? 'text-gray-900' : 'text-gray-900'
@@ -639,8 +643,8 @@ const FeaturedProducts = () => {
                       whileTap={{ scale: 0.95 }}
                       onClick={handleWishlistClick}
                       className={`flex h-10 w-20 items-center justify-center gap-1 rounded-lg border transition-colors ${isInWishlist(quickViewProduct.id)
-                          ? 'border-red-500 bg-red-50 text-red-600'
-                          : 'border-gray-300 text-gray-900 hover:border-red-400 hover:bg-red-50'
+                        ? 'border-red-500 bg-red-50 text-red-600'
+                        : 'border-gray-300 text-gray-900 hover:border-red-400 hover:bg-red-50'
                         }`}
                     >
                       <span className="text-sm">❤️</span>
