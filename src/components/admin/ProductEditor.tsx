@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { getProductImage } from '@/lib/assets/images';
+import type { Product } from '@/types';
 import {
   Plus,
   Edit,
@@ -13,39 +14,6 @@ import {
   Save,
 } from 'lucide-react';
 
-interface RingProduct {
-  id: number;
-  name: string;
-  sku?: string;
-  category: string;
-  subCategory?: string;
-  price: number;
-  originalPrice?: number;
-  material: string;
-  gemColor: string;
-  gemColor2?: string;
-  gemDensity: string;
-  gemVariation: string;
-  mixColors: string[];
-  mixColors2?: string[];
-  ringSizes: {
-    us: number[];
-    eu: number[];
-  };
-  ringWidth: number[];
-  isReadyToShip: boolean;
-  isInStock?: boolean;
-  rating?: number;
-  reviews?: number;
-  status?: 'active' | 'draft' | 'archived';
-  images: string[];
-  description?: string;
-  isFeatured?: boolean;
-  featuredOrder?: number | null;
-  badge?: string;
-  slug?: string;
-}
-
 interface ImageFile {
   name: string;
   url: string;
@@ -53,14 +21,15 @@ interface ImageFile {
 }
 
 type ProductEditorProps = {
-  product?: RingProduct;               // undefined = create
+  product?: Product;               // undefined = create
   open: boolean;
   onClose: () => void;
-  onSaved: (p: RingProduct) => void;   // return saved product from API response
+  onSaved: (p: Product) => void;   // return saved product from API response
+  mode?: 'main' | 'featured';      // 'main' for main products, 'featured' for featured products
 };
 
-export default function ProductEditor({ product, open, onClose, onSaved }: ProductEditorProps) {
-  const [editingProduct, setEditingProduct] = useState<RingProduct | null>(null);
+export default function ProductEditor({ product, open, onClose, onSaved, mode = 'main' }: ProductEditorProps) {
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isAddingProduct, setIsAddingProduct] = useState(false);
   const [availableImages, setAvailableImages] = useState<ImageFile[]>([]);
   const [hoveredGemColor, setHoveredGemColor] = useState<string | null>(null);
@@ -124,6 +93,7 @@ export default function ProductEditor({ product, open, onClose, onSaved }: Produ
           id: 0,
           name: '',
           sku: '',
+          slug: '',
           category: 'Womens',
           price: 0,
           material: 'Silver',
@@ -161,26 +131,34 @@ export default function ProductEditor({ product, open, onClose, onSaved }: Produ
     if (!editingProduct) return;
 
     try {
-      const method = isAddingProduct ? 'POST' : 'PUT';
-      const url = '/api/products';
-
-      const response = await fetch(url, {
-        method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(editingProduct),
-      });
-
-      if (response.ok) {
-        const savedProduct = await response.json();
-
-        // Normalize images in the returned product
-        const normalizedSavedProduct = {
-          ...savedProduct,
-          images: normalizeImages(savedProduct.images)
-        };
-
-        onSaved(normalizedSavedProduct);
+      if (mode === 'featured') {
+        // For featured products, just pass the product back to the parent
+        // The parent will handle the localStorage updates
+        onSaved(editingProduct);
         onClose();
+      } else {
+        // For main products, use the API
+        const method = isAddingProduct ? 'POST' : 'PUT';
+        const url = '/api/products';
+
+        const response = await fetch(url, {
+          method,
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(editingProduct),
+        });
+
+        if (response.ok) {
+          const savedProduct = await response.json();
+
+          // Normalize images in the returned product
+          const normalizedSavedProduct = {
+            ...savedProduct,
+            images: normalizeImages(savedProduct.images)
+          };
+
+          onSaved(normalizedSavedProduct);
+          onClose();
+        }
       }
     } catch (error) {
       console.error('Error saving product:', error);
@@ -245,11 +223,12 @@ export default function ProductEditor({ product, open, onClose, onSaved }: Produ
               <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto">
                 {availableImages.map((image) => (
                   <button key={image.url} onClick={() => {
-                    const newImages = editingProduct.images.includes(image.url)
-                      ? editingProduct.images.filter(img => img !== image.url)
-                      : [...editingProduct.images, image.url];
+                    const currentImages = editingProduct.images || [];
+                    const newImages = currentImages.includes(image.url)
+                      ? currentImages.filter(img => img !== image.url)
+                      : [...currentImages, image.url];
                     setEditingProduct({ ...editingProduct, images: newImages });
-                  }} className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-colors ${editingProduct.images.includes(image.url)
+                  }} className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-colors ${(editingProduct.images || []).includes(image.url)
                     ? 'border-gold-500 ring-2 ring-gold-200'
                     : 'border-gray-200 hover:border-gray-300'
                     }`}
@@ -260,7 +239,7 @@ export default function ProductEditor({ product, open, onClose, onSaved }: Produ
                       style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                       loading="lazy"
                     />
-                    {editingProduct.images.includes(image.url) && (
+                    {(editingProduct.images || []).includes(image.url) && (
                       <div className="absolute top-1 right-1 w-5 h-5 bg-gold-500 rounded-full flex items-center justify-center">
                         <span className="text-white text-xs">✓</span>
                       </div>
@@ -382,10 +361,11 @@ export default function ProductEditor({ product, open, onClose, onSaved }: Produ
                         <label key={color}
                           className="relative flex items-center p-2 rounded border hover:bg-gray-50 cursor-pointer" onMouseEnter={() => setHoveredMixColor(color)} onMouseLeave={() => setHoveredMixColor(null)}
                         >
-                          <input type="checkbox" checked={editingProduct.mixColors.includes(color)} onChange={(e) => {
+                          <input type="checkbox" checked={(editingProduct.mixColors || []).includes(color)} onChange={(e) => {
+                            const currentMixColors = editingProduct.mixColors || [];
                             const newMixColors = e.target.checked
-                              ? [...editingProduct.mixColors, color]
-                              : editingProduct.mixColors.filter(c => c !== color);
+                              ? [...currentMixColors, color]
+                              : currentMixColors.filter(c => c !== color);
                             setEditingProduct({ ...editingProduct, mixColors: newMixColors });
                           }}
                             className="mr-2"

@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { getProductImage } from '@/lib/assets/images';
 import ProductEditor from '@/components/admin/ProductEditor';
+import type { Product } from '@/types';
 
 import {
   Plus,
@@ -27,38 +28,7 @@ import {
   Check,
 } from 'lucide-react';
 
-interface RingProduct {
-  id: number;
-  name: string;
-  sku?: string;
-  category: string;
-  subCategory?: string;
-  price: number;
-  originalPrice?: number;
-  material: string;
-  gemColor: string;
-  gemColor2?: string;
-  gemDensity: string;
-  gemVariation: string;
-  mixColors: string[];
-  mixColors2?: string[];
-  ringSizes: {
-    us: number[];
-    eu: number[];
-  };
-  ringWidth: number[];
-  isReadyToShip: boolean;
-  isInStock?: boolean;
-  rating?: number;
-  reviews?: number;
-  status?: 'active' | 'draft' | 'archived';
-  images: string[];
-  description?: string;
-  isFeatured?: boolean;
-  featuredOrder?: number | null;
-  badge?: string;
-  slug?: string;
-}
+
 
 interface ImageFile {
   name: string;
@@ -74,7 +44,7 @@ export default function UnifiedAdminProductsPage() {
   const [material, setMaterial] = useState('all');
   const [readyToShip, setReadyToShip] = useState('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [editingProduct, setEditingProduct] = useState<RingProduct | null>(null);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isAddingProduct, setIsAddingProduct] = useState(false);
   const [availableImages, setAvailableImages] = useState<ImageFile[]>([]);
   const [loading, setLoading] = useState(true);
@@ -130,11 +100,12 @@ export default function UnifiedAdminProductsPage() {
   };
 
   // Default seed data
-  const defaultProducts: RingProduct[] = [
+  const defaultProducts: Product[] = [
     {
       id: 1,
       name: "Women's Silver Inlay Ring - Dark Red",
       sku: 'RNG-W-SIL-RED-001',
+      slug: 'womens-silver-inlay-ring-dark-red',
       category: 'Womens',
       subCategory: 'Inlay Ring',
       price: 299,
@@ -159,6 +130,7 @@ export default function UnifiedAdminProductsPage() {
       id: 2,
       name: "Men's Damascus Wedding Ring - Bright Blue",
       sku: 'RNG-M-DAM-BLU-001',
+      slug: 'mens-damascus-wedding-ring-bright-blue',
       category: 'Mens',
       subCategory: 'Wedding',
       price: 449,
@@ -180,7 +152,7 @@ export default function UnifiedAdminProductsPage() {
     },
   ];
 
-  const [products, setProducts] = useState<RingProduct[]>(defaultProducts);
+  const [products, setProducts] = useState<Product[]>(defaultProducts);
 
   useEffect(() => {
     loadProducts();
@@ -216,6 +188,7 @@ export default function UnifiedAdminProductsPage() {
       id: 0,
       name: '',
       sku: '',
+      slug: '',
       category: 'Womens',
       price: 0,
       material: 'Silver',
@@ -234,7 +207,7 @@ export default function UnifiedAdminProductsPage() {
     setIsAddingProduct(true);
   };
 
-  const handleEditProduct = (product: RingProduct) => {
+  const handleEditProduct = (product: Product) => {
     setEditingProduct({ ...product });
     setIsAddingProduct(false);
   };
@@ -278,7 +251,7 @@ export default function UnifiedAdminProductsPage() {
     }
   };
 
-  const handleDeleteProduct = async (id: number) => {
+  const handleDeleteProduct = async (id: string | number) => {
     if (!confirm('Are you sure you want to delete this product?')) return;
 
     try {
@@ -294,7 +267,7 @@ export default function UnifiedAdminProductsPage() {
     }
   };
 
-  const toggleFeatured = async (product: RingProduct) => {
+  const toggleFeatured = async (product: Product) => {
     const updatedProduct = {
       ...product,
       isFeatured: !product.isFeatured,

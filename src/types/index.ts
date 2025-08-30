@@ -22,23 +22,30 @@ export interface Product {
   images?: string[];
   material?: string;
   gemColor?: string;
+  gemColor2?: string;
   gemDensity?: string;
   gemVariation?: string;
   mixColors?: string[];
+  mixColors2?: string[];
   category?: string;
   subCategory?: string;
   ringSizes?: {
-    us: number[];
-    eu: number[];
+    us?: number[];
+    eu?: number[];
   };
   ringWidth?: number[];
   isReadyToShip?: boolean;
+  isInStock?: boolean;
   rating?: number;
   reviews?: number;
   badge?: string;
   slug: string;
   description?: string;
   status?: 'active' | 'draft' | 'archived';
+  sku?: string;
+  isFeatured?: boolean;
+  featuredOrder?: number | null;
+  createdAt?: string;
 }
 
 export type ProductWithRelations = {
