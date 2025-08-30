@@ -35,6 +35,13 @@ function safeParseImages(imagesString: string | null): string[] {
     const parsed = JSON.parse(imagesString);
     return Array.isArray(parsed) ? parsed : [];
   } catch {
+    // If JSON parsing fails, check if it's a single URL string
+    if (typeof imagesString === 'string' && imagesString.trim()) {
+      // Check if it looks like a URL
+      if (imagesString.includes('http') || imagesString.startsWith('/')) {
+        return [imagesString.trim()];
+      }
+    }
     return [];
   }
 }
@@ -102,7 +109,7 @@ export async function GET(request: NextRequest) {
       name: product.name,
       price: product.price,
       originalPrice: product.comparePrice,
-      images: product.images ? JSON.parse(product.images) : [],
+      images: safeParseImages(product.images),
       material: product.material,
       gemColor: extractGemColor(product.gemstones),
       gemDensity: 'medium', // Default value
@@ -121,26 +128,26 @@ export async function GET(request: NextRequest) {
       createdAt: product.createdAt?.toISOString(),
       isFeatured: product.featured,
       featuredOrder: product.featured ? 1 : undefined,
-      mixColors: [],
-      isInStock: product.active
-    }));
+              mixColors: [],
+        isInStock: product.active
+      }));
 
-    return NextResponse.json({
-      products: mappedProducts,
-      categories
-    }, {
-      status: 200,
-      headers: { 'Cache-Control': 'no-store' }
-    });
-  } catch (error) {
-    console.error('Error fetching products:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch products' },
-      { status: 500 }
-    );
-  } finally {
-    await db.$disconnect();
-  }
+  return NextResponse.json({
+    products: mappedProducts,
+    categories
+  }, {
+    status: 200,
+    headers: { 'Cache-Control': 'no-store' }
+  });
+} catch (error) {
+  console.error('Error fetching products:', error);
+  return NextResponse.json(
+    { error: 'Failed to fetch products' },
+    { status: 500 }
+  );
+} finally {
+  await db.$disconnect();
+}
 }
 
 // Create new product

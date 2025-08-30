@@ -444,15 +444,11 @@ export default function CategoryPage({
               >
                 {/* Product Image */}
                 <div className="relative aspect-square overflow-hidden border-2 border-black">
-                  <Image src={Array.isArray(product.images) && product.images.length > 0
+                  <img src={Array.isArray(product.images) && product.images.length > 0
                     ? resolveSrc(product.images[0])
                     : getProductImageFallback({ productSlug: product.slug, name: product.name })[0] || ''} alt={product.name}
-                    fill className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                    loading="lazy" quality={75}
-                    placeholder="blur"
-                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxAAPwCdABmX/9k="
-                    unoptimized={Array.isArray(product.images) && product.images.length > 0 ? /^https?:\/\//i.test(product.images[0]) : false}
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    loading="lazy"
                   />
 
                   {/* Badge */}
