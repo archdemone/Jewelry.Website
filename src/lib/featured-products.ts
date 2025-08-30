@@ -234,6 +234,117 @@ export const featuredProducts: FeaturedProduct[] = [
   },
 ];
 
+// Enhanced storage with backup to localStorage
+const STORAGE_KEY = 'featured-products-v2';
+const BACKUP_KEY = 'featured-products-backup';
+
+// Initialize with default products if none exist
+function initializeFeaturedProducts(): FeaturedProduct[] {
+  if (typeof window === 'undefined') return featuredProducts;
+
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    }
+
+    // Try backup if main storage is empty
+    const backup = localStorage.getItem(BACKUP_KEY);
+    if (backup) {
+      const parsedBackup = JSON.parse(backup);
+      if (Array.isArray(parsedBackup) && parsedBackup.length > 0) {
+        // Restore from backup
+        localStorage.setItem(STORAGE_KEY, backup);
+        return parsedBackup;
+      }
+    }
+
+    // Initialize with defaults
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(featuredProducts));
+    localStorage.setItem(BACKUP_KEY, JSON.stringify(featuredProducts));
+    return featuredProducts;
+  } catch (error) {
+    console.error('Error initializing featured products:', error);
+    return featuredProducts;
+  }
+}
+
+export function getFeaturedProducts(): FeaturedProduct[] {
+  if (typeof window === 'undefined') return featuredProducts;
+
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      const parsed = JSON.parse(stored);
+      if (Array.isArray(parsed) && parsed.length > 0) {
+        return parsed;
+      }
+    }
+    return initializeFeaturedProducts();
+  } catch (error) {
+    console.error('Error getting featured products:', error);
+    return featuredProducts;
+  }
+}
+
+export function updateFeaturedProduct(id: string, updatedProduct: FeaturedProduct): void {
+  if (typeof window === 'undefined') return;
+
+  try {
+    const products = getFeaturedProducts();
+    const updatedProducts = products.map(product =>
+      product.id === id ? updatedProduct : product
+    );
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedProducts));
+    localStorage.setItem(BACKUP_KEY, JSON.stringify(updatedProducts));
+  } catch (error) {
+    console.error('Error updating featured product:', error);
+  }
+}
+
+export function addFeaturedProduct(product: FeaturedProduct): void {
+  if (typeof window === 'undefined') return;
+
+  try {
+    const products = getFeaturedProducts();
+    const updatedProducts = [product, ...products];
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedProducts));
+    localStorage.setItem(BACKUP_KEY, JSON.stringify(updatedProducts));
+  } catch (error) {
+    console.error('Error adding featured product:', error);
+  }
+}
+
+export function deleteFeaturedProduct(id: string): void {
+  if (typeof window === 'undefined') return;
+
+  try {
+    const products = getFeaturedProducts();
+    const updatedProducts = products.filter(product => product.id !== id);
+
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedProducts));
+    localStorage.setItem(BACKUP_KEY, JSON.stringify(updatedProducts));
+  } catch (error) {
+    console.error('Error deleting featured product:', error);
+  }
+}
+
+export function resetToDefault(): void {
+  if (typeof window === 'undefined') return;
+
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(featuredProducts));
+    localStorage.setItem(BACKUP_KEY, JSON.stringify(featuredProducts));
+  } catch (error) {
+    console.error('Error resetting featured products:', error);
+  }
+}
+
 // Available options for dropdowns
 export const availableMaterials = [
   'Silver',
@@ -262,64 +373,3 @@ export const availableCategories = [
   'Eternity Ring',
   'Signet Ring',
 ];
-
-// Functions to manage featured products
-export function getFeaturedProducts(): FeaturedProduct[] {
-  // In a real app, this would fetch from a database
-  // For now, we'll use localStorage to persist changes
-  if (typeof window !== 'undefined') {
-    const stored = localStorage.getItem('featuredProducts');
-    if (stored) {
-      return JSON.parse(stored);
-    }
-  }
-  return featuredProducts;
-}
-
-export function updateFeaturedProduct(id: string, updates: Partial<FeaturedProduct>): void {
-  const products = getFeaturedProducts();
-  const updatedProducts = products.map((product) =>
-    product.id === id ? { ...product, ...updates } : product,
-  );
-
-  if (typeof window !== 'undefined') {
-    localStorage.setItem('featuredProducts', JSON.stringify(updatedProducts));
-    // Dispatch custom event to notify other components
-    window.dispatchEvent(new CustomEvent('featuredProductsUpdated'));
-  }
-}
-
-export function addFeaturedProduct(product: Omit<FeaturedProduct, 'id'>): void {
-  const products = getFeaturedProducts();
-  const newProduct = {
-    ...product,
-    id: Date.now().toString(), // Simple ID generation
-  };
-
-  const updatedProducts = [...products, newProduct];
-
-  if (typeof window !== 'undefined') {
-    localStorage.setItem('featuredProducts', JSON.stringify(updatedProducts));
-    // Dispatch custom event to notify other components
-    window.dispatchEvent(new CustomEvent('featuredProductsUpdated'));
-  }
-}
-
-export function deleteFeaturedProduct(id: string): void {
-  const products = getFeaturedProducts();
-  const updatedProducts = products.filter((product) => product.id !== id);
-
-  if (typeof window !== 'undefined') {
-    localStorage.setItem('featuredProducts', JSON.stringify(updatedProducts));
-    // Dispatch custom event to notify other components
-    window.dispatchEvent(new CustomEvent('featuredProductsUpdated'));
-  }
-}
-
-export function resetToDefault(): void {
-  if (typeof window !== 'undefined') {
-    localStorage.setItem('featuredProducts', JSON.stringify(featuredProducts));
-    // Dispatch custom event to notify other components
-    window.dispatchEvent(new CustomEvent('featuredProductsUpdated'));
-  }
-}

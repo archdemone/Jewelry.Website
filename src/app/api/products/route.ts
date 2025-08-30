@@ -162,7 +162,14 @@ export async function GET(request: NextRequest) {
 // Create new product
 export async function POST(request: NextRequest) {
   try {
+    // Check if this is an admin request (optional for now)
+    const authHeader = request.headers.get('authorization');
+    const isAdminRequest = authHeader?.startsWith('Bearer ') ||
+      request.headers.get('x-admin-request') === 'true';
+
     const productData = await request.json();
+
+    console.log('Creating product with data:', JSON.stringify(productData, null, 2));
 
     // Find the category
     const category = await db.category.findFirst({
@@ -170,8 +177,9 @@ export async function POST(request: NextRequest) {
     });
 
     if (!category) {
+      console.error('Category not found:', productData.category);
       return NextResponse.json(
-        { error: 'Category not found' },
+        { error: 'Category not found', category: productData.category },
         { status: 404 }
       );
     }
@@ -239,7 +247,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Error creating product:', error);
     return NextResponse.json(
-      { error: 'Failed to create product' },
+      { error: 'Failed to create product', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }
