@@ -256,10 +256,8 @@ export default function ProductForm({
             {images.map((img, idx) => (
               <div key={img.id} className="relative rounded border p-2">
                 <div className="relative h-32 w-full">
-                  <Image src={img.url} alt={img.alt}
-                    fill className="rounded object-cover"
-                    sizes="(max-width: 768px) 50vw, 25vw"
-                    unoptimized
+                  <img src={resolveImageSrc(img.url)} alt={img.alt}
+                    className="w-full h-full rounded object-cover"
                   />
                 </div>
                 {img.progress && img.progress < 100 && (
@@ -403,4 +401,11 @@ function slugify(v: string) {
     .replace(/[^a-z0-9\s-]/g, '')
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-');
+}
+
+// Image URL resolver for gallery images
+function resolveImageSrc(url: string) {
+  if (!url) return '';
+  if (/^https?:\/\//i.test(url)) return url;       // Blob URL, use as-is
+  return `/images/${url.replace(/^\/+/, '')}`;     // local file fallback
 }

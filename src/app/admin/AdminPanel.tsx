@@ -124,6 +124,13 @@ export default function AdminPanel() {
     return colorMap[color] || '/images/gem-colors/custom-gem.webp';
   };
 
+  // Image URL resolver for gallery images
+  function resolveImageSrc(url: string) {
+    if (!url) return '';
+    if (/^https?:\/\//i.test(url)) return url;       // Blob URL, use as-is
+    return `/images/${url.replace(/^\/+/, '')}`;     // local file fallback
+  }
+
   // Load products from the new Prisma database API
   const loadProducts = useCallback(async () => {
     try {
@@ -548,9 +555,8 @@ export default function AdminPanel() {
                 <div className="mb-6">
                   <div className="relative aspect-square bg-white rounded-lg border-2 border-dashed border-gray-300 overflow-hidden">
                     {editingProduct.images && editingProduct.images[0] ? (
-                      <Image src={editingProduct.images[0]} alt={editingProduct.name}
-                        fill className="object-cover"
-                        sizes="(max-width: 768px) 100vw, 50vw"
+                      <img src={resolveImageSrc(editingProduct.images[0])} alt={editingProduct.name}
+                        className="w-full h-full object-cover"
                       />
                     ) : (
                       <div className="flex items-center justify-center h-full">
@@ -595,9 +601,8 @@ export default function AdminPanel() {
                           : 'border-gray-200 hover:border-gray-300'
                         }`}
                       >
-                        <Image src={image.url} alt={image.name}
-                          fill className="object-cover"
-                          sizes="200px"
+                        <img src={resolveImageSrc(image.url)} alt={image.name}
+                          className="w-full h-full object-cover"
                         />
                         {editingProduct.images?.includes(image.url) && (
                           <div className="absolute top-1 right-1 w-5 h-5 bg-gold-500 rounded-full flex items-center justify-center">

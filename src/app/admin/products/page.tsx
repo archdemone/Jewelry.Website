@@ -102,6 +102,13 @@ export default function UnifiedAdminProductsPage() {
     return colorMap[color] || '#6b7280';
   };
 
+  // Image URL resolver for gallery images
+  function resolveImageSrc(url: string) {
+    if (!url) return '';
+    if (/^https?:\/\//i.test(url)) return url;       // Blob URL, use as-is
+    return `/images/${url.replace(/^\/+/, '')}`;     // local file fallback
+  }
+
   const getGemColorImage = (color: string): string => {
     const imageMap: Record<string, string> = {
       'Red': '/images/gems/colour/red.jpg',
@@ -356,16 +363,16 @@ export default function UnifiedAdminProductsPage() {
       <div className="w-full">
         <div className="inline-flex h-10 items-center justify-center rounded-md bg-gray-100 p-1 w-full">
           <button onClick={() => setActiveTab('all-products')} className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all ${activeTab === 'all-products'
-              ? 'bg-white text-gray-900 shadow-sm'
-              : 'text-gray-600 hover:text-gray-900'
+            ? 'bg-white text-gray-900 shadow-sm'
+            : 'text-gray-600 hover:text-gray-900'
             }`}
           >
             <Package className="w-4 h-4 mr-2" />
             All Products ({products.length})
           </button>
           <button onClick={() => setActiveTab('featured')} className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all ${activeTab === 'featured'
-              ? 'bg-white text-gray-900 shadow-sm'
-              : 'text-gray-600 hover:text-gray-900'
+            ? 'bg-white text-gray-900 shadow-sm'
+            : 'text-gray-600 hover:text-gray-900'
             }`}
           >
             <Star className="w-4 h-4 mr-2" />
@@ -665,9 +672,8 @@ export default function UnifiedAdminProductsPage() {
                 <div className="mb-6">
                   <div className="relative aspect-square bg-white rounded-lg border-2 border-dashed border-gray-300 overflow-hidden">
                     {editingProduct.images && editingProduct.images[0] ? (
-                      <Image src={editingProduct.images[0]} alt={editingProduct.name}
-                        fill className="object-cover"
-                        sizes="(max-width: 768px) 100vw, 50vw"
+                      <img src={resolveImageSrc(editingProduct.images[0])} alt={editingProduct.name}
+                        className="w-full h-full object-cover"
                       />
                     ) : (
                       <div className="flex items-center justify-center h-full">
@@ -684,9 +690,9 @@ export default function UnifiedAdminProductsPage() {
                     )}
                     {editingProduct.status && (
                       <div className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium ${editingProduct.status === 'active' ? 'bg-green-100 text-green-800' :
-                          editingProduct.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
-                            editingProduct.status === 'archived' ? 'bg-gray-100 text-gray-800' :
-                              'bg-red-100 text-red-800'
+                        editingProduct.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
+                          editingProduct.status === 'archived' ? 'bg-gray-100 text-gray-800' :
+                            'bg-red-100 text-red-800'
                         }`}>
                         {editingProduct.status === 'active' ? 'Active' :
                           editingProduct.status === 'draft' ? 'Draft' :
@@ -708,13 +714,12 @@ export default function UnifiedAdminProductsPage() {
                           : [...editingProduct.images, image.url];
                         setEditingProduct({ ...editingProduct, images: newImages });
                       }} className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-colors ${editingProduct.images.includes(image.url)
-                          ? 'border-gold-500 ring-2 ring-gold-200'
-                          : 'border-gray-200 hover:border-gray-300'
+                        ? 'border-gold-500 ring-2 ring-gold-200'
+                        : 'border-gray-200 hover:border-gray-300'
                         }`}
                       >
-                        <Image src={image.url} alt={image.name}
-                          fill className="object-cover"
-                          sizes="200px"
+                        <img src={resolveImageSrc(image.url)} alt={image.name}
+                          className="w-full h-full object-cover"
                         />
                         {editingProduct.images.includes(image.url) && (
                           <div className="absolute top-1 right-1 w-5 h-5 bg-gold-500 rounded-full flex items-center justify-center">
@@ -799,8 +804,8 @@ export default function UnifiedAdminProductsPage() {
                           {gemColors.map((color) => (
                             <button key={color}
                               type="button" onClick={() => setEditingProduct({ ...editingProduct, gemColor: color })} onMouseEnter={() => setHoveredGemColor(color)} onMouseLeave={() => setHoveredGemColor(null)} className={`relative rounded-lg border-2 p-3 transition-all ${editingProduct.gemColor === color
-                                  ? 'border-gold-500 bg-gold-50'
-                                  : 'border-gray-300 hover:border-gray-400'
+                                ? 'border-gold-500 bg-gold-50'
+                                : 'border-gray-300 hover:border-gray-400'
                                 }`}
                             >
                               <div className="flex flex-col items-center gap-2">
@@ -881,8 +886,8 @@ export default function UnifiedAdminProductsPage() {
                             {gemColors.map((color) => (
                               <button key={color}
                                 type="button" onClick={() => setEditingProduct({ ...editingProduct, gemColor2: color })} onMouseEnter={() => setHoveredGemColor2(color)} onMouseLeave={() => setHoveredGemColor2(null)} className={`relative rounded-lg border-2 p-3 transition-all ${editingProduct.gemColor2 === color
-                                    ? 'border-gold-500 bg-gold-50'
-                                    : 'border-gray-300 hover:border-gray-400'
+                                  ? 'border-gold-500 bg-gold-50'
+                                  : 'border-gray-300 hover:border-gray-400'
                                   }`}
                               >
                                 <div className="flex flex-col items-center gap-2">
@@ -1086,9 +1091,9 @@ export default function UnifiedAdminProductsPage() {
                       {/* Status Badge - Show for valid statuses */}
                       {editingProduct.status && (
                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${editingProduct.status === 'active' ? 'bg-green-100 text-green-800' :
-                            editingProduct.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
-                              editingProduct.status === 'archived' ? 'bg-gray-100 text-gray-800' :
-                                'bg-gray-100 text-gray-800'
+                          editingProduct.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
+                            editingProduct.status === 'archived' ? 'bg-gray-100 text-gray-800' :
+                              'bg-gray-100 text-gray-800'
                           }`}>
                           {editingProduct.status === 'active' ? 'Active' :
                             editingProduct.status === 'draft' ? 'Draft' :
