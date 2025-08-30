@@ -150,7 +150,7 @@ export default function AdminMediaPage() {
       }
     } catch (error) {
       console.error('Error uploading files:', error);
-      alert('Failed to upload files');
+      alert(`Failed to upload files: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setIsUploading(false);
     }
@@ -183,10 +183,21 @@ export default function AdminMediaPage() {
     setIsUploading(true);
 
     try {
+      // Extract category and original file extension from item path
+      const pathParts = item.path.split('/');
+      const category = pathParts[0];
+
+      // Get the original file extension from the item URL
+      const originalUrl = item.url;
+      const originalExt = originalUrl.split('.').pop() || 'jpg';
+
+      // Create new filename with original extension
+      const fileName = item.name + '.' + originalExt;
+
       // First delete the old file
       await handleDelete(item.id);
 
-      // Then upload the new file with the same name
+      // Then upload the new file
       const formData = new FormData();
       formData.append('file', file);
 
@@ -201,12 +212,7 @@ export default function AdminMediaPage() {
         throw new Error(data.error || 'Upload failed');
       }
 
-      // Extract category from item path
-      const pathParts = item.path.split('/');
-      const category = pathParts[0];
-      const fileName = item.name + '.' + file.name.split('.').pop();
-
-      // Save to public folder with the same name
+      // Save to public folder with the original name and extension
       const mediaResponse = await fetch('/api/admin/media', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -222,11 +228,12 @@ export default function AdminMediaPage() {
         await loadMediaItems();
         alert('File replaced successfully!');
       } else {
-        throw new Error('Failed to save new file');
+        const errorData = await mediaResponse.json();
+        throw new Error(errorData.error || 'Failed to save new file');
       }
     } catch (error) {
       console.error('Error replacing file:', error);
-      alert('Failed to replace file');
+      alert(`Failed to replace file: ${error instanceof Error ? error.message : 'Unknown error'}`);
     } finally {
       setIsUploading(false);
     }

@@ -3,7 +3,16 @@ import { put } from '@vercel/blob';
 import { requireAdminApi } from '@/lib/admin/admin-auth';
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-const ALLOWED_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
+const ALLOWED_TYPES = new Set([
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/gif',
+  'image/bmp',
+  'image/svg+xml',
+  'image/x-icon',
+  'image/tiff'
+]);
 
 function ok(json: any, init?: number) {
   return NextResponse.json({ ok: true, ...json }, { status: init || 200 });

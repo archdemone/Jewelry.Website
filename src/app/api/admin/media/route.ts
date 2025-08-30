@@ -49,9 +49,9 @@ async function scanImagesDirectory(dirPath: string, basePath: string = ''): Prom
         const subImages = await scanImagesDirectory(fullPath, relativePath);
         images.push(...subImages);
       } else if (stats.isFile()) {
-        // Check if it's an image file
+        // Check if it's an image file (support all common image formats)
         const ext = item.toLowerCase().split('.').pop();
-        if (ext && ['webp', 'png', 'jpg', 'jpeg'].includes(ext)) {
+        if (ext && ['webp', 'png', 'jpg', 'jpeg', 'gif', 'bmp', 'svg', 'ico', 'tiff', 'tif'].includes(ext)) {
           const url = `/images/${relativePath}`;
           const name = item.replace(/\.[^/.]+$/, ''); // Remove extension for display name
 
@@ -113,6 +113,9 @@ export async function POST(req: NextRequest) {
         const { writeFile } = await import('fs/promises');
         await writeFile(filePath, Buffer.from(imageBuffer));
 
+        // Get file extension for type
+        const fileExt = fileName.split('.').pop()?.toLowerCase() || 'jpeg';
+
         // Return success with the new file path
         const newUrl = `/images/${category}/${fileName}`;
         return NextResponse.json({
@@ -123,7 +126,7 @@ export async function POST(req: NextRequest) {
             url: newUrl,
             path: `${category}/${fileName}`,
             size: imageBuffer.byteLength,
-            type: 'image/jpeg',
+            type: `image/${fileExt === 'jpg' ? 'jpeg' : fileExt}`,
             createdAt: new Date(),
             updatedAt: new Date(),
             source: 'public'
@@ -184,7 +187,7 @@ export async function GET(req: NextRequest) {
     const pageSize = parseInt(searchParams.get('pageSize') || '24');
     const offset = (page - 1) * pageSize;
 
-    // Get database items
+    // Get database items (only for database category or all images)
     const where = query ? {
       OR: [
         { name: { contains: query, mode: 'insensitive' } },
@@ -192,10 +195,19 @@ export async function GET(req: NextRequest) {
       ],
     } : {};
 
-    const dbItems = await db.media.findMany({
+    let dbItems = await db.media.findMany({
       where,
       orderBy: { createdAt: 'desc' },
     });
+
+    // If we're viewing a specific public category, filter out database items that belong to that category
+    if (category && category !== 'database' && category !== '') {
+      dbItems = dbItems.filter(item => {
+        // Check if the database item URL points to the same category folder
+        const itemPath = item.url;
+        return !itemPath.includes(`/images/${category}/`);
+      });
+    }
 
     // Get public images based on category
     const publicImagesPath = join(process.cwd(), 'public', 'images');
