@@ -6,6 +6,20 @@ import { UserRole } from '@/types/enums';
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // ✅ Always allow these through
+  if (
+    pathname.startsWith('/_next/') ||
+    pathname.startsWith('/static/') ||
+    pathname.startsWith('/images/') ||
+    pathname === '/favicon.ico' ||
+    pathname === '/robots.txt' ||
+    pathname === '/sitemap.xml' ||
+    pathname === '/manifest.webmanifest' ||
+    pathname.startsWith('/api/auth/') // ✅ allow NextAuth login/logout/callback/session
+  ) {
+    return NextResponse.next();
+  }
+
   // Maintenance mode check
   if (process.env.NEXT_PUBLIC_MAINTENANCE_MODE === 'true') {
     if (!pathname.startsWith('/maintenance') && !pathname.startsWith('/api')) {
@@ -101,8 +115,8 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Only match admin routes and exclude static assets
     '/admin/:path*',
-    '/((?!_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml|manifest.webmanifest|images|static).*)',
+    '/api/admin/:path*',
+    '/api/upload',
   ],
 };
