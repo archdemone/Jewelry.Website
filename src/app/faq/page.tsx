@@ -1,6 +1,4 @@
 import type { Metadata } from 'next';
-import { Header } from '@/components/layout/Header';
-import { Footer } from '@/components/layout/Footer';
 import FAQAccordion, { FAQItem } from '@/components/features/FAQAccordion';
 import { FAQPageJsonLd } from '@/components/seo/JsonLd';
 
@@ -58,39 +56,37 @@ const FAQs: FAQItem[] = [
     id: '8',
     category: 'Account & Security',
     question: 'How do I reset my password?',
-    answer: 'Use the “Forgot password” link on the login page.',
+    answer: 'Use the "Forgot password" link on the login page.',
     popularity: 3,
   },
 ];
 
 export const metadata: Metadata = {
-  title: 'FAQ — Aurora Jewelry',
+  title: 'FAQ — J&M',
   description: 'Answers to common questions about orders, shipping, returns, care, and more.',
 };
 
 export default function FAQPage() {
   return (
     <>
-              <Header />
-              <main className="container py-10">
-              <FAQPageJsonLd faqs={FAQs.map((f) => ({ question: f.question, answer: f.answer }))} />
-              <section className="mx-auto max-w-3xl">
-              <h1 className="text-3xl font-[var(--font-serif)] font-semibold text-secondary">
+      <FAQPageJsonLd faqs={FAQs.map((f) => ({ question: f.question, answer: f.answer }))} />
+      <section className="mx-auto max-w-4xl px-4 py-16">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-[var(--font-serif)] font-semibold text-gray-900 mb-4">
             Frequently Asked Questions
           </h1>
-              <p className="mt-2 text-sm text-gray-600">
-            Find answers to common questions. Can’t find what you’re looking for?{' '}
-            <a href="/contact" className="underline">
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Find answers to common questions about our handcrafted jewelry. Can't find what you're looking for?{' '}
+            <a href="/contact" className="text-primary hover:underline font-medium">
               Contact us
             </a>
             .
           </p>
-              <div className="mt-6">
-              <FAQAccordion items={FAQs} />
-              </div>
-              </section>
-              </main>
-              <Footer />
-              </>
+        </div>
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8">
+          <FAQAccordion items={FAQs} />
+        </div>
+      </section>
+    </>
   );
 }

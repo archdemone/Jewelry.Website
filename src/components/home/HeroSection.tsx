@@ -32,7 +32,7 @@ const HeroSection = () => {
               Shop Collection
             </Link>
             <Link
-              href="/about-artisan"
+              href="/about"
               className="btn-stable border-2 border-orange-400 bg-transparent text-orange-400 transition-colors hover:bg-orange-400 hover:text-white"
             >
               Meet the Artisan

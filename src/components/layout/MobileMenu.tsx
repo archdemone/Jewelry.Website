@@ -52,7 +52,7 @@ export function MobileMenu() {
   return (
     <div className="md:hidden relative">
       {/* Mobile Menu Button */}
-      <button 
+      <button
         onClick={handleMenuToggle}
         className="p-2 text-gray-600 transition-colors hover:text-gray-900 touch-manipulation bg-blue-100 border border-blue-300 rounded"
         aria-label="Toggle mobile menu"
@@ -62,19 +62,19 @@ export function MobileMenu() {
       >
         {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
       </button>
-      
+
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isOpen && (
           <>
             {/* Backdrop */}
-            <div 
+            <div
               className="fixed inset-0 bg-black bg-opacity-50 z-40"
               onClick={handleMenuToggle}
             />
-            
+
             {/* Menu Content */}
-            <motion.div 
+            <motion.div
               id="mobile-menu"
               initial={{ opacity: 0, x: '100%' }}
               animate={{ opacity: 1, x: 0 }}
@@ -87,7 +87,7 @@ export function MobileMenu() {
               {/* Header */}
               <div className="flex items-center justify-between p-4 border-b border-gray-200">
                 <h2 className="text-lg font-semibold text-gray-900">Menu</h2>
-                <button 
+                <button
                   onClick={handleMenuToggle}
                   className="p-2 text-gray-600 hover:text-gray-900"
                 >
@@ -97,28 +97,28 @@ export function MobileMenu() {
 
               {/* Search */}
               <div className="p-4 border-b border-gray-200">
-                <EnhancedSearchInput 
-                  placeholder="Search products..." 
+                <EnhancedSearchInput
+                  placeholder="Search products..."
                   onSearch={handleSearch}
                   className="w-full"
                 />
               </div>
-              
+
               {/* Navigation */}
               <nav className="py-4">
                 {/* Main Links */}
                 <div className="space-y-1">
-                  <Link 
+                  <Link
                     href="/"
-                    className="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-gold-600" 
+                    className="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-gold-600"
                     onClick={handleMenuToggle}
                   >
                     Home
                   </Link>
-                  
-                  <Link 
+
+                  <Link
                     href="/products"
-                    className="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-gold-600" 
+                    className="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-gold-600"
                     onClick={handleMenuToggle}
                   >
                     Products
@@ -127,21 +127,21 @@ export function MobileMenu() {
 
                 {/* Ring Collections */}
                 <div className="mt-4">
-                  <button 
+                  <button
                     onClick={handleCollectionsToggle}
                     className="flex w-full items-center justify-between px-4 py-3 text-gray-700 hover:bg-gray-50"
                   >
                     <span>Ring Collections</span>
                     <ChevronDown className={`h-4 w-4 transition-transform ${showCollections ? 'rotate-180' : ''}`} />
                   </button>
-                  
+
                   {showCollections && (
                     <div className="bg-gray-50">
                       {ringCollections.map((collection) => (
-                        <Link 
-                          key={collection.name} 
+                        <Link
+                          key={collection.name}
                           href={collection.href}
-                          className="block px-6 py-2 text-sm text-gray-600 hover:bg-gray-100" 
+                          className="block px-6 py-2 text-sm text-gray-600 hover:bg-gray-100"
                           onClick={handleMenuToggle}
                         >
                           {collection.name}
@@ -155,30 +155,30 @@ export function MobileMenu() {
                 <div className="mt-4 px-4">
                   <h3 className="text-sm font-medium text-gray-900 mb-3">Quick Categories</h3>
                   <div className="grid grid-cols-2 gap-2">
-                    <Link 
+                    <Link
                       href="/products/mens"
-                      className="block px-3 py-2 text-sm text-gray-700 bg-gray-50 rounded hover:bg-gray-100" 
+                      className="block px-3 py-2 text-sm text-gray-700 bg-gray-50 rounded hover:bg-gray-100"
                       onClick={handleMenuToggle}
                     >
                       Men's Rings
                     </Link>
-                    <Link 
+                    <Link
                       href="/products/womens"
-                      className="block px-3 py-2 text-sm text-gray-700 bg-gray-50 rounded hover:bg-gray-100" 
+                      className="block px-3 py-2 text-sm text-gray-700 bg-gray-50 rounded hover:bg-gray-100"
                       onClick={handleMenuToggle}
                     >
                       Women's Rings
                     </Link>
-                    <Link 
+                    <Link
                       href="/products/unisex"
-                      className="block px-3 py-2 text-sm text-gray-700 bg-gray-50 rounded hover:bg-gray-100" 
+                      className="block px-3 py-2 text-sm text-gray-700 bg-gray-50 rounded hover:bg-gray-100"
                       onClick={handleMenuToggle}
                     >
                       Unisex Rings
                     </Link>
-                    <Link 
+                    <Link
                       href="/products/wedding"
-                      className="block px-3 py-2 text-sm text-gray-700 bg-gray-50 rounded hover:bg-gray-100" 
+                      className="block px-3 py-2 text-sm text-gray-700 bg-gray-50 rounded hover:bg-gray-100"
                       onClick={handleMenuToggle}
                     >
                       Wedding Rings
@@ -188,33 +188,33 @@ export function MobileMenu() {
 
                 {/* Info Pages */}
                 <div className="mt-4 space-y-1">
-                  <Link 
+                  <Link
                     href="/about"
-                    className="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-gold-600" 
+                    className="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-gold-600"
                     onClick={handleMenuToggle}
                   >
                     About
                   </Link>
-                  
-                  <Link 
-                    href="/about-artisan"
-                    className="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-gold-600" 
+
+                  <Link
+                    href="/about"
+                    className="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-gold-600"
                     onClick={handleMenuToggle}
                   >
                     The Artisan
                   </Link>
-                  
-                  <Link 
+
+                  <Link
                     href="/crafting-process"
-                    className="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-gold-600" 
+                    className="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-gold-600"
                     onClick={handleMenuToggle}
                   >
                     Crafting Process
                   </Link>
-                  
-                  <Link 
+
+                  <Link
                     href="/contact"
-                    className="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-gold-600" 
+                    className="block px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-gold-600"
                     onClick={handleMenuToggle}
                   >
                     Contact
@@ -229,9 +229,9 @@ export function MobileMenu() {
                         <p className="text-sm text-gray-600">Signed in as</p>
                         <p className="text-sm font-medium">{session.user?.name || session.user?.email}</p>
                       </div>
-                      <Link 
+                      <Link
                         href="/account"
-                        className="block px-4 py-3 text-gray-700 hover:bg-gray-50" 
+                        className="block px-4 py-3 text-gray-700 hover:bg-gray-50"
                         onClick={handleMenuToggle}
                       >
                         My Account

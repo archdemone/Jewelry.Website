@@ -37,7 +37,7 @@ const HeroCarousel = () => {
             >
               Shop Collection
             </Link>
-            <Link href="/about-artisan"
+            <Link href="/about"
               className="btn-secondary bg-transparent border-2 border-white text-white hover:bg-white hover:text-gray-900 font-medium py-4 px-8 rounded-lg transition-colors duration-200 text-lg"
             >
               Meet Our Artisan

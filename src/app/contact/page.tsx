@@ -552,11 +552,7 @@ Please let me know if you can accommodate these customizations and what the esti
                       </div>
                       <h3 className="text-lg font-semibold text-gray-900">Workshop Location</h3>
                     </div>
-                    <p className="mb-2 text-gray-700">Based in Manchester, UK</p>
-                    <p className="text-sm text-gray-600">
-                      Home workshop crafting rings with love and precision. Visits by appointment
-                      only.
-                    </p>
+                    <p className="mb-2 text-gray-700">Based in North Yorkshire, Kirkbymoorside.</p>
                   </div>
                 </div>
 
