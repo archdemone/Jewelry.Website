@@ -201,8 +201,11 @@ export async function GET(req: NextRequest) {
     const publicImagesPath = join(process.cwd(), 'public', 'images');
     let publicImages: Array<{ name: string; url: string; path: string; size: number; type: string; createdAt: Date }> = [];
 
-    if (category === 'database' || category === '') {
-      // Get all images for main view or database category
+    if (category === 'database') {
+      // For database category, don't include any public images
+      publicImages = [];
+    } else if (category === '') {
+      // For "All Images" category, get all public images
       publicImages = await scanImagesDirectory(publicImagesPath);
     } else if (category) {
       // Get images from specific category folder
@@ -246,9 +249,9 @@ export async function GET(req: NextRequest) {
     // Sort by creation date (newest first)
     allItems.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
-    // Apply pagination
+    // Remove pagination - show all items
     const total = allItems.length;
-    const items = allItems.slice(offset, offset + pageSize);
+    const items = allItems;
 
     const response = NextResponse.json({ items, total });
     response.headers.set('Cache-Control', 'no-store');

@@ -70,9 +70,7 @@ export default function AdminMediaPage() {
     try {
       setLoading(true);
       const params = new URLSearchParams({
-        query: searchQuery,
-        page: '1',
-        pageSize: '24'
+        query: searchQuery
       });
 
       if (selectedCategory) {
