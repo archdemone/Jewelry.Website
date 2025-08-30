@@ -99,7 +99,8 @@
     "workflow:debug": "act push --verbose",
     "workflow:list": "act -l",
     "workflow:setup": "echo 'Installing act CLI...' && echo 'Download from: https://github.com/nektos/act/releases' && echo 'Or use: choco install act-cli (Windows with Chocolatey)'",
-    "workflow:setup:auto": "node scripts/setup-github-actions-local.js"
+    "workflow:setup:auto": "node scripts/setup-github-actions-local.js",
+    "test:api:manual": "node scripts/test-api.js"
   },
   "size-limit": [
     {

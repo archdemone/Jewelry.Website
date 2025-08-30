@@ -39,8 +39,8 @@ export default function SmartImage({
     }
   }, []);
 
-  // Filter valid images (local paths starting with /)
-  const validImages = srcs.filter((src) => src.startsWith('/'));
+  // Filter valid images (local paths starting with / or absolute URLs)
+  const validImages = srcs.filter((src) => src.startsWith('/') || /^https?:\/\//i.test(src));
 
   // If provided src candidates change, reset progression so we can retry primary
   const srcKey = useMemo(() => validImages.join('|'), [validImages]);
@@ -60,17 +60,19 @@ export default function SmartImage({
 
   const currentSrc = validImages[currentSrcIndex];
 
-  // Base version applied on both SSR and CSR so markup matches
+  // Base version applied on both SSR and CSR so markup matches (only for local images)
   const baseVersion = process.env.NEXT_PUBLIC_ASSET_VERSION || '1';
   const baseSrc = currentSrc
-    ? currentSrc.includes('?')
-      ? `${currentSrc}&v=${baseVersion}`
-      : `${currentSrc}?v=${baseVersion}`
+    ? currentSrc.startsWith('/')
+      ? currentSrc.includes('?')
+        ? `${currentSrc}&v=${baseVersion}`
+        : `${currentSrc}?v=${baseVersion}`
+      : currentSrc // For absolute URLs, use as-is
     : undefined;
 
-  // In dev, append a client-only timestamp AFTER hydration to force-refresh edited assets
+  // In dev, append a client-only timestamp AFTER hydration to force-refresh edited assets (only for local images)
   const versionedSrc = baseSrc
-    ? clientTs && process.env.NODE_ENV !== 'production'
+    ? clientTs && process.env.NODE_ENV !== 'production' && baseSrc.startsWith('/')
       ? `${baseSrc}${baseSrc.includes('?') ? '&' : '?'}t=${clientTs}`
       : baseSrc
     : undefined;
@@ -83,10 +85,12 @@ export default function SmartImage({
           width: width ? `${width}px` : '100%',
           height: height ? `${height}px` : '100%',
         }}
-        role="img" aria-label={`${displayText} - Premium Jewelry`}>
+        role="img"
+        aria-label={`${displayText} - Premium Jewelry`}
+      >
         {/* Decorative pattern overlay */}
         <div className="absolute inset-0 opacity-10">
-              <div className="absolute inset-0"
+          <div className="absolute inset-0"
             style={{
               backgroundImage: `
 							radial-gradient(circle at 25% 25%, rgba(255,255,255,0.3) 0, transparent 50%),
@@ -94,19 +98,19 @@ export default function SmartImage({
 						`,
             }}
           />
-              </div>
+        </div>
 
         {/* Main text */}
         <div className="relative z-10 text-center text-white">
-              <h3 className="text-lg font-semibold sm:text-xl md:text-2xl">{displayText}</h3>
-              <p className="mt-1 text-sm text-white/80 sm:text-base">Premium Jewelry</p>
-              </div>
+          <h3 className="text-lg font-semibold sm:text-xl md:text-2xl">{displayText}</h3>
+          <p className="mt-1 text-sm text-white/80 sm:text-base">Premium Jewelry</p>
+        </div>
 
         {/* Shimmer effect */}
         <div className="absolute inset-0 opacity-20">
-              <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-              </div>
-              </div>
+          <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+        </div>
+      </div>
     );
   }
 
@@ -115,14 +119,15 @@ export default function SmartImage({
     if (fill) {
       return (
         <div className={`relative ${className ?? ''}`}>
-              <Image src={versionedSrc}
+          <Image src={versionedSrc}
             alt={displayText}
             fill sizes={sizes || '100vw'}
             className="object-cover"
-            unoptimized onError={handleError}
+            unoptimized={unoptimized || /^https?:\/\//i.test(currentSrc || '')}
+            onError={handleError}
             priority={priority}
           />
-              </div>
+        </div>
       );
     }
     return (
@@ -132,7 +137,8 @@ export default function SmartImage({
         width={width || 800}
         height={height || 800}
         sizes={sizes || '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'}
-        unoptimized onError={handleError}
+        unoptimized={unoptimized || /^https?:\/\//i.test(currentSrc || '')}
+        onError={handleError}
         priority={priority}
       />
     );
@@ -142,16 +148,16 @@ export default function SmartImage({
   if (fill) {
     return (
       <div className={`relative ${className ?? ''}`}>
-              <Image src={versionedSrc as string}
+        <Image src={versionedSrc as string}
           alt={displayText}
           fill sizes={sizes || '100vw'}
           quality={quality || 90}
           className="object-cover"
-          unoptimized={process.env.NODE_ENV !== 'production'}
+          unoptimized={unoptimized || process.env.NODE_ENV !== 'production' || /^https?:\/\//i.test(currentSrc || '')}
           onError={handleError}
           priority={priority}
         />
-              </div>
+      </div>
     );
   }
 
@@ -163,7 +169,7 @@ export default function SmartImage({
       height={height || 800}
       sizes={sizes || '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw'}
       quality={quality || 50}
-      unoptimized={process.env.NODE_ENV !== 'production'}
+      unoptimized={unoptimized || process.env.NODE_ENV !== 'production' || /^https?:\/\//i.test(currentSrc || '')}
       onError={handleError}
       priority={priority}
       placeholder="blur"

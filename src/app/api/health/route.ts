@@ -3,6 +3,9 @@ import { db } from '@/lib/db';
 import { withRequest, getLogger } from '@/lib/logger';
 import { recordRequest } from '@/lib/metrics';
 
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   const start = Date.now();
   const logger = withRequest(getLogger(), request.headers, { route: '/api/health' });

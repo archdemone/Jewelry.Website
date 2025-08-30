@@ -61,6 +61,13 @@ export default function CategoryPage({
   categoryDescription,
   categoryImage
 }: CategoryPageProps) {
+  // Shared resolver for image URLs
+  function resolveSrc(u: string) {
+    if (!u) return '';
+    if (/^https?:\/\//i.test(u)) return u;
+    if (u.startsWith('/images/')) return u;
+    return `/images/${String(u).replace(/^\/+/, '')}`;
+  }
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [selectedFilters, setSelectedFilters] = useState<FilterState>({
     category: [],
@@ -113,14 +120,14 @@ export default function CategoryPage({
         hydrate();
 
         // Load products
-        const productsResponse = await fetch(`/api/products?category=${category}`);
+        const productsResponse = await fetch(`/api/products?category=${category}`, { cache: 'no-store' });
         if (productsResponse.ok) {
           const productsData = await productsResponse.json();
           setProducts(productsData.products || []);
         }
 
         // Load categories
-        const categoriesResponse = await fetch('/api/categories');
+        const categoriesResponse = await fetch('/api/categories', { cache: 'no-store' });
         if (categoriesResponse.ok) {
           const categoriesData = await categoriesResponse.json();
           setCategories(categoriesData.categories || []);
@@ -440,14 +447,17 @@ export default function CategoryPage({
               >
                 {/* Product Image */}
                 <div className="relative aspect-square overflow-hidden border-2 border-black">
-                  <Image src={Array.isArray(product.images) && product.images.length > 0
-                    ? product.images[0]
-                    : getProductImageFallback({ productSlug: product.slug, name: product.name })[0] || ''} alt={product.name}
-                    fill className="object-cover transition-transform duration-300 group-hover:scale-105"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                    loading="lazy" quality={75}
-                    placeholder="blur"
-                    blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxAAPwCdABmX/9k="
+                  <Image
+                    src={Array.isArray(product.images) && product.images.length > 0
+                      ? resolveSrc(product.images[0])
+                      : getProductImageFallback({ productSlug: product.slug, name: product.name })[0] || ''}
+                    alt={product.name}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    unoptimized={/^https?:\/\//i.test(Array.isArray(product.images) && product.images.length > 0
+                      ? product.images[0]
+                      : getProductImageFallback({ productSlug: product.slug, name: product.name })[0] || '')}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
 
                   {/* Badge */}

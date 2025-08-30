@@ -1,11 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { getProductImage } from '@/lib/assets/images';
+import ProductEditor from '@/components/admin/ProductEditor';
+import type { Product } from '@/types';
 
 import {
   Plus,
@@ -26,38 +28,7 @@ import {
   Check,
 } from 'lucide-react';
 
-interface RingProduct {
-  id: number;
-  name: string;
-  sku?: string;
-  category: string;
-  subCategory?: string;
-  price: number;
-  originalPrice?: number;
-  material: string;
-  gemColor: string;
-  gemColor2?: string;
-  gemDensity: string;
-  gemVariation: string;
-  mixColors: string[];
-  mixColors2?: string[];
-  ringSizes: {
-    us: number[];
-    eu: number[];
-  };
-  ringWidth: number[];
-  isReadyToShip: boolean;
-  isInStock?: boolean;
-  rating?: number;
-  reviews?: number;
-  status?: 'active' | 'draft' | 'archived';
-  images: string[];
-  description?: string;
-  isFeatured?: boolean;
-  featuredOrder?: number | null;
-  badge?: string;
-  slug?: string;
-}
+
 
 interface ImageFile {
   name: string;
@@ -73,7 +44,7 @@ export default function UnifiedAdminProductsPage() {
   const [material, setMaterial] = useState('all');
   const [readyToShip, setReadyToShip] = useState('all');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
-  const [editingProduct, setEditingProduct] = useState<RingProduct | null>(null);
+  const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [isAddingProduct, setIsAddingProduct] = useState(false);
   const [availableImages, setAvailableImages] = useState<ImageFile[]>([]);
   const [loading, setLoading] = useState(true);
@@ -102,6 +73,20 @@ export default function UnifiedAdminProductsPage() {
     return colorMap[color] || '#6b7280';
   };
 
+  // Normalize images from API response (handles both array and JSON string)
+  function normalizeImages(x: unknown): string[] {
+    if (Array.isArray(x)) return x as string[];
+    if (typeof x === 'string') {
+      try {
+        const j = JSON.parse(x);
+        return Array.isArray(j) ? j : [];
+      } catch {
+        return [];
+      }
+    }
+    return [];
+  }
+
   const getGemColorImage = (color: string): string => {
     const imageMap: Record<string, string> = {
       'Red': '/images/gems/colour/red.jpg',
@@ -115,11 +100,12 @@ export default function UnifiedAdminProductsPage() {
   };
 
   // Default seed data
-  const defaultProducts: RingProduct[] = [
+  const defaultProducts: Product[] = [
     {
       id: 1,
       name: "Women's Silver Inlay Ring - Dark Red",
       sku: 'RNG-W-SIL-RED-001',
+      slug: 'womens-silver-inlay-ring-dark-red',
       category: 'Womens',
       subCategory: 'Inlay Ring',
       price: 299,
@@ -144,6 +130,7 @@ export default function UnifiedAdminProductsPage() {
       id: 2,
       name: "Men's Damascus Wedding Ring - Bright Blue",
       sku: 'RNG-M-DAM-BLU-001',
+      slug: 'mens-damascus-wedding-ring-bright-blue',
       category: 'Mens',
       subCategory: 'Wedding',
       price: 449,
@@ -165,11 +152,10 @@ export default function UnifiedAdminProductsPage() {
     },
   ];
 
-  const [products, setProducts] = useState<RingProduct[]>(defaultProducts);
+  const [products, setProducts] = useState<Product[]>(defaultProducts);
 
   useEffect(() => {
     loadProducts();
-    loadImages();
   }, []);
 
   // Load products from the new Prisma database API
@@ -179,7 +165,12 @@ export default function UnifiedAdminProductsPage() {
       const response = await fetch('/api/products');
       if (response.ok) {
         const data = await response.json();
-        setProducts(data.products || []);
+        // Normalize images to ensure they're always arrays
+        const normalizedProducts = (data.products || []).map((p: any) => ({
+          ...p,
+          images: normalizeImages(p.images)
+        }));
+        setProducts(normalizedProducts);
       } else {
         console.error('Failed to load products');
         setProducts([]);
@@ -192,23 +183,12 @@ export default function UnifiedAdminProductsPage() {
     }
   };
 
-  const loadImages = async () => {
-    try {
-      const response = await fetch('/api/admin/images');
-      if (response.ok) {
-        const data = await response.json();
-        setAvailableImages(data);
-      }
-    } catch (error) {
-      console.error('Error loading images:', error);
-    }
-  };
-
   const handleAddProduct = () => {
     setEditingProduct({
       id: 0,
       name: '',
       sku: '',
+      slug: '',
       category: 'Womens',
       price: 0,
       material: 'Silver',
@@ -227,7 +207,7 @@ export default function UnifiedAdminProductsPage() {
     setIsAddingProduct(true);
   };
 
-  const handleEditProduct = (product: RingProduct) => {
+  const handleEditProduct = (product: Product) => {
     setEditingProduct({ ...product });
     setIsAddingProduct(false);
   };
@@ -246,16 +226,32 @@ export default function UnifiedAdminProductsPage() {
       });
 
       if (response.ok) {
+        const savedProduct = await response.json();
+
+        // Normalize images in the returned product
+        const normalizedSavedProduct = {
+          ...savedProduct,
+          images: normalizeImages(savedProduct.images)
+        };
+
+        // Update local state with the returned product
+        if (isAddingProduct) {
+          // Add new product to the list
+          setProducts(prev => [normalizedSavedProduct, ...prev]);
+        } else {
+          // Update existing product in the list
+          setProducts(prev => prev.map(p => p.id === normalizedSavedProduct.id ? normalizedSavedProduct : p));
+        }
+
         setEditingProduct(null);
         setIsAddingProduct(false);
-        loadProducts();
       }
     } catch (error) {
       console.error('Error saving product:', error);
     }
   };
 
-  const handleDeleteProduct = async (id: number) => {
+  const handleDeleteProduct = async (id: string | number) => {
     if (!confirm('Are you sure you want to delete this product?')) return;
 
     try {
@@ -271,7 +267,7 @@ export default function UnifiedAdminProductsPage() {
     }
   };
 
-  const toggleFeatured = async (product: RingProduct) => {
+  const toggleFeatured = async (product: Product) => {
     const updatedProduct = {
       ...product,
       isFeatured: !product.isFeatured,
@@ -356,16 +352,16 @@ export default function UnifiedAdminProductsPage() {
       <div className="w-full">
         <div className="inline-flex h-10 items-center justify-center rounded-md bg-gray-100 p-1 w-full">
           <button onClick={() => setActiveTab('all-products')} className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all ${activeTab === 'all-products'
-              ? 'bg-white text-gray-900 shadow-sm'
-              : 'text-gray-600 hover:text-gray-900'
+            ? 'bg-white text-gray-900 shadow-sm'
+            : 'text-gray-600 hover:text-gray-900'
             }`}
           >
             <Package className="w-4 h-4 mr-2" />
             All Products ({products.length})
           </button>
           <button onClick={() => setActiveTab('featured')} className={`inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium transition-all ${activeTab === 'featured'
-              ? 'bg-white text-gray-900 shadow-sm'
-              : 'text-gray-600 hover:text-gray-900'
+            ? 'bg-white text-gray-900 shadow-sm'
+            : 'text-gray-600 hover:text-gray-900'
             }`}
           >
             <Star className="w-4 h-4 mr-2" />
@@ -469,16 +465,12 @@ export default function UnifiedAdminProductsPage() {
                 {filteredProducts.map((product) => (
                   <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                     <div className="aspect-square bg-gray-100 relative">
-                      {product.images && product.images[0] ? (
-                        <Image src={product.images[0]} alt={product.name}
-                          fill className="object-cover"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-                        />
-                      ) : (
-                        <div className="flex items-center justify-center h-full">
-                          <Package className="w-12 h-12 text-gray-400" />
-                        </div>
-                      )}
+                      <img
+                        src={getProductImage(product)}
+                        alt={product.name}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                        loading="lazy"
+                      />
                       <div className="absolute top-2 left-2 flex flex-col gap-1">
                         {getStatusBadge(product.status || 'draft')}
                         {getFeaturedBadge(product.isFeatured || false)}
@@ -549,16 +541,12 @@ export default function UnifiedAdminProductsPage() {
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center">
                               <div className="flex-shrink-0 h-10 w-10 relative">
-                                {product.images && product.images[0] ? (
-                                  <Image src={product.images[0]} alt={product.name}
-                                    fill className="rounded-full object-cover"
-                                    sizes="40px"
-                                  />
-                                ) : (
-                                  <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
-                                    <Package className="w-5 h-5 text-gray-400" />
-                                  </div>
-                                )}
+                                <img
+                                  src={getProductImage(product)}
+                                  alt={product.name}
+                                  style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '50%', display: 'block' }}
+                                  loading="lazy"
+                                />
                               </div>
                               <div className="ml-4">
                                 <div className="text-sm font-medium text-gray-900">{product.name}</div>
@@ -636,518 +624,28 @@ export default function UnifiedAdminProductsPage() {
         )}
       </div>
 
-      {/* Advanced Edit Modal - Updated Layout */}
-      {editingProduct && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50 overflow-y-auto">
-          <div className="bg-white rounded-xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
-            {/* Header */}
-            <div className="flex items-center justify-between p-6 border-b">
-              <h2 className="text-2xl font-bold text-gray-900">
-                {isAddingProduct ? 'Add New Product' : 'Edit Product'}
-              </h2>
-              <button onClick={() => {
-                setEditingProduct(null);
-                setIsAddingProduct(false);
-              }}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Content */}
-            <div className="flex h-[calc(90vh-140px)] overflow-hidden">
-              {/* Left Column - Product Images */}
-              <div className="w-1/3 p-6 border-r bg-gray-50 overflow-y-auto">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Product Images</h3>
-
-                {/* Main Image Preview */}
-                <div className="mb-6">
-                  <div className="relative aspect-square bg-white rounded-lg border-2 border-dashed border-gray-300 overflow-hidden">
-                    {editingProduct.images && editingProduct.images[0] ? (
-                      <Image src={editingProduct.images[0]} alt={editingProduct.name}
-                        fill className="object-cover"
-                        sizes="(max-width: 768px) 100vw, 50vw"
-                      />
-                    ) : (
-                      <div className="flex items-center justify-center h-full">
-                        <div className="text-center">
-                          <Package className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                          <p className="text-sm text-gray-500">No image selected</p>
-                        </div>
-                      </div>
-                    )}
-                    {editingProduct.isReadyToShip && (
-                      <div className="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
-                        Ready to Ship
-                      </div>
-                    )}
-                    {editingProduct.status && (
-                      <div className={`absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-medium ${editingProduct.status === 'active' ? 'bg-green-100 text-green-800' :
-                          editingProduct.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
-                            editingProduct.status === 'archived' ? 'bg-gray-100 text-gray-800' :
-                              'bg-red-100 text-red-800'
-                        }`}>
-                        {editingProduct.status === 'active' ? 'Active' :
-                          editingProduct.status === 'draft' ? 'Draft' :
-                            editingProduct.status === 'archived' ? 'Archived' :
-                              'Out of Stock'}
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Selected Images Grid */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Available Images</label>
-                  <div className="grid grid-cols-2 gap-2 max-h-48 overflow-y-auto">
-                    {availableImages.map((image) => (
-                      <button key={image.url} onClick={() => {
-                        const newImages = editingProduct.images.includes(image.url)
-                          ? editingProduct.images.filter(img => img !== image.url)
-                          : [...editingProduct.images, image.url];
-                        setEditingProduct({ ...editingProduct, images: newImages });
-                      }} className={`relative aspect-square rounded-lg overflow-hidden border-2 transition-colors ${editingProduct.images.includes(image.url)
-                          ? 'border-gold-500 ring-2 ring-gold-200'
-                          : 'border-gray-200 hover:border-gray-300'
-                        }`}
-                      >
-                        <Image src={image.url} alt={image.name}
-                          fill className="object-cover"
-                          sizes="200px"
-                        />
-                        {editingProduct.images.includes(image.url) && (
-                          <div className="absolute top-1 right-1 w-5 h-5 bg-gold-500 rounded-full flex items-center justify-center">
-                            <span className="text-white text-xs">✓</span>
-                          </div>
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Right Column - Product Details */}
-              <div className="w-2/3 p-6 overflow-y-auto">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Product Details</h3>
-                <div className="grid grid-cols-2 gap-4">
-                  {/* Product Name & SKU - Side by Side */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
-                    <input type="text" value={editingProduct.name} onChange={(e) => setEditingProduct({ ...editingProduct, name: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">SKU</label>
-                    <input type="text" value={editingProduct.sku} onChange={(e) => setEditingProduct({ ...editingProduct, sku: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                    />
-                  </div>
-
-                  {/* Category & Sub Category - Side by Side */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
-                    <select value={editingProduct.category} onChange={(e) => setEditingProduct({ ...editingProduct, category: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                    >
-                      {categories.map((cat) => (
-                        <option key={cat} value={cat}>{cat}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Sub Category</label>
-                    <input type="text" value={editingProduct.subCategory || ''} onChange={(e) => setEditingProduct({ ...editingProduct, subCategory: e.target.value })}
-                      placeholder="e.g., Engagement, Anniversary"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                    />
-                  </div>
-
-                  {/* Price & Original Price - Side by Side */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Price (£)</label>
-                    <input type="number" value={editingProduct.price} onChange={(e) => setEditingProduct({ ...editingProduct, price: parseFloat(e.target.value) || 0 })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Original Price (£)</label>
-                    <input type="number" value={editingProduct.originalPrice || ''} onChange={(e) => setEditingProduct({ ...editingProduct, originalPrice: parseFloat(e.target.value) || undefined })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                    />
-                  </div>
-
-                  {/* Material - Full Width */}
-                  <div className="col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Material</label>
-                    <select value={editingProduct.material} onChange={(e) => setEditingProduct({ ...editingProduct, material: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                    >
-                      {materials.map((material) => (
-                        <option key={material} value={material}>{material}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Primary Gem Color & Mix Colors - Side by Side */}
-                  <div className="col-span-2">
-                    <div className="grid grid-cols-2 gap-6">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">Primary Gem Color</label>
-                        <div className="grid grid-cols-3 gap-2">
-                          {gemColors.map((color) => (
-                            <button key={color}
-                              type="button" onClick={() => setEditingProduct({ ...editingProduct, gemColor: color })} onMouseEnter={() => setHoveredGemColor(color)} onMouseLeave={() => setHoveredGemColor(null)} className={`relative rounded-lg border-2 p-3 transition-all ${editingProduct.gemColor === color
-                                  ? 'border-gold-500 bg-gold-50'
-                                  : 'border-gray-300 hover:border-gray-400'
-                                }`}
-                            >
-                              <div className="flex flex-col items-center gap-2">
-                                <div className="w-4 h-4 rounded-full border-2 border-gray-200 flex-shrink-0" style={{
-                                  backgroundColor: getGemColorHex(color),
-                                  aspectRatio: '1 / 1',
-                                  minWidth: '16px',
-                                  minHeight: '16px'
-                                }}
-                                />
-                                <span className="text-sm font-medium">{color}</span>
-                              </div>
-
-                              {/* Gem Color Popup */}
-                              {hoveredGemColor === color && (
-                                <div className="absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 transform">
-                                  <div className="rounded-lg border bg-white p-4 shadow-lg">
-                                    <Image src={getGemColorImage(color)} alt={`${color} gem`} width={200} height={200}
-                                      className="rounded object-cover" style={{ minWidth: '200px', minHeight: '200px' }}
-                                    />
-                                  </div>
-                                </div>
-                              )}
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Mix Colors (for Custom option)</label>
-                        <div className="grid grid-cols-3 gap-2">
-                          {['Red', 'Green', 'Blue', 'Purple', 'Yellow', 'Black', 'White', 'Pink', 'Orange', 'Turquoise'].map((color) => (
-                            <label key={color}
-                              className="relative flex items-center p-2 rounded border hover:bg-gray-50 cursor-pointer" onMouseEnter={() => setHoveredMixColor(color)} onMouseLeave={() => setHoveredMixColor(null)}
-                            >
-                              <input type="checkbox" checked={editingProduct.mixColors.includes(color)} onChange={(e) => {
-                                const newMixColors = e.target.checked
-                                  ? [...editingProduct.mixColors, color]
-                                  : editingProduct.mixColors.filter(c => c !== color);
-                                setEditingProduct({ ...editingProduct, mixColors: newMixColors });
-                              }}
-                                className="mr-2"
-                              />
-                              <div className="flex items-center gap-2 min-w-0">
-                                <div className="w-4 h-4 rounded-full border border-gray-200 flex-shrink-0" style={{
-                                  backgroundColor: getGemColorHex(color),
-                                  aspectRatio: '1 / 1',
-                                  minWidth: '16px',
-                                  minHeight: '16px'
-                                }}
-                                />
-                                <span className="text-sm truncate">{color}</span>
-                              </div>
-
-                              {/* Mix Color Popup */}
-                              {hoveredMixColor === color && (
-                                <div className="absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 transform">
-                                  <div className="rounded-lg border bg-white p-4 shadow-lg">
-                                    <Image src={getGemColorImage(color)} alt={`${color} gem`} width={200} height={200}
-                                      className="rounded object-cover" style={{ minWidth: '200px', minHeight: '200px' }}
-                                    />
-                                  </div>
-                                </div>
-                              )}
-                            </label>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Second Gem Color & Mix Colors for Couple Rings - Side by Side */}
-                  {editingProduct.category === 'Couple Ring Set' && (
-                    <div className="col-span-2">
-                      <div className="grid grid-cols-2 gap-6">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-1">Second Gem Color (Ring 2)</label>
-                          <div className="grid grid-cols-3 gap-2">
-                            {gemColors.map((color) => (
-                              <button key={color}
-                                type="button" onClick={() => setEditingProduct({ ...editingProduct, gemColor2: color })} onMouseEnter={() => setHoveredGemColor2(color)} onMouseLeave={() => setHoveredGemColor2(null)} className={`relative rounded-lg border-2 p-3 transition-all ${editingProduct.gemColor2 === color
-                                    ? 'border-gold-500 bg-gold-50'
-                                    : 'border-gray-300 hover:border-gray-400'
-                                  }`}
-                              >
-                                <div className="flex flex-col items-center gap-2">
-                                  <div className="w-4 h-4 rounded-full border-2 border-gray-200 flex-shrink-0" style={{
-                                    backgroundColor: getGemColorHex(color),
-                                    aspectRatio: '1 / 1',
-                                    minWidth: '16px',
-                                    minHeight: '16px'
-                                  }}
-                                  />
-                                  <span className="text-sm font-medium">{color}</span>
-                                </div>
-
-                                {/* Gem Color Popup */}
-                                {hoveredGemColor2 === color && (
-                                  <div className="absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 transform">
-                                    <div className="rounded-lg border bg-white p-4 shadow-lg">
-                                      <Image src={getGemColorImage(color)} alt={`${color} gem`} width={200} height={200}
-                                        className="rounded object-cover" style={{ minWidth: '200px', minHeight: '200px' }}
-                                      />
-                                    </div>
-                                  </div>
-                                )}
-                              </button>
-                            ))}
-                          </div>
-                        </div>
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">Mix Colors for Ring 2 (Custom option)</label>
-                          <div className="grid grid-cols-3 gap-2">
-                            {['Red', 'Green', 'Blue', 'Purple', 'Yellow', 'Black', 'White', 'Pink', 'Orange', 'Turquoise'].map((color) => (
-                              <label key={color}
-                                className="relative flex items-center p-2 rounded border hover:bg-gray-50 cursor-pointer" onMouseEnter={() => setHoveredMixColor2(color)} onMouseLeave={() => setHoveredMixColor2(null)}
-                              >
-                                <input type="checkbox" checked={editingProduct.mixColors2?.includes(color) || false} onChange={(e) => {
-                                  const newMixColors2 = e.target.checked
-                                    ? [...(editingProduct.mixColors2 || []), color]
-                                    : (editingProduct.mixColors2 || []).filter(c => c !== color);
-                                  setEditingProduct({ ...editingProduct, mixColors2: newMixColors2 });
-                                }}
-                                  className="mr-2"
-                                />
-                                <div className="flex items-center gap-2 min-w-0">
-                                  <div className="w-4 h-4 rounded-full border border-gray-200 flex-shrink-0" style={{
-                                    backgroundColor: getGemColorHex(color),
-                                    aspectRatio: '1 / 1',
-                                    minWidth: '16px',
-                                    minHeight: '16px'
-                                  }}
-                                  />
-                                  <span className="text-sm truncate">{color}</span>
-                                </div>
-
-                                {/* Mix Color Popup */}
-                                {hoveredMixColor2 === color && (
-                                  <div className="absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 transform">
-                                    <div className="rounded-lg border bg-white p-4 shadow-lg">
-                                      <Image src={getGemColorImage(color)} alt={`${color} gem`} width={200} height={200}
-                                        className="rounded object-cover" style={{ minWidth: '200px', minHeight: '200px' }}
-                                      />
-                                    </div>
-                                  </div>
-                                )}
-                              </label>
-                            ))}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Gem Density & Gem Variation - Side by Side */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Gem Density</label>
-                    <select value={editingProduct.gemDensity} onChange={(e) => setEditingProduct({ ...editingProduct, gemDensity: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                    >
-                      {gemDensities.map((density) => (
-                        <option key={density} value={density}>{density}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Gem Variation</label>
-                    <select value={editingProduct.gemVariation} onChange={(e) => setEditingProduct({ ...editingProduct, gemVariation: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                    >
-                      {gemVariations.map((variation) => (
-                        <option key={variation} value={variation}>{variation}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Ring Sizes & Ring Width - Side by Side */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Ring Sizes (US)</label>
-                    <input type="text" value={editingProduct.ringSizes?.us?.join(', ') || ''} onChange={(e) => {
-                      const sizes = e.target.value.split(',').map(s => s.trim()).filter(s => s).map(Number);
-                      setEditingProduct({
-                        ...editingProduct,
-                        ringSizes: { ...editingProduct.ringSizes, us: sizes }
-                      });
-                    }}
-                      placeholder="e.g., 5, 6, 7, 8, 9"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Ring Sizes (EU)</label>
-                    <input type="text" value={editingProduct.ringSizes?.eu?.join(', ') || ''} onChange={(e) => {
-                      const sizes = e.target.value.split(',').map(s => s.trim()).filter(s => s).map(Number);
-                      setEditingProduct({
-                        ...editingProduct,
-                        ringSizes: { ...editingProduct.ringSizes, eu: sizes }
-                      });
-                    }}
-                      placeholder="e.g., 49, 52, 54, 57, 59"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Ring Width (mm)</label>
-                    <input type="text" value={editingProduct.ringWidth?.join(', ') || ''} onChange={(e) => {
-                      const widths = e.target.value.split(',').map(s => s.trim()).filter(s => s).map(Number);
-                      setEditingProduct({ ...editingProduct, ringWidth: widths });
-                    }}
-                      placeholder="e.g., 2, 3, 4"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                    />
-                  </div>
-
-                  {/* Status - Side by Side with Ring Width */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                    <select value={editingProduct.status} onChange={(e) => setEditingProduct({ ...editingProduct, status: e.target.value as any })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                    >
-                      <option value="draft">Draft</option>
-                      <option value="active">Active</option>
-                      <option value="archived">Archived</option>
-                    </select>
-                  </div>
-
-                  {/* Ready to Ship & In Stock - Side by Side */}
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <input type="checkbox"
-                        id="readyToShip" checked={editingProduct.isReadyToShip} onChange={(e) => setEditingProduct({ ...editingProduct, isReadyToShip: e.target.checked })}
-                        className="rounded"
-                      />
-                      <label htmlFor="readyToShip" className="text-sm font-medium text-gray-700">Ready to Ship</label>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <input type="checkbox"
-                        id="isInStock" checked={editingProduct.isInStock ?? true} onChange={(e) => setEditingProduct({ ...editingProduct, isInStock: e.target.checked })}
-                        className="rounded"
-                      />
-                      <label htmlFor="isInStock" className="text-sm font-medium text-gray-700">In Stock</label>
-                    </div>
-                  </div>
-                  <div>
-                    <div className="flex items-center gap-2">
-                      <input type="checkbox"
-                        id="isFeatured" checked={editingProduct.isFeatured || false} onChange={(e) => setEditingProduct({
-                          ...editingProduct,
-                          isFeatured: e.target.checked,
-                          featuredOrder: e.target.checked ? (editingProduct.featuredOrder || 1) : null
-                        })}
-                        className="rounded"
-                      />
-                      <label htmlFor="isFeatured" className="text-sm font-medium text-gray-700">Featured Product</label>
-                    </div>
-                  </div>
-
-                  {/* Featured Order - Manual Input */}
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Featured Order</label>
-                    <input type="number" value={editingProduct.featuredOrder || ''} onChange={(e) => setEditingProduct({
-                      ...editingProduct,
-                      featuredOrder: e.target.value ? parseInt(e.target.value) : null
-                    })}
-                      placeholder="e.g., 1, 2, 3"
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                    />
-                  </div>
-
-                  {/* Description - Full Width */}
-                  <div className="col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
-                    <textarea value={editingProduct.description || ''} onChange={(e) => setEditingProduct({ ...editingProduct, description: e.target.value })} rows={4}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gold-500 focus:border-transparent"
-                    />
-                  </div>
-
-                  {/* Status Badge Preview - Full Width */}
-                  <div className="col-span-2 mt-6 p-4 bg-gray-50 rounded-lg">
-                    <h4 className="text-sm font-medium text-gray-700 mb-2">Status Preview</h4>
-                    <div className="flex items-center gap-2">
-                      {/* Status Badge - Show for valid statuses */}
-                      {editingProduct.status && (
-                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${editingProduct.status === 'active' ? 'bg-green-100 text-green-800' :
-                            editingProduct.status === 'draft' ? 'bg-yellow-100 text-yellow-800' :
-                              editingProduct.status === 'archived' ? 'bg-gray-100 text-gray-800' :
-                                'bg-gray-100 text-gray-800'
-                          }`}>
-                          {editingProduct.status === 'active' ? 'Active' :
-                            editingProduct.status === 'draft' ? 'Draft' :
-                              editingProduct.status === 'archived' ? 'Archived' :
-                                'Unknown'}
-                        </span>
-                      )}
-
-                      {/* Stock Status - Based on isInStock property */}
-                      {editingProduct.isInStock !== false && (
-                        <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs font-medium">
-                          In Stock
-                        </span>
-                      )}
-                      {editingProduct.isInStock === false && (
-                        <span className="px-2 py-1 bg-red-100 text-red-800 rounded-full text-xs font-medium">
-                          Out of Stock
-                        </span>
-                      )}
-
-                      {/* Ready to Ship */}
-                      {editingProduct.isReadyToShip && (
-                        <span className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
-                          Ready to Ship
-                        </span>
-                      )}
-
-                      {/* Featured */}
-                      {editingProduct.isFeatured && (
-                        <span className="px-2 py-1 bg-gold-100 text-gold-800 rounded-full text-xs font-medium">
-                          Featured
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Save/Cancel Buttons */}
-                <div className="flex justify-end space-x-3 pt-6 mt-6 border-t">
-                  <button onClick={() => {
-                    setEditingProduct(null);
-                    setIsAddingProduct(false);
-                  }}
-                    className="px-4 py-2 text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-                  >
-                    Cancel
-                  </button>
-                  <button onClick={handleSaveProduct}
-                    className="px-4 py-2 bg-gold-500 text-white rounded-lg hover:bg-gold-600 transition-colors flex items-center"
-                  >
-                    <Save className="w-4 h-4 mr-2" />
-                    {isAddingProduct ? 'Add Product' : 'Save Changes'}
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Shared Product Editor Modal */}
+      <ProductEditor
+        product={isAddingProduct ? undefined : editingProduct || undefined}
+        open={!!editingProduct || isAddingProduct}
+        onClose={() => {
+          setEditingProduct(null);
+          setIsAddingProduct(false);
+        }}
+        onSaved={(savedProduct) => {
+          // Update local state with the returned product
+          if (isAddingProduct) {
+            // Add new product to the list
+            setProducts(prev => [savedProduct, ...prev]);
+          } else {
+            // Update existing product in the list
+            setProducts(prev => prev.map(p => p.id === savedProduct.id ? savedProduct : p));
+          }
+          setEditingProduct(null);
+          setIsAddingProduct(false);
+        }}
+        mode="main"
+      />
     </div>
   );
 }

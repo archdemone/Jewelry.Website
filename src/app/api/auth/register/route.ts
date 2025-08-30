@@ -2,6 +2,9 @@ import { NextResponse } from 'next/server';
 import { db } from '@/lib/db';
 import bcrypt from 'bcryptjs';
 
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: Request) {
   const { rateLimitOrThrow } = await import('@/lib/rateLimit');
   const windowMs = Number(process.env.RATE_LIMIT_WINDOW_MS || 15 * 60 * 1000);
@@ -22,17 +25,17 @@ export async function POST(req: Request) {
       return NextResponse.json({ message: 'Email already registered' }, { status: 409 });
     }
     const hashed = await bcrypt.hash(password, 10);
-    
+
     // Allow admin creation in development mode
     const role = (isAdmin && process.env.NODE_ENV !== 'production') ? 'ADMIN' : 'CUSTOMER';
-    
-    await db.user.create({ 
-      data: { 
-        name, 
-        email, 
+
+    await db.user.create({
+      data: {
+        name,
+        email,
         password: hashed,
         role
-      } 
+      }
     });
     return NextResponse.json({ ok: true });
   } catch (e) {

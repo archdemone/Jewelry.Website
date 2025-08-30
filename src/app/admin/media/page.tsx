@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import Image from 'next/image';
 import { motion } from 'framer-motion';
 import {
   Upload,
@@ -16,58 +15,103 @@ import {
   Copy
 } from 'lucide-react';
 
-interface MediaFile {
+interface MediaItem {
+  id: string;
   name: string;
-  path: string;
   url: string;
+  path: string;
   size: number;
   type: string;
-  modifiedDate: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface MediaResponse {
+  items: MediaItem[];
+  total: number;
 }
 
 export default function AdminMediaPage() {
-  const [files, setFiles] = useState<MediaFile[]>([]);
-  const [selectedFiles, setSelectedFiles] = useState<string[]>([]);
+  const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [searchQuery, setSearchQuery] = useState('');
   const [isUploading, setIsUploading] = useState(false);
-  const [previewFile, setPreviewFile] = useState<MediaFile | null>(null);
+  const [previewItem, setPreviewItem] = useState<MediaItem | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadMediaFiles();
+    loadMediaItems();
   }, []);
 
-  const loadMediaFiles = async () => {
+  const loadMediaItems = async () => {
     try {
-      const response = await fetch('/api/admin/media');
+      setLoading(true);
+      const response = await fetch('/api/admin/media?query=&page=1&pageSize=24', {
+        cache: 'no-store'
+      });
       if (response.ok) {
-        const data = await response.json();
-        setFiles(data);
+        const data: MediaResponse = await response.json();
+        setMediaItems(data.items);
       }
     } catch (error) {
-      console.error('Error loading media files:', error);
+      console.error('Error loading media items:', error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || e.target.files.length === 0) return;
-
     setIsUploading(true);
-    const formData = new FormData();
-    
-    Array.from(e.target.files).forEach((file) => {
-      formData.append('files', file);
-    });
 
     try {
-      const response = await fetch('/api/admin/media/upload', {
-        method: 'POST',
-        body: formData,
+      // Upload each file individually to the upload endpoint
+      const uploadPromises = Array.from(e.target.files).map(async (file) => {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const response = await fetch('/api/upload', {
+          method: 'POST',
+          body: formData,
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.ok) {
+          throw new Error(data.error || 'Upload failed');
+        }
+
+        // Save to database via admin media API
+        const mediaResponse = await fetch('/api/admin/media', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            url: data.url,
+            alt: file.name,
+          }),
+        });
+
+        if (!mediaResponse.ok) {
+          const errorData = await mediaResponse.json();
+          if (mediaResponse.status === 409) {
+            // Media already exists, skip
+            return null;
+          }
+          throw new Error(errorData.error || 'Failed to save to database');
+        }
+
+        const mediaData = await mediaResponse.json();
+        return mediaData.media;
       });
 
-      if (response.ok) {
-        await loadMediaFiles();
-        alert('Files uploaded successfully!');
+      const uploadedItems = await Promise.all(uploadPromises);
+      const validItems = uploadedItems.filter(item => item !== null);
+
+      if (validItems.length > 0) {
+        // Add uploaded items to the list
+        setMediaItems(prev => [...validItems, ...prev]);
+        alert(`${validItems.length} file(s) uploaded successfully!`);
       }
     } catch (error) {
       console.error('Error uploading files:', error);
@@ -77,28 +121,29 @@ export default function AdminMediaPage() {
     }
   };
 
-  const handleDelete = async (filePath: string) => {
+  const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this file?')) return;
 
     try {
-      const response = await fetch('/api/admin/media', {
+      const response = await fetch(`/api/admin/media?id=${id}`, {
         method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ path: filePath }),
       });
 
       if (response.ok) {
-        setFiles(files.filter(f => f.path !== filePath));
-        setSelectedFiles(selectedFiles.filter(p => p !== filePath));
+        setMediaItems(prev => prev.filter(item => item.id !== id));
+        setSelectedItems(prev => prev.filter(itemId => itemId !== id));
+        if (previewItem?.id === id) {
+          setPreviewItem(null);
+        }
       }
     } catch (error) {
       console.error('Error deleting file:', error);
     }
   };
 
-  const copyToClipboard = (path: string) => {
-    navigator.clipboard.writeText(path);
-    alert('Path copied to clipboard!');
+  const copyToClipboard = (url: string) => {
+    navigator.clipboard.writeText(url);
+    alert('URL copied to clipboard!');
   };
 
   const formatFileSize = (bytes: number) => {
@@ -107,204 +152,219 @@ export default function AdminMediaPage() {
     return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
   };
 
-  const filteredFiles = files.filter(file => 
-    file.name.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredItems = mediaItems.filter(item =>
+    item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    item.url.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
     <div className="space-y-6">
-              <div className="flex justify-between items-center">
-              <div>
-              <h1 className="text-3xl font-bold text-gray-900">Media Library</h1>
-              <p className="text-gray-600">Manage your images and media files</p>
-              </div>
-              <label className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors flex items-center cursor-pointer">
-              <Upload className="h-4 w-4 mr-2" />
+      <div className="flex justify-between items-center">
+        <div>
+          <h1 className="text-3xl font-bold text-gray-900">Media Library</h1>
+          <p className="text-gray-600">Manage your images and media files</p>
+        </div>
+        <label className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors flex items-center cursor-pointer">
+          <Upload className="h-4 w-4 mr-2" />
           Upload Files
           <input type="file"
             multiple accept="image/*"
             onChange={handleFileUpload}
             className="hidden"
           />
-              </label>
-              </div>
-              <div className="bg-white rounded-lg shadow-sm border p-4">
-              <div className="flex items-center justify-between gap-4">
-              <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
-              <input type="text"
-              placeholder="Search files..."              value={searchQuery}              onChange={(e) => setSearchQuery(e.target.value)}
+        </label>
+      </div>
+      <div className="bg-white rounded-lg shadow-sm border p-4">
+        <div className="flex items-center justify-between gap-4">
+          <div className="relative flex-1 max-w-md">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
+            <input type="text"
+              placeholder="Search files..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
             />
-              </div>
-              <div className="flex border border-gray-300 rounded-lg">
-              <button              onClick={() => setViewMode('grid')}              className={`p-2 ${viewMode === 'grid' ? 'bg-gray-100' : ''}`}
+          </div>
+          <div className="flex border border-gray-300 rounded-lg">
+            <button onClick={() => setViewMode('grid')} className={`p-2 ${viewMode === 'grid' ? 'bg-gray-100' : ''}`}
             >
               <Grid className="h-4 w-4" />
-              </button>
-              <button              onClick={() => setViewMode('list')}              className={`p-2 ${viewMode === 'list' ? 'bg-gray-100' : ''}`}
+            </button>
+            <button onClick={() => setViewMode('list')} className={`p-2 ${viewMode === 'list' ? 'bg-gray-100' : ''}`}
             >
               <List className="h-4 w-4" />
-              </button>
-              </div>
-              </div>
-              </div>
+            </button>
+          </div>
+        </div>
+      </div>
 
       {isUploading && (
         <div className="bg-white rounded-lg shadow-sm border p-4">
-              <div className="flex items-center">
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-orange-500 mr-2"></div>
+          <div className="flex items-center">
+            <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-orange-500 mr-2"></div>
             Uploading files...
           </div>
-              </div>
+        </div>
       )}
 
-      {viewMode === 'grid' ? (
+      {loading && (
+        <div className="bg-white rounded-lg shadow-sm border p-12 text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading media files...</p>
+        </div>
+      )}
+
+      {!loading && viewMode === 'grid' && (
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {filteredFiles.map((file) => (
-            <motion.div key={file.path}              initial={{ opacity: 0, scale: 0.9 }}              animate={{ opacity: 1, scale: 1 }} className="relative group">
+          {filteredItems.map((item) => (
+            <motion.div key={item.id} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
+              className="relative group"
+            >
               <div className="border-2 border-gray-200 rounded-lg overflow-hidden">
-              <div className="aspect-square bg-gray-100 relative cursor-pointer" onClick={() => setPreviewFile(file)}>
-              <Image              src={file.url}              alt={file.name}
-                    fill className="object-cover"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                <div className="aspect-square bg-gray-100 relative cursor-pointer" onClick={() => setPreviewItem(item)}>
+                  <img src={item.url} alt={item.name}
+                    className="w-full h-full object-cover"
                   />
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-2 opacity-0 group-hover:opacity-100 transition-opacity">
-              <div className="flex justify-between items-center">
-              <button              onClick={() => copyToClipboard(file.path)}
+                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/60 to-transparent p-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="flex justify-between items-center">
+                      <button onClick={(e) => {
+                        e.stopPropagation();
+                        copyToClipboard(item.url);
+                      }}
                         className="p-1 bg-white/20 rounded hover:bg-white/30 text-white"
-                        title="Copy path"
+                        title="Copy URL"
                       >
-              <Copy className="h-4 w-4" />
-              </button>
-              <button              onClick={() => handleDelete(file.path)}
+                        <Copy className="h-4 w-4" />
+                      </button>
+                      <button onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(item.id);
+                      }}
                         className="p-1 bg-white/20 rounded hover:bg-white/30 text-white"
                         title="Delete"
                       >
-              <Trash2 className="h-4 w-4" />
-              </button>
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div className="p-2">
+                  <p className="text-xs font-medium truncate">{item.name}</p>
+                  <p className="text-xs text-gray-500">{formatFileSize(item.size)}</p>
+                </div>
               </div>
-              </div>
-              </div>
-              <div className="p-2">
-              <p className="text-xs font-medium truncate">{file.name}</p>
-              <p className="text-xs text-gray-500">{formatFileSize(file.size)}</p>
-              </div>
-              </div>
-              </motion.div>
+            </motion.div>
           ))}
         </div>
-      ) : (
+      )}
+
+      {!loading && viewMode === 'list' && (
         <div className="bg-white rounded-lg shadow-sm border">
-              <table className="w-full">
-              <thead className="border-b">
+          <table className="w-full">
+            <thead className="border-b">
               <tr>
-              <th className="text-left p-4 font-medium text-gray-900">Name</th>
-              <th className="text-left p-4 font-medium text-gray-900">Size</th>
-              <th className="text-left p-4 font-medium text-gray-900">Modified</th>
-              <th className="text-left p-4 font-medium text-gray-900">Actions</th>
+                <th className="text-left p-4 font-medium text-gray-900">Name</th>
+                <th className="text-left p-4 font-medium text-gray-900">Size</th>
+                <th className="text-left p-4 font-medium text-gray-900">Created</th>
+                <th className="text-left p-4 font-medium text-gray-900">Actions</th>
               </tr>
-              </thead>
-              <tbody>
-              {filteredFiles.map((file) => (
-                <tr key={file.path} className="border-b hover:bg-gray-50">
-              <td className="p-4">
-              <div className="flex items-center">
-              <div className="relative w-10 h-10 mr-3">
-              <Image              src={file.url}              alt={file.name}
-                          fill className="object-cover rounded"
-                          sizes="40px"
+            </thead>
+            <tbody>
+              {filteredItems.map((item) => (
+                <tr key={item.id} className="border-b hover:bg-gray-50">
+                  <td className="p-4">
+                    <div className="flex items-center">
+                      <div className="relative w-10 h-10 mr-3">
+                        <img src={item.url} alt={item.name}
+                          className="w-full h-full object-cover rounded"
                         />
-              </div>
-              <span className="font-medium">{file.name}</span>
-              </div>
-              </td>
-              <td className="p-4 text-gray-600">{formatFileSize(file.size)}</td>
-              <td className="p-4 text-gray-600">{new Date(file.modifiedDate).toLocaleDateString()}</td>
-              <td className="p-4">
-              <div className="flex gap-2">
-              <button              onClick={() => setPreviewFile(file)}
+                      </div>
+                      <span className="font-medium">{item.name}</span>
+                    </div>
+                  </td>
+                  <td className="p-4 text-gray-600">{formatFileSize(item.size)}</td>
+                  <td className="p-4 text-gray-600">{new Date(item.createdAt).toLocaleDateString()}</td>
+                  <td className="p-4">
+                    <div className="flex gap-2">
+                      <button onClick={() => setPreviewItem(item)}
                         className="p-1 hover:bg-gray-100 rounded"
                         title="Preview"
                       >
-              <Eye className="h-4 w-4" />
-              </button>
-              <button              onClick={() => copyToClipboard(file.path)}
+                        <Eye className="h-4 w-4" />
+                      </button>
+                      <button onClick={() => copyToClipboard(item.url)}
                         className="p-1 hover:bg-gray-100 rounded"
-                        title="Copy path"
+                        title="Copy URL"
                       >
-              <Copy className="h-4 w-4" />
-              </button>
-              <button              onClick={() => handleDelete(file.path)}
+                        <Copy className="h-4 w-4" />
+                      </button>
+                      <button onClick={() => handleDelete(item.id)}
                         className="p-1 hover:bg-gray-100 rounded text-red-600"
                         title="Delete"
                       >
-              <Trash2 className="h-4 w-4" />
-              </button>
-              </div>
-              </td>
-              </tr>
+                        <Trash2 className="h-4 w-4" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
               ))}
             </tbody>
-              </table>
-              </div>
+          </table>
+        </div>
       )}
 
-      {filteredFiles.length === 0 && (
+      {!loading && filteredItems.length === 0 && (
         <div className="bg-white rounded-lg shadow-sm border p-12 text-center">
-              <ImageIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No files found</h3>
-              <p className="text-gray-600">Upload some files to get started</p>
-              </div>
+          <ImageIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-gray-900 mb-2">No files found</h3>
+          <p className="text-gray-600">Upload some files to get started</p>
+        </div>
       )}
 
-      {previewFile && (
+      {previewItem && (
         <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center p-4 z-50"
-          onClick={() => setPreviewFile(null)}
+          onClick={() => setPreviewItem(null)}
         >
-              <motion.div initial={{ opacity: 0, scale: 0.9 }}
+          <motion.div initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             className="bg-white rounded-lg max-w-4xl max-h-[90vh] overflow-hidden"
             onClick={(e) => e.stopPropagation()}
           >
-              <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="font-semibold text-gray-900">{previewFile.name}</h3>
-              <button              onClick={() => setPreviewFile(null)}
+            <div className="flex items-center justify-between p-4 border-b">
+              <h3 className="font-semibold text-gray-900">{previewItem.name}</h3>
+              <button onClick={() => setPreviewItem(null)}
                 className="p-2 hover:bg-gray-100 rounded-lg"
               >
-              <X className="h-5 w-5" />
+                <X className="h-5 w-5" />
               </button>
-              </div>
-              <div className="p-4">
+            </div>
+            <div className="p-4">
               <div className="relative flex justify-center items-center" style={{ maxHeight: '70vh' }}>
-              <Image              src={previewFile.url}              alt={previewFile.name}              width={800}              height={600}
+                <img src={previewItem.url} alt={previewItem.name}
                   className="max-w-full max-h-[70vh] object-contain"
-                  sizes="(max-width: 768px) 100vw, 800px"
                 />
               </div>
-              </div>
-              <div className="p-4 border-t bg-gray-50">
+            </div>
+            <div className="p-4 border-t bg-gray-50">
               <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-              <code className="text-sm bg-gray-200 px-2 py-1 rounded">{previewFile.path}</code>
-              <button              onClick={() => copyToClipboard(previewFile.path)}
+                <div className="flex items-center gap-2">
+                  <code className="text-sm bg-gray-200 px-2 py-1 rounded">{previewItem.url}</code>
+                  <button onClick={() => copyToClipboard(previewItem.url)}
                     className="p-1 hover:bg-gray-300 rounded"
                   >
-              <Copy className="h-4 w-4" />
-              </button>
-              </div>
-              <button              onClick={() => {
-                    handleDelete(previewFile.path);
-                    setPreviewFile(null);
-                  }}
+                    <Copy className="h-4 w-4" />
+                  </button>
+                </div>
+                <button onClick={() => {
+                  handleDelete(previewItem.id);
+                  setPreviewItem(null);
+                }}
                   className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                 >
                   Delete
                 </button>
               </div>
-              </div>
-              </motion.div>
-              </div>
+            </div>
+          </motion.div>
+        </div>
       )}
     </div>
   );

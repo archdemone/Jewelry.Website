@@ -1,44 +1,31 @@
 // app/api/healthz/route.ts
 import { NextResponse } from 'next/server';
+import { db } from '@/lib/db';
 
-let prisma: any = null;
-try {
-  // Lazy require so we don't crash if prisma isn't installed in some env
-  const { PrismaClient } = require('@prisma/client');
-  prisma = new PrismaClient();
-} catch {
-  prisma = null;
-}
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 export async function GET() {
-  const startedAt = new Date().toISOString();
-  const web = true;
+  try {
+    // Test database connection without explicit connect/disconnect
+    await db.$queryRaw`SELECT 1`;
 
-  // Only attempt a DB check if we actually have a DATABASE_URL
-  // AND (optionally) we’re in sandbox mode.
-  const wantDbCheck =
-    !!process.env.DATABASE_URL &&
-    (process.env.SANDBOX === '1' || process.env.NODE_ENV === 'production');
-
-  let db = false;
-  let dbError: string | null = null;
-
-  if (wantDbCheck && prisma) {
-    try {
-      // Cheap “SELECT 1” that works in most DBs; skip if your DB needs a different ping
-      await prisma.$queryRaw`SELECT 1`;
-      db = true;
-    } catch (e: any) {
-      dbError = e?.message || String(e);
-    }
+    return NextResponse.json({
+      status: 'healthy',
+      timestamp: new Date().toISOString(),
+      services: {
+        database: 'connected'
+      }
+    });
+  } catch (error) {
+    console.error('Health check failed:', error);
+    return NextResponse.json({
+      status: 'unhealthy',
+      timestamp: new Date().toISOString(),
+      services: {
+        database: 'disconnected'
+      },
+      error: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 503 });
   }
-
-  const ok = web && (!wantDbCheck || db);
-  // If web is up but DB is intentionally not configured, still return 200
-  const status = ok ? 200 : 503;
-
-  return NextResponse.json(
-    { ok, web, db, dbError, startedAt },
-    { status }
-  );
 }

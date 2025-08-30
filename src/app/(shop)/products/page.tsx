@@ -1,6 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
@@ -158,7 +159,7 @@ export default function ProductsPage() {
         hydrate();
 
         // Load all products from Prisma database
-        const response = await fetch('/api/products');
+        const response = await fetch('/api/products', { cache: 'no-store' });
 
         if (response.ok) {
           const data = await response.json();
@@ -216,9 +217,17 @@ export default function ProductsPage() {
     });
   };
 
+  // Shared resolver for image URLs
+  function resolveSrc(u: string) {
+    if (!u) return '';
+    if (/^https?:\/\//i.test(u)) return u;
+    if (u.startsWith('/images/')) return u;
+    return `/images/${String(u).replace(/^\/+/, '')}`;
+  }
+
   const getProductImage = (product: Product): string => {
     if (product.images && product.images.length > 0) {
-      return product.images[0];
+      return resolveSrc(product.images[0]);
     }
     return '/images/MyImages/category-engagement-rings.jpg';
   };
@@ -580,8 +589,13 @@ export default function ProductsPage() {
                     >
                       {/* Product Image */}
                       <div className={`relative ${viewMode === 'list' ? 'h-48 w-48' : 'h-64'}`}>
-                        <img src={getProductImage(product)} alt={product.name}
-                          className="absolute inset-0 h-full w-full object-cover"
+                        <Image
+                          src={getProductImage(product)}
+                          alt={product.name}
+                          fill
+                          className="object-cover"
+                          unoptimized={/^https?:\/\//i.test(getProductImage(product))}
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         />
 
                         {/* Ready to Ship Badge */}
@@ -682,8 +696,13 @@ export default function ProductsPage() {
               <div className="grid lg:grid-cols-3">
                 {/* Image Gallery */}
                 <div className="relative h-96 bg-gradient-to-br from-gray-50 to-gray-100 lg:col-span-1 lg:h-full">
-                  <img src={getProductImage(quickViewProduct)} alt={quickViewProduct.name}
-                    className="absolute inset-0 h-full w-full object-cover"
+                  <Image
+                    src={getProductImage(quickViewProduct)}
+                    alt={quickViewProduct.name}
+                    fill
+                    className="object-cover"
+                    unoptimized={/^https?:\/\//i.test(getProductImage(quickViewProduct))}
+                    sizes="(max-width: 768px) 100vw, 33vw"
                   />
                   <button onClick={() => setQuickViewProduct(null)}
                     className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur"

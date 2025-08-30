@@ -1,7 +1,11 @@
-import { PrismaClient } from '@prisma/client';
 import { NextRequest, NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
+import { requireAdminApi } from '@/lib/admin/admin-auth';
+import { db } from '@/lib/db';
+import { getProductImageFallback } from '@/lib/assets/images';
 
-const prisma = new PrismaClient();
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
 
 // Helper function to extract gem color from gemstones string
 function extractGemColor(gemstones: string | null): string {
@@ -25,11 +29,37 @@ function extractGemVariation(gemstones: string | null): string {
   return 'Bright'; // Default
 }
 
+// Safe parse images function with fallback
+function safeParseImages(imagesString: string | null, productSlug: string, categorySlug?: string): string[] {
+  if (!imagesString) {
+    // Return fallback images if no database images
+    return getProductImageFallback({ productSlug, categorySlug });
+  }
+
+  try {
+    const parsed = JSON.parse(imagesString);
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      return parsed;
+    }
+  } catch {
+    // If JSON parsing fails, check if it's a single URL string
+    if (typeof imagesString === 'string' && imagesString.trim()) {
+      // Check if it looks like a URL
+      if (imagesString.includes('http') || imagesString.startsWith('/')) {
+        return [imagesString.trim()];
+      }
+    }
+  }
+
+  // Return fallback images if parsing failed or no valid images found
+  return getProductImageFallback({ productSlug, categorySlug });
+}
+
 export async function GET(request: NextRequest) {
   try {
     // Ensure database connection
-    await prisma.$connect();
-    
+    await db.$connect();
+
     const { searchParams } = new URL(request.url);
     const categorySlug = searchParams.get('category');
 
@@ -38,7 +68,7 @@ export async function GET(request: NextRequest) {
 
     if (categorySlug && categorySlug !== 'all') {
       // Get products by category slug
-      const category = await prisma.category.findFirst({
+      const category = await db.category.findFirst({
         where: { slug: categorySlug },
         include: { products: true }
       });
@@ -60,7 +90,7 @@ export async function GET(request: NextRequest) {
 
         const mappedSlug = categoryMap[categorySlug];
         if (mappedSlug) {
-          const mappedCategory = await prisma.category.findFirst({
+          const mappedCategory = await db.category.findFirst({
             where: { slug: mappedSlug },
             include: { products: true }
           });
@@ -71,13 +101,13 @@ export async function GET(request: NextRequest) {
       }
     } else {
       // Get all products
-      products = await prisma.product.findMany({
+      products = await db.product.findMany({
         include: { category: true }
       });
     }
 
     // Get all categories
-    categories = await prisma.category.findMany({
+    categories = await db.category.findMany({
       orderBy: { order: 'asc' }
     });
 
@@ -88,7 +118,7 @@ export async function GET(request: NextRequest) {
       name: product.name,
       price: product.price,
       originalPrice: product.comparePrice,
-      images: product.images ? JSON.parse(product.images) : [],
+      images: safeParseImages(product.images, product.slug, product.category?.slug),
       material: product.material,
       gemColor: extractGemColor(product.gemstones),
       gemDensity: 'medium', // Default value
@@ -114,6 +144,9 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       products: mappedProducts,
       categories
+    }, {
+      status: 200,
+      headers: { 'Cache-Control': 'no-store' }
     });
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -122,29 +155,37 @@ export async function GET(request: NextRequest) {
       { status: 500 }
     );
   } finally {
-    await prisma.$disconnect();
+    await db.$disconnect();
   }
 }
 
 // Create new product
 export async function POST(request: NextRequest) {
   try {
+    // Check if this is an admin request (optional for now)
+    const authHeader = request.headers.get('authorization');
+    const isAdminRequest = authHeader?.startsWith('Bearer ') ||
+      request.headers.get('x-admin-request') === 'true';
+
     const productData = await request.json();
 
+    console.log('Creating product with data:', JSON.stringify(productData, null, 2));
+
     // Find the category
-    const category = await prisma.category.findFirst({
+    const category = await db.category.findFirst({
       where: { slug: productData.category }
     });
 
     if (!category) {
+      console.error('Category not found:', productData.category);
       return NextResponse.json(
-        { error: 'Category not found' },
+        { error: 'Category not found', category: productData.category },
         { status: 404 }
       );
     }
 
     // Create the product
-    const newProduct = await prisma.product.create({
+    const newProduct = await db.product.create({
       data: {
         name: productData.name,
         slug: productData.slug || productData.name.toLowerCase().replace(/\s+/g, '-'),
@@ -168,11 +209,45 @@ export async function POST(request: NextRequest) {
       }
     });
 
-    return NextResponse.json(newProduct);
+    // Revalidate after create
+    revalidatePath('/products');
+    revalidatePath(`/products/${newProduct.slug}`);
+
+    // Return mapped product format to match frontend expectations
+    const mappedProduct = {
+      id: newProduct.id,
+      slug: newProduct.slug,
+      name: newProduct.name,
+      price: newProduct.price,
+      originalPrice: newProduct.comparePrice,
+      images: newProduct.images ? JSON.parse(newProduct.images) : [],
+      material: newProduct.material,
+      gemColor: extractGemColor(newProduct.gemstones),
+      gemDensity: 'medium', // Default value
+      gemVariation: extractGemVariation(newProduct.gemstones),
+      category: category.slug,
+      subCategory: category.name,
+      ringSizes: { us: [6, 7, 8, 9, 10], eu: [52, 54, 57, 59, 61] }, // Default sizes
+      ringWidth: [4, 6, 8], // Default widths
+      isReadyToShip: true, // Default value
+      rating: newProduct.rating,
+      reviews: newProduct.reviewCount,
+      badge: newProduct.badge,
+      description: newProduct.description,
+      status: newProduct.active ? 'active' : 'draft',
+      sku: newProduct.sku,
+      createdAt: newProduct.createdAt?.toISOString(),
+      isFeatured: newProduct.featured,
+      featuredOrder: newProduct.featured ? 1 : undefined,
+      mixColors: [],
+      isInStock: newProduct.active
+    };
+
+    return NextResponse.json(mappedProduct);
   } catch (error) {
     console.error('Error creating product:', error);
     return NextResponse.json(
-      { error: 'Failed to create product' },
+      { error: 'Failed to create product', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }
@@ -184,7 +259,7 @@ export async function PUT(request: NextRequest) {
     const productData = await request.json();
 
     // Find the category
-    const category = await prisma.category.findFirst({
+    const category = await db.category.findFirst({
       where: { slug: productData.category }
     });
 
@@ -195,8 +270,14 @@ export async function PUT(request: NextRequest) {
       );
     }
 
+    // Get the old product to check slug changes
+    const oldProduct = await db.product.findUnique({
+      where: { id: productData.id },
+      select: { slug: true }
+    });
+
     // Update the product
-    const updatedProduct = await prisma.product.update({
+    const updatedProduct = await db.product.update({
       where: { id: productData.id },
       data: {
         name: productData.name,
@@ -218,7 +299,44 @@ export async function PUT(request: NextRequest) {
       }
     });
 
-    return NextResponse.json(updatedProduct);
+    // Revalidate after update
+    revalidatePath('/products');
+    if (oldProduct && oldProduct.slug !== updatedProduct.slug) {
+      revalidatePath(`/products/${oldProduct.slug}`);
+    }
+    revalidatePath(`/products/${updatedProduct.slug}`);
+
+    // Return mapped product format to match frontend expectations
+    const mappedProduct = {
+      id: updatedProduct.id,
+      slug: updatedProduct.slug,
+      name: updatedProduct.name,
+      price: updatedProduct.price,
+      originalPrice: updatedProduct.comparePrice,
+      images: updatedProduct.images ? JSON.parse(updatedProduct.images) : [],
+      material: updatedProduct.material,
+      gemColor: extractGemColor(updatedProduct.gemstones),
+      gemDensity: 'medium', // Default value
+      gemVariation: extractGemVariation(updatedProduct.gemstones),
+      category: category.slug,
+      subCategory: category.name,
+      ringSizes: { us: [6, 7, 8, 9, 10], eu: [52, 54, 57, 59, 61] }, // Default sizes
+      ringWidth: [4, 6, 8], // Default widths
+      isReadyToShip: true, // Default value
+      rating: updatedProduct.rating,
+      reviews: updatedProduct.reviewCount,
+      badge: updatedProduct.badge,
+      description: updatedProduct.description,
+      status: updatedProduct.active ? 'active' : 'draft',
+      sku: updatedProduct.sku,
+      createdAt: updatedProduct.createdAt?.toISOString(),
+      isFeatured: updatedProduct.featured,
+      featuredOrder: updatedProduct.featured ? 1 : undefined,
+      mixColors: [],
+      isInStock: updatedProduct.active
+    };
+
+    return NextResponse.json(mappedProduct);
   } catch (error) {
     console.error('Error updating product:', error);
     return NextResponse.json(
@@ -241,9 +359,21 @@ export async function DELETE(request: NextRequest) {
       );
     }
 
-    await prisma.product.delete({
+    // Get the product before deleting to get its slug
+    const product = await db.product.findUnique({
+      where: { id },
+      select: { slug: true }
+    });
+
+    await db.product.delete({
       where: { id }
     });
+
+    // Revalidate after delete
+    revalidatePath('/products');
+    if (product) {
+      revalidatePath(`/products/${product.slug}`);
+    }
 
     return NextResponse.json({ success: true });
   } catch (error) {

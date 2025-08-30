@@ -54,3 +54,5 @@ backups/
 /coverage
 /coverage.*
 *.log
+.vercel
+.env*.local
