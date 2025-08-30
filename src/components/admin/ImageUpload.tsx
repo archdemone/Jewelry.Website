@@ -17,18 +17,18 @@ export function ImageUpload({ images, onImagesChange }: ImageUploadProps) {
   const uploadImage = async (file: File): Promise<string> => {
     const formData = new FormData();
     formData.append('file', file);
-    
+
     const response = await fetch('/api/upload', {
       method: 'POST',
       body: formData,
     });
-    
+
     const data = await response.json();
-    
+
     if (!response.ok || !data.ok) {
       throw new Error(data.error || 'Upload failed');
     }
-    
+
     return data.url;
   };
 
@@ -36,7 +36,7 @@ export function ImageUpload({ images, onImagesChange }: ImageUploadProps) {
     if (!files) return;
 
     setIsUploading(true);
-    
+
     try {
       const uploadPromises = Array.from(files).map(async (file) => {
         if (file.type.startsWith('image/')) {
@@ -47,7 +47,7 @@ export function ImageUpload({ images, onImagesChange }: ImageUploadProps) {
 
       const uploadedUrls = await Promise.all(uploadPromises);
       const validUrls = uploadedUrls.filter(url => url !== null) as string[];
-      
+
       onImagesChange([...images, ...validUrls]);
     } catch (error) {
       console.error('Upload failed:', error);
@@ -80,11 +80,10 @@ export function ImageUpload({ images, onImagesChange }: ImageUploadProps) {
 
   return (
     <div className="space-y-4">
-      <div className={`rounded-lg border-2 border-dashed p-6 text-center transition-colors ${
-        isDragOver
+      <div className={`rounded-lg border-2 border-dashed p-6 text-center transition-colors ${isDragOver
           ? 'border-gold-500 bg-gold-50'
           : 'border-gray-300 hover:border-gray-400'
-      }`}
+        }`}
         onDrop={handleDrop}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
@@ -93,7 +92,7 @@ export function ImageUpload({ images, onImagesChange }: ImageUploadProps) {
         <p className="text-sm text-gray-600">
           {isUploading ? 'Uploading...' : 'Drag and drop images here, or'}
         </p>
-        <button 
+        <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={isUploading}
@@ -103,10 +102,10 @@ export function ImageUpload({ images, onImagesChange }: ImageUploadProps) {
         </button>
         <p className="text-xs text-gray-500">PNG, JPG, WEBP up to 5MB</p>
       </div>
-      <input 
+      <input
         ref={fileInputRef}
         type="file"
-        multiple 
+        multiple
         accept="image/*"
         onChange={(e) => handleFileSelect(e.target.files)}
         className="hidden"
@@ -117,15 +116,15 @@ export function ImageUpload({ images, onImagesChange }: ImageUploadProps) {
         <div className="grid grid-cols-2 gap-2">
           {images.map((image, index) => (
             <div key={index} className="relative group h-24">
-              <Image 
-                src={image} 
+              <Image
+                src={image}
                 alt={`Ring ${index + 1}`}
-                fill 
+                fill
                 className="rounded-lg object-cover"
                 sizes="200px"
               />
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={() => removeImage(index)}
                 className="absolute -right-2 -top-2 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-white opacity-0 group-hover:opacity-100 transition-opacity"
               >

@@ -5,7 +5,7 @@ import { requireAdminApi } from '@/lib/admin/admin-auth';
 export async function POST(req: NextRequest) {
   const auth = await requireAdminApi();
   if (auth instanceof Response) return auth;
-  
+
   const secret = process.env.REVALIDATE_TOKEN;
   try {
     const body = await req.json().catch(() => ({}));

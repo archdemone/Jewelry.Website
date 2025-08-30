@@ -3,6 +3,9 @@ import fs from 'fs/promises';
 import path from 'path';
 import { db } from '@/lib/db';
 
+export const runtime = 'nodejs';
+export const dynamic = 'force-dynamic';
+
 const IMAGES_DIR = path.join(process.cwd(), 'public', 'images');
 
 // Recursively get all image files from a directory

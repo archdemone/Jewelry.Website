@@ -68,27 +68,27 @@ export default function ProductForm({
   async function uploadImage(file: File): Promise<string> {
     const formData = new FormData();
     formData.append('file', file);
-    
+
     const response = await fetch('/api/upload', {
       method: 'POST',
       body: formData,
     });
-    
+
     const data = await response.json();
-    
+
     if (!response.ok || !data.ok) {
       throw new Error(data.error || 'Upload failed');
     }
-    
+
     return data.url;
   }
 
   async function onDrop(acceptedFiles: File[]) {
     const newImages: ImageItem[] = [];
-    
+
     for (const file of acceptedFiles) {
       const imageId = crypto.randomUUID();
-      
+
       // Add to images with local preview
       const imageItem: ImageItem = {
         id: imageId,
@@ -98,40 +98,40 @@ export default function ProductForm({
         progress: 0,
         uploaded: false,
       };
-      
+
       newImages.push(imageItem);
       setImages(prev => [...prev, imageItem]);
-      
+
       try {
         // Upload to Vercel Blob
         for (let progress = 10; progress <= 90; progress += 10) {
           await new Promise(resolve => setTimeout(resolve, 50));
-          setImages(prev => 
-            prev.map(img => 
+          setImages(prev =>
+            prev.map(img =>
               img.id === imageId ? { ...img, progress } : img
             )
           );
         }
-        
+
         const blobUrl = await uploadImage(file);
-        
+
         // Update with uploaded URL
-        setImages(prev => 
-          prev.map(img => 
-            img.id === imageId 
+        setImages(prev =>
+          prev.map(img =>
+            img.id === imageId
               ? { ...img, url: blobUrl, progress: 100, uploaded: true }
               : img
           )
         );
-        
+
         // Add to uploaded images list
         setUploadedImages(prev => [...prev, blobUrl]);
-        
+
       } catch (error) {
         console.error('Upload failed:', error);
-        setImages(prev => 
-          prev.map(img => 
-            img.id === imageId 
+        setImages(prev =>
+          prev.map(img =>
+            img.id === imageId
               ? { ...img, progress: -1 } // Error state
               : img
           )
@@ -187,212 +187,212 @@ export default function ProductForm({
 
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-              <div className="space-y-4 lg:col-span-2">
-              <Card className="space-y-3 p-4">
-              <div className="font-semibold">Basic Information</div>
-              <Input placeholder="Product name"
+      <div className="space-y-4 lg:col-span-2">
+        <Card className="space-y-3 p-4">
+          <div className="font-semibold">Basic Information</div>
+          <Input placeholder="Product name"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-              <Input placeholder="Slug" value={slug} onChange={(e) => setSlug(e.target.value)} />
-              <Textarea placeholder="Description"
+          <Input placeholder="Slug" value={slug} onChange={(e) => setSlug(e.target.value)} />
+          <Textarea placeholder="Description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             rows={6}
           />
-              <select className="rounded border px-2 py-1 text-sm"
+          <select className="rounded border px-2 py-1 text-sm"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           >
-              <option value="">Select category</option>
-              <option value="rings">Rings</option>
-              <option value="necklaces">Necklaces</option>
-              </select>
-              <div>
-              <div className="mb-1 text-sm text-gray-600">Tags</div>
-              <div className="mb-2 flex flex-wrap gap-2">
+            <option value="">Select category</option>
+            <option value="rings">Rings</option>
+            <option value="necklaces">Necklaces</option>
+          </select>
+          <div>
+            <div className="mb-1 text-sm text-gray-600">Tags</div>
+            <div className="mb-2 flex flex-wrap gap-2">
               {tags.map((t) => (
                 <span key={t} className="rounded bg-gray-100 px-2 py-1 text-xs">
                   {t}
                   <button className="ml-1 text-gray-500" onClick={() => removeTag(t)}>
                     ×
                   </button>
-              </span>
+                </span>
               ))}
             </div>
-              <div className="flex gap-2">
-              <Input placeholder="Add tag"              onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    addTag((e.target as HTMLInputElement).value.trim());
-                    (e.target as HTMLInputElement).value = '';
-                  }
-                }}
+            <div className="flex gap-2">
+              <Input placeholder="Add tag" onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  addTag((e.target as HTMLInputElement).value.trim());
+                  (e.target as HTMLInputElement).value = '';
+                }
+              }}
               />
-              <Button type="button"              onClick={() => {
-                  const input = document.activeElement as HTMLInputElement;
-                  if (input?.value) {
-                    addTag(input.value.trim());
-                    input.value = '';
-                  }
-                }}
+              <Button type="button" onClick={() => {
+                const input = document.activeElement as HTMLInputElement;
+                if (input?.value) {
+                  addTag(input.value.trim());
+                  input.value = '';
+                }
+              }}
               >
                 Add
               </Button>
-              </div>
-              </div>
-              </Card>
-              <Card className="space-y-3 p-4">
-              <div className="font-semibold">Images</div>
-              <div {...getRootProps()}
+            </div>
+          </div>
+        </Card>
+        <Card className="space-y-3 p-4">
+          <div className="font-semibold">Images</div>
+          <div {...getRootProps()}
             className={clsx(
               'cursor-pointer rounded border-2 border-dashed p-6 text-center',
               isDragActive ? 'bg-amber-50' : 'bg-white',
- )}
->
-              <input {...getInputProps()} />
-              <div>Drag & drop images here, or click to select (JPG, PNG, WEBP)</div>
-              </div>
-              <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+            )}
+          >
+            <input {...getInputProps()} />
+            <div>Drag & drop images here, or click to select (JPG, PNG, WEBP)</div>
+          </div>
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
             {images.map((img, idx) => (
               <div key={img.id} className="relative rounded border p-2">
-              <div className="relative h-32 w-full">
-              <Image              src={img.url}              alt={img.alt}
+                <div className="relative h-32 w-full">
+                  <Image src={img.url} alt={img.alt}
                     fill className="rounded object-cover"
                     sizes="(max-width: 768px) 50vw, 25vw"
                     unoptimized
                   />
-              </div>
+                </div>
                 {img.progress && img.progress < 100 && (
                   <div className="absolute inset-0 flex items-end bg-white/60">
-              <div className="h-1 w-full bg-gray-200">
-              <div className="h-1 bg-amber-500" style={{ width: `${img.progress}%` }} />
-              </div>
-              </div>
+                    <div className="h-1 w-full bg-gray-200">
+                      <div className="h-1 bg-amber-500" style={{ width: `${img.progress}%` }} />
+                    </div>
+                  </div>
                 )}
                 <div className="mt-2 flex items-center justify-between text-xs">
-              <label className="flex items-center gap-1">
-              <input type="radio"
-                      name="primary"              checked={!!img.primary}              onChange={() => setPrimary(img.id)}
+                  <label className="flex items-center gap-1">
+                    <input type="radio"
+                      name="primary" checked={!!img.primary} onChange={() => setPrimary(img.id)}
                     />{' '}
                     Primary
                   </label>
-              <div className="flex items-center gap-2">
-              <button onClick={() => moveImage(img.id, -1)} className="text-gray-600">
+                  <div className="flex items-center gap-2">
+                    <button onClick={() => moveImage(img.id, -1)} className="text-gray-600">
                       ◀
                     </button>
-              <button onClick={() => moveImage(img.id, 1)} className="text-gray-600">
+                    <button onClick={() => moveImage(img.id, 1)} className="text-gray-600">
                       ▶
                     </button>
-              <button onClick={() => removeImage(img.id)} className="text-gray-600">
-              <X className="h-4 w-4" />
-              </button>
-              </div>
-              </div>
+                    <button onClick={() => removeImage(img.id)} className="text-gray-600">
+                      <X className="h-4 w-4" />
+                    </button>
+                  </div>
+                </div>
               </div>
             ))}
           </div>
-              </Card>
-              <Card className="space-y-3 p-4">
-              <div className="font-semibold">Product Details</div>
-              <Input placeholder="Material"
+        </Card>
+        <Card className="space-y-3 p-4">
+          <div className="font-semibold">Product Details</div>
+          <Input placeholder="Material"
             value={material}
             onChange={(e) => setMaterial(e.target.value)}
           />
-              <Input placeholder="Gemstone details"
+          <Input placeholder="Gemstone details"
             value={gemstone}
             onChange={(e) => setGemstone(e.target.value)}
           />
-              <Input placeholder="Size options (comma separated)"
+          <Input placeholder="Size options (comma separated)"
             value={sizes}
             onChange={(e) => setSizes(e.target.value)}
           />
-              <Input placeholder="Weight" value={weight} onChange={(e) => setWeight(e.target.value)} />
-              <Input placeholder="Dimensions"
+          <Input placeholder="Weight" value={weight} onChange={(e) => setWeight(e.target.value)} />
+          <Input placeholder="Dimensions"
             value={dimensions}
             onChange={(e) => setDimensions(e.target.value)}
           />
-              <Textarea placeholder="Care instructions"
+          <Textarea placeholder="Care instructions"
             value={care}
             onChange={(e) => setCare(e.target.value)}
           />
-              </Card>
-              <Card className="space-y-3 p-4">
-              <div className="font-semibold">SEO</div>
-              <Input placeholder="Meta title"
+        </Card>
+        <Card className="space-y-3 p-4">
+          <div className="font-semibold">SEO</div>
+          <Input placeholder="Meta title"
             value={metaTitle}
             onChange={(e) => setMetaTitle(e.target.value)}
           />
-              <Textarea placeholder="Meta description"
+          <Textarea placeholder="Meta description"
             value={metaDescription}
             onChange={(e) => setMetaDescription(e.target.value)}
           />
-              <Input placeholder="URL slug"
+          <Input placeholder="URL slug"
             value={urlSlug}
             onChange={(e) => setUrlSlug(e.target.value)}
           />
-              </Card>
-              </div>
-              <div className="space-y-4">
-              <Card className="space-y-3 p-4">
-              <div className="font-semibold">Pricing</div>
-              <Input placeholder="Regular price"
+        </Card>
+      </div>
+      <div className="space-y-4">
+        <Card className="space-y-3 p-4">
+          <div className="font-semibold">Pricing</div>
+          <Input placeholder="Regular price"
             value={regularPrice}
             onChange={(e) => setRegularPrice(e.target.value)}
           />
-              <Input placeholder="Sale price"
+          <Input placeholder="Sale price"
             value={salePrice}
             onChange={(e) => setSalePrice(e.target.value)}
           />
-              <Input placeholder="Cost per item"
+          <Input placeholder="Cost per item"
             value={costPerItem}
             onChange={(e) => setCostPerItem(e.target.value)}
           />
-              <Input placeholder="Compare at price"
+          <Input placeholder="Compare at price"
             value={compareAtPrice}
             onChange={(e) => setCompareAtPrice(e.target.value)}
           />
-              <label className="flex items-center gap-2 text-sm">
-              <input type="checkbox"              checked={taxable}              onChange={(e) => setTaxable(e.target.checked)}
+          <label className="flex items-center gap-2 text-sm">
+            <input type="checkbox" checked={taxable} onChange={(e) => setTaxable(e.target.checked)}
             />
             Taxable
           </label>
-              </Card>
-              <Card className="space-y-3 p-4">
-              <div className="font-semibold">Inventory</div>
-              <Input placeholder="SKU" value={sku} onChange={(e) => setSku(e.target.value)} />
-              <Input placeholder="Barcode"
+        </Card>
+        <Card className="space-y-3 p-4">
+          <div className="font-semibold">Inventory</div>
+          <Input placeholder="SKU" value={sku} onChange={(e) => setSku(e.target.value)} />
+          <Input placeholder="Barcode"
             value={barcode}
             onChange={(e) => setBarcode(e.target.value)}
           />
-              <label className="flex items-center gap-2 text-sm">
-              <input type="checkbox"              checked={trackQty}              onChange={(e) => setTrackQty(e.target.checked)}
+          <label className="flex items-center gap-2 text-sm">
+            <input type="checkbox" checked={trackQty} onChange={(e) => setTrackQty(e.target.checked)}
             />
             Track quantity
           </label>
-              <Input placeholder="Stock quantity"
+          <Input placeholder="Stock quantity"
             value={stockQty}
             onChange={(e) => setStockQty(Number((e.target as HTMLInputElement).value || 0))}
           />
-              <Input placeholder="Low stock threshold"
+          <Input placeholder="Low stock threshold"
             value={lowStock}
             onChange={(e) => setLowStock(Number((e.target as HTMLInputElement).value || 0))}
           />
-              <label className="flex items-center gap-2 text-sm">
-              <input type="checkbox"              checked={continueWhenOOS}              onChange={(e) => setContinueWhenOOS(e.target.checked)}
+          <label className="flex items-center gap-2 text-sm">
+            <input type="checkbox" checked={continueWhenOOS} onChange={(e) => setContinueWhenOOS(e.target.checked)}
             />
             Continue selling when out of stock
           </label>
-              </Card>
-              <div className="flex gap-2">
-              <Button onClick={handleSave}>
+        </Card>
+        <div className="flex gap-2">
+          <Button onClick={handleSave}>
             {mode === 'create' ? 'Create Product' : 'Save Changes'}
           </Button>
-              <Button variant="outline">Save & continue</Button>
-              <Button variant="outline">Save & add another</Button>
-              <Button variant="ghost">Preview</Button>
-              </div>
-              </div>
-              </div>
+          <Button variant="outline">Save & continue</Button>
+          <Button variant="outline">Save & add another</Button>
+          <Button variant="ghost">Preview</Button>
+        </div>
+      </div>
+    </div>
   );
 }
 
