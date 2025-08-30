@@ -99,6 +99,15 @@ export function getCategoryPlaceholder(categorySlug?: string): string {
   );
 }
 
+// Shared helper for product images - handles both Blob URLs and local paths
+export function getProductImage(product: { images?: string[] }) {
+  const img = product?.images?.[0];
+  if (!img) return '/images/placeholder.png';
+  if (/^https?:\/\//i.test(img)) return img;   // Blob/CDN
+  if (img.startsWith('/images/')) return img;  // absolute public path
+  return `/images/${img.replace(/^\/+/, '')}`; // legacy filename
+}
+
 // Get product image fallback with category context (updated for rings)
 export function getProductImageFallback(opts: {
   productSlug?: string;

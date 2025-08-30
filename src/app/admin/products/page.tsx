@@ -1,11 +1,11 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Image from 'next/image';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { getProductImage } from '@/lib/assets/images';
 
 import {
   Plus,
@@ -102,11 +102,18 @@ export default function UnifiedAdminProductsPage() {
     return colorMap[color] || '#6b7280';
   };
 
-  // Image URL resolver for gallery images
-  function resolveImageSrc(url: string) {
-    if (!url) return '';
-    if (/^https?:\/\//i.test(url)) return url;       // Blob URL, use as-is
-    return `/images/${url.replace(/^\/+/, '')}`;     // local file fallback
+  // Normalize images from API response (handles both array and JSON string)
+  function normalizeImages(x: unknown): string[] {
+    if (Array.isArray(x)) return x as string[];
+    if (typeof x === 'string') {
+      try {
+        const j = JSON.parse(x);
+        return Array.isArray(j) ? j : [];
+      } catch {
+        return [];
+      }
+    }
+    return [];
   }
 
   const getGemColorImage = (color: string): string => {
@@ -186,7 +193,12 @@ export default function UnifiedAdminProductsPage() {
       const response = await fetch('/api/products');
       if (response.ok) {
         const data = await response.json();
-        setProducts(data.products || []);
+        // Normalize images to ensure they're always arrays
+        const normalizedProducts = (data.products || []).map((p: any) => ({
+          ...p,
+          images: normalizeImages(p.images)
+        }));
+        setProducts(normalizedProducts);
       } else {
         console.error('Failed to load products');
         setProducts([]);
@@ -255,13 +267,19 @@ export default function UnifiedAdminProductsPage() {
       if (response.ok) {
         const savedProduct = await response.json();
 
+        // Normalize images in the returned product
+        const normalizedSavedProduct = {
+          ...savedProduct,
+          images: normalizeImages(savedProduct.images)
+        };
+
         // Update local state with the returned product
         if (isAddingProduct) {
           // Add new product to the list
-          setProducts(prev => [savedProduct, ...prev]);
+          setProducts(prev => [normalizedSavedProduct, ...prev]);
         } else {
           // Update existing product in the list
-          setProducts(prev => prev.map(p => p.id === savedProduct.id ? savedProduct : p));
+          setProducts(prev => prev.map(p => p.id === normalizedSavedProduct.id ? normalizedSavedProduct : p));
         }
 
         setEditingProduct(null);
@@ -486,15 +504,12 @@ export default function UnifiedAdminProductsPage() {
                 {filteredProducts.map((product) => (
                   <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                     <div className="aspect-square bg-gray-100 relative">
-                      {product.images && product.images[0] ? (
-                        <img src={resolveImageSrc(product.images[0])} alt={product.name}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <div className="flex items-center justify-center h-full">
-                          <Package className="w-12 h-12 text-gray-400" />
-                        </div>
-                      )}
+                      <img
+                        src={getProductImage(product)}
+                        alt={product.name}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                        loading="lazy"
+                      />
                       <div className="absolute top-2 left-2 flex flex-col gap-1">
                         {getStatusBadge(product.status || 'draft')}
                         {getFeaturedBadge(product.isFeatured || false)}
@@ -565,15 +580,12 @@ export default function UnifiedAdminProductsPage() {
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center">
                               <div className="flex-shrink-0 h-10 w-10 relative">
-                                {product.images && product.images[0] ? (
-                                  <img src={resolveImageSrc(product.images[0])} alt={product.name}
-                                    className="h-10 w-10 rounded-full object-cover"
-                                  />
-                                ) : (
-                                  <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
-                                    <Package className="w-5 h-5 text-gray-400" />
-                                  </div>
-                                )}
+                                <img
+                                  src={getProductImage(product)}
+                                  alt={product.name}
+                                  style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '50%', display: 'block' }}
+                                  loading="lazy"
+                                />
                               </div>
                               <div className="ml-4">
                                 <div className="text-sm font-medium text-gray-900">{product.name}</div>
@@ -679,18 +691,12 @@ export default function UnifiedAdminProductsPage() {
                 {/* Main Image Preview */}
                 <div className="mb-6">
                   <div className="relative aspect-square bg-white rounded-lg border-2 border-dashed border-gray-300 overflow-hidden">
-                    {editingProduct.images && editingProduct.images[0] ? (
-                      <img src={resolveImageSrc(editingProduct.images[0])} alt={editingProduct.name}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="flex items-center justify-center h-full">
-                        <div className="text-center">
-                          <Package className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                          <p className="text-sm text-gray-500">No image selected</p>
-                        </div>
-                      </div>
-                    )}
+                    <img
+                      src={getProductImage(editingProduct)}
+                      alt={editingProduct.name}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                      loading="lazy"
+                    />
                     {editingProduct.isReadyToShip && (
                       <div className="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs font-medium">
                         Ready to Ship
@@ -726,8 +732,11 @@ export default function UnifiedAdminProductsPage() {
                         : 'border-gray-200 hover:border-gray-300'
                         }`}
                       >
-                        <img src={resolveImageSrc(image.url)} alt={image.name}
-                          className="w-full h-full object-cover"
+                        <img
+                          src={getProductImage({ images: [image.url] })}
+                          alt={image.name}
+                          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                          loading="lazy"
                         />
                         {editingProduct.images.includes(image.url) && (
                           <div className="absolute top-1 right-1 w-5 h-5 bg-gold-500 rounded-full flex items-center justify-center">
@@ -831,8 +840,11 @@ export default function UnifiedAdminProductsPage() {
                               {hoveredGemColor === color && (
                                 <div className="absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 transform">
                                   <div className="rounded-lg border bg-white p-4 shadow-lg">
-                                    <Image src={getGemColorImage(color)} alt={`${color} gem`} width={200} height={200}
-                                      className="rounded object-cover" style={{ minWidth: '200px', minHeight: '200px' }}
+                                    <img
+                                      src={getGemColorImage(color)}
+                                      alt={`${color} gem`}
+                                      style={{ width: '200px', height: '200px', objectFit: 'cover', borderRadius: '4px', display: 'block' }}
+                                      loading="lazy"
                                     />
                                   </div>
                                 </div>
@@ -871,8 +883,11 @@ export default function UnifiedAdminProductsPage() {
                               {hoveredMixColor === color && (
                                 <div className="absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 transform">
                                   <div className="rounded-lg border bg-white p-4 shadow-lg">
-                                    <Image src={getGemColorImage(color)} alt={`${color} gem`} width={200} height={200}
-                                      className="rounded object-cover" style={{ minWidth: '200px', minHeight: '200px' }}
+                                    <img
+                                      src={getGemColorImage(color)}
+                                      alt={`${color} gem`}
+                                      style={{ width: '200px', height: '200px', objectFit: 'cover', borderRadius: '4px', display: 'block' }}
+                                      loading="lazy"
                                     />
                                   </div>
                                 </div>
@@ -913,8 +928,11 @@ export default function UnifiedAdminProductsPage() {
                                 {hoveredGemColor2 === color && (
                                   <div className="absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 transform">
                                     <div className="rounded-lg border bg-white p-4 shadow-lg">
-                                      <Image src={getGemColorImage(color)} alt={`${color} gem`} width={200} height={200}
-                                        className="rounded object-cover" style={{ minWidth: '200px', minHeight: '200px' }}
+                                      <img
+                                        src={getGemColorImage(color)}
+                                        alt={`${color} gem`}
+                                        style={{ width: '200px', height: '200px', objectFit: 'cover', borderRadius: '4px', display: 'block' }}
+                                        loading="lazy"
                                       />
                                     </div>
                                   </div>
@@ -953,8 +971,11 @@ export default function UnifiedAdminProductsPage() {
                                 {hoveredMixColor2 === color && (
                                   <div className="absolute bottom-full left-1/2 z-50 mb-2 -translate-x-1/2 transform">
                                     <div className="rounded-lg border bg-white p-4 shadow-lg">
-                                      <Image src={getGemColorImage(color)} alt={`${color} gem`} width={200} height={200}
-                                        className="rounded object-cover" style={{ minWidth: '200px', minHeight: '200px' }}
+                                      <img
+                                        src={getGemColorImage(color)}
+                                        alt={`${color} gem`}
+                                        style={{ width: '200px', height: '200px', objectFit: 'cover', borderRadius: '4px', display: 'block' }}
+                                        loading="lazy"
                                       />
                                     </div>
                                   </div>
