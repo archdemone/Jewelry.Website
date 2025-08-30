@@ -70,7 +70,7 @@ export default function FAQPage() {
   return (
     <>
       <FAQPageJsonLd faqs={FAQs.map((f) => ({ question: f.question, answer: f.answer }))} />
-      <section className="mx-auto max-w-4xl px-4 py-16">
+      <section className="mx-auto max-w-4xl px-4 py-16 bg-white min-h-screen">
         <div className="text-center mb-12">
           <h1 className="text-4xl font-[var(--font-serif)] font-semibold text-gray-900 mb-4">
             Frequently Asked Questions

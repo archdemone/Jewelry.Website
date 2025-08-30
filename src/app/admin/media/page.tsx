@@ -24,6 +24,7 @@ interface MediaItem {
   type: string;
   createdAt: string;
   updatedAt: string;
+  source?: 'database' | 'public';
 }
 
 interface MediaResponse {
@@ -39,15 +40,46 @@ export default function AdminMediaPage() {
   const [isUploading, setIsUploading] = useState(false);
   const [previewItem, setPreviewItem] = useState<MediaItem | null>(null);
   const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<string>('');
+  const [loadingCategories, setLoadingCategories] = useState(true);
 
   useEffect(() => {
+    loadCategories();
     loadMediaItems();
-  }, []);
+  }, [selectedCategory]);
+
+  const loadCategories = async () => {
+    try {
+      setLoadingCategories(true);
+      const response = await fetch('/api/admin/media?action=categories', {
+        cache: 'no-store'
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setCategories(data.categories || []);
+      }
+    } catch (error) {
+      console.error('Error loading categories:', error);
+    } finally {
+      setLoadingCategories(false);
+    }
+  };
 
   const loadMediaItems = async () => {
     try {
       setLoading(true);
-      const response = await fetch('/api/admin/media?query=&page=1&pageSize=24', {
+      const params = new URLSearchParams({
+        query: searchQuery,
+        page: '1',
+        pageSize: '24'
+      });
+
+      if (selectedCategory) {
+        params.append('category', selectedCategory);
+      }
+
+      const response = await fetch(`/api/admin/media?${params}`, {
         cache: 'no-store'
       });
       if (response.ok) {
@@ -82,13 +114,18 @@ export default function AdminMediaPage() {
           throw new Error(data.error || 'Upload failed');
         }
 
-        // Save to database via admin media API
+        // Determine if we should save to public folder or database
+        const shouldSaveToPublic = selectedCategory && selectedCategory !== 'database';
+
+        // Save via admin media API
         const mediaResponse = await fetch('/api/admin/media', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             url: data.url,
             alt: file.name,
+            category: shouldSaveToPublic ? selectedCategory : undefined,
+            fileName: shouldSaveToPublic ? file.name : undefined,
           }),
         });
 
@@ -109,8 +146,8 @@ export default function AdminMediaPage() {
       const validItems = uploadedItems.filter(item => item !== null);
 
       if (validItems.length > 0) {
-        // Add uploaded items to the list
-        setMediaItems(prev => [...validItems, ...prev]);
+        // Reload media items to show the new files
+        await loadMediaItems();
         alert(`${validItems.length} file(s) uploaded successfully!`);
       }
     } catch (error) {
@@ -130,7 +167,7 @@ export default function AdminMediaPage() {
       });
 
       if (response.ok) {
-        setMediaItems(prev => prev.filter(item => item.id !== id));
+        await loadMediaItems(); // Reload to update the list
         setSelectedItems(prev => prev.filter(itemId => itemId !== id));
         if (previewItem?.id === id) {
           setPreviewItem(null);
@@ -138,6 +175,62 @@ export default function AdminMediaPage() {
       }
     } catch (error) {
       console.error('Error deleting file:', error);
+    }
+  };
+
+  const handleReplaceFile = async (item: MediaItem, e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files || e.target.files.length === 0) return;
+
+    const file = e.target.files[0];
+    setIsUploading(true);
+
+    try {
+      // First delete the old file
+      await handleDelete(item.id);
+
+      // Then upload the new file with the same name
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.ok) {
+        throw new Error(data.error || 'Upload failed');
+      }
+
+      // Extract category from item path
+      const pathParts = item.path.split('/');
+      const category = pathParts[0];
+      const fileName = item.name + '.' + file.name.split('.').pop();
+
+      // Save to public folder with the same name
+      const mediaResponse = await fetch('/api/admin/media', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          url: data.url,
+          alt: fileName,
+          category: category,
+          fileName: fileName,
+        }),
+      });
+
+      if (mediaResponse.ok) {
+        await loadMediaItems();
+        alert('File replaced successfully!');
+      } else {
+        throw new Error('Failed to save new file');
+      }
+    } catch (error) {
+      console.error('Error replacing file:', error);
+      alert('Failed to replace file');
+    } finally {
+      setIsUploading(false);
     }
   };
 
@@ -174,14 +267,70 @@ export default function AdminMediaPage() {
           />
         </label>
       </div>
+      {/* Category Navigation */}
+      <div className="bg-white rounded-lg shadow-sm border p-4">
+        <h3 className="text-lg font-semibold text-gray-900 mb-4">Categories</h3>
+        {loadingCategories ? (
+          <div className="flex items-center justify-center py-8">
+            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-orange-500"></div>
+            <span className="ml-2 text-gray-600">Loading categories...</span>
+          </div>
+        ) : (
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => setSelectedCategory('')}
+              className={`px-4 py-2 rounded-lg border-2 transition-colors ${selectedCategory === ''
+                ? 'border-orange-500 bg-orange-50 text-orange-700'
+                : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+                }`}
+            >
+              All Images
+            </button>
+            <button
+              onClick={() => setSelectedCategory('database')}
+              className={`px-4 py-2 rounded-lg border-2 transition-colors ${selectedCategory === 'database'
+                ? 'border-orange-500 bg-orange-50 text-orange-700'
+                : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+                }`}
+            >
+              Uploaded Images
+            </button>
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-4 py-2 rounded-lg border-2 transition-colors ${selectedCategory === category
+                  ? 'border-orange-500 bg-orange-50 text-orange-700'
+                  : 'border-gray-300 hover:border-gray-400 hover:bg-gray-50'
+                  }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Search and View Controls */}
       <div className="bg-white rounded-lg shadow-sm border p-4">
         <div className="flex items-center justify-between gap-4">
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
             <input type="text"
               placeholder="Search files..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  loadMediaItems();
+                }
+              }}
+              className="w-full pl-10 pr-12 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
             />
+            <button
+              onClick={loadMediaItems}
+              className="absolute right-2 top-1/2 -translate-y-1/2 p-1 hover:bg-gray-100 rounded"
+            >
+              <Search className="h-4 w-4 text-gray-400" />
+            </button>
           </div>
           <div className="flex border border-gray-300 rounded-lg">
             <button onClick={() => setViewMode('grid')} className={`p-2 ${viewMode === 'grid' ? 'bg-gray-100' : ''}`}
@@ -234,15 +383,31 @@ export default function AdminMediaPage() {
                       >
                         <Copy className="h-4 w-4" />
                       </button>
-                      <button onClick={(e) => {
-                        e.stopPropagation();
-                        handleDelete(item.id);
-                      }}
-                        className="p-1 bg-white/20 rounded hover:bg-white/30 text-white"
-                        title="Delete"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </button>
+                      <div className="flex gap-1">
+                        {item.source === 'public' && (
+                          <label className="p-1 bg-white/20 rounded hover:bg-white/30 text-white cursor-pointer"
+                            title="Replace File"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <Upload className="h-4 w-4" />
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => handleReplaceFile(item, e)}
+                              className="hidden"
+                            />
+                          </label>
+                        )}
+                        <button onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(item.id);
+                        }}
+                          className="p-1 bg-white/20 rounded hover:bg-white/30 text-white"
+                          title="Delete"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </button>
+                      </div>
                     </div>
                   </div>
                 </div>

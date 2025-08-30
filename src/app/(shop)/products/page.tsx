@@ -794,7 +794,7 @@ export default function ProductsPage() {
                             </button>
 
                             {/* Hover Popup with Gem Image */}
-                            <div className="pointer-events-none absolute bottom-full left-1/2 z-[9999] mb-2 -translate-x-1/2 transform opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                            <div className="pointer-events-none absolute top-full left-1/2 z-[9999] mt-2 -translate-x-1/2 transform opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                               <div className="rounded-lg border border-gray-200 bg-white p-3 shadow-xl">
                                 <div className="relative h-32 w-32 overflow-hidden rounded">
                                   <img src={`/images/gems/colour/${color.toLowerCase()}.jpg`} alt={`${color} gem`}
@@ -805,7 +805,7 @@ export default function ProductsPage() {
                                     }}
                                   />
                                 </div>
-                                <div className="absolute left-1/2 top-full h-2 w-2 -translate-x-1/2 rotate-45 transform border-b border-l border-gray-200 bg-white"></div>
+                                <div className="absolute left-1/2 bottom-full h-2 w-2 -translate-x-1/2 rotate-45 transform border-t border-r border-gray-200 bg-white"></div>
                               </div>
                             </div>
                           </div>
