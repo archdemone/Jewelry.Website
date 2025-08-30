@@ -136,9 +136,9 @@ export async function POST(req: NextRequest) {
         });
       } catch (error) {
         console.error('Error saving to public folder:', error);
-        return NextResponse.json({ 
-          ok: false, 
-          error: `Failed to save file to public folder: ${error instanceof Error ? error.message : 'Unknown error'}` 
+        return NextResponse.json({
+          ok: false,
+          error: `Failed to save file to public folder: ${error instanceof Error ? error.message : 'Unknown error'}`
         }, { status: 500 });
       }
     }
@@ -323,9 +323,9 @@ export async function DELETE(req: NextRequest) {
         return NextResponse.json({ ok: true });
       } catch (error) {
         console.error('Error deleting public file:', error);
-        return NextResponse.json({ 
-          ok: false, 
-          error: `Failed to delete file: ${error instanceof Error ? error.message : 'Unknown error'}` 
+        return NextResponse.json({
+          ok: false,
+          error: `Failed to delete file: ${error instanceof Error ? error.message : 'Unknown error'}`
         }, { status: 500 });
       }
     }
