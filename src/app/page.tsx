@@ -1,4 +1,4 @@
-import HeroCarousel from '@/components/home/HeroCarousel';
+import DynamicHero from '@/components/common/DynamicHero';
 import TrustSignals from '@/components/home/TrustSignals';
 import FeaturedProducts from '@/components/home/FeaturedProducts';
 import SocialProof from '@/components/home/SocialProof';
@@ -53,19 +53,28 @@ export const metadata = {
 export default function Home() {
   return (
     <main data-testid="homepage-main">
-              <HeroCarousel />
-              <section className="section-below-fold">
-              <TrustSignals />
-              </section>
-              <section className="section-below-fold">
-              <CategoryShowcase />
-              </section>
-              <section className="section-below-fold">
-              <FeaturedProducts />
-              </section>
-              <section className="section-below-fold">
-              <SocialProof />
-              </section>
-              </main>
+      <DynamicHero 
+        category="home"
+        fallbackImage="/images/home/header1.webp"
+        title="J&M"
+        subtitle="Handcrafted rings with passion, designed for your forever moments"
+        primaryButtonText="Shop Collection"
+        primaryButtonLink="/products"
+        secondaryButtonText="Meet Our Artisan"
+        secondaryButtonLink="/about"
+      />
+      <section className="section-below-fold">
+        <TrustSignals />
+      </section>
+      <section className="section-below-fold">
+        <CategoryShowcase />
+      </section>
+      <section className="section-below-fold">
+        <FeaturedProducts />
+      </section>
+      <section className="section-below-fold">
+        <SocialProof />
+      </section>
+    </main>
   );
 }
