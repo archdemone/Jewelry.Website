@@ -7,21 +7,21 @@ const SocialProof = () => {
   const testimonials = [
     {
       name: 'Sarah M.',
-      location: 'New York',
+      location: 'Malton, UK',
       rating: 5,
       text: 'The craftsmanship is absolutely stunning. My engagement ring is perfect in every detail.',
       avatar: '/images/testimonials/sarah.jpg',
     },
     {
       name: 'Michael R.',
-      location: 'Los Angeles',
+      location: 'Kirkbymoorside, UK',
       rating: 5,
       text: 'Exceptional quality and the artisan story makes it even more special. Highly recommend!',
       avatar: '/images/testimonials/michael.jpg',
     },
     {
       name: 'Emma L.',
-      location: 'Chicago',
+      location: 'Pickering, UK',
       rating: 5,
       text: 'Beautiful, unique pieces that tell a story. The attention to detail is remarkable.',
       avatar: '/images/testimonials/emma.jpg',
@@ -41,7 +41,9 @@ const SocialProof = () => {
         {/* Stats Section */}
         <motion.div initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }} className="mb-16 text-center">
+          transition={{ duration: 0.6 }}
+ className="mb-16 text-center"
+>
               <h2 className="heading-primary mb-4 text-3xl text-charcoal-900 md:text-4xl">
             Trusted by Thousands
           </h2>
@@ -53,7 +55,9 @@ const SocialProof = () => {
               <motion.div key={stat.label}
                 initial={{ opacity: 0, scale: 0.8 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }} className="text-center">
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+ className="text-center"
+>
               <div className="mb-2 text-3xl font-bold text-gold-600 md:text-4xl">
                   {stat.number}
                 </div>
@@ -66,7 +70,9 @@ const SocialProof = () => {
         {/* Testimonials Section */}
         <motion.div initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }} className="mb-12 text-center">
+          transition={{ duration: 0.6, delay: 0.2 }}
+ className="mb-12 text-center"
+>
               <h3 className="heading-secondary mb-4 text-2xl text-charcoal-900 md:text-3xl">
             What Our Customers Say
           </h3>
@@ -76,7 +82,9 @@ const SocialProof = () => {
             <motion.div key={testimonial.name}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.2 }} className="rounded-lg bg-white p-6 shadow-lg transition-shadow duration-300 hover:shadow-xl">
+              transition={{ duration: 0.6, delay: index * 0.2 }}
+ className="rounded-lg bg-white p-6 shadow-lg transition-shadow duration-300 hover:shadow-xl"
+>
               <div className="mb-4 flex items-center">
               <Quote className="mr-3 h-8 w-8 text-gold-400" />
               <div className="flex">
