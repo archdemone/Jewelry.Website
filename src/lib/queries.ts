@@ -195,6 +195,20 @@ export async function getPaginatedProducts({
   }
 }
 
+// Safe parse images function to ensure images are always arrays
+function safeParseImages(v: unknown): string[] {
+  if (Array.isArray(v)) return v as string[];
+  if (typeof v === 'string') {
+    try {
+      const j = JSON.parse(v);
+      return Array.isArray(j) ? j : [];
+    } catch {
+      return [];
+    }
+  }
+  return [];
+}
+
 export async function getProductBySlug(slug: string) {
   if (preferFallback) {
     const catalog = buildFallbackCatalog(48);
@@ -208,7 +222,10 @@ export async function getProductBySlug(slug: string) {
     });
 
     if (dbProduct) {
-      return dbProduct;
+      return {
+        ...dbProduct,
+        images: safeParseImages(dbProduct.images)
+      };
     }
 
     // If not found in DB, check featured products
