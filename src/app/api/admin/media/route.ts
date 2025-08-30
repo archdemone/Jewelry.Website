@@ -10,16 +10,18 @@ import { join } from 'path';
 // Helper function to recursively scan directory for images
 async function scanImagesDirectory(dirPath: string, basePath: string = ''): Promise<Array<{ name: string; url: string; path: string; size: number; type: string; createdAt: Date }>> {
   const images: Array<{ name: string; url: string; path: string; size: number; type: string; createdAt: Date }> = [];
-  
+
   try {
     const items = await readdir(dirPath);
-    
+    console.log(`Scanning directory: ${dirPath}, found ${items.length} items`);
+
     for (const item of items) {
       const fullPath = join(dirPath, item);
       const relativePath = basePath ? join(basePath, item) : item;
       const stats = await stat(fullPath);
-      
+
       if (stats.isDirectory()) {
+        console.log(`Found directory: ${item}, scanning recursively`);
         // Recursively scan subdirectories
         const subImages = await scanImagesDirectory(fullPath, relativePath);
         images.push(...subImages);
@@ -29,7 +31,8 @@ async function scanImagesDirectory(dirPath: string, basePath: string = ''): Prom
         if (ext && ['webp', 'png', 'jpg', 'jpeg'].includes(ext)) {
           const url = `/images/${relativePath}`;
           const name = item.replace(/\.[^/.]+$/, ''); // Remove extension for display name
-          
+
+          console.log(`Found image: ${item} -> ${url}`);
           images.push({
             name,
             url,
@@ -44,7 +47,7 @@ async function scanImagesDirectory(dirPath: string, basePath: string = ''): Prom
   } catch (error) {
     console.error(`Error scanning directory ${dirPath}:`, error);
   }
-  
+
   return images;
 }
 
@@ -118,11 +121,11 @@ export async function GET(req: NextRequest) {
     const publicImages = await scanImagesDirectory(publicImagesPath);
 
     // Filter public images by query if provided
-    const filteredPublicImages = query 
-      ? publicImages.filter(img => 
-          img.name.toLowerCase().includes(query.toLowerCase()) ||
-          img.url.toLowerCase().includes(query.toLowerCase())
-        )
+    const filteredPublicImages = query
+      ? publicImages.filter(img =>
+        img.name.toLowerCase().includes(query.toLowerCase()) ||
+        img.url.toLowerCase().includes(query.toLowerCase())
+      )
       : publicImages;
 
     // Combine and sort all items (database items first, then public images)
