@@ -58,7 +58,8 @@ export default function AdminFeaturedProductsPage() {
 
   const handleSave = (savedProduct: FeaturedProduct) => {
     if (editingProduct) {
-      updateFeaturedProduct(editingProduct.id, savedProduct);
+      // Use the savedProduct.id to ensure we're updating the correct product
+      updateFeaturedProduct(savedProduct.id, savedProduct);
     } else if (isAddingNew && newProduct.name) {
       const productToAdd = {
         ...newProduct,

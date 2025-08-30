@@ -86,7 +86,16 @@ export default function ProductEditor({ product, open, onClose, onSaved, mode = 
   useEffect(() => {
     if (open) {
       if (product) {
-        setEditingProduct({ ...product });
+        // Convert FeaturedProduct to Product format if needed
+        if (mode === 'featured') {
+          const convertedProduct = {
+            ...product,
+            images: (product as any).image ? [(product as any).image] : [], // Convert single image to array
+          };
+          setEditingProduct(convertedProduct);
+        } else {
+          setEditingProduct({ ...product });
+        }
         setIsAddingProduct(false);
       } else {
         setEditingProduct({
@@ -113,7 +122,7 @@ export default function ProductEditor({ product, open, onClose, onSaved, mode = 
       }
       loadImages();
     }
-  }, [open, product]);
+  }, [open, product, mode]);
 
   const loadImages = async () => {
     try {
@@ -127,14 +136,29 @@ export default function ProductEditor({ product, open, onClose, onSaved, mode = 
     }
   };
 
+  // Helper function to get the correct image for display
+  const getDisplayImage = (product: Product) => {
+    if (mode === 'featured') {
+      // For featured products, use the single image field
+      return (product as any).image || '/images/placeholder.png';
+    } else {
+      // For main products, use the images array
+      return getProductImage(product);
+    }
+  };
+
   const handleSaveProduct = async () => {
     if (!editingProduct) return;
 
     try {
       if (mode === 'featured') {
-        // For featured products, just pass the product back to the parent
-        // The parent will handle the localStorage updates
-        onSaved(editingProduct);
+        // For featured products, convert the Product type back to FeaturedProduct format
+        const featuredProduct = {
+          ...editingProduct,
+          id: String(editingProduct.id), // Ensure ID is string for FeaturedProduct
+          image: editingProduct.images?.[0] || '', // Convert images array to single image
+        };
+        onSaved(featuredProduct as any);
         onClose();
       } else {
         // For main products, use the API
@@ -192,7 +216,7 @@ export default function ProductEditor({ product, open, onClose, onSaved, mode = 
             <div className="mb-6">
               <div className="relative aspect-square bg-white rounded-lg border-2 border-dashed border-gray-300 overflow-hidden">
                 <img
-                  src={getProductImage(editingProduct)}
+                  src={getDisplayImage(editingProduct)}
                   alt={editingProduct.name}
                   style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
                   loading="lazy"
