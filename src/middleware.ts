@@ -74,8 +74,9 @@ export async function middleware(request: NextRequest) {
 
   // Security headers
   // Disable CSP in development to allow Next.js dev tooling (e.g., eval in HMR)
-  // Skip CSP for static files like manifest.webmanifest
-  if (process.env.NODE_ENV === 'production' && process.env.CSP_DISABLE !== 'true' && !process.env.VERCEL_URL?.includes('preview') && !pathname.includes('manifest.webmanifest')) {
+  // Skip CSP for static files like manifest.webmanifest and auth routes
+  // Temporarily disable CSP for Vercel preview deployments to debug auth issues
+  if (process.env.NODE_ENV === 'production' && process.env.CSP_DISABLE !== 'true' && process.env.CSP_DISABLE !== 'debug' && !process.env.VERCEL_URL?.includes('preview') && !pathname.includes('/manifest.webmanifest') && !pathname.startsWith('/api/auth')) {
     const csp =
       "default-src 'self'; img-src 'self' data: blob: https://*.public.blob.vercel-storage.com; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://vercel.live; style-src 'self' 'unsafe-inline'; connect-src 'self'; frame-src 'self' https://vercel.live; frame-ancestors 'self';";
     const reportOnly = process.env.CSP_REPORT_ONLY === 'true';
@@ -111,5 +112,6 @@ export const config = {
     '/admin/:path*',
     '/api/admin/:path*',
     '/api/upload',
+    '/api/auth/:path*',
   ],
 };
