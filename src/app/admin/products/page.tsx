@@ -253,9 +253,19 @@ export default function UnifiedAdminProductsPage() {
       });
 
       if (response.ok) {
+        const savedProduct = await response.json();
+
+        // Update local state with the returned product
+        if (isAddingProduct) {
+          // Add new product to the list
+          setProducts(prev => [savedProduct, ...prev]);
+        } else {
+          // Update existing product in the list
+          setProducts(prev => prev.map(p => p.id === savedProduct.id ? savedProduct : p));
+        }
+
         setEditingProduct(null);
         setIsAddingProduct(false);
-        loadProducts();
       }
     } catch (error) {
       console.error('Error saving product:', error);
@@ -477,9 +487,8 @@ export default function UnifiedAdminProductsPage() {
                   <Card key={product.id} className="overflow-hidden hover:shadow-lg transition-shadow">
                     <div className="aspect-square bg-gray-100 relative">
                       {product.images && product.images[0] ? (
-                        <Image src={product.images[0]} alt={product.name}
-                          fill className="object-cover"
-                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+                        <img src={resolveImageSrc(product.images[0])} alt={product.name}
+                          className="w-full h-full object-cover"
                         />
                       ) : (
                         <div className="flex items-center justify-center h-full">
@@ -557,9 +566,8 @@ export default function UnifiedAdminProductsPage() {
                             <div className="flex items-center">
                               <div className="flex-shrink-0 h-10 w-10 relative">
                                 {product.images && product.images[0] ? (
-                                  <Image src={product.images[0]} alt={product.name}
-                                    fill className="rounded-full object-cover"
-                                    sizes="40px"
+                                  <img src={resolveImageSrc(product.images[0])} alt={product.name}
+                                    className="h-10 w-10 rounded-full object-cover"
                                   />
                                 ) : (
                                   <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">

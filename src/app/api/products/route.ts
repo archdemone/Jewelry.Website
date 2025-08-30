@@ -189,7 +189,37 @@ export async function POST(request: NextRequest) {
     revalidatePath('/products');
     revalidatePath(`/products/${newProduct.slug}`);
 
-    return NextResponse.json(newProduct);
+    // Return mapped product format to match frontend expectations
+    const mappedProduct = {
+      id: newProduct.id,
+      slug: newProduct.slug,
+      name: newProduct.name,
+      price: newProduct.price,
+      originalPrice: newProduct.comparePrice,
+      images: newProduct.images ? JSON.parse(newProduct.images) : [],
+      material: newProduct.material,
+      gemColor: extractGemColor(newProduct.gemstones),
+      gemDensity: 'medium', // Default value
+      gemVariation: extractGemVariation(newProduct.gemstones),
+      category: category.slug,
+      subCategory: category.name,
+      ringSizes: { us: [6, 7, 8, 9, 10], eu: [52, 54, 57, 59, 61] }, // Default sizes
+      ringWidth: [4, 6, 8], // Default widths
+      isReadyToShip: true, // Default value
+      rating: newProduct.rating,
+      reviews: newProduct.reviewCount,
+      badge: newProduct.badge,
+      description: newProduct.description,
+      status: newProduct.active ? 'active' : 'draft',
+      sku: newProduct.sku,
+      createdAt: newProduct.createdAt?.toISOString(),
+      isFeatured: newProduct.featured,
+      featuredOrder: newProduct.featured ? 1 : undefined,
+      mixColors: [],
+      isInStock: newProduct.active
+    };
+
+    return NextResponse.json(mappedProduct);
   } catch (error) {
     console.error('Error creating product:', error);
     return NextResponse.json(
@@ -252,7 +282,37 @@ export async function PUT(request: NextRequest) {
     }
     revalidatePath(`/products/${updatedProduct.slug}`);
 
-    return NextResponse.json(updatedProduct);
+    // Return mapped product format to match frontend expectations
+    const mappedProduct = {
+      id: updatedProduct.id,
+      slug: updatedProduct.slug,
+      name: updatedProduct.name,
+      price: updatedProduct.price,
+      originalPrice: updatedProduct.comparePrice,
+      images: updatedProduct.images ? JSON.parse(updatedProduct.images) : [],
+      material: updatedProduct.material,
+      gemColor: extractGemColor(updatedProduct.gemstones),
+      gemDensity: 'medium', // Default value
+      gemVariation: extractGemVariation(updatedProduct.gemstones),
+      category: category.slug,
+      subCategory: category.name,
+      ringSizes: { us: [6, 7, 8, 9, 10], eu: [52, 54, 57, 59, 61] }, // Default sizes
+      ringWidth: [4, 6, 8], // Default widths
+      isReadyToShip: true, // Default value
+      rating: updatedProduct.rating,
+      reviews: updatedProduct.reviewCount,
+      badge: updatedProduct.badge,
+      description: updatedProduct.description,
+      status: updatedProduct.active ? 'active' : 'draft',
+      sku: updatedProduct.sku,
+      createdAt: updatedProduct.createdAt?.toISOString(),
+      isFeatured: updatedProduct.featured,
+      featuredOrder: updatedProduct.featured ? 1 : undefined,
+      mixColors: [],
+      isInStock: updatedProduct.active
+    };
+
+    return NextResponse.json(mappedProduct);
   } catch (error) {
     console.error('Error updating product:', error);
     return NextResponse.json(

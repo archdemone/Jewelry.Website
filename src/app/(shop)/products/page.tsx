@@ -216,9 +216,14 @@ export default function ProductsPage() {
     });
   };
 
+  // Shared resolver for image URLs
+  function resolveSrc(u: string) {
+    return /^https?:\/\//i.test(u) ? u : `/images/${String(u).replace(/^\/+/, '')}`;
+  }
+
   const getProductImage = (product: Product): string => {
     if (product.images && product.images.length > 0) {
-      return product.images[0];
+      return resolveSrc(product.images[0]);
     }
     return '/images/MyImages/category-engagement-rings.jpg';
   };
