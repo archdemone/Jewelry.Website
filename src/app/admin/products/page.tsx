@@ -626,8 +626,8 @@ export default function UnifiedAdminProductsPage() {
 
       {/* Shared Product Editor Modal */}
       <ProductEditor
-        product={editingProduct || undefined}
-        open={!!editingProduct}
+        product={isAddingProduct ? undefined : editingProduct || undefined}
+        open={!!editingProduct || isAddingProduct}
         onClose={() => {
           setEditingProduct(null);
           setIsAddingProduct(false);
@@ -644,6 +644,7 @@ export default function UnifiedAdminProductsPage() {
           setEditingProduct(null);
           setIsAddingProduct(false);
         }}
+        mode="main"
       />
     </div>
   );

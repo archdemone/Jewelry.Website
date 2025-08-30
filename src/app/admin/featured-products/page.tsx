@@ -323,7 +323,7 @@ export default function AdminFeaturedProductsPage() {
 
       {/* Shared ProductEditor Modal */}
       <ProductEditor
-        product={editingProduct || (isAddingNew ? newProduct as any : undefined)}
+        product={isAddingNew ? undefined : editingProduct || undefined}
         open={!!editingProduct || isAddingNew}
         onClose={handleClose}
         onSaved={handleSave}
