@@ -93,7 +93,7 @@ export async function POST(req: NextRequest) {
         // Download the image from the uploaded URL
         const imageResponse = await fetch(url);
         if (!imageResponse.ok) {
-          throw new Error('Failed to download image');
+          throw new Error(`Failed to download image: ${imageResponse.status} ${imageResponse.statusText}`);
         }
 
         const imageBuffer = await imageResponse.arrayBuffer();
@@ -106,12 +106,14 @@ export async function POST(req: NextRequest) {
           // Directory doesn't exist, create it
           const { mkdir } = await import('fs/promises');
           await mkdir(categoryPath, { recursive: true });
+          console.log(`Created directory: ${categoryPath}`);
         }
 
         // Save file to the category folder
         const filePath = join(categoryPath, fileName);
         const { writeFile } = await import('fs/promises');
         await writeFile(filePath, Buffer.from(imageBuffer));
+        console.log(`Saved file: ${filePath}`);
 
         // Get file extension for type
         const fileExt = fileName.split('.').pop()?.toLowerCase() || 'jpeg';
@@ -134,7 +136,10 @@ export async function POST(req: NextRequest) {
         });
       } catch (error) {
         console.error('Error saving to public folder:', error);
-        return NextResponse.json({ ok: false, error: 'Failed to save file to public folder' }, { status: 500 });
+        return NextResponse.json({ 
+          ok: false, 
+          error: `Failed to save file to public folder: ${error instanceof Error ? error.message : 'Unknown error'}` 
+        }, { status: 500 });
       }
     }
 
@@ -297,14 +302,31 @@ export async function DELETE(req: NextRequest) {
         const category = pathParts[0];
         const fileName = pathParts.slice(1).join('-');
 
+        console.log(`Attempting to delete: category=${category}, fileName=${fileName}`);
+
         const filePath = join(process.cwd(), 'public', 'images', category, fileName);
+        console.log(`Full file path: ${filePath}`);
+
+        // Check if file exists before trying to delete
+        try {
+          await stat(filePath);
+        } catch (statError) {
+          console.log(`File does not exist: ${filePath}`);
+          // File doesn't exist, but we'll still return success since the goal is achieved
+          return NextResponse.json({ ok: true });
+        }
+
         const { unlink } = await import('fs/promises');
         await unlink(filePath);
+        console.log(`Successfully deleted: ${filePath}`);
 
         return NextResponse.json({ ok: true });
       } catch (error) {
         console.error('Error deleting public file:', error);
-        return NextResponse.json({ ok: false, error: 'Failed to delete file' }, { status: 500 });
+        return NextResponse.json({ 
+          ok: false, 
+          error: `Failed to delete file: ${error instanceof Error ? error.message : 'Unknown error'}` 
+        }, { status: 500 });
       }
     }
 
