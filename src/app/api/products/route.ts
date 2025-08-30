@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { requireAdminApi } from '@/lib/admin/admin-auth';
 import { db } from '@/lib/db';
+import { getProductImageFallback } from '@/lib/assets/images';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -28,12 +29,18 @@ function extractGemVariation(gemstones: string | null): string {
   return 'Bright'; // Default
 }
 
-// Safe parse images function
-function safeParseImages(imagesString: string | null): string[] {
-  if (!imagesString) return [];
+// Safe parse images function with fallback
+function safeParseImages(imagesString: string | null, productSlug: string, categorySlug?: string): string[] {
+  if (!imagesString) {
+    // Return fallback images if no database images
+    return getProductImageFallback({ productSlug, categorySlug });
+  }
+
   try {
     const parsed = JSON.parse(imagesString);
-    return Array.isArray(parsed) ? parsed : [];
+    if (Array.isArray(parsed) && parsed.length > 0) {
+      return parsed;
+    }
   } catch {
     // If JSON parsing fails, check if it's a single URL string
     if (typeof imagesString === 'string' && imagesString.trim()) {
@@ -42,8 +49,10 @@ function safeParseImages(imagesString: string | null): string[] {
         return [imagesString.trim()];
       }
     }
-    return [];
   }
+
+  // Return fallback images if parsing failed or no valid images found
+  return getProductImageFallback({ productSlug, categorySlug });
 }
 
 export async function GET(request: NextRequest) {
@@ -109,7 +118,7 @@ export async function GET(request: NextRequest) {
       name: product.name,
       price: product.price,
       originalPrice: product.comparePrice,
-      images: safeParseImages(product.images),
+      images: safeParseImages(product.images, product.slug, product.category?.slug),
       material: product.material,
       gemColor: extractGemColor(product.gemstones),
       gemDensity: 'medium', // Default value
@@ -128,26 +137,26 @@ export async function GET(request: NextRequest) {
       createdAt: product.createdAt?.toISOString(),
       isFeatured: product.featured,
       featuredOrder: product.featured ? 1 : undefined,
-              mixColors: [],
-        isInStock: product.active
-      }));
+      mixColors: [],
+      isInStock: product.active
+    }));
 
-  return NextResponse.json({
-    products: mappedProducts,
-    categories
-  }, {
-    status: 200,
-    headers: { 'Cache-Control': 'no-store' }
-  });
-} catch (error) {
-  console.error('Error fetching products:', error);
-  return NextResponse.json(
-    { error: 'Failed to fetch products' },
-    { status: 500 }
-  );
-} finally {
-  await db.$disconnect();
-}
+    return NextResponse.json({
+      products: mappedProducts,
+      categories
+    }, {
+      status: 200,
+      headers: { 'Cache-Control': 'no-store' }
+    });
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch products' },
+      { status: 500 }
+    );
+  } finally {
+    await db.$disconnect();
+  }
 }
 
 // Create new product
