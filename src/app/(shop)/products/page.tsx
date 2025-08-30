@@ -218,7 +218,10 @@ export default function ProductsPage() {
 
   // Shared resolver for image URLs
   function resolveSrc(u: string) {
-    return /^https?:\/\//i.test(u) ? u : `/images/${String(u).replace(/^\/+/, '')}`;
+    if (!u) return '';
+    if (/^https?:\/\//i.test(u)) return u;
+    if (u.startsWith('/images/')) return u;
+    return `/images/${String(u).replace(/^\/+/, '')}`;
   }
 
   const getProductImage = (product: Product): string => {
@@ -585,8 +588,13 @@ export default function ProductsPage() {
                     >
                       {/* Product Image */}
                       <div className={`relative ${viewMode === 'list' ? 'h-48 w-48' : 'h-64'}`}>
-                        <img src={getProductImage(product)} alt={product.name}
-                          className="absolute inset-0 h-full w-full object-cover"
+                        <Image
+                          src={getProductImage(product)}
+                          alt={product.name}
+                          fill
+                          className="object-cover"
+                          unoptimized={/^https?:\/\//i.test(product.images?.[0] || '')}
+                          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                         />
 
                         {/* Ready to Ship Badge */}
@@ -687,8 +695,13 @@ export default function ProductsPage() {
               <div className="grid lg:grid-cols-3">
                 {/* Image Gallery */}
                 <div className="relative h-96 bg-gradient-to-br from-gray-50 to-gray-100 lg:col-span-1 lg:h-full">
-                  <img src={getProductImage(quickViewProduct)} alt={quickViewProduct.name}
-                    className="absolute inset-0 h-full w-full object-cover"
+                  <Image
+                    src={getProductImage(quickViewProduct)}
+                    alt={quickViewProduct.name}
+                    fill
+                    className="object-cover"
+                    unoptimized={/^https?:\/\//i.test(quickViewProduct.images?.[0] || '')}
+                    sizes="(max-width: 768px) 100vw, 33vw"
                   />
                   <button onClick={() => setQuickViewProduct(null)}
                     className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white/90 shadow-lg backdrop-blur"

@@ -63,7 +63,10 @@ export default function CategoryPage({
 }: CategoryPageProps) {
   // Shared resolver for image URLs
   function resolveSrc(u: string) {
-    return /^https?:\/\//i.test(u) ? u : `/images/${String(u).replace(/^\/+/, '')}`;
+    if (!u) return '';
+    if (/^https?:\/\//i.test(u)) return u;
+    if (u.startsWith('/images/')) return u;
+    return `/images/${String(u).replace(/^\/+/, '')}`;
   }
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
   const [selectedFilters, setSelectedFilters] = useState<FilterState>({
@@ -444,11 +447,17 @@ export default function CategoryPage({
               >
                 {/* Product Image */}
                 <div className="relative aspect-square overflow-hidden border-2 border-black">
-                  <img src={Array.isArray(product.images) && product.images.length > 0
-                    ? resolveSrc(product.images[0])
-                    : getProductImageFallback({ productSlug: product.slug, name: product.name })[0] || ''} alt={product.name}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                    loading="lazy"
+                  <Image
+                    src={Array.isArray(product.images) && product.images.length > 0
+                      ? resolveSrc(product.images[0])
+                      : getProductImageFallback({ productSlug: product.slug, name: product.name })[0] || ''}
+                    alt={product.name}
+                    fill
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    unoptimized={/^https?:\/\//i.test(Array.isArray(product.images) && product.images.length > 0
+                      ? product.images[0]
+                      : getProductImageFallback({ productSlug: product.slug, name: product.name })[0] || '')}
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   />
 
                   {/* Badge */}
